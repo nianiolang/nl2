@@ -2,6 +2,7 @@
 # (c) Atinea Sp. z o.o.
 ###
 
+use own;
 use tct;
 use array;
 use string;
@@ -30,7 +31,7 @@ def translator::loop_label() {
 }
 
 def translator::state_t() {
-	return ptd::rec({
+	return own::rec({
 			label_nr => ptd::int(),
 			debug => @nlasm::debug_t,
 			logic => @translator::function_logic_t,
