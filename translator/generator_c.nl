@@ -2088,7 +2088,7 @@ def get_free_fun_call_exact(type : @tct::meta_type, type_name : ptd::sim(), mod_
 	} case :tct_int {
 		ret = 'free_mem(' . var_name . ', sizeof(INT))';
 	} case :tct_ref(var ref_type) {
-		return get_free_fun_call_exact(defined_types{ref_type}, get_type_name(type), get_type_module_name(ref_type), var_name, defined_types);
+		ret = get_ref_free_fun_name(type_name, mod_name, anon) . '(' . var_name . ')';
 	} case :tct_string {
 		ret = get_fun_lib('clear', [var_name]) . ';
 			'free_mem(var.value.internal, sizeof(ImmT))';
@@ -2179,6 +2179,10 @@ def get_variant_free_fun_def(variant_type_name : ptd::sim(), mod_name : ptd::sim
 		'' .  get_variant_clean_fun_name(variant_type_name, mod_name, anon) . '(*var);
 		'free_mem(var, sizeof(*var));
 		'}';
+}
+
+def get_ref_free_fun_name(variant_type_name : ptd::sim(), mod_name : ptd::sim(), anon : ptd::bool()) : ptd::sim() {
+	return get_spec_fun_name(variant_type_name, mod_name, 'free', anon);
 }
 
 def is_anon(type : @tct::meta_type) : ptd::bool() {

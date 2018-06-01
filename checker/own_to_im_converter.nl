@@ -153,9 +153,8 @@ def get_type_constructor(type : @tct::meta_type, remove_owns : @boolean_t::type,
 
 def own_to_im_converter::get_function(type : @tct::meta_type, known_types : ptd::hash(@tct::meta_type))
 	: @own_to_im_converter::res_t {
-	var ret_type : ptd::string() = get_type_constructor(type, true, known_types);
 	var body : ptd::string() = 'def ' . own_to_im_converter::get_function_name(type, known_types)
-		. '(ref arg : ' . get_type_constructor(type, false, known_types) . ') : ' . ret_type . ' {';
+		. '(ref arg : ' . get_type_constructor(type, false, known_types) . ') {';
 	if (type is :tct_ref) {
 		type = known_types{type as :tct_ref};
 	}
@@ -164,7 +163,7 @@ def own_to_im_converter::get_function(type : @tct::meta_type, known_types : ptd:
 	match (type) case :tct_rec (var p) {
 		die;
 	} case :tct_own_rec (var p) {
-		body .= 'var r : ' . ret_type . ' = {';
+		body .= 'var r = {';
 		forh var name, var p_type (p) {
 			conv_fun_name = own_to_im_converter::get_function_name(p_type, known_types);
 			body .= name . ' => ' . conv_fun_name . '(' . own_to_im_converter::get_required_arg_type(p_type, known_types) . ' arg->' . name . '), ';
@@ -175,7 +174,7 @@ def own_to_im_converter::get_function(type : @tct::meta_type, known_types : ptd:
 		die;
 	} case :tct_own_hash (var p) {
 		conv_fun_name = own_to_im_converter::get_function_name(p, known_types);
-		body .= 'var h : ' . ret_type . ' = {};';
+		body .= 'var h = {};';
 		body .= 'forh var key, ref value (arg) {';
 		body .= 'h{key} = ' . conv_fun_name . '('. own_to_im_converter::get_required_arg_type(p, known_types)
 			. ' value);';
@@ -186,7 +185,7 @@ def own_to_im_converter::get_function(type : @tct::meta_type, known_types : ptd:
 	} case :tct_own_arr (var p) {
 		conv_fun_name = own_to_im_converter::get_function_name(p, known_types);
 		hash::set_value(ref required_functions, conv_fun_name, p);
-		body .= 'var a : ' . ret_type . ' = [];';
+		body .= 'var a = [];';
 		body .= 'fora var elem (arg) {';
 		body .= 'a []= ' . conv_fun_name . '(' . own_to_im_converter::get_required_arg_type(p, known_types)
 			. ' elem);';

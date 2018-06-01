@@ -103,7 +103,11 @@ def get_required_types_list(type : @tct::meta_type, ref node : @generator_c_stru
 		array::push(ref node->struct, get_name(type));
 		forh var v_name, var v_type (vars) {
 			match (v_type) case :with_param(var param_type) {
-				get_required_types_list(param_type, ref node, module);
+				if (param_type is :tct_own_rec || param_type is :tct_own_arr
+						|| param_type is :tct_own_var || param_type is :tct_own_hash
+						|| param_type is :tct_ref) {
+					array::push(ref node->pointer, get_name(param_type));
+				}
 			} case :no_param {
 			}
 		}
