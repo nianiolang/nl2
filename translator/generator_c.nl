@@ -101,6 +101,7 @@ def generator_c::state_t() {
 					singleton => @generator_c::const_t,
 					dynamic_nr => ptd::int()
 				}),
+			defined_types => ptd::hash(@tct::meta_type),
 		});
 }
 
@@ -114,6 +115,7 @@ def generator_c::get_empty_state() : @generator_c::state_t {
 			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
 			mod_name => '',
 			additional_imports => {},
+			defined_types => {},
 		};
 }
 
@@ -200,7 +202,7 @@ def generator_c::generate(nlasms : ptd::hash(@nlasm::result_t), ref state : @gen
 	forh var module, var none (nlasms) {
 		array::push(ref modules_names, module);
 	}
-	var defined_types : ptd::hash(@tct::meta_type) = gather_types(nlasms);
+	gather_types(nlasms, ref state->defined_types);
 	array::sort(ref modules_names);
 	fora var module (modules_names) {
 		var nlasm = hash::get_value(nlasms, module);
@@ -212,14 +214,13 @@ def generator_c::generate(nlasms : ptd::hash(@nlasm::result_t), ref state : @gen
 		state->const = {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}};
 		state->mod_name = module;
 		state->additional_imports = {};
-		print_mod(ref state, nlasm, defined_types);
+		print_mod(ref state, nlasm, state->defined_types);
 		hash::set_value(ref modules_out, module, {c => state->ret, h => state->header});
 	}
 	return {modules => modules_out, global_const => generate_global_const_files(ref state)};
 }
 
-def gather_types(nlasms : ptd::hash(@nlasm::result_t)) : ptd::hash(@tct::meta_type) {
-	var defined_types : ptd::hash(@tct::meta_type) = {};
+def gather_types(nlasms : ptd::hash(@nlasm::result_t), ref defined_types : ptd::hash(@tct::meta_type)) {
 	forh var module, var res (nlasms) {
 		fora var func (res->functions) {
 			match (func->defines_type) case :no {

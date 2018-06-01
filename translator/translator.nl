@@ -224,7 +224,7 @@ def print_fun_val(fun_val : @nast::fun_val_t, destination : @nlasm::reg_t, type 
 	for(var i = array::len(fun_val->args) - 1; i >= 0; --i) {
 		continue unless fun_val->args[i]->mod is :ref;
 		var src = fun_val->args[i]->val;
-		get_struct_of_lvalue(ref src, state);
+		get_struct_of_lvalue(ref src, ref state);
 		continue if hash::has_key(ref_was, src->value as :var);
 		hash::set_value(ref ref_was, src->value as :var, 0);
 		hash::set_value(ref ref_var, ptd::int_to_string(i), 0);
@@ -1057,7 +1057,7 @@ def translator::struct_of_lvalue_t() {
 	}));
 }
 
-def get_struct_of_lvalue(ref left : @nast::value_t, state : @translator::state_t) : @translator::struct_of_lvalue_t {
+def get_struct_of_lvalue(ref left : @nast::value_t, ref state : @translator::state_t) : @translator::struct_of_lvalue_t {
 	var ret = [];
 	while (true) {
 		if (left->value is :bin_op) {
@@ -1131,7 +1131,7 @@ def get_struct_of_lvalue(ref left : @nast::value_t, state : @translator::state_t
 
 def get_value_of_lvalue(left : @nast::value_t, get_value : @boolean_t::type, ref state : @translator::state_t) :
 	@translator::lvalue_values_t {
-	var ret = get_struct_of_lvalue(ref left, state);
+	var ret = get_struct_of_lvalue(ref left, ref state);
 	var label : ptd::string() = left->value as :var;
 	var temp_structures = [get_var_register(label, ref state)];
 	var lvalue_values = [];
