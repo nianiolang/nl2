@@ -178,10 +178,23 @@ def type_checker::check_modules(ref modules : ptd::hash(@nast::module_t), lib_mo
 			}
 		}
 		var new_module : @nast::module_t = create_own_convertions_module(own_conv, known_types, module_name);
-		var m : ptd::arr(@nast::fun_def_t) = ast->fun_def;
-		array::append(ref m, new_module->fun_def);
-		modules{module_name}->fun_def = m;
-		lib_modules{module_name}->fun_def = m;
+		var found = false;
+		var new_fun_def : ptd::arr(@nast::fun_def_t) = ast->fun_def;
+		fora var new_fun (new_module->fun_def) {
+			found = false;
+			rep var i (array::len(ast->fun_def)) {
+				if (new_fun_def[i]->name eq new_fun->name) {
+					found = true;
+					new_fun_def[i] = new_fun;
+					break;
+				}
+			}
+			if (!found) {
+				new_fun_def []= new_fun;
+			}
+		}
+		modules{module_name}->fun_def = new_fun_def;
+		lib_modules{module_name}->fun_def = new_fun_def;
 	}
 	
 	var def_fun : @tc_types::defs_funs_t = prepare_def_fun(lib_modules, ref errors);
