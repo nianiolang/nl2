@@ -767,7 +767,8 @@ def print_own_forh(as_forh : @nast::forh_t, ref state : @translator::state_t) {
 	var after_forh_label = get_sim_label(ref state);
 	var next_iterator_label = get_sim_label(ref state);
 	var condition_label = get_sim_label(ref state);
-	var hash = calc_val(as_forh->hash, ref state);
+	var hash_lvalue = get_value_of_lvalue(as_forh->hash, true, ref state);
+	var hash = hash_lvalue[array::len(hash_lvalue) - 1] as :value;
 	var key_register = print_var_decl(as_forh->key, ref state, :value);
 	var condition_register = new_register(ref state, :bool);
 	var value_register = print_var_decl(as_forh->val, ref state, :reference);
@@ -788,6 +789,7 @@ def print_own_forh(as_forh : @nast::forh_t, ref state : @translator::state_t) {
 	print(ref state, :hash_next_iter({iter => iter, hash => hash}));
 	print(ref state, :goto(condition_label));
 	print_sim_label(after_forh_label, ref state);
+	set_value_of_lvalue(hash_lvalue, false, ref state);
 	state->loop_label = loop_label;
 }
 

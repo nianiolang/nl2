@@ -718,10 +718,30 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			array::push(ref args, get_reg(ref state, el)) fora var el (decl->src);
 			var r = get_fun_lib('array_mk', args);
 			print(ref state, get_assign(ref state, decl->dest, r));
+		} elsif (decl->dest->type is :arr) {
+			var clean = get_clean_fun_call(decl->dest->type as :arr, state->mod_name, get_reg_value(ref state, decl->dest),
+				defined_types);
+			print(ref state, clean . string::lf());
+			print(ref state, get_reg_value(ref state, decl->dest) . '.size = 0;' . string::lf());
+			print(ref state, get_reg_value(ref state, decl->dest) . '.capacity = 0;' . string::lf());
+			print(ref state, get_reg_value(ref state, decl->dest) . '.value = NULL');
+		} else {
+			die;
 		}
 	} case :hash_decl(var hash_decl) {
 		if (hash_decl->dest->type is :im) {
 			print_hash_declaration(ref state, hash_decl);
+		} elsif (hash_decl->dest->type is :hash) {
+			var clean = get_clean_fun_call(hash_decl->dest->type as :hash, state->mod_name, get_reg_value(ref state, hash_decl->dest),
+				defined_types);
+			print(ref state, clean . string::lf());
+			print(ref state, get_reg_value(ref state, hash_decl->dest) . '.size = 0;' . string::lf());
+			print(ref state, get_reg_value(ref state, hash_decl->dest) . '.capacity = 0;' . string::lf());
+			print(ref state, get_reg_value(ref state, hash_decl->dest) . '.keys = NULL;' . string::lf());
+			print(ref state, get_reg_value(ref state, hash_decl->dest) . '.values = NULL');
+		} elsif (hash_decl->dest->type is :rec) {
+		} else {
+			die;
 		}
 	} case :func(var func) {
 		var r = get_func_pointer(ref state, func->module, func->name);
@@ -2011,7 +2031,6 @@ def get_array_clean_fun_def(array_type_name : ptd::sim(), array_type : @tct::met
 		'	' . get_clean_fun_call(array_type, mod_name, 'arr.value[i]', defined_types) . ';
 		'}
 		'free_mem(arr.value, sizeof(' . get_type_name(array_type) . ')*arr.capacity);
-		'arr.value = NULL;
 		'}';
 }
 

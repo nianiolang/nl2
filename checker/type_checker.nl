@@ -589,7 +589,6 @@ def check_forh(ref as_forh : @nast::forh_t, ref modules : @tc_types::modules_t, 
 		if (!tct::is_own_type(hash_type->type, known_types)) {
 			add_error(ref errors, 'value iterator of non-own hash cannot be ref');
 		}
-		vars{as_forh->hash->value as :var}->referenced_by = :variable(as_forh->val->name);
 	}
 	if (hash_type->type is :tct_hash) {
 		hash_type->type = hash_type->type as :tct_hash;
@@ -601,9 +600,16 @@ def check_forh(ref as_forh : @nast::forh_t, ref modules : @tc_types::modules_t, 
 	var vars_op : @tc_types::vars_t = vars;
 	add_var_decl_with_type_and_check(ref as_forh->key, {type => tct::string(), src => :speculation}, ref vars_op, ref errors);
 	add_var_decl_with_type_and_check(ref as_forh->val, hash_type, ref vars_op, ref errors);
+	var var_tab = [];
+	match (as_forh->val_mod) case :none {
+	} case :ref {
+		var_tab = rec_get_var_from_lval(as_forh->hash, ref errors);
+		vars{var_tab[0] as :var}->referenced_by = :variable(as_forh->val->name);
+	}
 	break_continue_block(ref as_forh->cmd, ref modules, ref vars_op, ref errors, known_types);
-	if (as_forh->hash->value is :var) {
-		vars{as_forh->hash->value as :var}->referenced_by = :none;
+	match (as_forh->val_mod) case :none {
+	} case :ref {
+		vars{var_tab[0] as :var}->referenced_by = :none;
 	}
 	join_vars(ref vars, vars_op, ref modules, ref errors, known_types);
 }
