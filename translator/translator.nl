@@ -1393,6 +1393,7 @@ def undef_reg(reg : @nlasm::reg_t, ref state : @translator::state_t) {
 def restore_registers(register_old : @translator::function_logic_t, ref state : @translator::state_t) {
 	for(var i = register_old->register; i < state->logic->register; ++i) {
 		undef_reg(state->logic->registers[i], ref state);
+		state->logic->register_to_clear[i] = false;
 	}
 }
 
