@@ -1729,8 +1729,16 @@ def get_array_push_fun_def(array_type_name : ptd::string(), array_type : @tct::m
 		'if (arr->size+1 == arr->capacity) {
 		'arr->value = realloc_mem(arr->value, arr->capacity*' . sizeof . ', arr->capacity*2*' . sizeof .');
 		'arr->capacity *= 2;
-		'}
-		'arr->value[arr->size++] = arg;
+		'} 
+		'';
+	if (array_type is :tct_own_rec || array_type is :tct_own_hash || array_type is :tct_own_arr
+			||array_type is :tct_own_var || array_type is :tct_int) {
+		ret .= 'arr->value[arr->size++] = arg;';
+	} else {
+		ret .= 'arr->value[arr->size] = NULL;
+			'' . get_fun_lib('copy', ['&(arr->value[arr->size++])', 'arg']) .';';
+	}
+	ret .= '
 		'}';
 	return ret;
 }
