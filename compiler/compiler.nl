@@ -240,11 +240,6 @@ def has_extension(path : ptd::string(), exten : ptd::string()) : @boolean_t::typ
 	return len eq exten;
 }
 
-def get_generator_state(language : @compiler::language_t) : @generator_c::state_t {
-	language;
-	return generator_c::get_empty_state();
-}
-
 def get_out_ext(language : @compiler::language_t) : ptd::string() {
 	match (language) case :nla {
 		return '.nla';
@@ -385,7 +380,17 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		};
 	var const_state = post_processing::init(get_mathematical_func(opt_cli), opt_cli->optimization);
 	var old_files = {};
-	var generator_state = get_generator_state(opt_cli->language);
+	var generator_state : @generator_c::state_t = {
+			global_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			ret => '',
+			header => '',
+			fun_args => [],
+			ret_type => :tct_im,
+			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
+			mod_name => '',
+			additional_imports => {},
+			defined_types => {},
+		};
 	loop {
 		errors->type_errors = {};
 		errors->type_warnings = {};
@@ -524,7 +529,17 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 	}
 	if (!(opt_cli->language is :ast || opt_cli->language is :nl)) {
 		profile::begin('post processing');
-		var generator_state = get_generator_state(opt_cli->language);
+		var generator_state : @generator_c::state_t = {
+			global_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			ret => '',
+			header => '',
+			fun_args => [],
+			ret_type => :tct_im,
+			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
+			mod_name => '',
+			additional_imports => {},
+			defined_types => {},
+		};
 		c_fe_lib::print('search constants...');
 		var const_state = post_processing::init(get_mathematical_func(opt_cli), opt_cli->optimization);
 		profile::end('post processing');

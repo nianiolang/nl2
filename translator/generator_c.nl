@@ -2,6 +2,8 @@
 # (c) Atinea Sp. z o.o.
 ###
 
+use own;
+use own_array;
 use ptd;
 use nlasm;
 use string;
@@ -75,7 +77,7 @@ def generator_c::fun_args_t() {
 }
 
 def generator_c::const_t() {
-	return ptd::rec({arr => ptd::arr(ptd::string()), hash => ptd::hash(ptd::int())});
+	return own::rec({arr => own::arr(ptd::string()), hash => ptd::hash(ptd::int())});
 }
 
 def generator_c::global_const_t() {
@@ -88,35 +90,21 @@ def generator_c::global_const_t() {
 }
 
 def generator_c::state_t() {
-	return ptd::rec({
+	return own::rec({
 			global_const => @generator_c::global_const_t,
 			header => ptd::string(),
 			ret => ptd::string(),
-			additional_imports => ptd::hash(@boolean_t::type),
+			additional_imports => own::hash(@boolean_t::type),
 			mod_name => ptd::string(),
 			fun_args => @generator_c::fun_args_t,
 			ret_type => @tct::meta_type,
-			const => ptd::rec({
+			const => own::rec({
 					sim => @generator_c::const_t,
 					singleton => @generator_c::const_t,
 					dynamic_nr => ptd::int()
 				}),
 			defined_types => ptd::hash(@tct::meta_type),
 		});
-}
-
-def generator_c::get_empty_state() : @generator_c::state_t {
-	return {
-			global_const => {arr => [], hash => {}, holes => [], module_consts => {}},
-			ret => '',
-			header => '',
-			fun_args => [],
-			ret_type => :tct_im,
-			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
-			mod_name => '',
-			additional_imports => {},
-			defined_types => {},
-		};
 }
 
 def print(ref state : @generator_c::state_t, s : ptd::string()) : ptd::void() {
@@ -319,8 +307,8 @@ def get_function_header(func : @nlasm::function_t, mod_name : ptd::string()) : p
 def get_const(ref type : @generator_c::const_t, key : ptd::string()) : ptd::int() {
 	var nr : ptd::int() = -1;
 	if (!hash::has_key(type->hash, key)) {
-		nr = array::len(type->arr);
-		array::push(ref type->arr, key);
+		nr = own_array::len(ref type->arr);
+		type->arr []= key;
 		hash::set_value(ref type->hash, key, nr);
 	} else {
 		nr = hash::get_value(type->hash, key);
@@ -485,17 +473,15 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 		print_function_block(ref state, func, defined_types);
 	}
 	print_init_const(ref state);
-	forh var import, var none (state->additional_imports) {
+	forh var import, ref none (state->additional_imports) {
 		ret .= get_include(import) . string::lf();
 	}
 	state->ret = ret  . state->ret;
 }
 
 def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
-	var sim = state->const->sim->arr;
-	var singleton = state->const->singleton->arr;
-	var sim_len = array::len(sim);
-	var sing_len = array::len(singleton);
+	var sim_len = own_array::len(ref state->const->sim->arr);
+	var sing_len = own_array::len(ref state->const->singleton->arr);
 	var dyna_len = state->const->dynamic_nr;
 	var const_len = sim_len + sing_len + dyna_len;
 	println(ref state, '
@@ -507,7 +493,7 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 		'__const__f = &___const__[' . ptd::int_to_string(sim_len + sing_len) . '];
 		'');
 	rep var i (sim_len) {
-		println(ref state, '___const__[' . ptd::int_to_string(i) . '] = ' . create_sim(sim[i]) . ';');
+		println(ref state, '___const__[' . ptd::int_to_string(i) . '] = ' . create_sim(state->const->sim->arr[i]) . ';');
 	}
 	println(ref state, '
 		'for(int i=' . ptd::int_to_string(sim_len) . ';i<' . ptd::int_to_string(const_len) . ';++i) ___const__[i] = NULL;
@@ -521,9 +507,9 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 	println(ref state, im_t() . get_fun_name('', '__const__sing', state->mod_name) . '(int __nr) {
 		'if(___const__[__nr+' . ptd::int_to_string(sim_len) . ']==NULL) {
 		'switch(__nr){');
-	rep var i (array::len(singleton)) {
+	rep var i (sing_len) {
 		println(ref state, 'case ' . ptd::int_to_string(i) . ':');
-		println(ref state, '	___const__[' . ptd::int_to_string(i + sim_len) . '] = ' . singleton[i] . '0cal();');
+		println(ref state, '	___const__[' . ptd::int_to_string(i + sim_len) . '] = ' . state->const->singleton->arr[i] . '0cal();');
 		println(ref state, '	break;');
 	}
 	println(ref state, 'default:
@@ -1526,9 +1512,9 @@ def print_func_type_struct_decl(ref state : @generator_c::state_t, name : ptd::s
 	if (anon) {
 		c_def .= '#endif' . string::lf();
 	}
-	c_def .= get_additional_type_functions_decl(c_name, type, state, anon);
+	c_def .= get_additional_type_functions_decl(c_name, type, ref state, anon);
 	print_to_header(ref state, c_def . string::lf());
-	print(ref state, get_additional_type_functions_def(c_name, type, state, defined_types, anon));
+	print(ref state, get_additional_type_functions_def(c_name, type, ref state, defined_types, anon));
 }
 
 def print_func_type_struct_def(ref state : @generator_c::state_t, name : ptd::string(), type : @tct::meta_type,
@@ -1622,7 +1608,7 @@ def get_empty_value(type : @tct::meta_type) : ptd::string() {
 	}
 }
 
-def get_additional_type_functions_decl(type_name : ptd::string(), type : @tct::meta_type, state : @generator_c::state_t,
+def get_additional_type_functions_decl(type_name : ptd::string(), type : @tct::meta_type, ref state : @generator_c::state_t,
 		anon : @boolean_t::type) : ptd::string() {
 	var ret = '';
 	match (type) case :tct_im {
@@ -1659,7 +1645,7 @@ def get_additional_type_functions_decl(type_name : ptd::string(), type : @tct::m
 	return ret;
 }
 
-def get_additional_type_functions_def(type_name : ptd::string(), type : @tct::meta_type, state : @generator_c::state_t,
+def get_additional_type_functions_def(type_name : ptd::string(), type : @tct::meta_type, ref state : @generator_c::state_t,
 		defined_types : ptd::hash(@tct::meta_type), anon : ptd::bool()) : ptd::string() {
 	var ret = '';
 	match (type) case :tct_im {
