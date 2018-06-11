@@ -99,7 +99,7 @@ def nast::fun_def_t() {
 def nast::fun_def_arg_t() {
 	return ptd::rec({
 			type => @nast::variable_type_t,
-			tct_type => ptd::var({none => ptd::none(), type => @tct::meta_type}),
+			tct_type => @tct::meta_type,
 			name => ptd::string(),
 			mod => ptd::var({none => ptd::none(), ref => ptd::none()})
 		});
@@ -122,7 +122,7 @@ def nast::variable_declaration_t() {
 	return ptd::rec({
 			name => ptd::string(),
 			type => @nast::variable_type_t,
-			tct_type => ptd::var({none => ptd::none(), type => @tct::meta_type}),
+			tct_type => @tct::meta_type,
 			value => ptd::var({value => @nast::value_t, none => ptd::none()})
 		});
 }

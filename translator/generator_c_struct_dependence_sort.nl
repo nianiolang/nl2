@@ -377,10 +377,7 @@ def get_anons(funs : ptd::arr(@nlasm::function_t)) : ptd::hash(@tct::meta_type) 
 	fora var f (funs) {
 		deep_anon_add(f->ret_type, ref anons);
 		fora var g (f->args_type) {
-			match (g->type) case :none {
-			} case :type(var type) {
-				deep_anon_add(type, ref anons);
-			}
+			deep_anon_add(g->type, ref anons);
 		}
 		fora var r (f->registers) {
 			if (r->type is :rec) {

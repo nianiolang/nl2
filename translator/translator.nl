@@ -106,11 +106,11 @@ def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct:
 def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t) {
 	fora var fun_arg (function->args) {
 		match (fun_arg->mod) case :none {
-			var rim = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type as :type, state->logic->defined_types), :value);
+			var rim = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type, state->logic->defined_types), :value);
 			var arg_type_rim = {by => :val, register => rim, type => fun_arg->tct_type};
 			array::push(ref state->result->args_type, arg_type_rim);
 		} case :ref {
-			var rref = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type as :type, state->logic->defined_types), :value);
+			var rref = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type, state->logic->defined_types), :value);
 			var arg_type_rref = {by => :ref, register => rref, type => fun_arg->tct_type};			
 			array::push(ref state->result->args_type, arg_type_rref);
 		}
@@ -187,17 +187,9 @@ def print_variant(variant : @nast::variant_t, destination : @nlasm::reg_t, ref s
 
 def print_var_decl(var_decl : @nast::variable_declaration_t, ref state : @translator::state_t,
 		access_type : @nlasm::reg_access_type_t) : @nlasm::reg_t {
-	var reg_type;
-	match (var_decl->tct_type) case :none {
-		reg_type = :im;
-	} case :type(var var_type) {
-		reg_type = var_type_to_reg_type(var_type, state->logic->defined_types);
-	}
+	var reg_type = var_type_to_reg_type(var_decl->tct_type, state->logic->defined_types);
 	var reg = new_declaration(var_decl->name, ref state, reg_type, access_type);
-	match (var_decl->tct_type) case :none {
-	} case :type(var tct_type) {
-		array::push(ref state->result->variables, {type => tct_type, register => reg});
-	}
+	array::push(ref state->result->variables, {type => var_decl->tct_type, register => reg});
 	match (var_decl->value) case :none {
 	} case :value(var value) {
 		if (tct::is_own_type(value->type, state->logic->defined_types)) {
@@ -466,7 +458,7 @@ def print_cmd_array(arr : ptd::arr(@nast::cmd_t), ref state : @translator::state
 
 def print_try_ensure(try_ensure : @nast::try_ensure_t, is_try : ptd::bool(), ref state : @translator::state_t) {
 	match (try_ensure) case :decl(var decl) {
-		print_var_decl({name => decl->name, type => decl->type, tct_type => :none, value => :none}, ref state, :value);
+		print_var_decl({name => decl->name, type => decl->type, tct_type => :tct_im, value => :none}, ref state, :value);
 	} case :lval(var lval) {
 	} case :expr(var expr) {
 	}

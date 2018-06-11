@@ -294,9 +294,9 @@ def get_function_header(func : @nlasm::function_t, mod_name : ptd::string()) : p
 	fora var arg_type (func->args_type) {
 		fun_header .= ',' unless 0 == reg_mem;
 		match (arg_type->by) case :val {
-			fun_header .=  get_type_name(arg_type->type as :type) . ' ___nl__' . reg_suffix(arg_type->register);
+			fun_header .=  get_type_name(arg_type->type) . ' ___nl__' . reg_suffix(arg_type->register);
 		} case :ref {
-			fun_header .= get_type_name(arg_type->type as :type) . '* ___ref___' . reg_suffix(arg_type->register);
+			fun_header .= get_type_name(arg_type->type) . '* ___ref___' . reg_suffix(arg_type->register);
 		}
 		reg_mem++;
 	}
@@ -443,7 +443,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 			var number = array::len(func->args_type);
 			println(ref state, get_fun_lib('func_num_args', ['_num', ptd::int_to_string(number), get_string(fun_name)]) . ';');
 			rep var arg_id (number) {
-				var type = get_type_to_c(func->args_type[arg_id]->type as :type, '');
+				var type = get_type_to_c(func->args_type[arg_id]->type, '');
 				var value = get_value_from_im(func->args_type[arg_id]->register->type, '(_tab[' . ptd::int_to_string(arg_id) . '])');
 				print(ref state, type . ' var' . ptd::int_to_string(arg_id) . ' = ' . value . ';' . string::lf());
 			}

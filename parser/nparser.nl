@@ -92,7 +92,7 @@ def parse_fun_arg_list(ref state : @nparser::state_t) : ptd::var({
 	eat(ref state, '(');
 	var ret : ptd::arr(@nast::fun_def_arg_t) = [];
 	while (!ntokenizer::next_is(ref state->state, ')')) {
-		var el : @nast::fun_def_arg_t = {mod => :none, type => :none, name => '', tct_type => :none};
+		var el : @nast::fun_def_arg_t = {mod => :none, type => :none, name => '', tct_type => :tct_im};
 		el->mod = :ref if try_eat(ref state, 'ref');
 		if (ntokenizer::is_type(ref state->state, :word)) {
 			el->name = ntokenizer::eat_type(ref state->state, :word);
@@ -522,7 +522,7 @@ def parse_variant_decl(ref state : @nparser::state_t) : @nast::variant_decl_t {
 
 def parse_var_decl(ref state : @nparser::state_t) : ptd::var({ok => @nast::variable_declaration_t, err => ptd::string()}) {
 	eat(ref state, 'var');
-	var ret : @nast::variable_declaration_t = {name => '', type => :none, tct_type => :none, value => :none};
+	var ret : @nast::variable_declaration_t = {name => '', type => :none, tct_type => :tct_im, value => :none};
 	if (ntokenizer::is_type(ref state->state, :word)) {
 		ret->name = ntokenizer::eat_type(ref state->state, :word);
 	} else {
@@ -532,7 +532,7 @@ def parse_var_decl(ref state : @nparser::state_t) : ptd::var({ok => @nast::varia
 		try var tmp = parse_type(ref state);
 		ret->type = :type(tmp);
 		try var tct_type = ptd_parser::try_value_to_ptd(tmp);
-		ret->tct_type = :type(tct_type);
+		ret->tct_type = tct_type;
 	}
 	if (try_eat(ref state, '=')) {
 		try var tmp = parse_expr(ref state);
@@ -543,7 +543,7 @@ def parse_var_decl(ref state : @nparser::state_t) : ptd::var({ok => @nast::varia
 
 def parse_var_decl_sim(ref state : @nparser::state_t) : @nast::variable_declaration_t {
 	eat(ref state, 'var');
-	var ret = {name => '', type => :none, tct_type => :none, value => :none};
+	var ret = {name => '', type => :none, tct_type => :tct_im, value => :none};
 	if (ntokenizer::is_type(ref state->state, :word)) {
 		ret->name = ntokenizer::eat_type(ref state->state, :word);
 	} else {
@@ -554,7 +554,7 @@ def parse_var_decl_sim(ref state : @nparser::state_t) : @nast::variable_declarat
 
 def parse_ref_var_decl_sim(ref state : @nparser::state_t) : @nast::variable_declaration_t {
 	eat(ref state, 'ref');
-	var ret = {name => '', type => :none, tct_type => :none, value => :none};
+	var ret = {name => '', type => :none, tct_type => :tct_im, value => :none};
 	if (ntokenizer::is_type(ref state->state, :word)) {
 		ret->name = ntokenizer::eat_type(ref state->state, :word);
 	} else {
