@@ -21,14 +21,13 @@ use post_processing_t;
 use tc_types;
 use type_checker;
 use module_checker;
-use interpreter;
-use nl;
 use compiler_lib;
 use profile;
 use nsystem;
 use string_utils;
 use reference_generator;
 use tct;
+use interpreter_wrapper;
 
 def get_dir_cache_name() : ptd::string() {
 	return 'cache_nl';
@@ -141,7 +140,7 @@ def compiler::compile(cmd_args : ptd::arr(ptd::string())) : ptd::int() {
 		compile_ide(opt_cli);
 		ret = 0;
 	} elsif (opt_cli->mode is :exec) {
-		ret = exec_interpreter(opt_cli);
+		ret = interpreter_wrapper::exec_interpreter(opt_cli->input_path);
 	} else {
 		die;
 	}
@@ -164,56 +163,6 @@ def get_profile_file_name(dir) {
 	var msec = string_utils::int2str(time[1] / 1000, 3);
 	return path . 'prof_' . date[5] . '' . date[4] . '' . date[3] . '_' . date[2] . date[1] . date[0] . msec . '_' . pid 
 		. '.txt';
-}
-
-def get_known_func() : ptd::hash(@interpreter::known_exec_func_t) {
-	var ret = {};
-	hash::set_value(ref ret, 'nl::print', {func => @nl::print, type => :sequential, args => [ptd::string()], return => :no});
-	return ret;
-}
-
-def exec_interpreter(input : @compiler::input_type) : ptd::int() {
-	var asts = {};
-	var errors : @compiler::errors_group_t = {
-			module_errors => {},
-			module_warnings => {},
-			type_errors => {},
-			type_warnings => {},
-			loop_error => :ok
-		};
-	var error_file = 0;
-	var nianio_files = get_files_to_parse(input);
-	forh var module, var paths (nianio_files) {
-		match (parse_module(module, paths->src, ref errors)) case :ok(var ast) {
-			hash::set_value(ref asts, module, ast);
-		} case :err(var m) {
-			++error_file;
-		}
-	}
-	if (error_file != 0) {
-		show_and_count_errors(errors, input, {});
-		return 1;
-	}
-	check_modules(ref asts, ref errors, input->deref, input->check_public_fun);
-	if (show_and_count_errors(errors, input, {}) > 0) {
-		return 1;
-	}
-	var const_state = post_processing::init({}, input->optimization);
-	var modules = translate(asts, asts, ref const_state);
-	var modules_arr = [];
-	var main_mod = '';
-	forh var key, var val (modules) {
-		fora var fun (val->functions) {
-			if (fun->name eq 'main') {
-				main_mod = key;
-			}
-		}
-		array::push(ref modules_arr, val);
-	}
-	var interpreter_state = interpreter::init(modules_arr, get_known_func());
-	ensure interpreter::start(ref interpreter_state, 'main', main_mod);
-	ensure interpreter::exec_all_code(interpreter_state);
-	return 0;
 }
 
 def get_module_name(path : ptd::string()) : ptd::string() {
@@ -329,7 +278,7 @@ def parse_module(module : ptd::string(), src : ptd::string(), ref errors : @comp
 	}) {
 	c_fe_lib::print('processing ' . module . '...');
 	try var file = ptd::ensure(ptd::var({ok => ptd::string(), err => ptd::string()}), c_fe_lib::file_to_string(src));
-	var retpar = nparser::sparse(file, module);
+	var retpar = nparser::sparse(file, module, true);
 	match (retpar) case :ok(var ast) {
 		var r = {};
 		var ret = module_checker::check_module(ast, false, ref r);

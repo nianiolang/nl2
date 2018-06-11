@@ -20,7 +20,7 @@ def string_compiler::compile(program : ptd::string(), module_name : ptd::string(
 		ok => @nlasm::result_t,
 		err => @compiler_lib::errors_t,
 	}) {
-	var retpar = nparser::sparse(program, module_name);
+	var retpar = nparser::sparse(program, module_name, true);
 	match (retpar) case :ok(var ast) {
 		var errors = [];
 		var r = {};
@@ -73,7 +73,7 @@ def string_compiler::parse_module(modules : @string_compiler::modules_t) : ptd::
 	var errors = [];
 	var asts = {};
 	forh var key, var data (modules) {
-		match (nparser::sparse(data->code, data->module_name)) case :ok(var ast) {
+		match (nparser::sparse(data->code, data->module_name, true)) case :ok(var ast) {
 			var r = {};
 			var ret = module_checker::check_module(ast, false, ref r);
 			fora var a (ret->errors){
@@ -123,7 +123,7 @@ def string_compiler::compile_to_nlasm(modules : ptd::hash(ptd::string())) : ptd:
 	var errors = [];
 	var asts = {};
 	forh var module_name, var code (modules) {
-		match (nparser::sparse(code, module_name)) case :ok(var ast) {
+		match (nparser::sparse(code, module_name, true)) case :ok(var ast) {
 			var r = {};	
 			var ret = module_checker::check_module(ast, false, ref r);
 			array::append(ref errors, ret->errors);

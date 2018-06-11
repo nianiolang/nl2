@@ -24,7 +24,12 @@ def nparser::parse_ret_t() {
 }
 
 def nparser::state_t() {
-	return ptd::rec({state => @ntokenizer::state_t, errors => @compiler_lib::errors_t, module_name => ptd::string()});
+	return ptd::rec({
+		state => @ntokenizer::state_t,
+		errors => @compiler_lib::errors_t,
+		module_name => ptd::string(),
+		parse_types => ptd::bool(),
+	});
 }
 
 def nparser::try_value_t() {
@@ -35,11 +40,11 @@ def nparser::try_cmd_t() {
 	return ptd::var({ok => @nast::cmd_t, err => ptd::string()});
 }
 
-def nparser::sparse(s : ptd::string(), module_name : ptd::string()) : ptd::var({
+def nparser::sparse(s : ptd::string(), module_name : ptd::string(), parse_types : ptd::bool()) : ptd::var({
 		ok => @nast::module_t,
 		error => @compiler_lib::errors_t
 	}) {
-	var state = {errors => [], state => ntokenizer::init(s), module_name => module_name};
+	var state = {errors => [], state => ntokenizer::init(s), module_name => module_name, parse_types => parse_types};
 	var ret = parse_module(ref state, module_name);
 	return :error(state->errors) if array::len(state->errors) > 0;
 	return :ok(ret);
@@ -531,8 +536,10 @@ def parse_var_decl(ref state : @nparser::state_t) : ptd::var({ok => @nast::varia
 	if (try_eat(ref state, ':')) {
 		try var tmp = parse_type(ref state);
 		ret->type = :type(tmp);
-		try var tct_type = ptd_parser::try_value_to_ptd(tmp);
-		ret->tct_type = tct_type;
+		if (state->parse_types) {
+			try var tct_type = ptd_parser::try_value_to_ptd(tmp);
+			ret->tct_type = tct_type;
+		}
 	}
 	if (try_eat(ref state, '=')) {
 		try var tmp = parse_expr(ref state);

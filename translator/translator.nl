@@ -908,12 +908,14 @@ def release_hash_index(current_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t,
 	print(ref state, :release_hash_index({current_owner => current_owner, old_owner => old_owner, index => index}));
 }
 def use_variant(new_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, label : ptd::string(), ref state : @translator::state_t) : ptd::void() {
-	var label_no = get_label_number(ref state, old_owner->type as :variant, label);
+	var label_no = -1;
+	label_no = get_label_number(ref state, old_owner->type as :variant, label) if old_owner->type is :variant;
 	print(ref state, :use_variant({new_owner => new_owner, old_owner => old_owner, label => label, label_no => label_no}));
 }
 
 def release_variant(current_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, label : ptd::string(),  ref state : @translator::state_t) : ptd::void() {
-	var label_no = get_label_number(ref state, old_owner->type as :variant, label);
+	var label_no = -1;
+	label_no = get_label_number(ref state, old_owner->type as :variant, label) if old_owner->type is :variant;
 	print(ref state, :release_variant({current_owner => current_owner, old_owner => old_owner, label => label, label_no => label_no}));
 }
 

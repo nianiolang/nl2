@@ -81,3 +81,7 @@ main: main.nl
 
 main_exe: main.nl
 	gcc ${CFLAGS} -o main main_c.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
+
+nls:
+	./$(OUT) nls/ --strict --c --o nls/cache_nl/
+	gcc -o nls/nls nls/nls.c nls/cache_nl/*.c nls/native_lib_c/* -Inls/cache_nl -Inls/native_lib_c -lm

@@ -231,7 +231,7 @@ def create_own_convertions_module(own_conv : ptd::hash(@tct::meta_type), known_t
 	forh var name, var body (own_conv_defs) {
 		new_code .= body . string::lf();
 	}
-	match (nparser::sparse(new_code, moudule_name)) case :error(var e) {
+	match (nparser::sparse(new_code, moudule_name, true)) case :error(var e) {
 		die;
 	} case :ok(var new_module) {
 		return new_module;
