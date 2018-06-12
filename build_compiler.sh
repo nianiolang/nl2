@@ -19,7 +19,8 @@ gcc -std=c99 -O0 -ggdb -o b.exe tmp/b/*.c native_lib_c/*.c mk_cache.c -Itmp/b -I
 
 cp nl_mk_cache.pl tmp/nl_mk_cache.pl
 
-cp -r ./native_lib_c/ bin/native_lib_c/
+rm -r bin/native_lib_c
+cp -r ./native_lib_c/ bin/native_lib_c
 mv tmp/b/* bin/nianio_lang_c/
 cp mk_cache.c bin/mk_cache.c
 rm -r tmp

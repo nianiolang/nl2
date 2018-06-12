@@ -16,7 +16,6 @@ use nlasm;
 use interpreter;
 use nl;
 use compiler_lib;
-use tct;
 
 def interpreter_wrapper::errors_hash_t() {
 	return ptd::hash(ptd::arr(@compiler_lib::error_t));
@@ -64,7 +63,7 @@ def interpreter_wrapper::exec_interpreter(input_path : ptd::arr(ptd::string())) 
 		show_and_count_errors(errors, {});
 		return 1;
 	}
-	var modules = translate(asts, asts);
+	var modules = translate(asts);
 	var modules_arr = [];
 	var main_mod = '';
 	forh var key, var val (modules) {
@@ -183,8 +182,7 @@ def show_and_count_errors(all_errors : @interpreter_wrapper::errors_group_t, nia
 	return num_errors;
 }
 
-def translate(asts_to_translate : ptd::hash(@nast::module_t), asts_all : ptd::hash(@nast::module_t))
-		: ptd::hash(@nlasm::result_t) {
+def translate(asts_to_translate : ptd::hash(@nast::module_t)) : ptd::hash(@nlasm::result_t) {
 	var nlasm = {};
 	forh var module, var ast (asts_to_translate) {
 		var nla_asm = translator::translate(ast, {});
