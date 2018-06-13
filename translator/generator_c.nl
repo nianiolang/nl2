@@ -913,7 +913,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			}
 		}
 	} case :prt_lbl(var l) {
-		print(ref state, 'label_' . ptd::int_to_string(l) . ':' . string::lf());
+		print(ref state, 'label_' . ptd::int_to_string(l) . ':' . string::lf() . ';' . string::lf());
 		return;
 	} case :if_goto(var ifgoto) {
 		print(ref state, 'if(');

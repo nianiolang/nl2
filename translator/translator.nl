@@ -117,7 +117,19 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	}
 	state->result->ret_type = function->ret_type->tct_type;
 	print_cmd(function->cmd, ref state);
-	print_return({debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end}, value => :nop, type => :tct_empty}, ref state);
+	var default_return = {
+		debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end},
+		value => :nop,
+		type => :tct_empty
+	};
+	match (function->ret_type->type) case :type(var type) {
+		var ret_type = unwrap_ref(function->ret_type->tct_type, state->logic->defined_types);
+		if (ret_type is :tct_void) {
+			print_return(default_return, ref state);
+		}
+	} case :none {
+		print_return(default_return, ref state);
+	}
 }
 
 def print_array_declaration(arr : ptd::arr(@nast::value_t), destination : @nlasm::reg_t, ref state : 
