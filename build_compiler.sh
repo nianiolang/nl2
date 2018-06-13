@@ -23,6 +23,7 @@ rm -r bin/native_lib_c
 cp -r ./native_lib_c/ bin/native_lib_c
 mv tmp/b/* bin/nianio_lang_c/
 cp mk_cache.c bin/mk_cache.c
+cp b.exe bin/mk_cache.exe
 rm -r tmp
 rm ./a.exe ./b.exe
 

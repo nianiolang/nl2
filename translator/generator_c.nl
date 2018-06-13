@@ -445,16 +445,16 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 			rep var arg_id (number) {
 				var type = get_type_to_c(func->args_type[arg_id]->type, '');
 				var value = get_value_from_im(func->args_type[arg_id]->register->type, '(_tab[' . ptd::int_to_string(arg_id) . '])');
-				print(ref state, type . ' var' . ptd::int_to_string(arg_id) . ' = ' . value . ';' . string::lf());
+				print(ref state, type . ' *var' . ptd::int_to_string(arg_id) . ' = &' . value . ';' . string::lf());
 			}
 			print(ref state, 'return ' . fun_name . '(');
 			rep var arg_id (number) {
 				print(ref state, ', ') if (arg_id > 0);
 				var ref_mark;
 				match (func->args_type[arg_id]->by) case :ref {
-					ref_mark = '&';
-				} case :val {
 					ref_mark = '';
+				} case :val {
+					ref_mark = '*';
 				}
 				print (ref state, ref_mark . 'var' . ptd::int_to_string(arg_id));
 			}

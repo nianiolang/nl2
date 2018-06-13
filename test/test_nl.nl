@@ -26,16 +26,8 @@ def p(arg) {
 }
 
 def test_nl::test() {
-	test_nl::test_compile_and_run();
-}
-
-def test_nl::test_only_compile() {
-	#TODO remove when all test run correctly
 	p('function');
 	test_fun::test();
-}
-
-def test_nl::test_compile_and_run() {
 	p('op');
 	test_op::test();
 	p('pub');
