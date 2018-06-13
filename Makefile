@@ -11,7 +11,7 @@ OUT=mk_cache.exe
 BINEXEC=./bin/mk_cache.exe
 CACHEDIR=cache_nl
 CACHETEST=cache_test
-CFLAGS=-std=c99 -O0 -ggdb
+CFLAGS=-std=c99 -O0 -ggdb -Werror
 LINKS=-lm
 
 NLDIR=ast checker compiler nianio_lib parser pretty_printer translator compiler_base
