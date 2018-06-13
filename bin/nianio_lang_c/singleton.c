@@ -17,8 +17,8 @@ ImmT singleton_priv0__const__sing(int __nr);
 
 ImmT  singleton0sigleton_do_not_use_without_approval0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "singleton0sigleton_do_not_use_without_approval");
-ImmT  var0 = (_tab[0]);
-return singleton0sigleton_do_not_use_without_approval(var0);
+ImmT  *var0 = &(_tab[0]);
+return singleton0sigleton_do_not_use_without_approval(*var0);
 }
 ImmT  singleton0sigleton_do_not_use_without_approval(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

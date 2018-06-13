@@ -1112,7 +1112,6 @@ ImmT c_rt_lib0array_pop(ImmT *___ref___arrI) {
 	return NULL;
 }
 
-/* TODO remove */
 ImmT c_rt_lib0int_new(INT i) {
 	if(i==0){
 		inc_ref(_int_0);

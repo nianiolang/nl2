@@ -19,9 +19,9 @@ ImmT enum_priv0__const__sing(int __nr);
 
 bool enum0eq0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "enum0eq");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return enum0eq(var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return enum0eq(*var0, *var1);
 }
 bool enum0eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -51,12 +51,9 @@ ___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__5);
 c_rt_lib0clear(&___nl__im__5);
 #line 10
 label_3:
+;
 #line 10
 //clear ___nl__bool__3;
-#line 10
-c_rt_lib0clear(&___nl__im__4);
-#line 10
-c_rt_lib0clear(&___nl__im__5);
 #line 10
 ___nl__bool__2 = !___nl__bool__2;
 #line 10
@@ -69,16 +66,12 @@ nl_die_arg(___nl__im__6);
 goto label_1;
 #line 10
 label_2:
+;
 #line 10
 label_1:
+;
 #line 10
 //clear ___nl__bool__2;
-#line 10
-//clear ___nl__bool__3;
-#line 10
-c_rt_lib0clear(&___nl__im__4);
-#line 10
-c_rt_lib0clear(&___nl__im__5);
 #line 10
 c_rt_lib0clear(&___nl__im__6);
 #line 11
@@ -96,43 +89,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 11
 c_rt_lib0clear(&___nl__im__1);
 #line 11
-//clear ___nl__bool__2;
-#line 11
-//clear ___nl__bool__3;
-#line 11
-c_rt_lib0clear(&___nl__im__4);
-#line 11
-c_rt_lib0clear(&___nl__im__5);
-#line 11
-c_rt_lib0clear(&___nl__im__6);
-#line 11
-c_rt_lib0clear(&___nl__im__8);
-#line 11
-c_rt_lib0clear(&___nl__im__9);
-#line 11
 return ___nl__bool__7;
-#line 11
-c_rt_lib0clear(&___nl__im__0);
-#line 11
-c_rt_lib0clear(&___nl__im__1);
-#line 11
-//clear ___nl__bool__2;
-#line 11
-//clear ___nl__bool__3;
-#line 11
-c_rt_lib0clear(&___nl__im__4);
-#line 11
-c_rt_lib0clear(&___nl__im__5);
-#line 11
-c_rt_lib0clear(&___nl__im__6);
-#line 11
-//clear ___nl__bool__7;
-#line 11
-c_rt_lib0clear(&___nl__im__8);
-#line 11
-c_rt_lib0clear(&___nl__im__9);
-#line 11
-return NULL;
 }
 
 

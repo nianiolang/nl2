@@ -22,8 +22,9 @@ arr->size = 0;
 if (arr->size+1 == arr->capacity) {
 arr->value = realloc_mem(arr->value, arr->capacity*sizeof(ImmT ), arr->capacity*2*sizeof(ImmT ));
 arr->capacity *= 2;
-}
-arr->value[arr->size++] = arg;
+} 
+arr->value[arr->size] = NULL;
+c_rt_lib0copy(&(arr->value[arr->size++]), arg);
 }
 ImmT  *own_array0anon_type00ownarranon_type00im0get_ptr(anon_type00ownarranon_type00im *arr, INT index) {
 if (index < 0 || index >= arr->size) {
@@ -40,7 +41,6 @@ for (unsigned int i = 0; i < arr.size; i++) {
 	;
 }
 free_mem(arr.value, sizeof(ImmT )*arr.capacity);
-arr.value = NULL;
 }
 void own_array0anon_type00ownarranon_type00im0free(anon_type00ownarranon_type00im *arr) {
 own_array0anon_type00ownarranon_type00im0clean(*arr);

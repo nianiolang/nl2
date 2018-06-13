@@ -69,8 +69,8 @@ return NULL;
 
 ImmT  nsystem0localtime0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nsystem0localtime");
-ImmT  var0 = (_tab[0]);
-return nsystem0localtime(var0);
+ImmT  *var0 = &(_tab[0]);
+return nsystem0localtime(*var0);
 }
 ImmT  nsystem0localtime(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

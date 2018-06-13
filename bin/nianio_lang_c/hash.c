@@ -18,9 +18,9 @@ ImmT hash_priv0__const__sing(int __nr);
 
 ImmT  hash0get_value0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0get_value");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return hash0get_value(var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return hash0get_value(*var0, *var1);
 }
 ImmT  hash0get_value(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -47,9 +47,9 @@ return NULL;
 
 bool  hash0has_key0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0has_key");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return hash0has_key(var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return hash0has_key(*var0, *var1);
 }
 bool  hash0has_key(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -76,10 +76,10 @@ return false;
 
 ImmT  hash0set_value0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 3, "hash0set_value");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-ImmT  var2 = (_tab[2]);
-return hash0set_value(&var0, var1, var2);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+ImmT  *var2 = &(_tab[2]);
+return hash0set_value(var0, *var1, *var2);
 }
 ImmT  hash0set_value(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -97,9 +97,9 @@ return NULL;
 
 ImmT  hash0delete0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0delete");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return hash0delete(&var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return hash0delete(var0, *var1);
 }
 ImmT  hash0delete(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -114,8 +114,8 @@ return NULL;
 
 INT  hash0size0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0size");
-ImmT  var0 = (_tab[0]);
-return hash0size(var0);
+ImmT  *var0 = &(_tab[0]);
+return hash0size(*var0);
 }
 INT  hash0size(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -137,8 +137,8 @@ return 0;
 
 ImmT  hash0keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0keys");
-ImmT  var0 = (_tab[0]);
-return hash0keys(var0);
+ImmT  *var0 = &(_tab[0]);
+return hash0keys(*var0);
 }
 ImmT  hash0keys(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -154,6 +154,7 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0array_mk(0));
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__0));
 #line 30
 label_3:
+;
 #line 30
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 30
@@ -166,12 +167,14 @@ c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__2)
 c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__2));
 #line 31
 label_2:
+;
 #line 32
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 32
 goto label_3;
 #line 32
 label_1:
+;
 #line 33
 c_rt_lib0clear(&___nl__im__0);
 #line 33
@@ -202,8 +205,8 @@ return NULL;
 
 ImmT  hash0values0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0values");
-ImmT  var0 = (_tab[0]);
-return hash0values(var0);
+ImmT  *var0 = &(_tab[0]);
+return hash0values(*var0);
 }
 ImmT  hash0values(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -219,6 +222,7 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0array_mk(0));
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__0));
 #line 38
 label_3:
+;
 #line 38
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 38
@@ -231,12 +235,14 @@ c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__2)
 c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__4));
 #line 39
 label_2:
+;
 #line 40
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 40
 goto label_3;
 #line 40
 label_1:
+;
 #line 41
 c_rt_lib0clear(&___nl__im__0);
 #line 41
@@ -267,9 +273,9 @@ return NULL;
 
 ImmT  hash0merge0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0merge");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return hash0merge(var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return hash0merge(*var0, *var1);
 }
 ImmT  hash0merge(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -298,9 +304,9 @@ return NULL;
 
 ImmT  hash0add_all0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0add_all");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-return hash0add_all(&var0, var1);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return hash0add_all(var0, *var1);
 }
 ImmT  hash0add_all(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -313,6 +319,7 @@ ImmT  ___nl__im__5 = NULL;
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__1));
 #line 51
 label_3:
+;
 #line 51
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 51
@@ -325,12 +332,14 @@ c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__1, ___nl__im__2)
 c_rt_lib0delete(hash0set_value(___ref___im__0, ___nl__im__2, ___nl__im__4));
 #line 51
 label_2:
+;
 #line 51
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 51
 goto label_3;
 #line 51
 label_1:
+;
 #line 51
 c_rt_lib0clear(&___nl__im__1);
 #line 51
@@ -347,11 +356,11 @@ return NULL;
 
 ImmT  hash0set2keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 4, "hash0set2keys");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-ImmT  var2 = (_tab[2]);
-ImmT  var3 = (_tab[3]);
-return hash0set2keys(&var0, var1, var2, var3);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+ImmT  *var2 = &(_tab[2]);
+ImmT  *var3 = &(_tab[3]);
+return hash0set2keys(var0, *var1, *var2, *var3);
 }
 ImmT  hash0set2keys(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -372,10 +381,12 @@ c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_mk(0));
 goto label_1;
 #line 55
 label_2:
+;
 #line 55
 c_rt_lib0move(&___nl__im__4, hash0get_value((*___ref___im__0), ___nl__im__1));
 #line 55
 label_1:
+;
 #line 55
 //clear ___nl__bool__5;
 #line 56
@@ -401,21 +412,15 @@ c_rt_lib0clear(&___nl__im__3);
 #line 58
 c_rt_lib0clear(&___nl__im__4);
 #line 58
-//clear ___nl__bool__5;
-#line 58
-//clear ___nl__int__6;
-#line 58
-c_rt_lib0clear(&___nl__im__7);
-#line 58
 return NULL;
 }
 
 ImmT  hash0has2keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 3, "hash0has2keys");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-ImmT  var2 = (_tab[2]);
-return hash0has2keys(var0, var1, var2);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+ImmT  *var2 = &(_tab[2]);
+return hash0has2keys(*var0, *var1, *var2);
 }
 ImmT  hash0has2keys(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -440,10 +445,9 @@ ___nl__bool__3 = hash0has_key(___nl__im__5, ___nl__im__2);
 c_rt_lib0clear(&___nl__im__5);
 #line 62
 label_1:
+;
 #line 62
 //clear ___nl__bool__4;
-#line 62
-c_rt_lib0clear(&___nl__im__5);
 #line 62
 c_rt_lib0move(&___nl__im__6, c_rt_lib0bool_to_nl_native(___nl__bool__3));
 #line 62
@@ -455,10 +459,6 @@ c_rt_lib0clear(&___nl__im__2);
 #line 62
 //clear ___nl__bool__3;
 #line 62
-//clear ___nl__bool__4;
-#line 62
-c_rt_lib0clear(&___nl__im__5);
-#line 62
 return ___nl__im__6;
 #line 62
 c_rt_lib0clear(&___nl__im__0);
@@ -469,10 +469,6 @@ c_rt_lib0clear(&___nl__im__2);
 #line 62
 //clear ___nl__bool__3;
 #line 62
-//clear ___nl__bool__4;
-#line 62
-c_rt_lib0clear(&___nl__im__5);
-#line 62
 c_rt_lib0clear(&___nl__im__6);
 #line 62
 return NULL;
@@ -480,10 +476,10 @@ return NULL;
 
 ImmT  hash0get2keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 3, "hash0get2keys");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-ImmT  var2 = (_tab[2]);
-return hash0get2keys(var0, var1, var2);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+ImmT  *var2 = &(_tab[2]);
+return hash0get2keys(*var0, *var1, *var2);
 }
 ImmT  hash0get2keys(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -505,8 +501,6 @@ c_rt_lib0clear(&___nl__im__1);
 #line 66
 c_rt_lib0clear(&___nl__im__2);
 #line 66
-c_rt_lib0clear(&___nl__im__4);
-#line 66
 return ___nl__im__3;
 #line 66
 c_rt_lib0clear(&___nl__im__0);
@@ -517,19 +511,17 @@ c_rt_lib0clear(&___nl__im__2);
 #line 66
 c_rt_lib0clear(&___nl__im__3);
 #line 66
-c_rt_lib0clear(&___nl__im__4);
-#line 66
 return NULL;
 }
 
 ImmT  hash0set3keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 5, "hash0set3keys");
-ImmT  var0 = (_tab[0]);
-ImmT  var1 = (_tab[1]);
-ImmT  var2 = (_tab[2]);
-ImmT  var3 = (_tab[3]);
-ImmT  var4 = (_tab[4]);
-return hash0set3keys(&var0, var1, var2, var3, var4);
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+ImmT  *var2 = &(_tab[2]);
+ImmT  *var3 = &(_tab[3]);
+ImmT  *var4 = &(_tab[4]);
+return hash0set3keys(var0, *var1, *var2, *var3, *var4);
 }
 ImmT  hash0set3keys(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3,ImmT  ___nl__im__4) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -551,10 +543,12 @@ c_rt_lib0move(&___nl__im__5, c_rt_lib0hash_mk(0));
 goto label_1;
 #line 70
 label_2:
+;
 #line 70
 c_rt_lib0move(&___nl__im__5, hash0get_value((*___ref___im__0), ___nl__im__1));
 #line 70
 label_1:
+;
 #line 70
 //clear ___nl__bool__6;
 #line 71
@@ -581,12 +575,6 @@ c_rt_lib0clear(&___nl__im__3);
 c_rt_lib0clear(&___nl__im__4);
 #line 73
 c_rt_lib0clear(&___nl__im__5);
-#line 73
-//clear ___nl__bool__6;
-#line 73
-//clear ___nl__int__7;
-#line 73
-c_rt_lib0clear(&___nl__im__8);
 #line 73
 return NULL;
 }
