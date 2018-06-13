@@ -170,7 +170,7 @@ def type_checker::check_modules(ref modules : ptd::hash(@nast::module_t), lib_mo
 		var own_conv : ptd::hash(@tct::meta_type) = {};
 		fora var func (ast->fun_def) {
 			match (func->defines_type) case :yes(var type) {
-				if (tct::is_own_type(type, {})) {
+				if (tct::is_own_type(type, known_types)) {
 					var ref_type : @tct::meta_type = :tct_ref(module_name . '::' . func->name);
 					hash::set_value(ref own_conv, own_to_im_converter::get_function_name(ref_type, known_types), ref_type);
 				}
@@ -234,6 +234,12 @@ def create_own_convertions_module(own_conv : ptd::hash(@tct::meta_type), known_t
 	match (nparser::sparse(new_code, moudule_name, true)) case :error(var e) {
 		die;
 	} case :ok(var new_module) {
+		var errors : @tc_types::errors_t = {errors => [], warnings => [], current_line => -1, module => ''};
+		rep var i (array::len(new_module->fun_def)) {
+			var tct_type = type_to_ptd(new_module->fun_def[i]->args[0]->type, ref errors);
+			new_module->fun_def[i]->args[0]->tct_type = tct_type;
+		}
+		die if !array::is_empty(errors->errors);
 		return new_module;
 	}
 }
@@ -2403,6 +2409,7 @@ def fill_fun_val_type(ref fun_val : @nast::value_t, vars : @tc_types::vars_t, mo
 		}
 		arg_type_var = :ref;
 		as_fun->args[0]->mod = arg_type_var;
+		as_fun->args[0]->expected_type = type;
 		var name : ptd::string() = own_to_im_converter::get_function_name(type, known_types);
 		if (type is :tct_ref) {
 			var ix = string::index2(name, '::');

@@ -212,6 +212,7 @@ def translator::ref_rec_args_t() {
 def print_fun_val(fun_val : @nast::fun_val_t, destination : @nlasm::reg_t, type : @tct::meta_type, ref state : @translator::state_t) {
 	var args : ptd::arr(ptd::var({val => @nlasm::reg_t, ref => @nlasm::reg_t})) = [];
 	var lvalues : ptd::hash(@translator::lvalue_values_t) = {};
+	var casts : ptd::hash(ptd::rec({original => @nlasm::reg_t, casted => @nlasm::reg_t})) = {};
 	var ref_var = {};
 	var ref_was = {};
 	for(var i = array::len(fun_val->args) - 1; i >= 0; --i) {
@@ -232,9 +233,15 @@ def print_fun_val(fun_val : @nast::fun_val_t, destination : @nlasm::reg_t, type 
 		} case :ref {
 			if (hash::has_key(ref_var, ptd::int_to_string(i))) {
 				var lvalue = get_value_of_lvalue(fun_arg->val, true, ref state);
-				var arg = lvalue[array::len(lvalue) - 1] as :value;
-				array::push(ref args, :ref(arg));
-				hash::set_value(ref lvalues, ptd::int_to_string(i), lvalue);
+				var arg_src = lvalue[array::len(lvalue) - 1] as :value;
+				var expected_type = var_type_to_reg_type(fun_arg->expected_type,
+					state->logic->defined_types);
+				var arg_dst = get_cast(arg_src, expected_type, ref state);
+				array::push(ref args, :ref(arg_dst));
+				lvalues{ptd::int_to_string(i)} = lvalue;
+				if (!nlasm::eq_reg(arg_src, arg_dst)) {
+					casts{ptd::int_to_string(i)} = {original => arg_src, casted => arg_dst};
+				}
 			} else {
 				var arg = new_register(ref state, value_type_to_reg_type(fun_arg->val, ref state));
 				print_val(fun_arg->val, arg, ref state);
@@ -258,7 +265,11 @@ def print_fun_val(fun_val : @nast::fun_val_t, destination : @nlasm::reg_t, type 
 		print(ref state, :call({dest => destination, mod => fun_val->module, fun_name => fun_val->name, args => args}));
 	}
 	for(var i = array::len(registers) - 1; i >= 0; --i) {
-		continue unless hash::has_key(lvalues, ptd::int_to_string(i));
+		var i_str = ptd::int_to_string(i);
+		continue unless hash::has_key(lvalues, i_str);
+		if (hash::has_key(casts, i_str)) {
+			move(casts{i_str}->original, casts{i_str}->casted, ref state);
+		}
 		set_value_of_lvalue(hash::get_value(lvalues, ptd::int_to_string(i)), true, ref state);
 	}
 }
@@ -1410,7 +1421,12 @@ def get_cast(reg : @nlasm::reg_t, expected_type : @nlasm::reg_type, ref state : 
 	if (nlasm::eq_reg_type(reg->type, expected_type))  {
 		return reg;
 	}
-	var reg_after_cast = new_register(ref state, expected_type);
+	var reg_after_cast;
+	match (reg->access_type) case :value {
+		reg_after_cast = new_register(ref state, expected_type);
+	} case :reference {
+		reg_after_cast = new_reference_register(ref state, expected_type);
+	}
 	move(reg_after_cast, reg, ref state);
 	return reg_after_cast;
 }

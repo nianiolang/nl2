@@ -2,7 +2,7 @@
 # (c) Atinea Sp. z o.o.
 ###
 
-
+use ptd;
 use array;
 use enum;
 use nassert;
@@ -39,6 +39,10 @@ def test22(ref a, ref b) {
 	}
 }
 
+def inc(ref a : ptd::int()) {
+	a++;
+}
+
 def test_ref::total_test() {
 	var b1 = -1;
 	var b3 = {a => [0, 1, 2, -3, 4], b => [1, 2, 3, 8]};
@@ -63,5 +67,8 @@ def test_ref::total_test() {
 	if (enum::eq(aaa, :wariant1)) {
 		die;
 	}
+	var r : ptd::rec({ x => ptd::int() }) = { x => 1 };
+	inc(ref r->x);
+	nassert::a(r->x, 2);
 }
 
