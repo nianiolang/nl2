@@ -18,6 +18,7 @@ use dfile;
 use c_rt_lib;
 use c_std_lib;
 use profile_inter;
+use optional_libraries;
 
 def interpreter::stack_element_t() {
 	return ptd::rec({
@@ -942,6 +943,9 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'ptd::var', '');
 	hash::set_value(ref ret, 'ptd::ptd_im', '');
 	hash::set_value(ref ret, 'ptd::ensure', '');
+	hash::set_value(ref ret, 'c_olympic_io::print', '');
+	hash::set_value(ref ret, 'c_olympic_io::readln', '');
+	hash::set_value(ref ret, 'c_olympic_io::read_int', '');
 	return ret;
 }
 
@@ -1235,6 +1239,8 @@ def handle_compiler_call(call : @nlasm::call_t, key : ptd::string(), ref state :
 		call_result = handle_c_std_lib_call(key, ref ret_val, ref args);
 	} elsif (call->mod eq 'ptd') {
 		call_result = handle_ptd_call(key, ref ret_val, ref args);
+	} elsif (call->mod eq 'c_olympic_io') {
+		call_result = optional_libraries::c_olympic_io(key, ref ret_val, ref args);
 	} else {
 		die;
 	}

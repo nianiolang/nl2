@@ -13,6 +13,7 @@ files_min=(
 	'tct.nl'
 	'tc_types.nl'
 	'translator.nl'
+	'optional_libraries.nl'
 	'nls.c'
 )
 
@@ -27,4 +28,4 @@ cp -r native_lib_c nls/
 cp -r nianio_lib nls/
 
 ./mk_cache.exe nls/ --strict --c --o nls/cache_nl/
-gcc -o nls/nls nls/nls.c nls/cache_nl/* nls/native_lib_c/* -Inls/cache_nl -Inls/native_lib_c -lm
+gcc -o nls/nls nls/nls.c nls/cache_nl/*.c nls/native_lib_c/*.c -Inls/cache_nl -Inls/native_lib_c -lm
