@@ -20,6 +20,7 @@
 #include "c_rt_lib.h"
 #include "c_std_lib.h"
 #include "profile_inter.h"
+#include "optional_libraries.h"
 typedef ImmT  interpreter0known_exec_func_t0type;
 
 typedef ImmT  interpreter0stack_element_debug_t0type;

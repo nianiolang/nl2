@@ -1,0 +1,13 @@
+
+/* (c) Atinea Sp z o. o.
+ *  Stamp: nianio lang
+ */
+#pragma once
+#include "c_rt_lib.h"
+#include <stdbool.h>
+#include "ptd.h"
+#include "nl.h"
+#include "array.h"
+#include "c_olympic_io.h"
+ImmT  optional_libraries0c_olympic_io(ImmT  ___nl__im__0,ImmT * ___ref___im__1,ImmT * ___ref___im__2);
+ImmT  optional_libraries0c_olympic_io0ptr(int _num, ImmT *_tab);
