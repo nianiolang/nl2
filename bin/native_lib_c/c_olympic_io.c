@@ -11,6 +11,7 @@
 ImmT c_olympic_io0print(ImmT im) {
 	NlString *str = toStringIfImm(im);
 	printf("%s", str->s);
+	c_rt_lib0clear((ImmT*)&str);
 	return NULL;
 }
 
