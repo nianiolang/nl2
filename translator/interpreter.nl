@@ -261,6 +261,7 @@ def interpreter::exec_all_code(state : @interpreter::state_t) {
 		} case :running {
 			step(ref state);
 		} case :callback(var fun) {
+			return :err('function not found');
 		} case :finished(var f) {
 			return :ok(f);
 		}
