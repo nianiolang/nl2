@@ -740,8 +740,8 @@ c_rt_lib0string_new_to_memory("nie wywolano funkcji",___global_const__ + ___glob
 c_rt_lib0string_new_to_memory("brak funkcji ",___global_const__ + ___global_const_offset * 724);
 c_rt_lib0string_new_to_memory("niewlasciwa liczba argumentow: ",___global_const__ + ___global_const_offset * 725);
 c_rt_lib0string_new_to_memory(" zamiast: ",___global_const__ + ___global_const_offset * 726);
-c_rt_lib0string_new_to_memory("steps limit exceeded",___global_const__ + ___global_const_offset * 727);
-c_rt_lib0string_new_to_memory("function not found",___global_const__ + ___global_const_offset * 728);
+c_rt_lib0string_new_to_memory("function not found",___global_const__ + ___global_const_offset * 727);
+c_rt_lib0string_new_to_memory("steps limit exceeded",___global_const__ + ___global_const_offset * 728);
 c_rt_lib0string_new_to_memory("none_variant_do_not_use",___global_const__ + ___global_const_offset * 729);
 c_rt_lib0string_new_to_memory("declarations",___global_const__ + ___global_const_offset * 730);
 c_rt_lib0string_new_to_memory("incorrect command",___global_const__ + ___global_const_offset * 731);
