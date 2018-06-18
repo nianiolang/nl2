@@ -124,7 +124,7 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	};
 	match (function->ret_type->type) case :type(var type) {
 		var ret_type = unwrap_ref(function->ret_type->tct_type, state->logic->defined_types);
-		if (ret_type is :tct_void) {
+		if (ret_type is :tct_void || ret_type is :tct_im) {
 			print_return(default_return, ref state);
 		}
 	} case :none {
