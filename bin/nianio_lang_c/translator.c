@@ -1176,6 +1176,7 @@ ImmT  ___nl__im__65 = NULL;
 ImmT  ___nl__im__66 = NULL;
 ImmT * ___nl__im_ptr__67 = NULL;
 bool  ___nl__bool__68 = false;
+bool  ___nl__bool__69 = false;
 #line 107
 c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_const(265)));
 #line 107
@@ -1467,6 +1468,15 @@ c_rt_lib0clear(&___nl__im__63);
 c_rt_lib0clear(&___nl__im__65);
 #line 127
 ___nl__bool__68 = c_rt_lib0priv_is(___nl__im__62, ___get_global_const(8));
+#line 127
+if(___nl__bool__68){ goto label_12;}
+#line 127
+___nl__bool__68 = c_rt_lib0priv_is(___nl__im__62, ___get_global_const(0));
+#line 127
+label_12:
+;
+#line 127
+//clear ___nl__bool__69;
 #line 127
 ___nl__bool__68 = !___nl__bool__68;
 #line 127

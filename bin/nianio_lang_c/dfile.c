@@ -2421,6 +2421,10 @@ c_rt_lib0clear(&___nl__im__62);
 c_rt_lib0clear(&___nl__im__87);
 #line 202
 c_rt_lib0clear(&___nl__im__88);
+#line 202
+c_rt_lib0clear(&___nl__im__2);
+#line 202
+return NULL;
 }
 
 ImmT  dfile0sload0ptr(int _num, ImmT *_tab){
@@ -2457,6 +2461,16 @@ c_rt_lib0clear(&___nl__im__0);
 c_rt_lib0clear(&___nl__im__3);
 #line 207
 return ___nl__im__1;
+#line 207
+c_rt_lib0clear(&___nl__im__0);
+#line 207
+c_rt_lib0clear(&___nl__im__1);
+#line 207
+//clear ___nl__bool__2;
+#line 207
+c_rt_lib0clear(&___nl__im__3);
+#line 207
+return NULL;
 }
 
 ImmT  dfile0try_sload0ptr(int _num, ImmT *_tab){
