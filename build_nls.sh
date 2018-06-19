@@ -40,7 +40,7 @@ done
 cp -r native_lib_c nls/
 cp -r nianio_lib nls/
 
-if [ !$olympic_io ]
+if [ $olympic_io = false ]
 then
 	rm nls/native_lib_c/c_olympic_io.*
 	rm nls/nianio_lib/console.nl
