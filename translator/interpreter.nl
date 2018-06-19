@@ -198,7 +198,7 @@ def interpreter::start_args(ref state : @interpreter::state_t, main_fun : ptd::s
 	}
 	var func = hash::get_value(state->functions, key);
 	if (array::len(func->args_type) != array::len(func_args)) {
-		return :err('niewlasciwa liczba argumentow: ' . ptd::int_to_string(array::len(func_args)) . ' zamiast: ' . 
+		return :err('niewlasciwa liczba argumentow w funkcji ' . func->name . ': ' . ptd::int_to_string(array::len(func_args)) . ' zamiast: ' . 
 			ptd::int_to_string(array::len(func->args_type)));
 	}
 	state->profile = [];
@@ -947,6 +947,20 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'c_olympic_io::print', '');
 	hash::set_value(ref ret, 'c_olympic_io::readln', '');
 	hash::set_value(ref ret, 'c_olympic_io::read_int', '');
+	hash::set_value(ref ret, 'c_fe_lib::print', '');
+	hash::set_value(ref ret, 'c_fe_lib::file_to_string', '');
+	hash::set_value(ref ret, 'c_fe_lib::string_to_file', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_file_size', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_modif_time', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_module_files', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_module_files_rec', '');
+	hash::set_value(ref ret, 'c_fe_lib::mk_path', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_time', '');
+	hash::set_value(ref ret, 'c_fe_lib::get_pid', '');
+	hash::set_value(ref ret, 'c_fe_lib::time', '');
+	hash::set_value(ref ret, 'c_fe_lib::localtime', '');
+	hash::set_value(ref ret, 'c_fe_lib::sleep', '');
+	hash::set_value(ref ret, 'c_fe_lib::exec_cmd', '');
 	return ret;
 }
 
@@ -1242,6 +1256,8 @@ def handle_compiler_call(call : @nlasm::call_t, key : ptd::string(), ref state :
 		call_result = handle_ptd_call(key, ref ret_val, ref args);
 	} elsif (call->mod eq 'c_olympic_io') {
 		call_result = optional_libraries::c_olympic_io(key, ref ret_val, ref args);
+	} elsif (call->mod eq 'c_fe_lib') {
+		call_result = optional_libraries::c_fe_lib(key, ref ret_val, ref args);
 	} else {
 		die;
 	}

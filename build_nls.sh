@@ -14,18 +14,22 @@ files_min=(
 	'tc_types.nl'
 	'translator.nl'
 	'optional_libraries.nl'
-	'nls.c'
+	'nls_c.c'
+	'nls_nl.nl'
 )
 olympic_io=false
+fe_lib=false
 
 for arg in "$@"
 do
 	if [ "$arg" == "--olympic_io" ]
 	then
 		olympic_io=true
-	elif [[ "$arg" == --* ]]
+	elif [[ "$arg" == "--fe_lib" ]]
 	then
-		echo "Unexpected arg"
+		fe_lib=true
+	else
+		echo "Usage: $0 [--olympic_io] [--fe_lib]"
 		exit 1
 	fi
 done
@@ -47,6 +51,12 @@ then
 	sed -i '/c_olympic_io BEGIN/,/c_olympic_io END/d' nls/optional_libraries.nl
 	sed -i '/use c_olympic_io;/d' nls/optional_libraries.nl
 fi
+if [ $fe_lib = false ]
+then
+	rm nls/nls_nl.nl
+	sed -i '/c_fe_lib BEGIN/,/c_fe_lib END/d' nls/optional_libraries.nl
+	sed -i '/use c_fe_lib;/d' nls/optional_libraries.nl
+fi
 
 ./mk_cache.exe nls/ --strict --c --o nls/cache_nl/
-gcc -o nls/nls nls/nls.c nls/cache_nl/*.c nls/native_lib_c/*.c -Inls/cache_nl -Inls/native_lib_c -lm
+gcc -o nls/nls nls/nls_c.c nls/cache_nl/*.c nls/native_lib_c/*.c -Inls/cache_nl -Inls/native_lib_c -lm

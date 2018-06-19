@@ -1,6 +1,6 @@
 /*  
  *  (c) Atinea Sp. z o. o.
- *  Stamp: MZU 2013-06-27
+ *  Stamp: JJB 2018-06-19
 */
 
 #include <stdio.h>
