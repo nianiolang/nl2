@@ -569,9 +569,6 @@ def print_cmd(cmd : @nast::cmd_t, ref state : @translator::state_t) {
 }
 
 def print_loop_break(ref state : @translator::state_t, info : @translator::loop) {
-	#fora var reg (state->logic->registers) {
-	#	undef_reg(ptd::ensure(@nlasm::reg_t, reg), ref state);
-	#}
 	print(ref state, :goto(info->label));
 }
 
@@ -707,7 +704,9 @@ def print_loop(as_loop : @nast::cmd_t, ref state : @translator::state_t) {
 	var first_instruction_no = get_sim_label(ref state);
 	print_sim_label(first_instruction_no, ref state);
 	var loop_label = save_loop_break(ref state, after_loop_instruction_no, first_instruction_no);
+	var register_old = save_registers(ref state);
 	print_cmd(as_loop, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	start_new_instruction(as_loop->debug, ref state);
 	print(ref state, :goto(first_instruction_no));
 	print_sim_label(after_loop_instruction_no, ref state);
@@ -728,7 +727,9 @@ def print_rep(as_rep : @nast::rep_t, ref state : @translator::state_t) {
 	print_bin_op_operator_command(condition_register, iter_register, max_rep, '>=', ref state);
 	print_if_goto(after_rep_label, condition_register, ref state);
 	var loop_label = save_loop_break(ref state, after_rep_label, increase_index_label);
+	var register_old = save_registers(ref state);
 	print_cmd(as_rep->cmd, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	print_sim_label(increase_index_label, ref state);
 	start_new_instruction(translator::last_debug_char(as_rep->cmd->debug), ref state) unless as_rep->short;
 	print(ref state, :bin_op({dest => iter_register, left => iter_register, right => one_register, op => '+'}));
@@ -768,7 +769,9 @@ def print_ptd_forh(as_forh : @nast::forh_t, ref state : @translator::state_t) {
 	move(value_register, tmp_destination, ref state) if dest_cast_needed;
 
 	var loop_label = save_loop_break(ref state, after_forh_label, next_iterator_label);
+	var register_old = save_registers(ref state);
 	print_cmd(as_forh->cmd, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	print_sim_label(next_iterator_label, ref state);
 	start_new_instruction(translator::last_debug_char(forh_debug), ref state) unless as_forh->short;
 	print(ref state, :hash_next_iter({iter => keys_arr, hash => hash}));
@@ -797,7 +800,9 @@ def print_own_forh(as_forh : @nast::forh_t, ref state : @translator::state_t) {
 	use_hash_index(value_register, hash, key_register, false, ref state);
 
 	var loop_label = save_loop_break(ref state, after_forh_label, next_iterator_label);
+	var register_old = save_registers(ref state);
 	print_cmd(as_forh->cmd, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	release_hash_index(value_register, hash, key_register, ref state);
 	print_sim_label(next_iterator_label, ref state);
 	start_new_instruction(translator::last_debug_char(forh_debug), ref state) unless as_forh->short;
@@ -817,7 +822,9 @@ def print_while(as_while : @nast::while_t, ref state : @translator::state_t) {
 	print(ref state, :una_op({dest => condition, src => condition, op => '!'}));
 	print_if_goto(after_l, condition, ref state);
 	var loop_label = save_loop_break(ref state, after_l, condition_l);
+	var register_old = save_registers(ref state);
 	print_cmd(as_while->cmd, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	start_new_instruction(translator::last_debug_char(while_debug), ref state) unless as_while->short;
 	print(ref state, :goto(condition_l));
 	print_sim_label(after_l, ref state);
@@ -840,7 +847,9 @@ def print_for(as_for : @nast::for_t, ref state : @translator::state_t) {
 		print_if_goto(after_for_instruction_no, condition_register, ref state);
 	}
 	var loop_label = save_loop_break(ref state, after_for_instruction_no, increase_index_instruction_no);
+	var register_old = save_registers(ref state);
 	print_cmd(as_for->cmd, ref state);
+	restore_registers_only_clear(register_old, ref state);
 	print_sim_label(increase_index_instruction_no, ref state);
 	print_val(as_for->iter, {type => :im, reg_no => -1, access_type => :value}, ref state);
 	start_new_instruction(translator::last_debug_char(as_for->cmd->debug), ref state);
@@ -1406,6 +1415,12 @@ def undef_reg(reg : @nlasm::reg_t, ref state : @translator::state_t) {
 	match (reg->access_type) case :value {
 		print(ref state, :clear(reg)) if state->logic->register_to_clear[reg->reg_no];
 	} case :reference {
+	}
+}
+
+def restore_registers_only_clear(register_old : @translator::function_logic_t, ref state : @translator::state_t) {
+	for(var i = register_old->register; i < state->logic->register; ++i) {
+		undef_reg(state->logic->registers[i], ref state);
 	}
 }
 
