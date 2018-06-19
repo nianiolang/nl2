@@ -2122,6 +2122,8 @@ c_rt_lib0move(___ref___im__1, c_rt_lib0int_new(___nl__int__24));
 //clear ___nl__int__23;
 #line 127
 //clear ___nl__int__24;
+#line 127
+c_rt_lib0clear(&___nl__im__15);
 #line 128
 goto label_4;
 #line 128
@@ -3591,6 +3593,8 @@ c_rt_lib0clear(&___nl__im__116);
 c_rt_lib0clear(&___nl__im__128);
 #line 178
 c_rt_lib0clear(&___nl__im__129);
+#line 178
+c_rt_lib0clear(&___nl__im__34);
 #line 145
 goto label_12;
 #line 145

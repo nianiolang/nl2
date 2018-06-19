@@ -2121,6 +2121,32 @@ goto label_6;
 label_4:
 ;
 #line 218
+c_rt_lib0clear(&___nl__im__6);
+#line 218
+c_rt_lib0clear(&___nl__im__7);
+#line 218
+//clear ___nl__int__8;
+#line 218
+//clear ___nl__int__9;
+#line 218
+//clear ___nl__int__10;
+#line 218
+//clear ___nl__bool__11;
+#line 218
+//clear ___nl__int__12;
+#line 218
+c_rt_lib0clear(&___nl__im__13);
+#line 218
+c_rt_lib0clear(&___nl__im__14);
+#line 218
+//clear ___nl__bool__15;
+#line 218
+c_rt_lib0clear(&___nl__im__16);
+#line 218
+c_rt_lib0clear(&___nl__im__17);
+#line 218
+c_rt_lib0clear(&___nl__im__18);
+#line 218
 label_2:
 ;
 #line 219
@@ -3866,6 +3892,8 @@ label_6:
 #line 358
 //clear ___nl__bool__27;
 #line 358
+//clear ___nl__int__14;
+#line 358
 label_4:
 ;
 #line 359
@@ -5452,6 +5480,10 @@ c_rt_lib0delete(generator_c_priv0print(___ref___rec__0, ___nl__im__219));
 #line 448
 c_rt_lib0clear(&___nl__im__219);
 #line 448
+c_rt_lib0clear(&___nl__im__204);
+#line 448
+c_rt_lib0clear(&___nl__im__209);
+#line 448
 label_38:
 ;
 #line 449
@@ -5581,6 +5613,14 @@ c_rt_lib0clear(&___nl__im__251);
 c_rt_lib0delete(generator_c_priv0print(___ref___rec__0, ___nl__im__248));
 #line 459
 c_rt_lib0clear(&___nl__im__248);
+#line 459
+c_rt_lib0clear(&___nl__im__242);
+#line 459
+c_rt_lib0clear(&___nl__im__243);
+#line 459
+//clear ___nl__bool__246;
+#line 459
+c_rt_lib0clear(&___nl__im__247);
 #line 459
 label_41:
 ;
@@ -8212,6 +8252,12 @@ goto label_4;
 #line 607
 label_4:
 ;
+#line 607
+c_rt_lib0clear(&___nl__im__8);
+#line 607
+//clear ___nl__bool__12;
+#line 607
+c_rt_lib0clear(&___nl__im__13);
 #line 607
 label_2:
 ;
@@ -19391,6 +19437,20 @@ goto label_6;
 label_6:
 ;
 #line 1368
+c_rt_lib0clear(&___nl__im__19);
+#line 1368
+//clear ___nl__bool__21;
+#line 1368
+c_rt_lib0clear(&___nl__im__22);
+#line 1368
+c_rt_lib0clear(&___nl__im__23);
+#line 1368
+c_rt_lib0clear(&___nl__im__24);
+#line 1368
+c_rt_lib0clear(&___nl__im__26);
+#line 1368
+c_rt_lib0clear(&___nl__im__27);
+#line 1368
 label_2:
 ;
 #line 1369
@@ -21313,6 +21373,14 @@ goto label_24;
 #line 1466
 label_24:
 ;
+#line 1466
+//clear ___nl__bool__87;
+#line 1466
+c_rt_lib0clear(&___nl__im__88);
+#line 1466
+c_rt_lib0clear(&___nl__im__89);
+#line 1466
+c_rt_lib0clear(&___nl__im__90);
 #line 1466
 label_22:
 ;
@@ -27464,6 +27532,8 @@ c_rt_lib0move(&___nl__im__5, c_rt_lib0concat_add(___nl__im__5, ___nl__im__15));
 #line 1985
 c_rt_lib0clear(&___nl__im__15);
 #line 1985
+c_rt_lib0clear(&___nl__im__14);
+#line 1985
 label_2:
 ;
 #line 1986
@@ -28030,6 +28100,14 @@ ___nl__int__32 = 1;
 ___nl__int__9 = ___nl__int__9 + ___nl__int__32;
 #line 2051
 //clear ___nl__int__32;
+#line 2051
+//clear ___nl__bool__14;
+#line 2051
+c_rt_lib0clear(&___nl__im__15);
+#line 2051
+c_rt_lib0clear(&___nl__im__16);
+#line 2051
+c_rt_lib0clear(&___nl__im__17);
 #line 2051
 label_2:
 ;

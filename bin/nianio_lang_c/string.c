@@ -354,6 +354,8 @@ label_7:
 ;
 #line 52
 //clear ___nl__bool__15;
+#line 52
+//clear ___nl__int__6;
 #line 42
 goto label_2;
 #line 42
@@ -841,6 +843,8 @@ label_4:
 #line 96
 //clear ___nl__bool__9;
 #line 96
+//clear ___nl__int__7;
+#line 96
 label_2:
 ;
 #line 97
@@ -1005,6 +1009,8 @@ label_4:
 ;
 #line 108
 //clear ___nl__bool__9;
+#line 108
+//clear ___nl__int__7;
 #line 108
 label_2:
 ;

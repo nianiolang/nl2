@@ -172,6 +172,8 @@ label_10:
 #line 22
 //clear ___nl__bool__26;
 #line 22
+c_rt_lib0clear(&___nl__im__24);
+#line 22
 label_8:
 ;
 #line 23
@@ -241,6 +243,22 @@ label_15:
 ;
 #line 26
 //clear ___nl__bool__34;
+#line 26
+c_rt_lib0clear(&___nl__im__17);
+#line 26
+//clear ___nl__int__18;
+#line 26
+//clear ___nl__bool__19;
+#line 26
+//clear ___nl__int__20;
+#line 26
+//clear ___nl__int__21;
+#line 26
+//clear ___nl__bool__22;
+#line 26
+//clear ___nl__int__23;
+#line 26
+c_rt_lib0clear(&___nl__im__24);
 #line 26
 label_5:
 ;
@@ -1084,6 +1102,10 @@ label_31:
 ;
 #line 91
 //clear ___nl__bool__64;
+#line 91
+c_rt_lib0clear(&___nl__im__33);
+#line 91
+//clear ___nl__int__58;
 #line 92
 goto label_8;
 #line 92

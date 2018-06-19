@@ -3394,6 +3394,14 @@ goto label_29;
 label_29:
 ;
 #line 260
+//clear ___nl__bool__53;
+#line 260
+c_rt_lib0clear(&___nl__im__54);
+#line 260
+c_rt_lib0clear(&___nl__im__55);
+#line 260
+c_rt_lib0clear(&___nl__im__56);
+#line 260
 label_27:
 ;
 #line 261
@@ -3458,6 +3466,14 @@ goto label_35;
 #line 267
 label_35:
 ;
+#line 267
+//clear ___nl__bool__63;
+#line 267
+c_rt_lib0clear(&___nl__im__64);
+#line 267
+c_rt_lib0clear(&___nl__im__65);
+#line 267
+c_rt_lib0clear(&___nl__im__66);
 #line 267
 label_33:
 ;

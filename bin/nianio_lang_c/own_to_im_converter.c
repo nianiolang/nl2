@@ -1844,6 +1844,14 @@ goto label_29;
 label_29:
 ;
 #line 117
+//clear ___nl__bool__67;
+#line 117
+c_rt_lib0clear(&___nl__im__68);
+#line 117
+c_rt_lib0clear(&___nl__im__69);
+#line 117
+c_rt_lib0clear(&___nl__im__70);
+#line 117
 label_27:
 ;
 #line 118
@@ -1954,6 +1962,14 @@ goto label_35;
 #line 127
 label_35:
 ;
+#line 127
+//clear ___nl__bool__87;
+#line 127
+c_rt_lib0clear(&___nl__im__88);
+#line 127
+c_rt_lib0clear(&___nl__im__89);
+#line 127
+c_rt_lib0clear(&___nl__im__90);
 #line 127
 label_33:
 ;
@@ -2881,6 +2897,14 @@ goto label_26;
 #line 205
 label_26:
 ;
+#line 205
+//clear ___nl__bool__83;
+#line 205
+c_rt_lib0clear(&___nl__im__84);
+#line 205
+c_rt_lib0clear(&___nl__im__85);
+#line 205
+c_rt_lib0clear(&___nl__im__86);
 #line 205
 label_24:
 ;

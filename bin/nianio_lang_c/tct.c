@@ -331,6 +331,8 @@ label_4:
 #line 80
 c_rt_lib0delete(hash0set_value(&___nl__im__1, ___nl__im__2, ___nl__im__6));
 #line 80
+c_rt_lib0clear(&___nl__im__6);
+#line 80
 label_2:
 ;
 #line 81
@@ -427,6 +429,8 @@ label_4:
 //clear ___nl__bool__7;
 #line 94
 c_rt_lib0delete(hash0set_value(&___nl__im__1, ___nl__im__2, ___nl__im__6));
+#line 94
+c_rt_lib0clear(&___nl__im__6);
 #line 94
 label_2:
 ;
@@ -1387,6 +1391,14 @@ goto label_24;
 #line 154
 label_24:
 ;
+#line 154
+//clear ___nl__bool__40;
+#line 154
+c_rt_lib0clear(&___nl__im__41);
+#line 154
+c_rt_lib0clear(&___nl__im__43);
+#line 154
+c_rt_lib0clear(&___nl__im__44);
 #line 154
 label_22:
 ;

@@ -1586,6 +1586,8 @@ label_19:
 ;
 #line 154
 //clear ___nl__bool__66;
+#line 154
+c_rt_lib0clear(&___nl__im__57);
 #line 147
 goto label_14;
 #line 147
@@ -1643,6 +1645,10 @@ label_5:
 //clear ___nl__bool__12;
 #line 159
 c_rt_lib0clear(&___nl__im__57);
+#line 159
+c_rt_lib0clear(&___nl__im__10);
+#line 159
+//clear ___nl__int__11;
 #line 130
 goto label_2;
 #line 130

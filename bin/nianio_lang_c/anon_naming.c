@@ -1117,6 +1117,14 @@ goto label_24;
 label_24:
 ;
 #line 50
+//clear ___nl__bool__57;
+#line 50
+c_rt_lib0clear(&___nl__im__58);
+#line 50
+c_rt_lib0clear(&___nl__im__59);
+#line 50
+c_rt_lib0clear(&___nl__im__60);
+#line 50
 label_22:
 ;
 #line 51

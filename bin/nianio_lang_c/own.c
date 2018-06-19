@@ -131,6 +131,8 @@ c_rt_lib0delete(c_rt_lib0hash_set_value(&___nl__im__1, ___nl__im__2, ___nl__im__
 #line 24
 c_rt_lib0clear(&___nl__im__8);
 #line 24
+c_rt_lib0clear(&___nl__im__6);
+#line 24
 label_2:
 ;
 #line 25

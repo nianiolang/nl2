@@ -490,6 +490,8 @@ label_5:
 ;
 #line 55
 //clear ___nl__bool__9;
+#line 55
+//clear ___nl__int__7;
 #line 48
 goto label_2;
 #line 48
@@ -807,6 +809,8 @@ label_9:
 ;
 #line 79
 //clear ___nl__bool__26;
+#line 79
+c_rt_lib0clear(&___nl__im__16);
 #line 74
 goto label_4;
 #line 74
@@ -1225,6 +1229,8 @@ label_9:
 //clear ___nl__bool__32;
 #line 115
 c_rt_lib0clear(&___nl__im__34);
+#line 115
+c_rt_lib0clear(&___nl__im__24);
 #line 93
 goto label_4;
 #line 93
@@ -1771,6 +1777,10 @@ label_11:
 c_rt_lib0clear(&___nl__im__28);
 #line 160
 c_rt_lib0delete(dfile_priv0eat_ws(___ref___im__0));
+#line 160
+c_rt_lib0clear(&___nl__im__13);
+#line 160
+c_rt_lib0clear(&___nl__im__24);
 #line 161
 goto label_4;
 #line 161
@@ -1964,6 +1974,8 @@ label_18:
 c_rt_lib0clear(&___nl__im__48);
 #line 175
 c_rt_lib0delete(dfile_priv0eat_ws(___ref___im__0));
+#line 175
+c_rt_lib0clear(&___nl__im__44);
 #line 176
 goto label_15;
 #line 176
@@ -3061,6 +3073,8 @@ label_9:
 //clear ___nl__bool__22;
 #line 253
 //clear ___nl__bool__26;
+#line 253
+c_rt_lib0clear(&___nl__im__20);
 #line 253
 label_7:
 ;

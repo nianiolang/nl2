@@ -2136,6 +2136,8 @@ label_4:
 #line 225
 //clear ___nl__bool__14;
 #line 225
+c_rt_lib0clear(&___nl__im__13);
+#line 225
 label_2:
 ;
 #line 226

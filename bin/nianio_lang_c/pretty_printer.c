@@ -1258,6 +1258,24 @@ label_13:
 #line 98
 //clear ___nl__bool__45;
 #line 98
+c_rt_lib0clear(&___nl__im__23);
+#line 98
+c_rt_lib0clear(&___nl__im__25);
+#line 98
+//clear ___nl__bool__26;
+#line 98
+c_rt_lib0clear(&___nl__im__27);
+#line 98
+c_rt_lib0clear(&___nl__im__34);
+#line 98
+//clear ___nl__bool__35;
+#line 98
+c_rt_lib0clear(&___nl__im__36);
+#line 98
+c_rt_lib0clear(&___nl__im__37);
+#line 98
+c_rt_lib0clear(&___nl__im__38);
+#line 98
 label_5:
 ;
 #line 99
