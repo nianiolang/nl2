@@ -10,22 +10,44 @@
 #include "hash.h"
 #include "boolean_t.h"
 #include "ptd.h"
+#include "own.h"
 #include "nast.h"
 #include "ntokenizer.h"
 #include "singleton.h"
 #include "compiler_lib.h"
 #include "ptd_parser.h"
 #include "string_utils.h"
-typedef ImmT  nparser0parse_ret_t0type;
+#ifndef ANON_TYPE_DECLanon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE
+#define ANON_TYPE_DECLanon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE
+typedef struct anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE;
+#endif
+void nparser0anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE0clean(anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE rec);
+void nparser0anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE0free(anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE *rec);
 
-typedef ImmT  nparser0state_t0type;
+typedef struct nparser0state_t0type nparser0state_t0type;
+void nparser0state_t0type0clean(nparser0state_t0type rec);
+void nparser0state_t0type0free(nparser0state_t0type *rec);
 
 typedef ImmT  nparser0try_value_t0type;
 
 typedef ImmT  nparser0try_cmd_t0type;
 
-ImmT  nparser0parse_ret_t();
-ImmT  nparser0parse_ret_t0ptr(int _num, ImmT *_tab);
+#ifndef ANON_TYPE_DEFanon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE
+#define ANON_TYPE_DEFanon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE
+struct anon_type00RBanon_type00refntokenizer0state_t0type0state0anon_type00refcompiler_lib0errors_t0type0errors0anon_type00im0module_name0anon_type00bool0parse_types0RE {
+ntokenizer0state_t0type state0field;
+compiler_lib0errors_t0type errors0field;
+ImmT  module_name0field;
+bool  parse_types0field;
+};
+#endif
+struct nparser0state_t0type {
+ntokenizer0state_t0type state0field;
+compiler_lib0errors_t0type errors0field;
+ImmT  module_name0field;
+bool  parse_types0field;
+};
+
 ImmT  nparser0state_t();
 ImmT  nparser0state_t0ptr(int _num, ImmT *_tab);
 ImmT  nparser0try_value_t();
@@ -33,3 +55,4 @@ ImmT  nparser0try_value_t0ptr(int _num, ImmT *_tab);
 ImmT  nparser0try_cmd_t();
 ImmT  nparser0try_cmd_t0ptr(int _num, ImmT *_tab);
 ImmT  nparser0sparse(ImmT  ___nl__im__0,ImmT  ___nl__im__1,bool  ___nl__bool__2);
+ImmT  nparser0conv_to_im00state_t(nparser0state_t0type* ___ref___rec__0);

@@ -8,6 +8,7 @@
 #include "ov.h"
 #include "nast.h"
 #include "ptd.h"
+#include "own.h"
 #include "array.h"
 #include "hash.h"
 #include "string.h"
@@ -15,39 +16,63 @@
 #include "c_std_lib.h"
 #include "boolean_t.h"
 #include "singleton.h"
-typedef ImmT  ntokenizer0state_t0type;
+#ifndef ANON_TYPE_DECLanon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE
+#define ANON_TYPE_DECLanon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE
+typedef struct anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE;
+#endif
+void ntokenizer0anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE0clean(anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE rec);
+void ntokenizer0anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE0free(anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE *rec);
+
+typedef struct ntokenizer0state_t0type ntokenizer0state_t0type;
+void ntokenizer0state_t0type0clean(ntokenizer0state_t0type rec);
+void ntokenizer0state_t0type0free(ntokenizer0state_t0type *rec);
 
 typedef ImmT  ntokenizer0token_t0type;
+
+#ifndef ANON_TYPE_DEFanon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE
+#define ANON_TYPE_DEFanon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE
+struct anon_type00RBanon_type00int0pos0anon_type00im0text0anon_type00im0next_token0anon_type00int0len0anon_type00refntokenizer0token_t0type0type0anon_type00im0place0anon_type00int0ln_pos0anon_type00im0last_comment0anon_type00int0ln_nr0anon_type00im0place_ws0RE {
+INT  pos0field;
+ImmT  text0field;
+ImmT  next_token0field;
+INT  len0field;
+ntokenizer0token_t0type type0field;
+ImmT  place0field;
+INT  ln_pos0field;
+ImmT  last_comment0field;
+INT  ln_nr0field;
+ImmT  place_ws0field;
+};
+#endif
+struct ntokenizer0state_t0type {
+INT  pos0field;
+ImmT  text0field;
+ImmT  next_token0field;
+INT  len0field;
+ntokenizer0token_t0type type0field;
+ImmT  place0field;
+INT  ln_pos0field;
+ImmT  last_comment0field;
+INT  ln_nr0field;
+ImmT  place_ws0field;
+};
 
 ImmT  ntokenizer0state_t();
 ImmT  ntokenizer0state_t0ptr(int _num, ImmT *_tab);
 ImmT  ntokenizer0token_t();
 ImmT  ntokenizer0token_t0ptr(int _num, ImmT *_tab);
-ntokenizer0state_t0type ntokenizer0init(ImmT  ___nl__im__0);
-ntokenizer0state_t0type ntokenizer0init0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0get_last_comment(ntokenizer0state_t0type ___nl__im__0);
-ImmT  ntokenizer0get_last_comment0ptr(int _num, ImmT *_tab);
-bool ntokenizer0eat_token(ntokenizer0state_t0type* ___ref___im__0,ImmT  ___nl__im__1);
-bool ntokenizer0eat_token0ptr(int _num, ImmT *_tab);
-INT  ntokenizer0get_line(ntokenizer0state_t0type ___nl__im__0);
-INT  ntokenizer0get_line0ptr(int _num, ImmT *_tab);
-INT  ntokenizer0get_column(ntokenizer0state_t0type ___nl__im__0);
-INT  ntokenizer0get_column0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0get_place(ntokenizer0state_t0type* ___ref___im__0);
-ImmT  ntokenizer0get_place0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0get_place_ws(ntokenizer0state_t0type* ___ref___im__0);
-ImmT  ntokenizer0get_place_ws0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0get_token(ntokenizer0state_t0type* ___ref___im__0);
-ImmT  ntokenizer0get_token0ptr(int _num, ImmT *_tab);
-bool ntokenizer0is_type(ntokenizer0state_t0type* ___ref___im__0,ntokenizer0token_t0type ___nl__im__1);
-bool ntokenizer0is_type0ptr(int _num, ImmT *_tab);
-bool ntokenizer0next_is(ntokenizer0state_t0type* ___ref___im__0,ImmT  ___nl__im__1);
-bool ntokenizer0next_is0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0eat_type(ntokenizer0state_t0type* ___ref___im__0,ntokenizer0token_t0type ___nl__im__1);
-ImmT  ntokenizer0eat_type0ptr(int _num, ImmT *_tab);
-bool ntokenizer0is_text(ntokenizer0state_t0type* ___ref___im__0);
-bool ntokenizer0is_text0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0eat_text(ntokenizer0state_t0type* ___ref___im__0);
-ImmT  ntokenizer0eat_text0ptr(int _num, ImmT *_tab);
-ImmT  ntokenizer0info(ntokenizer0state_t0type ___nl__im__0);
-ImmT  ntokenizer0info0ptr(int _num, ImmT *_tab);
+ImmT  ntokenizer0init(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0get_last_comment(ntokenizer0state_t0type* ___ref___rec__0);
+bool ntokenizer0eat_token(ntokenizer0state_t0type* ___ref___rec__0,ImmT  ___nl__im__1);
+INT  ntokenizer0get_line(ntokenizer0state_t0type* ___ref___rec__0);
+INT  ntokenizer0get_column(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0get_place(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0get_place_ws(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0get_token(ntokenizer0state_t0type* ___ref___rec__0);
+bool ntokenizer0is_type(ntokenizer0state_t0type* ___ref___rec__0,ntokenizer0token_t0type ___nl__im__1);
+bool ntokenizer0next_is(ntokenizer0state_t0type* ___ref___rec__0,ImmT  ___nl__im__1);
+ImmT  ntokenizer0eat_type(ntokenizer0state_t0type* ___ref___rec__0,ntokenizer0token_t0type ___nl__im__1);
+bool ntokenizer0is_text(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0eat_text(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0info(ntokenizer0state_t0type* ___ref___rec__0);
+ImmT  ntokenizer0conv_to_im00state_t(ntokenizer0state_t0type* ___ref___rec__0);
