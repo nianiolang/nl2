@@ -6,6 +6,7 @@
 use ov;
 use nast;
 use ptd;
+use own;
 use array;
 use hash;
 use string;
@@ -66,7 +67,7 @@ def get_lett_oper() : ptd::hash(ptd::string()) {
 }
 
 def ntokenizer::state_t() {
-	return ptd::rec({
+	return own::rec({
 			text => ptd::arr(ptd::string()),
 			pos => ptd::int(),
 			len => ptd::int(),
@@ -94,24 +95,11 @@ def ntokenizer::token_t() {
 		});
 }
 
-def ntokenizer::init(text : ptd::string()) : @ntokenizer::state_t {
-	var state = {
-			text => [text],
-			len => string::length(text),
-			pos => 0,
-			type => :end,
-			next_token => '',
-			ln_nr => 1,
-			ln_pos => 1,
-			place => {line => 1, position => 0},
-			place_ws => {line => 1, position => 0},
-			last_comment => '',
-		};
+def ntokenizer::init(ref state : @ntokenizer::state_t) : ptd::void() {
 	get_next_token(ref state);
-	return state;
 }
 
-def ntokenizer::get_last_comment(state : @ntokenizer::state_t) : ptd::string() {
+def ntokenizer::get_last_comment(ref state : @ntokenizer::state_t) : ptd::string() {
 	return state->last_comment;
 }
 
@@ -175,10 +163,10 @@ def ntokenizer::eat_token(ref state : @ntokenizer::state_t, token : ptd::string(
 	return false;
 }
 
-def ntokenizer::get_line(state : @ntokenizer::state_t) : ptd::int() {
+def ntokenizer::get_line(ref state : @ntokenizer::state_t) : ptd::int() {
 	return state->ln_nr;
 }
-def ntokenizer::get_column(state : @ntokenizer::state_t) : ptd::int() {
+def ntokenizer::get_column(ref state : @ntokenizer::state_t) : ptd::int() {
 	return (1 + state->pos - state->ln_pos - string::length(state->next_token));
 }
 def ntokenizer::get_place(ref state : @ntokenizer::state_t) : ptd::rec({line => ptd::int(), position => ptd::int()}) {
@@ -227,7 +215,7 @@ def ntokenizer::eat_text(ref state : @ntokenizer::state_t) : ptd::string() {
 	die;
 }
 
-def ntokenizer::info(state : @ntokenizer::state_t) : ptd::string() {
+def ntokenizer::info(ref state : @ntokenizer::state_t) : ptd::string() {
 	return 'token: ''' . state->next_token . '''
 		'line:  ' . ptd::int_to_string(state->ln_nr) . '
 		'pos:   ' . ptd::int_to_string(1 + state->pos - state->ln_pos - string::length(state->next_token)) . '
@@ -240,7 +228,7 @@ def is_hex_number(char : ptd::string()) : @boolean_t::type {
 		(string::ord(char) >= 97 && string::ord(char) <= 102);
 }
 
-def try_get_operator(state : @ntokenizer::state_t, ref char : ptd::string()) {
+def try_get_operator(ref state : @ntokenizer::state_t, ref char : ptd::string()) {
 	fora var oper (get_char_oper()) {
 		continue if (state->len < 1 + state->pos + string::length(oper));
 		if (c_std_lib::fast_substr(state->text, state->pos, string::length(oper)) eq oper) {
@@ -299,7 +287,7 @@ def get_next_token(ref state : @ntokenizer::state_t) : ptd::void() {
 		} else {
 			state->type = hash::has_key(get_keywords(), state->next_token) ? :keyword : :word;
 		}
-	} elsif (try_get_operator(state, ref char)) {
+	} elsif (try_get_operator(ref state, ref char)) {
 		state->type = :operator;
 		state->next_token = char;
 		state->pos += string::length(char);
