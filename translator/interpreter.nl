@@ -261,7 +261,13 @@ def interpreter::exec_all_code(state : @interpreter::state_t) {
 		} case :running {
 			step(ref state);
 		} case :callback(var fun) {
-			return :err('function not found');
+			var key;
+			if (fun->call->mod eq '') {
+				key = state->top->module_name . '::priv::' . fun->call->fun_name;
+			} else {
+				key = fun->call->mod . '::' . fun->call->fun_name;
+			}
+			return :err('function not found: ' . key);
 		} case :finished(var f) {
 			return :ok(f);
 		}
@@ -434,7 +440,7 @@ def step(ref state : @interpreter::state_t) : ptd::void() {
 	var command_cmd = command->cmd;
 	++state->top->next;
 	if (!check_command(state, command_cmd)) {
-		state->rstate = :error('incorrect command');
+		state->rstate = :error('incorrect command: ' . dfile::ssave(command_cmd));
 		return;
 	}
 	match (command_cmd) case :arr_decl(var arr_decl) {
@@ -936,7 +942,10 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'c_std_lib::is_sim', '');
 	hash::set_value(ref ret, 'c_std_lib::is_variant', '');
 	hash::set_value(ref ret, 'c_std_lib::string_replace', '');
-	hash::set_value(ref ret, 'c_std_lib::string_replace', '');
+	hash::set_value(ref ret, 'c_std_lib::set_profile_global', '');
+	hash::set_value(ref ret, 'c_std_lib::get_profile_global', '');
+	hash::set_value(ref ret, 'c_std_lib::string_index', '');
+	hash::set_value(ref ret, 'c_std_lib::fast_substr', '');
 	hash::set_value(ref ret, 'ptd::string', '');
 	hash::set_value(ref ret, 'ptd::hash', '');
 	hash::set_value(ref ret, 'ptd::arr', '');
@@ -944,6 +953,7 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'ptd::var', '');
 	hash::set_value(ref ret, 'ptd::ptd_im', '');
 	hash::set_value(ref ret, 'ptd::ensure', '');
+	hash::set_value(ref ret, 'ptd::int_to_string', '');
 	hash::set_value(ref ret, 'c_olympic_io::print', '');
 	hash::set_value(ref ret, 'c_olympic_io::readln', '');
 	hash::set_value(ref ret, 'c_olympic_io::read_int', '');
@@ -1133,6 +1143,8 @@ def handle_ptd_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args :
 		} case :err(var err){
 			return :err('incorrect type');
 		}
+	} elsif (key eq 'ptd::int_to_string') {
+		ret_val = args[0];
 	} else {
 		return error_message;
 	}
@@ -1209,18 +1221,41 @@ def handle_c_std_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref 
 	}) {
 	var error_message = :err('incorrect command');
 	if (key eq 'c_std_lib::is_array') {
+		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_array(args[0]);
 	} elsif (key eq 'c_std_lib::is_hash') {
+		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_hash(args[0]);
 	} elsif (key eq 'c_std_lib::is_sim') {
+		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_sim(args[0]);
 	} elsif (key eq 'c_std_lib::is_variant') {
+		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_variant(args[0]);
 	} elsif (key eq 'c_std_lib::string_replace') {
+		return error_message unless array::len(args) == 3;
 		return error_message unless nl::is_sim(args[0]);
 		return error_message unless nl::is_sim(args[1]);
 		return error_message unless nl::is_sim(args[2]);
 		ret_val = c_std_lib::string_replace(args[0], args[1], args[2]);
+	} elsif (key eq 'c_std_lib::set_profile_global') {
+		return error_message unless array::len(args) == 1;
+		c_std_lib::set_profile_global(args[0]);
+	} elsif (key eq 'c_std_lib::get_profile_global') {
+		return error_message unless array::len(args) == 0;
+		ret_val = c_std_lib::get_profile_global();
+	} elsif (key eq 'c_std_lib::string_index') {
+		return error_message unless array::len(args) == 3;
+		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_sim(args[2]) && string_utils::is_number(args[2]);
+		ret_val = c_std_lib::string_index(args[0], args[1], args[2]);
+	} elsif (key eq 'c_std_lib::fast_substr') {
+		return error_message unless array::len(args) == 3;
+		return error_message unless nl::is_array(args[0]) && array::len(args[0]) == 1;
+		return error_message unless nl::is_sim(args[1]) && string_utils::is_number(args[1]);
+		return error_message unless nl::is_sim(args[2]) && string_utils::is_number(args[2]);
+		ret_val = c_std_lib::fast_substr(args[0], args[1], args[2]);
 	} else {
 		return error_message;
 	}

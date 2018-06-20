@@ -140,7 +140,7 @@ def compiler::compile(cmd_args : ptd::arr(ptd::string())) : ptd::int() {
 		compile_ide(opt_cli);
 		ret = 0;
 	} elsif (opt_cli->mode is :exec) {
-		ret = interpreter_wrapper::exec_interpreter(opt_cli->input_path);
+		ret = interpreter_wrapper::exec_interpreter(opt_cli->input_path, []);
 	} else {
 		die;
 	}

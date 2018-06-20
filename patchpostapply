@@ -6,4 +6,5 @@ if [ $rc != 0 ]; then
 fi
 ./build_compiler.sh
 ./test_compiler.sh
+bash test_nls.sh
 make clean

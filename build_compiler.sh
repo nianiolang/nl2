@@ -26,4 +26,3 @@ cp mk_cache.c bin/mk_cache.c
 cp b.exe bin/mk_cache.exe
 rm -r tmp
 rm ./a.exe ./b.exe
-

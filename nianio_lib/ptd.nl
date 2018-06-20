@@ -270,7 +270,7 @@ def try_dynamic_cast(type, value) : @ptd::cast_error_t {
 				return tmp;
 			}
 		}
-	} case :ptd_sim {
+	} case :ptd_int {
 		return [:error(:sim_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_sim(value);
 	} case :ptd_string {
 		return [:error(:sim_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_sim(value);

@@ -15,7 +15,6 @@ files_min=(
 	'translator.nl'
 	'optional_libraries.nl'
 	'nls_c.c'
-	'nls_nl.nl'
 )
 olympic_io=false
 fe_lib=false
@@ -53,10 +52,9 @@ then
 fi
 if [ $fe_lib = false ]
 then
-	rm nls/nls_nl.nl
 	sed -i '/c_fe_lib BEGIN/,/c_fe_lib END/d' nls/optional_libraries.nl
 	sed -i '/use c_fe_lib;/d' nls/optional_libraries.nl
 fi
 
-./mk_cache.exe nls/ --strict --c --o nls/cache_nl/
+./bin/mk_cache.exe nls/ --strict --c --o nls/cache_nl/
 gcc -o nls/nls nls/nls_c.c nls/cache_nl/*.c nls/native_lib_c/*.c -Inls/cache_nl -Inls/native_lib_c -lm

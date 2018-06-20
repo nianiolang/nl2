@@ -40,11 +40,20 @@ def get_known_func() : ptd::hash(@interpreter::known_exec_func_t) {
 
 
 def interpreter_wrapper::compile(cmd_args : ptd::arr(ptd::string())) : ptd::int() {
-	var input_path = array::subarray(cmd_args, 1, array::len(cmd_args) - 1);
-	return interpreter_wrapper::exec_interpreter(input_path);
+	var input_path = [];
+	var args = [];
+	for (var i = 1; i < array::len(cmd_args); i++) {
+		if (cmd_args[i] eq '--') {
+			args = array::subarray(cmd_args, i+1, array::len(cmd_args)-i-1);
+			break;
+		}
+		input_path []= cmd_args[i];
+	}
+	return interpreter_wrapper::exec_interpreter(input_path, [args]);
 }
 
-def interpreter_wrapper::exec_interpreter(input_path : ptd::arr(ptd::string())) : ptd::int() {
+def interpreter_wrapper::exec_interpreter(input_path : ptd::arr(ptd::string()), args : ptd::arr(ptd::ptd_im()))
+		: ptd::int() {
 	var asts = {};
 	var errors : @interpreter_wrapper::errors_group_t = {
 			module_errors => {},
@@ -75,7 +84,7 @@ def interpreter_wrapper::exec_interpreter(input_path : ptd::arr(ptd::string())) 
 		array::push(ref modules_arr, val);
 	}
 	var interpreter_state = interpreter::init(modules_arr, get_known_func());
-	ensure interpreter::start(ref interpreter_state, 'main', main_mod);
+	ensure interpreter::start_args(ref interpreter_state, 'main', main_mod, args);
 	ensure interpreter::exec_all_code(interpreter_state);
 	return 0;
 }
@@ -137,7 +146,6 @@ def parse_module(module : ptd::string(), src : ptd::string(), ref errors : @inte
 		err => ptd::string(),
 		ok => @nast::module_t
 	}) {
-	c_fe_lib::print('processing ' . module . '...');
 	try var file = ptd::ensure(ptd::var({ok => ptd::string(), err => ptd::string()}), c_fe_lib::file_to_string(src));
 	var retpar = nparser::sparse(file, module, false);
 	match (retpar) case :ok(var ast) {
