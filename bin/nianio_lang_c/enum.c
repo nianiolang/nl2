@@ -7,7 +7,7 @@
 #include </usr/include/string.h>
 #include "enum.h"
 #include "ov.h"
-#include "boolean_t.h"
+#include "ptd.h"
 #line 1 "enum.nl"
 
 static ImmT *__const__f = NULL;
@@ -17,13 +17,13 @@ ImmT enum_priv0__const__sing(int __nr);
 
 
 
-bool enum0eq0ptr(int _num, ImmT *_tab){
+bool  enum0eq0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "enum0eq");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 return enum0eq(*var0, *var1);
 }
-bool enum0eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+bool  enum0eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 enum_priv0__const__init();

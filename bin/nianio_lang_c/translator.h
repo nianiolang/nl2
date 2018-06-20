@@ -13,7 +13,6 @@
 #include "nast.h"
 #include "hash.h"
 #include "nlasm.h"
-#include "boolean_t.h"
 typedef ImmT  translator0loop0type;
 
 typedef ImmT  translator0lvalue_values_t0type;

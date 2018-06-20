@@ -12,7 +12,6 @@
 #include "tc_types.h"
 #include "tct.h"
 #include "string.h"
-#include "boolean_t.h"
 #include "ptd_parser.h"
 typedef ImmT  module_checker0modules_t0type;
 

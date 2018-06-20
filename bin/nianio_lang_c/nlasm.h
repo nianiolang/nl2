@@ -8,7 +8,6 @@
 #include "ptd.h"
 #include "nast.h"
 #include "tct.h"
-#include "boolean_t.h"
 typedef ImmT  nlasm0hash_dest_iter_t0type;
 
 typedef ImmT  nlasm0args_type0type;
@@ -137,7 +136,7 @@ ImmT  nlasm0reg_access_type_t();
 ImmT  nlasm0reg_access_type_t0ptr(int _num, ImmT *_tab);
 ImmT  nlasm0is_empty(nlasm0reg_t0type ___nl__im__0);
 ImmT  nlasm0is_empty0ptr(int _num, ImmT *_tab);
-bool nlasm0eq_reg(nlasm0reg_t0type ___nl__im__0,nlasm0reg_t0type ___nl__im__1);
-bool nlasm0eq_reg0ptr(int _num, ImmT *_tab);
-bool nlasm0eq_reg_type(nlasm0reg_type0type ___nl__im__0,nlasm0reg_type0type ___nl__im__1);
-bool nlasm0eq_reg_type0ptr(int _num, ImmT *_tab);
+bool  nlasm0eq_reg(nlasm0reg_t0type ___nl__im__0,nlasm0reg_t0type ___nl__im__1);
+bool  nlasm0eq_reg0ptr(int _num, ImmT *_tab);
+bool  nlasm0eq_reg_type(nlasm0reg_type0type ___nl__im__0,nlasm0reg_type0type ___nl__im__1);
+bool  nlasm0eq_reg_type0ptr(int _num, ImmT *_tab);

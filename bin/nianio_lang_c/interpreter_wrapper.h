@@ -12,7 +12,6 @@
 #include "ptd.h"
 #include "nast.h"
 #include "nparser.h"
-#include "boolean_t.h"
 #include "translator.h"
 #include "nlasm.h"
 #include "interpreter.h"

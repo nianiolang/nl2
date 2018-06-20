@@ -10,7 +10,6 @@
 #include "ptd.h"
 #include "nast.h"
 #include "wprinter.h"
-#include "boolean_t.h"
 typedef ImmT  pretty_printer0struct_t0type;
 
 ImmT  pretty_printer0struct_t();

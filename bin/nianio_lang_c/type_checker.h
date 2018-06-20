@@ -12,7 +12,6 @@
 #include "hash.h"
 #include "enum.h"
 #include "string.h"
-#include "boolean_t.h"
 #include "nast.h"
 #include "ptd_parser.h"
 #include "ptd_system.h"

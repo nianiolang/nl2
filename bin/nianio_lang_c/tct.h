@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include "hash.h"
 #include "ptd.h"
-#include "boolean_t.h"
 #include "string.h"
 typedef ImmT  tct0meta_type0type;
 
@@ -51,5 +50,5 @@ ImmT  tct0meta_type();
 ImmT  tct0meta_type0ptr(int _num, ImmT *_tab);
 tct0meta_type0type tct0own_type_to_ptd(tct0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
 tct0meta_type0type tct0own_type_to_ptd0ptr(int _num, ImmT *_tab);
-bool tct0is_own_type(tct0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
-bool tct0is_own_type0ptr(int _num, ImmT *_tab);
+bool  tct0is_own_type(tct0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
+bool  tct0is_own_type0ptr(int _num, ImmT *_tab);

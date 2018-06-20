@@ -10,7 +10,6 @@
 #include "nlasm.h"
 #include "ov.h"
 #include "ptd.h"
-#include "boolean_t.h"
 #include "nast.h"
 #include "func.h"
 #include "nl.h"
@@ -87,8 +86,8 @@ ImmT  interpreter0get_profile(interpreter0state_t0type ___nl__im__0);
 ImmT  interpreter0get_profile0ptr(int _num, ImmT *_tab);
 ImmT  interpreter0get_whole_stack_debug(interpreter0state_t0type ___nl__im__0);
 ImmT  interpreter0get_whole_stack_debug0ptr(int _num, ImmT *_tab);
-bool interpreter0has_next_instruction(interpreter0state_t0type ___nl__im__0);
-bool interpreter0has_next_instruction0ptr(int _num, ImmT *_tab);
+bool  interpreter0has_next_instruction(interpreter0state_t0type ___nl__im__0);
+bool  interpreter0has_next_instruction0ptr(int _num, ImmT *_tab);
 INT  interpreter0get_instruction_nr(interpreter0state_t0type ___nl__im__0);
 INT  interpreter0get_instruction_nr0ptr(int _num, ImmT *_tab);
 ImmT  interpreter0execute_full_instruction(interpreter0state_t0type* ___ref___im__0);

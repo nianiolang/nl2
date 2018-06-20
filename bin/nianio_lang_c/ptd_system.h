@@ -10,22 +10,21 @@
 #include "ptd.h"
 #include "tct.h"
 #include "tc_types.h"
-#include "boolean_t.h"
 #include "string.h"
 #include "array.h"
 #include "ptd_parser.h"
-bool ptd_system0is_known(tc_types0value_src0type ___nl__im__0);
-bool ptd_system0is_known0ptr(int _num, ImmT *_tab);
-bool ptd_system0is_equal(tct0meta_type0type ___nl__im__0,tct0meta_type0type ___nl__im__1);
-bool ptd_system0is_equal0ptr(int _num, ImmT *_tab);
-bool ptd_system0is_try_ensure_type(tc_types0type0type ___nl__im__0,tc_types0modules_t0type* ___ref___im__1,tc_types0errors_t0type* ___ref___im__2);
-bool ptd_system0is_try_ensure_type0ptr(int _num, ImmT *_tab);
+bool  ptd_system0is_known(tc_types0value_src0type ___nl__im__0);
+bool  ptd_system0is_known0ptr(int _num, ImmT *_tab);
+bool  ptd_system0is_equal(tct0meta_type0type ___nl__im__0,tct0meta_type0type ___nl__im__1);
+bool  ptd_system0is_equal0ptr(int _num, ImmT *_tab);
+bool  ptd_system0is_try_ensure_type(tc_types0type0type ___nl__im__0,tc_types0modules_t0type* ___ref___im__1,tc_types0errors_t0type* ___ref___im__2);
+bool  ptd_system0is_try_ensure_type0ptr(int _num, ImmT *_tab);
 ImmT  ptd_system0try_get_ensure_sub_types(tc_types0type0type ___nl__im__0,tc_types0modules_t0type* ___ref___im__1,tc_types0errors_t0type* ___ref___im__2);
 ImmT  ptd_system0try_get_ensure_sub_types0ptr(int _num, ImmT *_tab);
-bool ptd_system0is_condition_type(tc_types0type0type ___nl__im__0,tc_types0modules_t0type* ___ref___im__1,tc_types0errors_t0type* ___ref___im__2);
-bool ptd_system0is_condition_type0ptr(int _num, ImmT *_tab);
-bool ptd_system0is_accepted(tc_types0type0type ___nl__im__0,tct0meta_type0type ___nl__im__1,tc_types0modules_t0type* ___ref___im__2,tc_types0errors_t0type* ___ref___im__3);
-bool ptd_system0is_accepted0ptr(int _num, ImmT *_tab);
+bool  ptd_system0is_condition_type(tc_types0type0type ___nl__im__0,tc_types0modules_t0type* ___ref___im__1,tc_types0errors_t0type* ___ref___im__2);
+bool  ptd_system0is_condition_type0ptr(int _num, ImmT *_tab);
+bool  ptd_system0is_accepted(tc_types0type0type ___nl__im__0,tct0meta_type0type ___nl__im__1,tc_types0modules_t0type* ___ref___im__2,tc_types0errors_t0type* ___ref___im__3);
+bool  ptd_system0is_accepted0ptr(int _num, ImmT *_tab);
 tc_types0check_info0type ptd_system0is_accepted_info(tc_types0type0type ___nl__im__0,tct0meta_type0type ___nl__im__1,tc_types0modules_t0type* ___ref___im__2,tc_types0errors_t0type* ___ref___im__3);
 tc_types0check_info0type ptd_system0is_accepted_info0ptr(int _num, ImmT *_tab);
 tct0meta_type0type ptd_system0cross_type(tct0meta_type0type ___nl__im__0,tct0meta_type0type ___nl__im__1,tc_types0modules_t0type* ___ref___im__2,tc_types0errors_t0type* ___ref___im__3,ImmT  ___nl__im__4);

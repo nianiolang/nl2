@@ -8,7 +8,6 @@
 #include "string.h"
 #include "array.h"
 #include "hash.h"
-#include "boolean_t.h"
 #include "ptd.h"
 #include "own.h"
 #include "nast.h"

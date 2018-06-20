@@ -8,7 +8,6 @@
 #include "hash.h"
 #include "ptd.h"
 #include "tct.h"
-#include "boolean_t.h"
 #include "nast.h"
 #include "singleton.h"
 #include "compiler_lib.h"

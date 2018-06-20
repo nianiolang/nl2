@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include "c_std_lib.h"
 #include "array.h"
-#include "boolean_t.h"
 #include "ptd.h"
 ImmT  string0lf();
 ImmT  string0lf0ptr(int _num, ImmT *_tab);

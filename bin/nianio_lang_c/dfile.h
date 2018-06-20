@@ -11,7 +11,6 @@
 #include "hash.h"
 #include "array.h"
 #include "nl.h"
-#include "boolean_t.h"
 #include "ptd.h"
 typedef ImmT  dfile0state_t0type;
 

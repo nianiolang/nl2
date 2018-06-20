@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include "ptd.h"
 #include "nlasm.h"
-#include "boolean_t.h"
 #include "interpreter.h"
 typedef ImmT  post_processing_t0reg_const0type;
 

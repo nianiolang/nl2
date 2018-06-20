@@ -13,7 +13,6 @@
 #include "ptd.h"
 #include "nast.h"
 #include "nparser.h"
-#include "boolean_t.h"
 #include "pretty_printer.h"
 #include "generator_c.h"
 #include "translator.h"
@@ -39,6 +38,20 @@ void compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0sim0anon_type0
 
 typedef ImmT  compiler0deref_t0type;
 
+#ifndef ANON_TYPE_DECLanon_type00ownhashanon_type00bool
+#define ANON_TYPE_DECLanon_type00ownhashanon_type00bool
+typedef struct  {
+INT capacity;
+INT size;
+bool  *values;
+ImmT  *keys;
+} anon_type00ownhashanon_type00bool;
+#endif
+bool  *compiler0anon_type00ownhashanon_type00bool0get_ptr(anon_type00ownhashanon_type00bool *hash, ImmT key, bool create_if_not_exist);
+INT compiler0anon_type00ownhashanon_type00bool0next_iter(anon_type00ownhashanon_type00bool *hash, INT last_iter);
+void compiler0anon_type00ownhashanon_type00bool0clean(anon_type00ownhashanon_type00bool hash);
+void compiler0anon_type00ownhashanon_type00bool0free(anon_type00ownhashanon_type00bool *hash);
+
 #ifndef ANON_TYPE_DECLanon_type00ownarranon_type00im
 #define ANON_TYPE_DECLanon_type00ownarranon_type00im
 typedef struct  {
@@ -56,20 +69,6 @@ void compiler0anon_type00ownarranon_type00im0free(anon_type00ownarranon_type00im
 typedef ImmT  compiler0input_type0type;
 
 typedef ImmT  compiler0language_t0type;
-
-#ifndef ANON_TYPE_DECLanon_type00ownhashanon_type00refbool
-#define ANON_TYPE_DECLanon_type00ownhashanon_type00refbool
-typedef struct  {
-INT capacity;
-INT size;
-bool *values;
-ImmT  *keys;
-} anon_type00ownhashanon_type00refbool;
-#endif
-bool *compiler0anon_type00ownhashanon_type00refbool0get_ptr(anon_type00ownhashanon_type00refbool *hash, ImmT key, bool create_if_not_exist);
-INT compiler0anon_type00ownhashanon_type00refbool0next_iter(anon_type00ownhashanon_type00refbool *hash, INT last_iter);
-void compiler0anon_type00ownhashanon_type00refbool0clean(anon_type00ownhashanon_type00refbool hash);
-void compiler0anon_type00ownhashanon_type00refbool0free(anon_type00ownhashanon_type00refbool *hash);
 
 typedef ImmT  compiler0parse_check_t0type;
 

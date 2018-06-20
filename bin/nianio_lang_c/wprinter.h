@@ -8,7 +8,6 @@
 #include "string.h"
 #include "ptd.h"
 #include "array.h"
-#include "boolean_t.h"
 typedef ImmT  wprinter0state_t0type;
 
 typedef ImmT  wprinter0arr_kind_t0type;
