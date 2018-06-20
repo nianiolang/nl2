@@ -795,12 +795,13 @@ ImmT  ___nl__im__10 = NULL;
 ImmT  ___nl__im__11 = NULL;
 ImmT  ___nl__im__12 = NULL;
 ImmT  ___nl__im__13 = NULL;
-bool  ___nl__bool__14 = false;
-ImmT  ___nl__im__15 = NULL;
+ImmT  ___nl__im__14 = NULL;
+bool  ___nl__bool__15 = false;
 ImmT  ___nl__im__16 = NULL;
 ImmT  ___nl__im__17 = NULL;
 ImmT  ___nl__im__18 = NULL;
 ImmT  ___nl__im__19 = NULL;
+ImmT  ___nl__im__20 = NULL;
 #line 132
 c_rt_lib0move(&___nl__im__1, compiler_priv0parse_command_line_args(___nl__im__0));
 #line 133
@@ -885,18 +886,22 @@ if(___nl__bool__4){ goto label_5;}
 #line 143
 c_rt_lib0move(&___nl__im__12, c_rt_lib0hash_get_value_dec(___nl__im__1, ___get_global_const(96)));
 #line 143
-___nl__int__3 = interpreter_wrapper0exec_interpreter(___nl__im__12);
+c_rt_lib0move(&___nl__im__13, c_rt_lib0array_mk(0));
+#line 143
+___nl__int__3 = interpreter_wrapper0exec_interpreter(___nl__im__12, ___nl__im__13);
 #line 143
 c_rt_lib0clear(&___nl__im__12);
+#line 143
+c_rt_lib0clear(&___nl__im__13);
 #line 144
 goto label_1;
 #line 144
 label_5:
 ;
 #line 145
-c_rt_lib0move(&___nl__im__13, c_rt_lib0array_mk(0));
+c_rt_lib0move(&___nl__im__14, c_rt_lib0array_mk(0));
 #line 145
-nl_die_arg(___nl__im__13);
+nl_die_arg(___nl__im__14);
 #line 146
 goto label_1;
 #line 146
@@ -905,35 +910,35 @@ label_1:
 #line 146
 //clear ___nl__bool__4;
 #line 146
-c_rt_lib0clear(&___nl__im__13);
+c_rt_lib0clear(&___nl__im__14);
 #line 147
-c_rt_lib0move(&___nl__im__15, c_rt_lib0hash_get_value_dec(___nl__im__1, ___get_global_const(105)));
+c_rt_lib0move(&___nl__im__16, c_rt_lib0hash_get_value_dec(___nl__im__1, ___get_global_const(105)));
 #line 147
-___nl__bool__14 = c_rt_lib0check_true_native(___nl__im__15);
+___nl__bool__15 = c_rt_lib0check_true_native(___nl__im__16);
 #line 147
-c_rt_lib0clear(&___nl__im__15);
+c_rt_lib0clear(&___nl__im__16);
 #line 147
-___nl__bool__14 = !___nl__bool__14;
+___nl__bool__15 = !___nl__bool__15;
 #line 147
-if(___nl__bool__14){ goto label_7;}
+if(___nl__bool__15){ goto label_7;}
 #line 148
-c_rt_lib0move(&___nl__im__17, c_rt_lib0hash_get_value_dec(___nl__im__1, ___get_global_const(97)));
+c_rt_lib0move(&___nl__im__18, c_rt_lib0hash_get_value_dec(___nl__im__1, ___get_global_const(97)));
 #line 148
-c_rt_lib0move(&___nl__im__18,___get_global_const(108));
+c_rt_lib0move(&___nl__im__19,___get_global_const(108));
 #line 148
-c_rt_lib0move(&___nl__im__16, c_rt_lib0concat_new(___nl__im__17, ___nl__im__18));
-#line 148
-c_rt_lib0clear(&___nl__im__17);
+c_rt_lib0move(&___nl__im__17, c_rt_lib0concat_new(___nl__im__18, ___nl__im__19));
 #line 148
 c_rt_lib0clear(&___nl__im__18);
-#line 149
-c_rt_lib0delete(c_fe_lib0mk_path(___nl__im__16));
-#line 150
-c_rt_lib0move(&___nl__im__19, compiler_priv0get_profile_file_name(___nl__im__16));
-#line 150
-c_rt_lib0delete(profile0save(___nl__im__19));
-#line 150
+#line 148
 c_rt_lib0clear(&___nl__im__19);
+#line 149
+c_rt_lib0delete(c_fe_lib0mk_path(___nl__im__17));
+#line 150
+c_rt_lib0move(&___nl__im__20, compiler_priv0get_profile_file_name(___nl__im__17));
+#line 150
+c_rt_lib0delete(profile0save(___nl__im__20));
+#line 150
+c_rt_lib0clear(&___nl__im__20);
 #line 151
 goto label_6;
 #line 151
@@ -943,9 +948,9 @@ label_7:
 label_6:
 ;
 #line 151
-//clear ___nl__bool__14;
+//clear ___nl__bool__15;
 #line 151
-c_rt_lib0clear(&___nl__im__16);
+c_rt_lib0clear(&___nl__im__17);
 #line 152
 c_rt_lib0clear(&___nl__im__0);
 #line 152

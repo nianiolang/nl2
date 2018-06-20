@@ -32,5 +32,5 @@ ImmT  interpreter_wrapper0module_t();
 ImmT  interpreter_wrapper0module_t0ptr(int _num, ImmT *_tab);
 INT  interpreter_wrapper0compile(ImmT  ___nl__im__0);
 INT  interpreter_wrapper0compile0ptr(int _num, ImmT *_tab);
-INT  interpreter_wrapper0exec_interpreter(ImmT  ___nl__im__0);
+INT  interpreter_wrapper0exec_interpreter(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 INT  interpreter_wrapper0exec_interpreter0ptr(int _num, ImmT *_tab);
