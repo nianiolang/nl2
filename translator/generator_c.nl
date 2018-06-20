@@ -12,7 +12,6 @@ use hash;
 use ov;
 use singleton;
 use nl;
-use boolean_t;
 use string_utils;
 use tct;
 use generator_c_struct_dependence_sort;
@@ -94,7 +93,7 @@ def generator_c::state_t() {
 			global_const => @generator_c::global_const_t,
 			header => ptd::string(),
 			ret => ptd::string(),
-			additional_imports => own::hash(@boolean_t::type),
+			additional_imports => own::hash(ptd::bool()),
 			mod_name => ptd::string(),
 			fun_args => @generator_c::fun_args_t,
 			ret_type => @tct::meta_type,
@@ -409,7 +408,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 	}
 	match (struct_order) case :result(var s) {
 		fora var func (s) {
-			var anon : @boolean_t::type = !hash::has_key(hash_typedef_funs, func->name);
+			var anon : ptd::bool() = !hash::has_key(hash_typedef_funs, func->name);
 			match (func->c_type) case :definition {
 				print_func_type_struct_def(ref state, func->name, func->tct_type, state->mod_name, anon);
 			} case :declaration {
@@ -568,7 +567,7 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 	println(ref state, '}' . string::lf());
 }
 
-def is_singleton_use_function(function : @nlasm::function_t) : @boolean_t::type {
+def is_singleton_use_function(function : @nlasm::function_t) : ptd::bool() {
 	return false if (array::len(function->args_type) > 0);
 	var is_math = function->annotation is :math;
 	var was_singleton = false;
@@ -1492,7 +1491,7 @@ def get_type_name(type : @tct::meta_type) : ptd::string() {
 }
 
 def print_func_type_struct_decl(ref state : @generator_c::state_t, name : ptd::string(), type : @tct::meta_type,
-		mod_name : ptd::string(), anon : @boolean_t::type, defined_types : ptd::hash(@tct::meta_type)) {
+		mod_name : ptd::string(), anon : ptd::bool(), defined_types : ptd::hash(@tct::meta_type)) {
 	var c_def = '';
 	if (anon) {
 		c_def .= '#ifndef ANON_TYPE_DECL' . name . string::lf();
@@ -1518,7 +1517,7 @@ def print_func_type_struct_decl(ref state : @generator_c::state_t, name : ptd::s
 }
 
 def print_func_type_struct_def(ref state : @generator_c::state_t, name : ptd::string(), type : @tct::meta_type,
-		mod_name : ptd::string(), anon : @boolean_t::type) {
+		mod_name : ptd::string(), anon : ptd::bool()) {
 	if (!generator_c_struct_dependence_sort::is_divisible(type)) {
 		return;
 	}
@@ -1609,7 +1608,7 @@ def get_empty_value(type : @tct::meta_type) : ptd::string() {
 }
 
 def get_additional_type_functions_decl(type_name : ptd::string(), type : @tct::meta_type, ref state : @generator_c::state_t,
-		anon : @boolean_t::type) : ptd::string() {
+		anon : ptd::bool()) : ptd::string() {
 	var ret = '';
 	match (type) case :tct_im {
 	} case :tct_arr(var arr_type) {
@@ -1895,7 +1894,7 @@ def get_variant_make_fun_def(variant_type_name : ptd::string(), mod_name : ptd::
 	return ret;
 }
 
-def takes_own_arg(function : @nlasm::function_t) : @boolean_t::type {
+def takes_own_arg(function : @nlasm::function_t) : ptd::bool() {
 	fora var arg (function->args_type) {
 		return true unless arg->register->type is :im;
 	}

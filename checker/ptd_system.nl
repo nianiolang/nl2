@@ -7,7 +7,6 @@ use hash;
 use ptd;
 use tct;
 use tc_types;
-use boolean_t;
 use string;
 use array;
 use ptd_parser;
@@ -16,11 +15,11 @@ def add_error(ref errors : @tc_types::errors_t, msg : ptd::string()) : ptd::void
 	array::push(ref errors->errors, {message => msg, line => errors->current_line, module => errors->module, column => -1, type => :error});
 }
 
-def ptd_system::is_known(value_src : @tc_types::value_src) : @boolean_t::type {
+def ptd_system::is_known(value_src : @tc_types::value_src) : ptd::bool() {
 	return value_src is :known || value_src is :knownhash;
 }
 
-def ptd_system::is_equal(a : @tct::meta_type, b : @tct::meta_type) : @boolean_t::type {
+def ptd_system::is_equal(a : @tct::meta_type, b : @tct::meta_type) : ptd::bool() {
 	return false unless ov::get_element(a) eq ov::get_element(b);
 	match (a) case :tct_im {
 	} case :tct_arr(var arr_type) {
@@ -64,7 +63,7 @@ def ptd_system::is_equal(a : @tct::meta_type, b : @tct::meta_type) : @boolean_t:
 }
 
 def ptd_system::is_try_ensure_type(type : @tc_types::type, ref modules : @tc_types::modules_t, ref errors : 
-	@tc_types::errors_t) : @boolean_t::type {
+	@tc_types::errors_t) : ptd::bool() {
 	return ptd_system::is_accepted(type, tct::var({ok => tct::tct_im(), err => tct::tct_im()}), ref modules, ref errors);
 }
 
@@ -98,12 +97,12 @@ def ptd_system::try_get_ensure_sub_types(type : @tc_types::type, ref modules : @
 }
 
 def ptd_system::is_condition_type(from : @tc_types::type, ref modules : @tc_types::modules_t, ref errors : 
-	@tc_types::errors_t) : @boolean_t::type {
+	@tc_types::errors_t) : ptd::bool() {
 	return ptd_system::is_accepted(from, tct::bool(), ref modules, ref errors);
 }
 
 def ptd_system::is_accepted(from : @tc_types::type, as_type : @tct::meta_type, ref modules : @tc_types::modules_t, ref 
-	errors : @tc_types::errors_t) : @boolean_t::type {
+	errors : @tc_types::errors_t) : ptd::bool() {
 	var ret = ptd_system::is_accepted_info(from, as_type, ref modules, ref errors);
 	return ret is :ok;
 }
@@ -136,8 +135,8 @@ def add_ref_name(ref from : @tct::meta_type, ref hash : ptd::hash(ptd::arr(ptd::
 }
 
 def is_cycle_ref(ref a : @tct::meta_type, ref b : @tct::meta_type, ref ref_inf : @tc_types::ref_t, is_cross : 
-	@boolean_t::type, deleted : @boolean_t::type, ref modules : @tc_types::modules_t, ref errors : @tc_types::errors_t) 
-	: @boolean_t::type {
+	ptd::bool(), deleted : ptd::bool(), ref modules : @tc_types::modules_t, ref errors : @tc_types::errors_t) 
+	: ptd::bool() {
 	if (a is :tct_ref && b is :tct_ref) {
 		return true if a as :tct_ref eq b as :tct_ref;
 		return true if is_cross && check_assignment_info(a, b, ref_inf, :speculation, ref modules, ref errors) is :ok;

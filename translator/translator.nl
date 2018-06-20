@@ -10,13 +10,12 @@ use ptd;
 use nast;
 use hash;
 use nlasm;
-use boolean_t;
 
 def translator::function_logic_t() {
 	return ptd::rec({
 		registers => ptd::arr(@nlasm::reg_t),
 		register => ptd::int(),
-		register_to_clear => ptd::arr(@boolean_t::type),
+		register_to_clear => ptd::arr(ptd::bool()),
 		variables => ptd::hash(@nlasm::reg_t),
 		defined_types => ptd::hash(@tct::meta_type),
 	});
@@ -604,7 +603,7 @@ def print_unless_mod(as_unless_mod : ptd::rec({cond => @nast::value_t, cmd => @n
 	print_if(as_if, true, ref state);
 }
 
-def print_if(as_if : @nast::if_t, short : @boolean_t::type, ref state : @translator::state_t) {
+def print_if(as_if : @nast::if_t, short : ptd::bool(), ref state : @translator::state_t) {
 	var register_old = save_registers(ref state);
 	var after_all_ifs_instruction_no = get_sim_label(ref state);
 	var after_if_instruction_no = get_sim_label(ref state);
@@ -932,7 +931,7 @@ def release_index(current_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, inde
 }
 
 def use_hash_index(new_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, index : @nlasm::reg_t,
-		create_if_not_exist : @boolean_t::type, ref state : @translator::state_t) : ptd::void() {
+		create_if_not_exist : ptd::bool(), ref state : @translator::state_t) : ptd::void() {
 	print(ref state, :use_hash_index({new_owner => new_owner, old_owner => old_owner, index => index, create_if_not_exist => create_if_not_exist}));
 }
 
@@ -1158,7 +1157,7 @@ def get_struct_of_lvalue(ref left : @nast::value_t, ref state : @translator::sta
 	return ret;
 }
 
-def get_value_of_lvalue(left : @nast::value_t, get_value : @boolean_t::type, ref state : @translator::state_t) :
+def get_value_of_lvalue(left : @nast::value_t, get_value : ptd::bool(), ref state : @translator::state_t) :
 	@translator::lvalue_values_t {
 	var ret = get_struct_of_lvalue(ref left, ref state);
 	var label : ptd::string() = left->value as :var;
@@ -1218,7 +1217,7 @@ def get_value_of_lvalue(left : @nast::value_t, get_value : @boolean_t::type, ref
 	return lvalue_values;
 }
 
-def set_value_of_lvalue(lvalue_values : @translator::lvalue_values_t, get_value : @boolean_t::type, ref state :
+def set_value_of_lvalue(lvalue_values : @translator::lvalue_values_t, get_value : ptd::bool(), ref state :
 	@translator::state_t) {
 	var list_size = array::len(lvalue_values);
 	var last_reg : @nlasm::reg_t = lvalue_values[list_size - 1] as :value;

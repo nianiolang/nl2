@@ -6,7 +6,6 @@
 use ptd;
 use array;
 use hash;
-use boolean_t;
 
 def test_type::test() {
 	var a : @test_type::typ2 = funkcja(:a('nothing'));
@@ -61,7 +60,7 @@ def test_type::rekord() {
 	return ptd::rec({g => ptd::string(), h => ptd::string()});
 }
 
-def test_is(arg) : @boolean_t::type {
+def test_is(arg) : ptd::bool() {
 	return arg is :h;
 }
 

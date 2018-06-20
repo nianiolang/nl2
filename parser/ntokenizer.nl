@@ -12,7 +12,6 @@ use hash;
 use string;
 use enum;
 use c_std_lib;
-use boolean_t;
 use singleton;
 
 def get_keywords() : ptd::hash(ptd::string()) {
@@ -148,14 +147,14 @@ def eat_ws(ref state : @ntokenizer::state_t) {
 	}
 }
 
-def is_token(ref state : @ntokenizer::state_t) : @boolean_t::type {
+def is_token(ref state : @ntokenizer::state_t) : ptd::bool() {
 	return true if state->type is :delimiter;
 	return true if state->type is :operator;
 	return true if state->type is :keyword;
 	return false;
 }
 
-def ntokenizer::eat_token(ref state : @ntokenizer::state_t, token : ptd::string()) : @boolean_t::type {
+def ntokenizer::eat_token(ref state : @ntokenizer::state_t, token : ptd::string()) : ptd::bool() {
 	if (token eq state->next_token && is_token(ref state)) {
 		get_next_token(ref state);
 		return true;
@@ -181,11 +180,11 @@ def ntokenizer::get_token(ref state : @ntokenizer::state_t) : ptd::string() {
 	return state->next_token;
 }
 
-def ntokenizer::is_type(ref state : @ntokenizer::state_t, type : @ntokenizer::token_t) : @boolean_t::type {
+def ntokenizer::is_type(ref state : @ntokenizer::state_t, type : @ntokenizer::token_t) : ptd::bool() {
 	return enum::eq(state->type, type);
 }
 
-def ntokenizer::next_is(ref state : @ntokenizer::state_t, token : ptd::string()) : @boolean_t::type {
+def ntokenizer::next_is(ref state : @ntokenizer::state_t, token : ptd::string()) : ptd::bool() {
 	return token eq state->next_token && is_token(ref state);
 }
 
@@ -196,7 +195,7 @@ def ntokenizer::eat_type(ref state : @ntokenizer::state_t, type : @ntokenizer::t
 	return ret;
 }
 
-def ntokenizer::is_text(ref state : @ntokenizer::state_t) : @boolean_t::type {
+def ntokenizer::is_text(ref state : @ntokenizer::state_t) : ptd::bool() {
 	return true if (ntokenizer::is_type(ref state, :word));
 	return true if (ntokenizer::is_type(ref state, :keyword));
 	if (ntokenizer::is_type(ref state, :operator)) {
@@ -223,7 +222,7 @@ def ntokenizer::info(ref state : @ntokenizer::state_t) : ptd::string() {
 		'';
 }
 
-def is_hex_number(char : ptd::string()) : @boolean_t::type {
+def is_hex_number(char : ptd::string()) : ptd::bool() {
 	return string::is_digit(char) || (string::ord(char) >= 65 && string::ord(char) <= 70) || 
 		(string::ord(char) >= 97 && string::ord(char) <= 102);
 }

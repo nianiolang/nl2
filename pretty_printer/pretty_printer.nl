@@ -8,7 +8,6 @@ use array;
 use ptd;
 use nast;
 use wprinter;
-use boolean_t;
 
 def state_print(ref state : @wprinter::state_t, str : ptd::string()) : ptd::void() {
 	state->out .= str;
@@ -270,7 +269,7 @@ def join_print_val(aval : ptd::arr(@nast::value_t)) : @wprinter::pretty_arr_t {
 	return ret;
 }
 
-def is_to_change_ov(val : @nast::value_t) : @boolean_t::type {
+def is_to_change_ov(val : @nast::value_t) : ptd::bool() {
 	return false unless val->value is :fun_val;
 	var fun_val = val->value as :fun_val;
 	if (array::len(fun_val->args) == 2 && (fun_val->module eq 'ov' || fun_val->module eq 'c_ov')) {

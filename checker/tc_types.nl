@@ -6,7 +6,6 @@
 use hash;
 use ptd;
 use tct;
-use boolean_t;
 use nast;
 use singleton;
 use compiler_lib;
@@ -72,7 +71,7 @@ def tc_types::return_t() {
 }
 
 def tc_types::modules_t() {
-	return ptd::rec({imports => ptd::hash(@boolean_t::type), env => @tc_types::env, funs => @tc_types::defs_funs_t});
+	return ptd::rec({imports => ptd::hash(ptd::bool()), env => @tc_types::env, funs => @tc_types::defs_funs_t});
 }
 
 def tc_types::deref_type() {
@@ -86,7 +85,7 @@ def tc_types::deref_types() {
 def tc_types::env() {
 	return ptd::rec({
 			current_module => ptd::string(),
-			breaks => ptd::rec({vars => @tc_types::vars_t, is => @boolean_t::type}),
+			breaks => ptd::rec({vars => @tc_types::vars_t, is => ptd::bool()}),
 			ret_type => @tct::meta_type,
 			deref => @tc_types::deref_types
 		});
@@ -150,8 +149,8 @@ def tc_types::ref_t() {
 			level => ptd::int(),
 			from => ptd::hash(ptd::arr(ptd::int())),
 			to => ptd::hash(ptd::arr(ptd::int())),
-			check => @boolean_t::type,
-			cast => @boolean_t::type
+			check => ptd::bool(),
+			cast => ptd::bool()
 		});
 }
 

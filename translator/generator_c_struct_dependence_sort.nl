@@ -2,7 +2,6 @@ use hash;
 use tct;
 use array;
 use string;
-use boolean_t;
 use ptd;
 use nlasm;
 use ov;
@@ -31,7 +30,7 @@ def generator_c_struct_dependence_sort::graph_node() {
 	return ptd::rec({
 			pointer => ptd::arr(ptd::string()),
 			struct => ptd::arr(ptd::string()),
-			is_divisible => @boolean_t::type,
+			is_divisible => ptd::bool(),
 			type => @tct::meta_type
 		});
 }
@@ -115,7 +114,7 @@ def get_required_types_list(type : @tct::meta_type, ref node : @generator_c_stru
 	}
 }
 
-def generator_c_struct_dependence_sort::is_divisible(type : @tct::meta_type) : @boolean_t::type {
+def generator_c_struct_dependence_sort::is_divisible(type : @tct::meta_type) : ptd::bool() {
 	match (type) case :tct_im {
 	} case :tct_arr(var arr_type) {
 	} case :tct_own_arr(var arr_type) {
@@ -252,7 +251,7 @@ def sort_graph_help(graph : @generator_c_struct_dependence_sort::graph,
 		ref output : ptd::arr(@generator_c_struct_dependence_sort::sorted_element),
 		ref path : ptd::hash(@generator_c_struct_dependence_sort::decl_def_type),
 		ref processed : ptd::hash(@generator_c_struct_dependence_sort::decl_def_type),
-		current : @generator_c_struct_dependence_sort::sorted_element, ref cycle : @boolean_t::type) : ptd::void() {
+		current : @generator_c_struct_dependence_sort::sorted_element, ref cycle : ptd::bool()) : ptd::void() {
 	var name;
 	var type;
 	match (current) case :definition(var n) {

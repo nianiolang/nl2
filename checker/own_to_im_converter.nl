@@ -6,7 +6,6 @@ use tct;
 use anon_naming;
 use ptd;
 use hash;
-use boolean_t;
 use array;
 use string;
 
@@ -81,7 +80,7 @@ def own_to_im_converter::get_required_arg_type(type : @tct::meta_type, known_typ
 	}
 }
 
-def get_type_constructor(type : @tct::meta_type, remove_owns : @boolean_t::type, known_types : ptd::hash(@tct::meta_type)) : ptd::string() {
+def get_type_constructor(type : @tct::meta_type, remove_owns : ptd::bool(), known_types : ptd::hash(@tct::meta_type)) : ptd::string() {
 	var res : ptd::string() = '';
 	var own : ptd::string() = 'own';
 	if (remove_owns) {

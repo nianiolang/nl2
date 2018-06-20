@@ -10,7 +10,6 @@ use nast;
 use tc_types;
 use tct;
 use string;
-use boolean_t;
 use ptd_parser;
 
 def module_checker::stack_t() {
@@ -77,9 +76,9 @@ def get_loop_from_stack(last_elem : ptd::string(), stack : @module_checker::stac
 def module_checker::var_t() {
 	return ptd::rec({
 			write => ptd::var({const => ptd::none(), none => ptd::none(), value => ptd::none()}),
-			read => @boolean_t::type,
-			initialized => @boolean_t::type,
-			is_required => @boolean_t::type
+			read => ptd::bool(),
+			initialized => ptd::bool(),
+			is_required => ptd::bool()
 		});
 }
 
@@ -95,8 +94,8 @@ def module_checker::return_t() {
 
 def module_checker::state_t() {
 	return ptd::rec({
-			in_loop => @boolean_t::type,
-			return => ptd::rec({was => @boolean_t::type, arg => @module_checker::return_t}),
+			in_loop => ptd::bool(),
+			return => ptd::rec({was => ptd::bool(), arg => @module_checker::return_t}),
 			vars => ptd::hash(@module_checker::var_t),
 			errors => @tc_types::errors_t,
 			called => ptd::rec({func => ptd::hash(ptd::int()), module => ptd::hash(ptd::int())}),
@@ -105,13 +104,13 @@ def module_checker::state_t() {
 }
 
 def module_checker::save_t() {
-	return ptd::rec({in_loop => @boolean_t::type, vars => ptd::hash(@module_checker::var_t)});
+	return ptd::rec({in_loop => ptd::bool(), vars => ptd::hash(@module_checker::var_t)});
 }
 
 def module_checker::init_checker_t() {
 	return ptd::rec({
 		prev => @module_checker::save_t,
-		each_init => ptd::hash(@boolean_t::type)
+		each_init => ptd::hash(ptd::bool())
 	});
 }
 
@@ -314,8 +313,8 @@ def check_type(type : @nast::variable_type_t, ref state : @module_checker::state
 	}
 }
 
-def add_var(name : ptd::string(), is_const : @boolean_t::type, is_required : @boolean_t::type, initialized :
-	@boolean_t::type, ref state : @module_checker::state_t) : ptd::void() {
+def add_var(name : ptd::string(), is_const : ptd::bool(), is_required : ptd::bool(), initialized :
+	ptd::bool(), ref state : @module_checker::state_t) : ptd::void() {
 	if (hash::has_key(state->vars, name)) {
 		add_error(ref state->errors, 'redeclaration variable: ' . name);
 	}
@@ -355,8 +354,8 @@ def use_var(name : ptd::string(), mode : ptd::var({mod => ptd::none(), set => pt
 	hash::set_value(ref state->vars, name, info);
 }
 
-def add_var_dec(var_dec : @nast::variable_declaration_t, is_const : @boolean_t::type, is_required : @boolean_t::type, 
-	is_initialized : @boolean_t::type, ref state : @module_checker::state_t) : ptd::void() {
+def add_var_dec(var_dec : @nast::variable_declaration_t, is_const : ptd::bool(), is_required : ptd::bool(), 
+	is_initialized : ptd::bool(), ref state : @module_checker::state_t) : ptd::void() {
 	add_var(var_dec->name, is_const, is_required, is_initialized, ref state);
 	check_type(var_dec->type, ref state);
 	match (var_dec->value) case :value(var value) {

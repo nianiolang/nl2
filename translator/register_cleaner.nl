@@ -5,7 +5,6 @@
 
 use ptd;
 use nlasm;
-use boolean_t;
 use array;
 
 
@@ -294,8 +293,8 @@ def recalculate_annotation(annotation : @nlasm::annotation_t, map : ptd::hash(@n
 	}
 }
 
-def find_unused_regs(func : @nlasm::function_t) : ptd::hash(@boolean_t::type) {
-	var regs : ptd::hash(@boolean_t::type) = {};
+def find_unused_regs(func : @nlasm::function_t) : ptd::hash(ptd::bool()) {
+	var regs : ptd::hash(ptd::bool()) = {};
 	rep var i (array::len(func->registers)) {
 		regs{ptd::int_to_string(i)} = false;
 	}

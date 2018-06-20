@@ -8,7 +8,6 @@ use hash;
 use nlasm;
 use ov;
 use ptd;
-use boolean_t;
 use nast;
 use func;
 use nl;
@@ -54,7 +53,7 @@ def interpreter::state_t() {
 			stack => ptd::arr(@interpreter::stack_element_t),
 			top => @interpreter::stack_element_t,
 			instruction_nr => ptd::int(),
-			check_all_instructions => @boolean_t::type,
+			check_all_instructions => ptd::bool(),
 			known_exec_func => ptd::hash(@interpreter::known_exec_func_t),
 			compiler_functions => ptd::hash(ptd::string()),
 			profile => ptd::arr(@profile_inter::row_t)
@@ -388,7 +387,7 @@ def interpreter::get_whole_stack_debug(state : @interpreter::state_t) : ptd::arr
 	return result;
 }
 
-def interpreter::has_next_instruction(state : @interpreter::state_t) : @boolean_t::type {
+def interpreter::has_next_instruction(state : @interpreter::state_t) : ptd::bool() {
 	return state->top->next < array::len(state->func->commands);
 }
 
@@ -408,7 +407,7 @@ def interpreter::get_instruction_nr(state : @interpreter::state_t) : ptd::int() 
 	return get_command(state)->debug->instruction_nr;
 }
 
-def is_hidden(cmd : @nlasm::cmd_t) : @boolean_t::type {
+def is_hidden(cmd : @nlasm::cmd_t) : ptd::bool() {
 	return cmd->cmd is :prt_lbl || cmd->cmd is :clear;
 }
 
@@ -617,7 +616,7 @@ def step(ref state : @interpreter::state_t) : ptd::void() {
 	handle_new_declarations(ref state);
 }
 
-def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : @boolean_t::type {
+def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::bool() {
 	return true unless state->check_all_instructions;
 	match (cmd) case :arr_decl(var arr_decl) {
 	} case :hash_decl(var hash_decl) {

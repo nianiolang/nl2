@@ -6,7 +6,6 @@
 use ptd;
 use array;
 use hash;
-use boolean_t;
 
 def test_ensure::test() {
 	match(ptd::try_cast(@test_ensure::fun_arg_t, :b({a=>[], c=>''}))) case :err(var info){

@@ -3,7 +3,6 @@
 ###
 
 use string;
-use boolean_t;
 use ptd;
 use array;
 
@@ -37,7 +36,7 @@ def string_utils::get_integer(str) : ptd::var({ok => ptd::int(), err => ptd::str
 	return :ok(sign * ret);
 }
 
-def string_utils::is_integer(obj : ptd::string()) : @boolean_t::type {
+def string_utils::is_integer(obj : ptd::string()) : ptd::bool() {
 	obj = obj . '';
 	return false unless string_utils::is_integer_possibly_leading_zeros(obj);
 	return true if obj eq '0';
@@ -47,7 +46,7 @@ def string_utils::is_integer(obj : ptd::string()) : @boolean_t::type {
 	return true;
 }
 
-def string_utils::is_integer_possibly_leading_zeros(obj : ptd::string()) : @boolean_t::type {
+def string_utils::is_integer_possibly_leading_zeros(obj : ptd::string()) : ptd::bool() {
 	var string = obj . '';
 	var len = string::length(string);
 	var i = 0;
@@ -59,7 +58,7 @@ def string_utils::is_integer_possibly_leading_zeros(obj : ptd::string()) : @bool
 	return true;
 }
 
-def string_utils::is_float(obj : ptd::string()) : @boolean_t::type {
+def string_utils::is_float(obj : ptd::string()) : ptd::bool() {
 	var string = obj . '';
 	var len = string::length(string);
 	return false if len < 3;
@@ -76,7 +75,7 @@ def string_utils::is_float(obj : ptd::string()) : @boolean_t::type {
 	return true;
 }
 
-def string_utils::is_number(string) : @boolean_t::type {
+def string_utils::is_number(string) : ptd::bool() {
 	var sim : ptd::string() = string . '';
 	return string_utils::is_integer(sim) || string_utils::is_float(sim);
 }

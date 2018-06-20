@@ -6,7 +6,6 @@
 use ptd;
 use nast;
 use tct;
-use boolean_t;
 
 def nlasm::result_t() {
 	return ptd::rec({
@@ -163,7 +162,7 @@ def nlasm::use_hash_index_t() {
 		new_owner => @nlasm::reg_t,
 		old_owner => @nlasm::reg_t,
 		index => @nlasm::reg_t,
-		create_if_not_exist => @boolean_t::type,
+		create_if_not_exist => ptd::bool(),
 	});
 }
 
@@ -274,11 +273,11 @@ def nlasm::is_empty(reg : @nlasm::reg_t) {
 	return reg->reg_no == -1;
 }
 
-def nlasm::eq_reg(reg1 : @nlasm::reg_t, reg2 : @nlasm::reg_t) : @boolean_t::type {
+def nlasm::eq_reg(reg1 : @nlasm::reg_t, reg2 : @nlasm::reg_t) : ptd::bool() {
 	return reg1->reg_no == reg2->reg_no;
 }
 
-def nlasm::eq_reg_type(reg1 : @nlasm::reg_type, reg2 : @nlasm::reg_type) : @boolean_t::type {
+def nlasm::eq_reg_type(reg1 : @nlasm::reg_type, reg2 : @nlasm::reg_type) : ptd::bool() {
 	match (reg1) case :im {
 		return reg2 is :im || reg2 is :string;
 	} case :int {

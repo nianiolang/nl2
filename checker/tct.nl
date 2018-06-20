@@ -5,7 +5,6 @@
 
 use hash;
 use ptd;
-use boolean_t;
 use string;
 
 def tct::arr(arr_type : @tct::meta_type) : @tct::meta_type {
@@ -178,7 +177,7 @@ def get_fun_name(fun : ptd::string()) : ptd::string() {
 	return (string::split('::', fun))[1];
 }
 
-def tct::is_own_type(type : @tct::meta_type, defined_types : ptd::hash(@tct::meta_type)) : @boolean_t::type {
+def tct::is_own_type(type : @tct::meta_type, defined_types : ptd::hash(@tct::meta_type)) : ptd::bool() {
 	match (type) case :tct_rec (var p) {
 		return false;
 	} case :tct_own_rec (var p) {

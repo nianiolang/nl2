@@ -10,7 +10,6 @@ use array;
 use ptd;
 use nast;
 use nparser;
-use boolean_t;
 use translator;
 use nlasm;
 use interpreter;
@@ -106,7 +105,7 @@ def get_module_name(path : ptd::string()) : ptd::string() {
 	return ret;
 }
 
-def has_extension(path : ptd::string(), exten : ptd::string()) : @boolean_t::type {
+def has_extension(path : ptd::string(), exten : ptd::string()) : ptd::bool() {
 	var len = string::length(exten);
 	return false if string::length(path) <= len;
 	len = string::substr(path, string::length(path) - len, len);

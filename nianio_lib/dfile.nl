@@ -9,7 +9,6 @@ use string;
 use hash;
 use array;
 use nl;
-use boolean_t;
 use ptd;
 
 def dfile::deep_eq(left, right) {
@@ -60,11 +59,11 @@ def get_char(ref state : @dfile::state_t) : ptd::string() {
 	return c_std_lib::fast_substr(state->str, state->pos, 1);
 }
 
-def is_ov(ref state : @dfile::state_t) : @boolean_t::type {
+def is_ov(ref state : @dfile::state_t) : ptd::bool() {
 	return c_std_lib::fast_substr(state->str, state->pos, 7) eq 'ov::mk(';
 }
 
-def eat_non_ws(ref state : @dfile::state_t, ref error : @boolean_t::type) : ptd::string() {
+def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
 	var ret = '';
 	var l = state->len;
 	if (state->pos >= l) {
@@ -85,7 +84,7 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : @boolean_t::type) : ptd:
 	return ret;
 }
 
-def parse_scalar(ref state : @dfile::state_t, ref error : @boolean_t::type) : ptd::string() {
+def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
 	eat_ws(ref state);
 	if (get_char(ref state) eq '"') {
 		++state->pos;
@@ -120,7 +119,7 @@ def parse_scalar(ref state : @dfile::state_t, ref error : @boolean_t::type) : pt
 	}
 }
 
-def match_s(ref state : @dfile::state_t, pattern : ptd::string()) : @boolean_t::type {
+def match_s(ref state : @dfile::state_t, pattern : ptd::string()) : ptd::bool() {
 	var len = string::length(pattern);
 	if (c_std_lib::fast_substr(state->str, state->pos, len) eq pattern) {
 		state->pos += len;
@@ -134,7 +133,7 @@ def dfile::state_t() {
 	return ptd::rec({str => ptd::arr(ptd::string()), len => ptd::int(), pos => ptd::int()});
 }
 
-def parse(ref state : @dfile::state_t, ref error : @boolean_t::type) : ptd::ptd_im() {
+def parse(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::ptd_im() {
 	eat_ws(ref state);
 	var char = get_char(ref state);
 	if (char eq '{') {
@@ -228,7 +227,7 @@ def dfile::try_sload(str_im) : ptd::var({ok => ptd::ptd_im(), err => ptd::string
 }
 
 def dfile::state_out() {
-	return ptd::rec({str => ptd::string(), objects => ptd::hash(@boolean_t::type)});
+	return ptd::rec({str => ptd::string(), objects => ptd::hash(ptd::bool())});
 }
 
 def sp(ref state : @dfile::state_out, str) : ptd::void() {
@@ -244,7 +243,7 @@ def sprintstr(ref state : @dfile::state_out, str) : ptd::void() {
 	sp(ref state, '"' . str . '"');
 }
 
-def is_simple_string(str) : @boolean_t::type {
+def is_simple_string(str) : ptd::bool() {
 	var len = string::length(str);
 	return false if len == 0;
 	return false unless string::is_letter(string::substr(str, 0, 1)) || string::substr(str, 0, 1) eq '_';
@@ -267,7 +266,7 @@ def get_ind(ind : ptd::int()) : ptd::string() {
 	return string::char_times(string::tab(), ind);
 }
 
-def sprint_hash(ref state : @dfile::state_out, obj : ptd::ptd_im(), indent : ptd::int(), is_debug : @boolean_t::type) :
+def sprint_hash(ref state : @dfile::state_out, obj : ptd::ptd_im(), indent : ptd::int(), is_debug : ptd::bool()) :
 		ptd::void() {
 	sp(ref state, '{' . string::lf());
 	var keys = hash::keys(obj);
@@ -283,7 +282,7 @@ def sprint_hash(ref state : @dfile::state_out, obj : ptd::ptd_im(), indent : ptd
 	sp(ref state, get_ind(indent) . '}');
 }
 
-def handle_debug(ref state : @dfile::state_out, obj) : @boolean_t::type {
+def handle_debug(ref state : @dfile::state_out, obj) : ptd::bool() {
 	if ((nl::is_hash(obj) || nl::is_array(obj)) && hash::has_key(state->objects, obj)) {
 		sp(ref state, obj);
 		return true;
@@ -293,7 +292,7 @@ def handle_debug(ref state : @dfile::state_out, obj) : @boolean_t::type {
 	}
 }
 
-def sprint(ref state : @dfile::state_out, obj : ptd::ptd_im(), indent : ptd::int(), is_debug : @boolean_t::type) :
+def sprint(ref state : @dfile::state_out, obj : ptd::ptd_im(), indent : ptd::int(), is_debug : ptd::bool()) :
 		ptd::void() {
 	return if is_debug && handle_debug(ref state, obj);
 	if (nl::is_sim(obj)) {

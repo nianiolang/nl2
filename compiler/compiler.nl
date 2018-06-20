@@ -11,7 +11,6 @@ use dfile;
 use ptd;
 use nast;
 use nparser;
-use boolean_t;
 use pretty_printer;
 use generator_c;
 use translator;
@@ -119,8 +118,8 @@ def compiler::input_type() {
 			mode => ptd::var({strict => ptd::none(), exec => ptd::none(), ide => ptd::none(), idex => ptd::string()}),
 			language => @compiler::language_t,
 			alarm => ptd::var({norm => ptd::none(), wall => ptd::none()}),
-			check_public_fun => @boolean_t::type,
-			profile => @boolean_t::type,
+			check_public_fun => ptd::bool(),
+			profile => ptd::bool(),
 		});
 }
 
@@ -182,7 +181,7 @@ def get_module_name(path : ptd::string()) : ptd::string() {
 	return ret;
 }
 
-def has_extension(path : ptd::string(), exten : ptd::string()) : @boolean_t::type {
+def has_extension(path : ptd::string(), exten : ptd::string()) : ptd::bool() {
 	var len = string::length(exten);
 	return false if string::length(path) <= len;
 	len = string::substr(path, string::length(path) - len, len);
@@ -597,7 +596,7 @@ def translate(asts_to_translate : ptd::hash(@nast::module_t), asts_all : ptd::ha
 	return nlasm;
 }
 
-def check_modules(ref asts : ptd::hash(@nast::module_t), ref errors : @compiler::errors_group_t, deref : @compiler::deref_t, check_public_fun : @boolean_t::type)
+def check_modules(ref asts : ptd::hash(@nast::module_t), ref errors : @compiler::errors_group_t, deref : @compiler::deref_t, check_public_fun : ptd::bool())
 	: ptd::void() {
 	c_fe_lib::print('type checking...');
 	var ret = type_checker::check_modules(ref asts, asts);

@@ -5,7 +5,6 @@
 
 use c_std_lib;
 use array;
-use boolean_t;
 use ptd;
 
 def string::lf() {
@@ -140,12 +139,12 @@ def string::ord(char) {
 	return c_std_lib::string_ord(char);
 }
 
-def string::is_digit(char) : @boolean_t::type {
+def string::is_digit(char) : ptd::bool() {
 	var o = string::ord(char);
 	return o >= 48 && o <= 57;
 }
 
-def string::is_letter(char) : @boolean_t::type {
+def string::is_letter(char) : ptd::bool() {
 	var o = string::ord(char);
 	return (o >= 97 && o <= 122) || (o >= 65 && o <= 90);
 }

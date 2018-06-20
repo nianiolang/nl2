@@ -6,7 +6,6 @@
 use string;
 use array;
 use hash;
-use boolean_t;
 use ptd;
 use own;
 use nast;
@@ -70,13 +69,13 @@ def add_error(ref state : @nparser::state_t, message : ptd::string()) : ptd::voi
 	array::push(ref state->errors, {line => current_line, module => state->module_name, column => pos, message => message, type => :error});
 }
 
-def eat(ref state : @nparser::state_t, token : ptd::string()) : @boolean_t::type {
+def eat(ref state : @nparser::state_t, token : ptd::string()) : ptd::bool() {
 	return true if ntokenizer::eat_token(ref state->state, token);
 	add_error(ref state, 'expected: ' . token . string::lf() . ntokenizer::info(ref state->state));
 	return false;
 }
 
-def try_eat(ref state : @nparser::state_t, token : ptd::string()) : @boolean_t::type {
+def try_eat(ref state : @nparser::state_t, token : ptd::string()) : ptd::bool() {
 	return ntokenizer::eat_token(ref state->state, token);
 }
 

@@ -6,7 +6,6 @@
 use string;
 use ptd;
 use array;
-use boolean_t;
 
 def get_tab_size() : ptd::int() {
 	return 4;
@@ -24,7 +23,7 @@ def wprinter::state_t() {
 	return ptd::rec({out => ptd::string()});
 }
 
-def is_to_long(len : ptd::int()) : @boolean_t::type {
+def is_to_long(len : ptd::int()) : ptd::bool() {
 	return len > get_line_width();
 }
 
@@ -172,7 +171,7 @@ def wprinter::print_t(ref state : @wprinter::state_t, wise_s : @wprinter::pretty
 }
 
 def flush_list(ref state : @wprinter::state_t, list : @wprinter::pretty_arr_t, pref : ptd::int(), len : ptd::int(), ind 
-	: ptd::int(), first : @boolean_t::type) : ptd::int() {
+	: ptd::int(), first : ptd::bool()) : ptd::int() {
 	if (!is_to_long(len)) {
 		fora var e (list) {
 			print_sim_rec(ref state, e);
@@ -205,11 +204,11 @@ def print_arr_in_lines(ref state : @wprinter::state_t, arr : @wprinter::pretty_a
 	return pref;
 }
 
-def process_list(ref state : @wprinter::state_t, arr : @wprinter::pretty_arr_t, is_op_list : @boolean_t::type, pref : 
+def process_list(ref state : @wprinter::state_t, arr : @wprinter::pretty_arr_t, is_op_list : ptd::bool(), pref : 
 		ptd::int(), ind : ptd::int()) : ptd::int() {
 	var els : @wprinter::pretty_arr_t = [];
 	var els_len : ptd::int() = 0;
-	var first : @boolean_t::type = true;
+	var first : ptd::bool() = true;
 	rep var i (array::len(arr)) {
 		var elem : @wprinter::pretty_t = arr[i];
 		if (elem->el is :sep) {

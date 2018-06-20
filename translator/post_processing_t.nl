@@ -5,7 +5,6 @@
 
 use ptd;
 use nlasm;
-use boolean_t;
 use interpreter;
 
 def post_processing_t::fun_tree_t() {
@@ -25,7 +24,7 @@ def post_processing_t::state_t() {
 }
 
 def post_processing_t::math_funs_t() {
-	return ptd::hash(@boolean_t::type);
+	return ptd::hash(ptd::bool());
 }
 
 def post_processing_t::reg_const() {

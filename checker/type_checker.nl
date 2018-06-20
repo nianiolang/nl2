@@ -9,7 +9,6 @@ use tc_types;
 use hash;
 use enum;
 use string;
-use boolean_t;
 use nast;
 use ptd_parser;
 use ptd_system;
@@ -668,7 +667,7 @@ def check_match(ref as_match : @nast::match_t, ref modules : @tc_types::modules_
 	var val_type : @tc_types::type = ptd_system::can_delete(check_val(as_match->val, ref modules, ref vars, ref errors, known_types), 
 			ref modules, ref errors);
 	var branches : ptd::arr(@nast::match_branch_t) = as_match->branch_list;
-	var type_is_match : @boolean_t::type = false;
+	var type_is_match : ptd::bool() = false;
 	var branch_var_types : ptd::hash(@tct::meta_type) = {};
 	var variants : ptd::hash(ptd::var({with_param => @tct::meta_type, no_param => ptd::none()})) = {};
 	if (!ptd_system::is_accepted(val_type, tct::var({}), ref modules, ref errors) &&
@@ -681,7 +680,7 @@ def check_match(ref as_match : @nast::match_t, ref modules : @tc_types::modules_
 		} else {
 			variants = val_type->type as :tct_own_var;
 		}
-		var used_variants : ptd::hash(@boolean_t::type) = {};
+		var used_variants : ptd::hash(ptd::bool()) = {};
 		fora var branch (branches) {
 			var variant_name : ptd::string() = branch->variant->name;
 			if (!hash::has_key(variants, variant_name)) {
@@ -1934,7 +1933,7 @@ def check_var_decl(var_decl : @nast::variable_declaration_t, ref modules : @tc_t
 	return check_var_decl_try(var_decl, false, ref modules, ref vars, ref errors, known_types)->ok;
 }
 
-def check_var_decl_try(var_decl : @nast::variable_declaration_t, is_try : @boolean_t::type, ref modules : 
+def check_var_decl_try(var_decl : @nast::variable_declaration_t, is_try : ptd::bool(), ref modules : 
 		@tc_types::modules_t, ref vars : @tc_types::vars_t, ref errors : @tc_types::errors_t, known_types : ptd::hash(@tct::meta_type))
 	: ptd::rec({ok => @tc_types::var_t, err => @tc_types::type}) {
 	add_error(ref errors, 'variable ''' . var_decl->name . ''' already exists') if hash::has_key(vars, var_decl->name);
@@ -2012,7 +2011,7 @@ def add_var_decl_with_type_and_check(ref var_decl : @nast::variable_declaration_
 	}
 }
 
-def is_known(vtype : @tc_types::type) : @boolean_t::type {
+def is_known(vtype : @tc_types::type) : ptd::bool() {
 	return ptd_system::is_known(vtype->src);
 }
 
@@ -2031,7 +2030,7 @@ def get_function_def(fun_module : ptd::string(), fun_name : ptd::string(), modul
 }
 
 def check_function_exists(fun_module : ptd::string(), fun_name : ptd::string(), ref modules : @tc_types::modules_t, ref errors 
-		: @tc_types::errors_t) : @boolean_t::type {
+		: @tc_types::errors_t) : ptd::bool() {
 	var module : ptd::string() = get_fun_module(fun_module, modules->env->current_module);
 	if (!hash::has_key(modules->imports, module) || !hash::get_value(modules->imports, module)) {
 		add_error(ref errors, 'module ''' . module . ''' not imported') if !hash::has_key(modules->imports, module);
@@ -2471,7 +2470,7 @@ def unwrap_ref(type : @tct::meta_type, ref modules : @tc_types::modules_t, ref e
 	return type;
 }
 
-def takes_own_arg(function : @tc_types::def_fun_t, defined_types : ptd::hash(@tct::meta_type)) : @boolean_t::type {
+def takes_own_arg(function : @tc_types::def_fun_t, defined_types : ptd::hash(@tct::meta_type)) : ptd::bool() {
 	fora var arg (function->args) {
 		return true if tct::is_own_type(arg->type, defined_types);
 	}
