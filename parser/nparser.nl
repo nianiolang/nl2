@@ -478,8 +478,6 @@ def get_value_nop(ref state : @nparser::state_t) : @nast::value_t {
 	};
 }
 
-
-
 def eat_text(ref state : @nparser::state_t) : ptd::var({ok => ptd::string(), err => ptd::string()}) {
 	if (ntokenizer::is_text(ref state->state)) {
 		return :ok(ntokenizer::eat_text(ref state->state));

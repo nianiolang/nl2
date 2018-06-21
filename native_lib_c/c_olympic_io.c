@@ -24,6 +24,6 @@ ImmT c_olympic_io0readln() {
 
 INT c_olympic_io0read_int() {
 	int n;
-	scanf("%d", &n);
+	scanf(" %d ", &n);
 	return n;
 }

@@ -1161,6 +1161,10 @@ def get_special_functions() : @tc_types::special_functions {
 			r => tct::arr(tct::string()),
 			a => [{mod => :none, type => tct::string(), name => ''}, {mod => :none, type => tct::string(), name => ''}]
 		});
+	hash::set_value(ref f, 'string::to_array', {
+			r => tct::arr(tct::string()),
+			a => [{mod => :none, type => tct::string(), name => ''}]
+		});
 	hash::set_value(ref f, 'c_std_lib::fast_substr', {
 			r => tct::string(),
 			a => [
