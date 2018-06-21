@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "c_rt_lib.h"
 
-#define MAX_LINE_LENGTH 1000000
+#define MAX_LINE_LENGTH 2000000
 
 ImmT c_olympic_io0print(ImmT str);
 ImmT c_olympic_io0readln();
