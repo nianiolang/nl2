@@ -44,9 +44,10 @@ INT  ___nl__int__4 = 0;
 ImmT  ___nl__im__5 = NULL;
 ImmT  ___nl__im__6 = NULL;
 ImmT  ___nl__im__7 = NULL;
-ImmT  ___nl__im__8 = NULL;
+INT  ___nl__int__8 = 0;
 ImmT  ___nl__im__9 = NULL;
-ImmT  ___nl__string__10 = NULL;
+ImmT  ___nl__im__10 = NULL;
+ImmT  ___nl__string__11 = NULL;
 #line 15
 c_rt_lib0move(&___nl__im__2,___get_global_const(51));
 #line 15
@@ -62,13 +63,15 @@ c_rt_lib0move(&___nl__im__6, c_rt_lib0int_new(___nl__int__4));
 #line 15
 c_rt_lib0move(&___nl__im__7, c_rt_lib0hash_get_value_dec((*___ref___im__0), ___get_global_const(150)));
 #line 15
-c_rt_lib0move(&___nl__im__8,___get_global_const(41));
+___nl__int__8 = 1;
 #line 15
-c_rt_lib0move(&___nl__im__8, c_rt_lib0unary_minus(___nl__im__8));
+___nl__int__8 = -___nl__int__8;
 #line 15
-c_rt_lib0move(&___nl__im__9, c_rt_lib0ov_mk_none(___get_global_const(123)));
+c_rt_lib0move(&___nl__im__9, c_rt_lib0int_new(___nl__int__8));
 #line 15
-c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(5, ___get_global_const(155), ___nl__im__1, ___get_global_const(152), ___nl__im__6, ___get_global_const(150), ___nl__im__7, ___get_global_const(203), ___nl__im__8, ___get_global_const(204), ___nl__im__9));
+c_rt_lib0move(&___nl__im__10, c_rt_lib0ov_mk_none(___get_global_const(123)));
+#line 15
+c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(5, ___get_global_const(155), ___nl__im__1, ___get_global_const(152), ___nl__im__6, ___get_global_const(150), ___nl__im__7, ___get_global_const(203), ___nl__im__9, ___get_global_const(204), ___nl__im__10));
 #line 15
 //clear ___nl__int__4;
 #line 15
@@ -76,21 +79,23 @@ c_rt_lib0clear(&___nl__im__6);
 #line 15
 c_rt_lib0clear(&___nl__im__7);
 #line 15
-c_rt_lib0clear(&___nl__im__8);
+//clear ___nl__int__8;
 #line 15
 c_rt_lib0clear(&___nl__im__9);
 #line 15
+c_rt_lib0clear(&___nl__im__10);
+#line 15
 c_rt_lib0delete(array0push(&___nl__im__2, ___nl__im__3));
 #line 15
-c_rt_lib0move(&___nl__string__10,___get_global_const(51));
+c_rt_lib0move(&___nl__string__11,___get_global_const(51));
 #line 15
-c_rt_lib0delete(c_rt_lib0set_ref_hash(___ref___im__0, ___nl__string__10, ___nl__im__2));
+c_rt_lib0delete(c_rt_lib0set_ref_hash(___ref___im__0, ___nl__string__11, ___nl__im__2));
 #line 15
 c_rt_lib0clear(&___nl__im__2);
 #line 15
 c_rt_lib0clear(&___nl__im__3);
 #line 15
-c_rt_lib0clear(&___nl__string__10);
+c_rt_lib0clear(&___nl__string__11);
 #line 15
 c_rt_lib0clear(&___nl__im__1);
 #line 15

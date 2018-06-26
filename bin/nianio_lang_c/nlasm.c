@@ -1990,10 +1990,9 @@ nlasm_priv0__const__init();
 bool  ___nl__bool__1 = false;
 INT  ___nl__int__2 = 0;
 ImmT  ___nl__im__3 = NULL;
-ImmT  ___nl__im__4 = NULL;
+INT  ___nl__int__4 = 0;
 INT  ___nl__int__5 = 0;
-INT  ___nl__int__6 = 0;
-ImmT  ___nl__im__7 = NULL;
+ImmT  ___nl__im__6 = NULL;
 #line 273
 c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_const(217)));
 #line 273
@@ -2001,37 +2000,33 @@ ___nl__int__2 = getIntFromImm(___nl__im__3);
 #line 273
 c_rt_lib0clear(&___nl__im__3);
 #line 273
-c_rt_lib0move(&___nl__im__4,___get_global_const(41));
+___nl__int__4 = 1;
 #line 273
-c_rt_lib0move(&___nl__im__4, c_rt_lib0unary_minus(___nl__im__4));
+___nl__int__4 = -___nl__int__4;
 #line 273
-___nl__int__5 = getIntFromImm(___nl__im__4);
+___nl__int__5 = ___nl__int__2 == ___nl__int__4;
 #line 273
-___nl__int__6 = ___nl__int__2 == ___nl__int__5;
-#line 273
-___nl__bool__1 = ___nl__int__6;
+___nl__bool__1 = ___nl__int__5;
 #line 273
 //clear ___nl__int__2;
 #line 273
-c_rt_lib0clear(&___nl__im__4);
+//clear ___nl__int__4;
 #line 273
 //clear ___nl__int__5;
 #line 273
-//clear ___nl__int__6;
-#line 273
-c_rt_lib0move(&___nl__im__7, c_rt_lib0bool_to_nl_native(___nl__bool__1));
+c_rt_lib0move(&___nl__im__6, c_rt_lib0bool_to_nl_native(___nl__bool__1));
 #line 273
 c_rt_lib0clear(&___nl__im__0);
 #line 273
 //clear ___nl__bool__1;
 #line 273
-return ___nl__im__7;
+return ___nl__im__6;
 #line 273
 c_rt_lib0clear(&___nl__im__0);
 #line 273
 //clear ___nl__bool__1;
 #line 273
-c_rt_lib0clear(&___nl__im__7);
+c_rt_lib0clear(&___nl__im__6);
 #line 273
 return NULL;
 }
