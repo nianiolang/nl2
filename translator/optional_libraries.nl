@@ -25,6 +25,10 @@ def optional_libraries::c_olympic_io(key : ptd::string(), ref ret_val : ptd::ptd
 		return error_message unless array::len(args) == 0;
 		ret_val = c_olympic_io::read_int();
 		return :ok('');
+	} elsif (key eq 'c_olympic_io::read_char') {
+		return error_message unless array::len(args) == 0;
+		ret_val = c_olympic_io::read_char();
+		return :ok('');
 	}
 # c_olympic_io END
 	return error_message;

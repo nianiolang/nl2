@@ -956,6 +956,7 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'c_olympic_io::print', '');
 	hash::set_value(ref ret, 'c_olympic_io::readln', '');
 	hash::set_value(ref ret, 'c_olympic_io::read_int', '');
+	hash::set_value(ref ret, 'c_olympic_io::read_char', '');
 	hash::set_value(ref ret, 'c_fe_lib::print', '');
 	hash::set_value(ref ret, 'c_fe_lib::file_to_string', '');
 	hash::set_value(ref ret, 'c_fe_lib::string_to_file', '');
