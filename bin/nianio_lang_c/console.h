@@ -16,3 +16,5 @@ ImmT  console0readln();
 ImmT  console0readln0ptr(int _num, ImmT *_tab);
 INT  console0read_int();
 INT  console0read_int0ptr(int _num, ImmT *_tab);
+ImmT  console0read_char();
+ImmT  console0read_char0ptr(int _num, ImmT *_tab);

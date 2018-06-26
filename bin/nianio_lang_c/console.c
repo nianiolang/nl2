@@ -86,6 +86,19 @@ ___nl__int__0 = c_olympic_io0read_int();
 return ___nl__int__0;
 }
 
+ImmT  console0read_char0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 0, "console0read_char");
+return console0read_char();
+}
+ImmT  console0read_char() {
+console_priv0__const__init();
+ImmT  ___nl__im__0 = NULL;
+#line 26
+c_rt_lib0move(&___nl__im__0, c_olympic_io0read_char());
+#line 26
+return ___nl__im__0;
+}
+
 
 static ImmT ___const__[1];
 static int ___const_init__ = 1;
