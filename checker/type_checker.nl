@@ -2335,7 +2335,7 @@ def fill_unary_op_type(ref unary_op_val : @nast::value_t, vars : @tc_types::vars
 		unary_op_val->type = :tct_bool;
 	} elsif (unary_op->op eq '@') {
 		unary_op_val->type = :tct_im;
-	} elsif (unary_op->op eq '--' || unary_op->op eq '++') {
+	} elsif (unary_op->op eq '--' || unary_op->op eq '++' || unary_op->op eq '-') {
 		unary_op_val->type = :tct_int;
 	} else {
 		unary_op_val->type = :tct_im;
@@ -2355,6 +2355,7 @@ def fill_binary_op_type(ref binary_op_val : @nast::value_t, vars : @tc_types::va
 		binary_op->right->type = binary_op->left->type;
 	} elsif (binary_op->op eq 'ARRAY_INDEX') {
 		binary_op_val->type = get_type_from_bin_op_and_check(binary_op, ref modules, ref vars, ref errors, known_types)->type;
+		binary_op->right->type = :tct_int;
 	} elsif (binary_op->op eq 'HASH_INDEX') {
 		binary_op_val->type = get_type_from_bin_op_and_check(binary_op, ref modules, ref vars, ref errors, known_types)->type;
 	} elsif (binary_op->op eq '->') {

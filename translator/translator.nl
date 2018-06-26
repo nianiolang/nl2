@@ -923,11 +923,13 @@ def release_field(current_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, fiel
 }
 
 def use_index(new_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, index : @nlasm::reg_t, ref state : @translator::state_t) : ptd::void() {
-	print(ref state, :use_index({new_owner => new_owner, old_owner => old_owner, index => index}));
+	var real_index = get_cast(index, :int, ref state);
+	print(ref state, :use_index({new_owner => new_owner, old_owner => old_owner, index => real_index}));
 }
 
 def release_index(current_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, index : @nlasm::reg_t, ref state : @translator::state_t) : ptd::void() {
-	print(ref state, :release_index({current_owner => current_owner, old_owner => old_owner, index => index}));
+	var real_index = get_cast(index, :int, ref state);
+	print(ref state, :release_index({current_owner => current_owner, old_owner => old_owner, index => real_index}));
 }
 
 def use_hash_index(new_owner : @nlasm::reg_t, old_owner : @nlasm::reg_t, index : @nlasm::reg_t,
