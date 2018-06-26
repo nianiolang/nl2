@@ -37,7 +37,7 @@ def test_nl::test() {
 	p('test_own_rec');
 	test_own_rec::test();
 	p('test_own_arr');
-	test_own_rec::test();
+	test_own_arr::test();
 	p('test_own_var');
 	test_own_var::test();
 	p('test_own_hash');

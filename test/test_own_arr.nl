@@ -43,7 +43,7 @@ def test_own_arr::test() {
 
 	var b : @test_own_arr::tablica_tablic = [[1, 2]];
 	b []= [3, 4];
-	fora var el (b) { die if el[0] != el[1] + 1; }
+	fora var el (b) { die if el[0] + 1 != el[1]; }
 	b[0];
 	die if b[0][0] != 1;
 	die if b[0][1] != 2;
