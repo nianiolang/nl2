@@ -1318,6 +1318,11 @@ def get_special_functions() : @tc_types::special_functions {
 			a => [
 			]
 		});
+	hash::set_value(ref f, 'c_olympic_io::read_char', {
+			r => tct::string(),
+			a => [
+			]
+		});
 	hash::set_value(ref f, 'c_singleton::sigleton_do_not_use_without_approval', {
 			r => tct::tct_im(),
 			a => [{mod => :none, type => tct::tct_im(), name => ''}]

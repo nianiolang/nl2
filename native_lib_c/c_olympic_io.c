@@ -27,3 +27,9 @@ INT c_olympic_io0read_int() {
 	scanf(" %d ", &n);
 	return n;
 }
+
+ImmT c_olympic_io0read_char() {
+	char c;
+	scanf(" %c ", &c);
+	c_rt_lib0string_new_from_bytes(&c, 1);
+}
