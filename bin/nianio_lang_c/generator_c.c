@@ -3274,8 +3274,6 @@ label_1:
 #line 314
 //clear ___nl__bool__3;
 #line 315
-c_rt_lib0clear(&___nl__im__1);
-#line 315
 return ___nl__int__2;
 }
 
