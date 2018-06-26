@@ -21,3 +21,7 @@ def console::readln() : ptd::string() {
 def console::read_int() : ptd::int() {
 	return c_olympic_io::read_int();
 }
+
+def console::read_char() : ptd::string() {
+	return c_olympic_io::read_char();
+}
