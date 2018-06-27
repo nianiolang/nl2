@@ -1057,7 +1057,8 @@ def print_array_push(dest : @nlasm::reg_t, value : @nlasm::reg_t, ref state : @t
 	var real_value = value;
 	if (dest->type is :im) {
 		real_value = get_cast(value, :im, ref state);
-	} else {
+	}
+	if (!value->type is :im && !value->type is :string)	{
 		state->logic->register_to_clear[value->reg_no] = false;
 	}
 	print(ref state, :array_push({dest => dest, val => real_value}));
