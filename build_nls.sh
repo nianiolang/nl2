@@ -1,4 +1,10 @@
 #! /bin/bash
+# Creates nls/ directory and builds minimal NL interpreter.
+# Optionaly includes fe_lib, used by compiler, and olympic_io for algorythic tasks.
+# Usage: ./build_nls  [--olympic_io] [--fe_lib]
+# nls usage: nls/nls [files and directories] [-- args for interpreted program]
+# nls finds one argument public main function and executes it with array of args given after --.
+
 files_min=(
 	'interpreter_wrapper.nl'
 	'compiler_lib.nl'
