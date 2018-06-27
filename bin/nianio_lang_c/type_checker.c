@@ -4219,8 +4219,6 @@ c_rt_lib0clear(&___nl__im__52);
 #line 343
 //clear ___nl__int__56;
 #line 343
-//clear ___nl__int__58;
-#line 343
 //clear ___nl__int__59;
 #line 343
 //clear ___nl__bool__60;
