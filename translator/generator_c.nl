@@ -607,14 +607,6 @@ def move_args_to_register(ref state : @generator_c::state_t) {
 	}
 }
 
-def move_register_to_ref_args(ref state : @generator_c::state_t) {
-#	rep var arg_id (array::len(state->fun_args)) {
-#		match (state->fun_args[arg_id]) case :val {
-#		} case :ref {
-#		}
-#	}
-}
-
 def get_fun_lib(fun_name : ptd::string(), args : ptd::arr(ptd::string())) : ptd::string() {
 	var ret = get_lib_fun(fun_name) . '(';
 	var i = 0;
@@ -774,7 +766,6 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			die;
 		}
 	} case :return(var rr) {
-		move_register_to_ref_args(ref state);
 		match (rr) case :val(var v) {
 			print(ref state, 'return ');
 			print(ref state, get_reg(ref state, v));
