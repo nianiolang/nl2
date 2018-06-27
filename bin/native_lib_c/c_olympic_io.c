@@ -18,7 +18,7 @@ ImmT c_olympic_io0print(ImmT im) {
 ImmT c_olympic_io0readln() {
 	char line[MAX_LINE_LENGTH];
 	fgets(line, MAX_LINE_LENGTH, stdin);
-	line[strlen(line) - 2] = '\0';
+	line[strlen(line) - 1] = '\0';
 	return c_rt_lib0string_new(line);
 }
 
