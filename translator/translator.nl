@@ -1536,7 +1536,6 @@ def var_type_to_reg_type(type : @tct::meta_type, defined_types : ptd::hash(@tct:
 def print_val_init(val : @nast::value_t, destination : @nlasm::reg_t, ref state : @translator::state_t) {
 	state->debug->nast_debug = val->debug;
 	if (!tct::is_own_type(val->type, state->logic->defined_types)) {
-		state->logic->register_to_clear[destination->reg_no] = false;
 		print_val(val, destination, ref state);
 		return;
 	}

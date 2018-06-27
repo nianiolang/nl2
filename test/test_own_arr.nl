@@ -5,6 +5,7 @@
 use ptd;
 use own;
 use own_array;
+use string;
 
 def test_own_arr::prosta_tablica() {
 	return own::arr(ptd::int());
@@ -14,11 +15,22 @@ def test_own_arr::tablica_tablic() {
 	return own::arr(own::arr(ptd::int()));
 }
 
-def test_own_arr::tablica_rekordow() {
+def test_own_arr::tablica_rekordow_own() {
 	return own::arr(own::rec({
 		a => ptd::int(),
 		b => ptd::int(),
 	}));
+}
+
+def test_own_arr::tablica_rekordow_ptd() {
+	return own::arr(ptd::rec({
+		a => ptd::string(),
+		b => ptd::string(),
+	}));
+}
+
+def test_own_arr::tablica_napisow() {
+	return own::arr(ptd::string());
 }
 
 def test_own_arr::test() {
@@ -55,7 +67,7 @@ def test_own_arr::test() {
 	b[0][0] = 42;
 	die if b[0][0] != 42;
 
-	var c : @test_own_arr::tablica_rekordow = [{a => 1, b => 2}];
+	var c : @test_own_arr::tablica_rekordow_own = [{a => 1, b => 2}];
 	c []= {a => 3, b => 4};
 	fora var el (c) { die if el->b != el->a + 1; }
 	die if c[0]->a != 1;
@@ -65,4 +77,25 @@ def test_own_arr::test() {
 	die if c[0]->a != 2;
 	c[0]->a = 42;
 	die if c[0]->a != 42;
+
+	var d : @test_own_arr::tablica_rekordow_ptd = [{a => 'a0', b => 'b0'}];
+	d []= {a => 'a1', b => 'b1'};
+	die if d[0]->a ne 'a0' || d[0]->b ne 'b0';
+	die if d[1]->a ne 'a1' || d[1]->b ne 'b1';
+	i = 0;
+	fora var el (d) {
+		die if el->a ne ('a' . ptd::int_to_string(i));
+		die if el->b ne ('b' . ptd::int_to_string(i));
+		i++;
+	}
+
+	var e : @test_own_arr::tablica_napisow = ['a', 'b'];
+	e []= 'c';
+	i = 0;
+	fora var el (e) {
+		die if el ne string::chr(string::ord('a') + i); 
+		i++;
+	}
+	e[0] = 'b';
+	die if e[0] ne e[1];
 }
