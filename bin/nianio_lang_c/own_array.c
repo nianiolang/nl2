@@ -52,6 +52,7 @@ INT  own_array0len(anon_type00ownarranon_type00im* ___ref___arr__0) {
 own_array_priv0__const__init();
 #line 2
 return 0;
+return 0;
 }
 
 

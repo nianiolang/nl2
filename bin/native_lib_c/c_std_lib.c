@@ -251,6 +251,14 @@ bool c_std_lib0is_sim(ImmT ___nl__imm) {
 	return c_rt_lib0is_sim(___nl__imm);
 }
 
+bool c_std_lib0is_int(ImmT ___nl__imm) {
+	return c_rt_lib0is_int(___nl__imm);
+}
+
+bool c_std_lib0is_string(ImmT ___nl__imm) {
+	return c_rt_lib0is_string(___nl__imm);
+}
+
 bool c_std_lib0is_variant(ImmT ___nl__imm) {
 	return c_rt_lib0is_variant(___nl__imm);
 }

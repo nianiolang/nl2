@@ -38,6 +38,7 @@ return ___nl__im__0;
 c_rt_lib0clear(&___nl__im__0);
 #line 11
 return NULL;
+return NULL;
 }
 
 ImmT  string0tab0ptr(int _num, ImmT *_tab){
@@ -56,6 +57,7 @@ c_rt_lib0move(&___nl__im__0, string0chr(___nl__int__1));
 //clear ___nl__int__1;
 #line 15
 return ___nl__im__0;
+return NULL;
 }
 
 ImmT  string0r0ptr(int _num, ImmT *_tab){
@@ -74,6 +76,7 @@ c_rt_lib0move(&___nl__im__0, string0chr(___nl__int__1));
 //clear ___nl__int__1;
 #line 19
 return ___nl__im__0;
+return NULL;
 }
 
 ImmT  string0f0ptr(int _num, ImmT *_tab){
@@ -95,6 +98,7 @@ return ___nl__im__0;
 #line 23
 c_rt_lib0clear(&___nl__im__0);
 #line 23
+return NULL;
 return NULL;
 }
 
@@ -132,6 +136,7 @@ return ___nl__im__0;
 #line 27
 c_rt_lib0clear(&___nl__im__0);
 #line 27
+return NULL;
 return NULL;
 }
 
@@ -171,9 +176,6 @@ if(___nl__bool__5){ goto label_1;}
 #line 32
 c_rt_lib0move(&___nl__im__2, c_rt_lib0concat_add(___nl__im__2, ___nl__im__0));
 #line 32
-label_2:
-;
-#line 32
 ___nl__int__3 = ___nl__int__3 + ___nl__int__4;
 #line 32
 goto label_3;
@@ -196,6 +198,7 @@ c_rt_lib0clear(&___nl__im__1);
 //clear ___nl__int__7;
 #line 33
 return ___nl__im__2;
+return NULL;
 }
 
 ImmT  string0split0ptr(int _num, ImmT *_tab){
@@ -390,6 +393,7 @@ c_rt_lib0clear(&___nl__im__2);
 //clear ___nl__int__6;
 #line 53
 return NULL;
+return NULL;
 }
 
 ImmT  string0split_limit0ptr(int _num, ImmT *_tab){
@@ -556,6 +560,7 @@ c_rt_lib0clear(&___nl__im__2);
 c_rt_lib0clear(&___nl__im__3);
 #line 65
 return NULL;
+return NULL;
 }
 
 ImmT  string0to_array0ptr(int _num, ImmT *_tab){
@@ -583,6 +588,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 69
 c_rt_lib0clear(&___nl__im__1);
 #line 69
+return NULL;
 return NULL;
 }
 
@@ -614,6 +620,7 @@ c_rt_lib0clear(&___nl__im__1);
 //clear ___nl__int__2;
 #line 73
 return 0;
+return 0;
 }
 
 ImmT  string0get_char_code0ptr(int _num, ImmT *_tab){
@@ -642,6 +649,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 77
 c_rt_lib0clear(&___nl__im__2);
 #line 77
+return NULL;
 return NULL;
 }
 
@@ -679,6 +687,7 @@ c_rt_lib0clear(&___nl__im__0);
 //clear ___nl__int__2;
 #line 81
 return ___nl__im__3;
+return NULL;
 }
 
 ImmT  string0substr20ptr(int _num, ImmT *_tab){
@@ -730,6 +739,7 @@ c_rt_lib0clear(&___nl__im__0);
 c_rt_lib0clear(&___nl__im__1);
 #line 85
 return ___nl__im__2;
+return NULL;
 }
 
 ImmT  string0lc0ptr(int _num, ImmT *_tab){
@@ -843,9 +853,6 @@ label_4:
 //clear ___nl__bool__9;
 #line 95
 //clear ___nl__int__7;
-#line 95
-label_2:
-;
 #line 96
 ___nl__int__3 = ___nl__int__3 + ___nl__int__4;
 #line 96
@@ -896,6 +903,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 97
 c_rt_lib0clear(&___nl__im__18);
 #line 97
+return NULL;
 return NULL;
 }
 
@@ -1010,9 +1018,6 @@ label_4:
 //clear ___nl__bool__9;
 #line 107
 //clear ___nl__int__7;
-#line 107
-label_2:
-;
 #line 108
 ___nl__int__3 = ___nl__int__3 + ___nl__int__4;
 #line 108
@@ -1064,6 +1069,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__18);
 #line 109
 return NULL;
+return NULL;
 }
 
 ImmT  string0index20ptr(int _num, ImmT *_tab){
@@ -1103,6 +1109,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 113
 return NULL;
+return NULL;
 }
 
 ImmT  string0index0ptr(int _num, ImmT *_tab){
@@ -1137,6 +1144,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 117
 c_rt_lib0clear(&___nl__im__3);
 #line 117
+return NULL;
 return NULL;
 }
 
@@ -1196,6 +1204,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__7);
 #line 122
 return NULL;
+return NULL;
 }
 
 ImmT  string0replace0ptr(int _num, ImmT *_tab){
@@ -1230,6 +1239,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 126
 c_rt_lib0clear(&___nl__im__3);
 #line 126
+return NULL;
 return NULL;
 }
 
@@ -1315,9 +1325,6 @@ c_rt_lib0move(&___nl__im__0, string0replace(___nl__im__0, ___nl__im__11, ___nl__
 c_rt_lib0clear(&___nl__im__11);
 #line 133
 c_rt_lib0clear(&___nl__im__12);
-#line 133
-label_5:
-;
 #line 132
 ___nl__int__13 = 1;
 #line 132
@@ -1355,6 +1362,7 @@ c_rt_lib0clear(&___nl__im__2);
 //clear ___nl__bool__9;
 #line 135
 return NULL;
+return NULL;
 }
 
 INT  string0ord0ptr(int _num, ImmT *_tab){
@@ -1384,6 +1392,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 139
 //clear ___nl__int__2;
 #line 139
+return 0;
 return 0;
 }
 
@@ -1439,6 +1448,7 @@ c_rt_lib0clear(&___nl__im__0);
 //clear ___nl__int__1;
 #line 144
 return ___nl__bool__2;
+return false;
 }
 
 bool  string0is_letter0ptr(int _num, ImmT *_tab){
@@ -1452,89 +1462,87 @@ string_priv0__const__init();
 INT  ___nl__int__1 = 0;
 bool  ___nl__bool__2 = false;
 bool  ___nl__bool__3 = false;
-bool  ___nl__bool__4 = false;
+INT  ___nl__int__4 = 0;
 INT  ___nl__int__5 = 0;
 INT  ___nl__int__6 = 0;
 INT  ___nl__int__7 = 0;
-INT  ___nl__int__8 = 0;
-bool  ___nl__bool__9 = false;
+bool  ___nl__bool__8 = false;
+INT  ___nl__int__9 = 0;
 INT  ___nl__int__10 = 0;
 INT  ___nl__int__11 = 0;
 INT  ___nl__int__12 = 0;
-INT  ___nl__int__13 = 0;
 #line 148
 ___nl__int__1 = string0ord(___nl__im__0);
 #line 149
-___nl__int__5 = 97;
+___nl__int__4 = 97;
 #line 149
-___nl__int__6 = ___nl__int__1 >= ___nl__int__5;
+___nl__int__5 = ___nl__int__1 >= ___nl__int__4;
 #line 149
-___nl__bool__2 = ___nl__int__6;
+___nl__bool__2 = ___nl__int__5;
+#line 149
+//clear ___nl__int__4;
 #line 149
 //clear ___nl__int__5;
 #line 149
+___nl__bool__3 = !___nl__bool__2;
+#line 149
+if(___nl__bool__3){ goto label_2;}
+#line 149
+___nl__int__6 = 122;
+#line 149
+___nl__int__7 = ___nl__int__1 <= ___nl__int__6;
+#line 149
+___nl__bool__2 = ___nl__int__7;
+#line 149
 //clear ___nl__int__6;
 #line 149
-___nl__bool__4 = !___nl__bool__2;
-#line 149
-if(___nl__bool__4){ goto label_2;}
-#line 149
-___nl__int__7 = 122;
-#line 149
-___nl__int__8 = ___nl__int__1 <= ___nl__int__7;
-#line 149
-___nl__bool__2 = ___nl__int__8;
-#line 149
 //clear ___nl__int__7;
-#line 149
-//clear ___nl__int__8;
 #line 149
 label_2:
 ;
 #line 149
-//clear ___nl__bool__4;
+//clear ___nl__bool__3;
 #line 149
 if(___nl__bool__2){ goto label_1;}
 #line 149
-___nl__int__10 = 65;
+___nl__int__9 = 65;
 #line 149
-___nl__int__11 = ___nl__int__1 >= ___nl__int__10;
+___nl__int__10 = ___nl__int__1 >= ___nl__int__9;
 #line 149
-___nl__bool__2 = ___nl__int__11;
+___nl__bool__2 = ___nl__int__10;
+#line 149
+//clear ___nl__int__9;
 #line 149
 //clear ___nl__int__10;
 #line 149
+___nl__bool__8 = !___nl__bool__2;
+#line 149
+if(___nl__bool__8){ goto label_3;}
+#line 149
+___nl__int__11 = 90;
+#line 149
+___nl__int__12 = ___nl__int__1 <= ___nl__int__11;
+#line 149
+___nl__bool__2 = ___nl__int__12;
+#line 149
 //clear ___nl__int__11;
 #line 149
-___nl__bool__9 = !___nl__bool__2;
-#line 149
-if(___nl__bool__9){ goto label_3;}
-#line 149
-___nl__int__12 = 90;
-#line 149
-___nl__int__13 = ___nl__int__1 <= ___nl__int__12;
-#line 149
-___nl__bool__2 = ___nl__int__13;
-#line 149
 //clear ___nl__int__12;
-#line 149
-//clear ___nl__int__13;
 #line 149
 label_3:
 ;
 #line 149
-//clear ___nl__bool__9;
+//clear ___nl__bool__8;
 #line 149
 label_1:
 ;
-#line 149
-//clear ___nl__bool__3;
 #line 149
 c_rt_lib0clear(&___nl__im__0);
 #line 149
 //clear ___nl__int__1;
 #line 149
 return ___nl__bool__2;
+return false;
 }
 
 ImmT  string0encode_utf160ptr(int _num, ImmT *_tab){
@@ -1557,6 +1565,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 153
 c_rt_lib0clear(&___nl__im__1);
 #line 153
+return NULL;
 return NULL;
 }
 
@@ -1586,6 +1595,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 157
 c_rt_lib0clear(&___nl__im__2);
 #line 157
+return NULL;
 return NULL;
 }
 
@@ -1632,6 +1642,7 @@ c_rt_lib0clear(&___nl__im__0);
 c_rt_lib0clear(&___nl__im__5);
 #line 161
 return NULL;
+return NULL;
 }
 
 ImmT  string0chr(INT  ___nl__int__0) {
@@ -1653,6 +1664,7 @@ return ___nl__im__1;
 #line 165
 c_rt_lib0clear(&___nl__im__1);
 #line 165
+return NULL;
 return NULL;
 }
 
@@ -1710,6 +1722,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__7);
 #line 169
 return NULL;
+return NULL;
 }
 
 ImmT  string0gt0ptr(int _num, ImmT *_tab){
@@ -1766,6 +1779,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__7);
 #line 173
 return NULL;
+return NULL;
 }
 
 ImmT  string0compare0ptr(int _num, ImmT *_tab){
@@ -1801,6 +1815,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 177
 c_rt_lib0clear(&___nl__im__3);
 #line 177
+return NULL;
 return NULL;
 }
 
@@ -1858,6 +1873,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__7);
 #line 181
 return NULL;
+return NULL;
 }
 
 ImmT  string0ge0ptr(int _num, ImmT *_tab){
@@ -1913,6 +1929,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 185
 c_rt_lib0clear(&___nl__im__7);
 #line 185
+return NULL;
 return NULL;
 }
 

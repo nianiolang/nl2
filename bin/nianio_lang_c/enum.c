@@ -28,40 +28,37 @@ c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 enum_priv0__const__init();
 bool  ___nl__bool__2 = false;
-bool  ___nl__bool__3 = false;
+ImmT  ___nl__im__3 = NULL;
 ImmT  ___nl__im__4 = NULL;
 ImmT  ___nl__im__5 = NULL;
-ImmT  ___nl__im__6 = NULL;
-bool  ___nl__bool__7 = false;
+bool  ___nl__bool__6 = false;
+ImmT  ___nl__im__7 = NULL;
 ImmT  ___nl__im__8 = NULL;
-ImmT  ___nl__im__9 = NULL;
 #line 10
-c_rt_lib0move(&___nl__im__4, ov0has_value(___nl__im__0));
+c_rt_lib0move(&___nl__im__3, ov0has_value(___nl__im__0));
+#line 10
+___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__3);
+#line 10
+c_rt_lib0clear(&___nl__im__3);
+#line 10
+if(___nl__bool__2){ goto label_3;}
+#line 10
+c_rt_lib0move(&___nl__im__4, ov0has_value(___nl__im__1));
 #line 10
 ___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__4);
 #line 10
 c_rt_lib0clear(&___nl__im__4);
 #line 10
-if(___nl__bool__2){ goto label_3;}
-#line 10
-c_rt_lib0move(&___nl__im__5, ov0has_value(___nl__im__1));
-#line 10
-___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__5);
-#line 10
-c_rt_lib0clear(&___nl__im__5);
-#line 10
 label_3:
 ;
-#line 10
-//clear ___nl__bool__3;
 #line 10
 ___nl__bool__2 = !___nl__bool__2;
 #line 10
 if(___nl__bool__2){ goto label_2;}
 #line 10
-c_rt_lib0move(&___nl__im__6, c_rt_lib0array_mk(0));
+c_rt_lib0move(&___nl__im__5, c_rt_lib0array_mk(0));
 #line 10
-nl_die_arg(___nl__im__6);
+nl_die_arg(___nl__im__5);
 #line 10
 goto label_1;
 #line 10
@@ -73,23 +70,24 @@ label_1:
 #line 10
 //clear ___nl__bool__2;
 #line 10
-c_rt_lib0clear(&___nl__im__6);
+c_rt_lib0clear(&___nl__im__5);
 #line 11
-c_rt_lib0move(&___nl__im__8, ov0get_element(___nl__im__0));
+c_rt_lib0move(&___nl__im__7, ov0get_element(___nl__im__0));
 #line 11
-c_rt_lib0move(&___nl__im__9, ov0get_element(___nl__im__1));
+c_rt_lib0move(&___nl__im__8, ov0get_element(___nl__im__1));
 #line 11
-___nl__bool__7 = c_rt_lib0eq(___nl__im__8, ___nl__im__9);
+___nl__bool__6 = c_rt_lib0eq(___nl__im__7, ___nl__im__8);
+#line 11
+c_rt_lib0clear(&___nl__im__7);
 #line 11
 c_rt_lib0clear(&___nl__im__8);
-#line 11
-c_rt_lib0clear(&___nl__im__9);
 #line 11
 c_rt_lib0clear(&___nl__im__0);
 #line 11
 c_rt_lib0clear(&___nl__im__1);
 #line 11
-return ___nl__bool__7;
+return ___nl__bool__6;
+return false;
 }
 
 

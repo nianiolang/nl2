@@ -37,6 +37,7 @@ c_rt_lib0clear(&___nl__im__0);
 c_rt_lib0clear(&___nl__im__1);
 #line 9
 return NULL;
+return NULL;
 }
 
 ImmT  ov0mk_val0ptr(int _num, ImmT *_tab){
@@ -66,6 +67,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 13
 return NULL;
+return NULL;
 }
 
 ImmT  ov0has_value0ptr(int _num, ImmT *_tab){
@@ -88,6 +90,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 17
 c_rt_lib0clear(&___nl__im__1);
 #line 17
+return NULL;
 return NULL;
 }
 
@@ -112,6 +115,7 @@ c_rt_lib0clear(&___nl__im__0);
 c_rt_lib0clear(&___nl__im__1);
 #line 21
 return NULL;
+return NULL;
 }
 
 ImmT  ov0get_value0ptr(int _num, ImmT *_tab){
@@ -134,6 +138,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 25
 c_rt_lib0clear(&___nl__im__1);
 #line 25
+return NULL;
 return NULL;
 }
 
@@ -164,6 +169,7 @@ c_rt_lib0clear(&___nl__im__1);
 //clear ___nl__bool__2;
 #line 29
 return false;
+return false;
 }
 
 ImmT  ov0as0ptr(int _num, ImmT *_tab){
@@ -192,6 +198,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 33
 c_rt_lib0clear(&___nl__im__2);
 #line 33
+return NULL;
 return NULL;
 }
 

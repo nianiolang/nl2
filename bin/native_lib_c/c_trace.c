@@ -123,7 +123,9 @@ void gdb_save_stacktrace(const char *text_in, const char *text_out){
 				++poz;
 				ptr = read_pointer();
 			}
-			if(startsWith("___nl__", name) && ptr != NULL){
+			if(startsWith("___nl__int", name)) {
+				fprintf(fout, "	p%d %s=%lld", param, name, (INT)ptr);
+			} else if(startsWith("___nl__", name) && ptr != NULL){
 				ImmT saved = dfile0ssave(ptr);
 				NlString* p = toStringIfSim(saved);
 				fprintf(fout, "	\"p%d ", param);

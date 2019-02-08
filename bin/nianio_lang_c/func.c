@@ -35,7 +35,7 @@ c_rt_lib0move(&___nl__im__4, ptd0string());
 #line 14
 c_rt_lib0move(&___nl__im__5, ptd0string());
 #line 14
-c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_const(150), ___nl__im__4, ___get_global_const(166), ___nl__im__5));
+c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_const(151), ___nl__im__4, ___get_global_const(167), ___nl__im__5));
 #line 14
 c_rt_lib0clear(&___nl__im__4);
 #line 14
@@ -57,6 +57,7 @@ return ___nl__im__0;
 #line 14
 c_rt_lib0clear(&___nl__im__0);
 #line 14
+return NULL;
 return NULL;
 }
 
@@ -87,6 +88,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 20
 return NULL;
+return NULL;
 }
 
 ImmT  func0exec_ref0ptr(int _num, ImmT *_tab){
@@ -110,6 +112,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 24
 c_rt_lib0clear(&___nl__im__2);
 #line 24
+return NULL;
 return NULL;
 }
 
@@ -161,6 +164,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 32
 c_rt_lib0clear(&___nl__im__3);
 #line 32
+return NULL;
 return NULL;
 }
 

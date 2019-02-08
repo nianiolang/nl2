@@ -1158,9 +1158,9 @@ ImmT c_rt_lib0float_round(ImmT f) {
 	return c_rt_lib0float_new(number);
 }
 
-ImmT c_rt_lib0array_get(ImmT ___nl__arrI, INT ___nl__indexI) {
+ImmT c_rt_lib0array_get(ImmT ___nl__arrI, INT ___nl__int__indexI) {
 	NlArray *arr = (NlArray *)___nl__arrI;
-	INT index = ___nl__indexI;
+	INT index = ___nl__int__indexI;
 	if (index < 0 || index >= arr->size)
 		nl_die_internal("array index %d out of range, array size: %d", index, arr->size);
 	ImmT ret = arr->arr[index];
@@ -1168,10 +1168,10 @@ ImmT c_rt_lib0array_get(ImmT ___nl__arrI, INT ___nl__indexI) {
 	return ret;
 }
 
-ImmT c_rt_lib0array_set(ImmT *___ref___arrI, INT ___nl__indexI, ImmT ___nl__el) {
+ImmT c_rt_lib0array_set(ImmT *___ref___arrI, INT ___nl__int__indexI, ImmT ___nl__el) {
 	if(!IS_ARR(*___ref___arrI)) nl_die_internal("Array expected %s;", NAME(*___ref___arrI));
 	NlArray *arr = priv_arr_to_change(___ref___arrI);
-	INT index = ___nl__indexI;
+	INT index = ___nl__int__indexI;
 	if (index < 0 || index >= arr->size)
 		nl_die_internal("array index %d out of range, array size: %d", index, arr->size);
 	dec_ref(arr->arr[index]);
@@ -1219,6 +1219,14 @@ bool c_rt_lib0is_sim(ImmT ___nl__imm) {
 	if (IS_STRING(d) || IS_INT(d) || IS_FLOAT(d) || IS_FUNC(d))
 		return true;
 	return false;
+}
+bool c_rt_lib0is_int(ImmT ___nl__imm) {
+	NlData *d =  (NlData *)___nl__imm;
+	return IS_INT(d);
+}
+bool c_rt_lib0is_string(ImmT ___nl__imm) {
+	NlData *d =  (NlData *)___nl__imm;
+	return IS_STRING(d);
 }
 bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;
@@ -1484,16 +1492,16 @@ ImmT c_rt_lib0set_ref_hash(ImmT *___ref___hashI, ImmT ___nl__key, ImmT ___nl__va
 	return NULL;
 }
 
-ImmT c_rt_lib0get_ref_arr(ImmT ___nl__arrI, INT ___nl__indexI){
-	ImmT ret = c_rt_lib0array_get(___nl__arrI, ___nl__indexI);
+ImmT c_rt_lib0get_ref_arr(ImmT ___nl__arrI, INT ___nl__int__indexI){
+	ImmT ret = c_rt_lib0array_get(___nl__arrI, ___nl__int__indexI);
 	if (REFS(___nl__arrI) == 1)
 		dec_ref(ret);
 	return ret;
 }
-ImmT c_rt_lib0set_ref_arr(ImmT *___ref___arrI, INT ___nl__indexI, ImmT ___nl__val){
+ImmT c_rt_lib0set_ref_arr(ImmT *___ref___arrI, INT ___nl__int__indexI, ImmT ___nl__val){
 	int many = REFS(*___ref___arrI) > 1;
 	NlArray *arr = priv_arr_to_change(___ref___arrI);
-	INT index = ___nl__indexI;
+	INT index = ___nl__int__indexI;
 	if (index < 0 || index >= arr->size)
 		nl_die_internal("array index %d out of range, array size: %d", index, arr->size);
 	inc_ref(___nl__val);
@@ -1764,7 +1772,7 @@ void gdb_die(const char *msg){
 		}
 		close(token_pipe[0]);
 		
-		char cmd[10024], cpath[1000], gdbpath[1000], time_part[1000];
+		char cmd[10024], cpath[1100], gdbpath[1100], time_part[1000];
 		cpath[0] = '\0';
 		gdbpath[0] = '\0';
 		time_part[0] = '\0';

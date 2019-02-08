@@ -74,7 +74,7 @@ c_rt_lib0move(&___nl__im__2, nparser0sparse(___nl__im__0, ___nl__im__1, ___nl__b
 #line 23
 //clear ___nl__bool__3;
 #line 24
-___nl__bool__4 = c_rt_lib0priv_is(___nl__im__2, ___get_global_const(80));
+___nl__bool__4 = c_rt_lib0priv_is(___nl__im__2, ___get_global_const(79));
 #line 24
 if(___nl__bool__4){ goto label_2;}
 #line 37
@@ -91,7 +91,7 @@ nl_die_arg(___nl__im__5);
 label_2:
 ;
 #line 24
-c_rt_lib0move(&___nl__im__7, c_rt_lib0priv_as(___nl__im__2, ___get_global_const(80)));
+c_rt_lib0move(&___nl__im__7, c_rt_lib0priv_as(___nl__im__2, ___get_global_const(79)));
 #line 24
 c_rt_lib0copy(&___nl__im__6, ___nl__im__7);
 #line 25
@@ -131,7 +131,7 @@ if(___nl__bool__13){ goto label_5;}
 #line 30
 c_rt_lib0move(&___nl__im__17, c_rt_lib0hash_mk(0));
 #line 31
-c_rt_lib0move(&___nl__im__18, c_rt_lib0hash_get_value_dec(___nl__im__6, ___get_global_const(166)));
+c_rt_lib0move(&___nl__im__18, c_rt_lib0hash_get_value_dec(___nl__im__6, ___get_global_const(167)));
 #line 31
 c_rt_lib0delete(hash0set_value(&___nl__im__17, ___nl__im__18, ___nl__im__6));
 #line 31
@@ -179,7 +179,7 @@ c_rt_lib0move(&___nl__im__25, translator0translate(___nl__im__6, ___nl__im__26))
 #line 35
 c_rt_lib0clear(&___nl__im__26);
 #line 35
-c_rt_lib0move(&___nl__im__24, c_rt_lib0ov_mk_arg(___get_global_const(80), ___nl__im__25));
+c_rt_lib0move(&___nl__im__24, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__25));
 #line 35
 c_rt_lib0clear(&___nl__im__25);
 #line 35
@@ -219,7 +219,7 @@ label_6:
 #line 35
 c_rt_lib0clear(&___nl__im__24);
 #line 36
-c_rt_lib0move(&___nl__im__27, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__8));
+c_rt_lib0move(&___nl__im__27, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__8));
 #line 36
 c_rt_lib0clear(&___nl__im__0);
 #line 36
@@ -252,7 +252,7 @@ c_rt_lib0move(&___nl__im__29, c_rt_lib0priv_as(___nl__im__2, ___get_global_const
 #line 37
 c_rt_lib0copy(&___nl__im__28, ___nl__im__29);
 #line 38
-c_rt_lib0move(&___nl__im__30, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__28));
+c_rt_lib0move(&___nl__im__30, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__28));
 #line 38
 c_rt_lib0clear(&___nl__im__0);
 #line 38
@@ -286,6 +286,7 @@ goto label_1;
 #line 39
 label_1:
 ;
+return NULL;
 }
 
 ImmT  string_compiler0modules_t0ptr(int _num, ImmT *_tab){
@@ -304,7 +305,7 @@ c_rt_lib0move(&___nl__im__3, ptd0string());
 #line 43
 c_rt_lib0move(&___nl__im__4, ptd0string());
 #line 43
-c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_const(1191), ___nl__im__3, ___get_global_const(211), ___nl__im__4));
+c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_const(1260), ___nl__im__3, ___get_global_const(212), ___nl__im__4));
 #line 43
 c_rt_lib0clear(&___nl__im__3);
 #line 43
@@ -322,6 +323,7 @@ return ___nl__im__0;
 #line 43
 c_rt_lib0clear(&___nl__im__0);
 #line 43
+return NULL;
 return NULL;
 }
 
@@ -351,7 +353,7 @@ c_rt_lib0move(&___nl__im__5, ptd0arr(___nl__im__6));
 #line 47
 c_rt_lib0clear(&___nl__im__6);
 #line 47
-c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_const(1170), ___nl__im__3, ___get_global_const(1192), ___nl__im__5));
+c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_const(1239), ___nl__im__3, ___get_global_const(1261), ___nl__im__5));
 #line 47
 c_rt_lib0clear(&___nl__im__3);
 #line 47
@@ -369,6 +371,7 @@ return ___nl__im__0;
 #line 47
 c_rt_lib0clear(&___nl__im__0);
 #line 47
+return NULL;
 return NULL;
 }
 
@@ -401,7 +404,7 @@ c_rt_lib0move(&___nl__im__8, ptd0string());
 #line 53
 c_rt_lib0move(&___nl__im__9, ptd0string());
 #line 53
-c_rt_lib0move(&___nl__im__6, c_rt_lib0hash_mk(3, ___get_global_const(166), ___nl__im__7, ___get_global_const(1088), ___nl__im__8, ___get_global_const(1036), ___nl__im__9));
+c_rt_lib0move(&___nl__im__6, c_rt_lib0hash_mk(3, ___get_global_const(167), ___nl__im__7, ___get_global_const(1153), ___nl__im__8, ___get_global_const(1103), ___nl__im__9));
 #line 53
 c_rt_lib0clear(&___nl__im__7);
 #line 53
@@ -417,7 +420,7 @@ c_rt_lib0move(&___nl__im__4, ptd0arr(___nl__im__5));
 #line 53
 c_rt_lib0clear(&___nl__im__5);
 #line 53
-c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(2, ___get_global_const(437), ___nl__im__2, ___get_global_const(207), ___nl__im__4));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(2, ___get_global_const(439), ___nl__im__2, ___get_global_const(208), ___nl__im__4));
 #line 53
 c_rt_lib0clear(&___nl__im__2);
 #line 53
@@ -431,6 +434,7 @@ return ___nl__im__0;
 #line 53
 c_rt_lib0clear(&___nl__im__0);
 #line 53
+return NULL;
 return NULL;
 }
 
@@ -465,6 +469,7 @@ return ___nl__im__0;
 #line 58
 c_rt_lib0clear(&___nl__im__0);
 #line 58
+return NULL;
 return NULL;
 }
 
@@ -503,9 +508,6 @@ c_rt_lib0move(&___nl__im__6, pretty_printer0print_module_to_struct(___nl__im__4)
 c_rt_lib0delete(hash0set_value(&___nl__im__1, ___nl__im__2, ___nl__im__6));
 #line 64
 c_rt_lib0clear(&___nl__im__6);
-#line 64
-label_2:
-;
 #line 65
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 65
@@ -525,6 +527,7 @@ c_rt_lib0clear(&___nl__im__4);
 c_rt_lib0clear(&___nl__im__5);
 #line 66
 return ___nl__im__1;
+return NULL;
 }
 
 ImmT  string_compiler0parse_module0ptr(int _num, ImmT *_tab){
@@ -596,9 +599,9 @@ c_rt_lib0move(&___nl__im__3, c_rt_lib0get_key_iter(___nl__im__6));
 #line 75
 c_rt_lib0move(&___nl__im__5, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__3));
 #line 76
-c_rt_lib0move(&___nl__im__8, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_const(1191)));
+c_rt_lib0move(&___nl__im__8, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_const(1260)));
 #line 76
-c_rt_lib0move(&___nl__im__9, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_const(211)));
+c_rt_lib0move(&___nl__im__9, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_const(212)));
 #line 76
 ___nl__bool__10 = true;
 #line 76
@@ -610,7 +613,7 @@ c_rt_lib0clear(&___nl__im__9);
 #line 76
 //clear ___nl__bool__10;
 #line 76
-___nl__bool__11 = c_rt_lib0priv_is(___nl__im__7, ___get_global_const(80));
+___nl__bool__11 = c_rt_lib0priv_is(___nl__im__7, ___get_global_const(79));
 #line 76
 if(___nl__bool__11){ goto label_5;}
 #line 83
@@ -627,7 +630,7 @@ nl_die_arg(___nl__im__12);
 label_5:
 ;
 #line 76
-c_rt_lib0move(&___nl__im__14, c_rt_lib0priv_as(___nl__im__7, ___get_global_const(80)));
+c_rt_lib0move(&___nl__im__14, c_rt_lib0priv_as(___nl__im__7, ___get_global_const(79)));
 #line 76
 c_rt_lib0copy(&___nl__im__13, ___nl__im__14);
 #line 77
@@ -671,9 +674,6 @@ c_rt_lib0delete(array0push(&___nl__im__1, ___nl__im__27));
 c_rt_lib0clear(&___nl__im__27);
 #line 80
 c_rt_lib0clear(&___nl__im__20);
-#line 80
-label_8:
-;
 #line 81
 ___nl__int__21 = ___nl__int__21 + ___nl__int__22;
 #line 81
@@ -719,9 +719,6 @@ c_rt_lib0delete(array0push(&___nl__im__1, ___nl__im__37));
 c_rt_lib0clear(&___nl__im__37);
 #line 85
 c_rt_lib0clear(&___nl__im__30);
-#line 85
-label_11:
-;
 #line 86
 ___nl__int__31 = ___nl__int__31 + ___nl__int__32;
 #line 86
@@ -782,9 +779,6 @@ c_rt_lib0clear(&___nl__im__30);
 //clear ___nl__int__35;
 #line 87
 c_rt_lib0clear(&___nl__im__36);
-#line 87
-label_2:
-;
 #line 88
 c_rt_lib0move(&___nl__im__6, c_rt_lib0next_iter(___nl__im__6));
 #line 88
@@ -811,7 +805,7 @@ ___nl__bool__38 = !___nl__bool__38;
 #line 89
 if(___nl__bool__38){ goto label_14;}
 #line 89
-c_rt_lib0move(&___nl__im__42, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__1));
+c_rt_lib0move(&___nl__im__42, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__1));
 #line 89
 c_rt_lib0clear(&___nl__im__0);
 #line 89
@@ -891,7 +885,7 @@ label_13:
 #line 89
 c_rt_lib0clear(&___nl__im__42);
 #line 90
-c_rt_lib0move(&___nl__im__43, c_rt_lib0ov_mk_arg(___get_global_const(80), ___nl__im__2));
+c_rt_lib0move(&___nl__im__43, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__2));
 #line 90
 c_rt_lib0clear(&___nl__im__0);
 #line 90
@@ -956,6 +950,7 @@ c_rt_lib0clear(&___nl__im__30);
 c_rt_lib0clear(&___nl__im__36);
 #line 90
 return ___nl__im__43;
+return NULL;
 }
 
 ImmT  string_compiler0check_type0ptr(int _num, ImmT *_tab){
@@ -1053,7 +1048,7 @@ c_rt_lib0move(&___nl__im__11, c_rt_lib0hash_mk(0));
 #line 101
 c_rt_lib0move(&___nl__im__12, c_rt_lib0hash_mk(0));
 #line 102
-c_rt_lib0move(&___nl__im__13, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_const(1192)));
+c_rt_lib0move(&___nl__im__13, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_const(1261)));
 #line 102
 ___nl__int__15 = 0;
 #line 102
@@ -1076,7 +1071,7 @@ c_rt_lib0copy(&___nl__im__14, ___nl__im__20);
 #line 103
 c_rt_lib0move(&___nl__im__22, hash0get_value(___nl__im__1, ___nl__im__14));
 #line 103
-c_rt_lib0move(&___nl__im__21, c_rt_lib0hash_get_value_dec(___nl__im__22, ___get_global_const(166)));
+c_rt_lib0move(&___nl__im__21, c_rt_lib0hash_get_value_dec(___nl__im__22, ___get_global_const(167)));
 #line 103
 c_rt_lib0clear(&___nl__im__22);
 #line 103
@@ -1090,7 +1085,7 @@ c_rt_lib0clear(&___nl__im__23);
 #line 104
 c_rt_lib0move(&___nl__im__25, hash0get_value(___nl__im__1, ___nl__im__14));
 #line 104
-c_rt_lib0move(&___nl__im__24, c_rt_lib0hash_get_value_dec(___nl__im__25, ___get_global_const(166)));
+c_rt_lib0move(&___nl__im__24, c_rt_lib0hash_get_value_dec(___nl__im__25, ___get_global_const(167)));
 #line 104
 c_rt_lib0clear(&___nl__im__25);
 #line 104
@@ -1099,9 +1094,6 @@ c_rt_lib0delete(hash0set_value(&___nl__im__12, ___nl__im__24, ___nl__im__14));
 c_rt_lib0clear(&___nl__im__24);
 #line 104
 c_rt_lib0clear(&___nl__im__14);
-#line 104
-label_5:
-;
 #line 105
 ___nl__int__15 = ___nl__int__15 + ___nl__int__16;
 #line 105
@@ -1110,7 +1102,7 @@ goto label_6;
 label_4:
 ;
 #line 106
-c_rt_lib0move(&___nl__im__26, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_const(1170)));
+c_rt_lib0move(&___nl__im__26, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_const(1239)));
 #line 106
 ___nl__int__28 = 0;
 #line 106
@@ -1133,7 +1125,7 @@ c_rt_lib0copy(&___nl__im__27, ___nl__im__33);
 #line 107
 c_rt_lib0move(&___nl__im__35, hash0get_value(___nl__im__1, ___nl__im__27));
 #line 107
-c_rt_lib0move(&___nl__im__34, c_rt_lib0hash_get_value_dec(___nl__im__35, ___get_global_const(166)));
+c_rt_lib0move(&___nl__im__34, c_rt_lib0hash_get_value_dec(___nl__im__35, ___get_global_const(167)));
 #line 107
 c_rt_lib0clear(&___nl__im__35);
 #line 107
@@ -1147,7 +1139,7 @@ c_rt_lib0clear(&___nl__im__36);
 #line 108
 c_rt_lib0move(&___nl__im__38, hash0get_value(___nl__im__1, ___nl__im__27));
 #line 108
-c_rt_lib0move(&___nl__im__37, c_rt_lib0hash_get_value_dec(___nl__im__38, ___get_global_const(166)));
+c_rt_lib0move(&___nl__im__37, c_rt_lib0hash_get_value_dec(___nl__im__38, ___get_global_const(167)));
 #line 108
 c_rt_lib0clear(&___nl__im__38);
 #line 108
@@ -1156,9 +1148,6 @@ c_rt_lib0delete(hash0set_value(&___nl__im__12, ___nl__im__37, ___nl__im__27));
 c_rt_lib0clear(&___nl__im__37);
 #line 108
 c_rt_lib0clear(&___nl__im__27);
-#line 108
-label_8:
-;
 #line 109
 ___nl__int__28 = ___nl__int__28 + ___nl__int__29;
 #line 109
@@ -1190,7 +1179,7 @@ c_rt_lib0move(&___nl__im__47, c_rt_lib0array_get(___nl__im__40, ___nl__int__42))
 #line 111
 c_rt_lib0copy(&___nl__im__41, ___nl__im__47);
 #line 112
-c_rt_lib0move(&___nl__im__50, c_rt_lib0hash_get_value_dec(___nl__im__41, ___get_global_const(150)));
+c_rt_lib0move(&___nl__im__50, c_rt_lib0hash_get_value_dec(___nl__im__41, ___get_global_const(151)));
 #line 112
 c_rt_lib0move(&___nl__im__49, hash0get_value(___nl__im__12, ___nl__im__50));
 #line 112
@@ -1205,9 +1194,6 @@ c_rt_lib0delete(array0push(&___nl__im__2, ___nl__im__48));
 c_rt_lib0clear(&___nl__im__48);
 #line 112
 c_rt_lib0clear(&___nl__im__41);
-#line 112
-label_11:
-;
 #line 113
 ___nl__int__42 = ___nl__int__42 + ___nl__int__43;
 #line 113
@@ -1238,7 +1224,7 @@ ___nl__bool__51 = !___nl__bool__51;
 #line 114
 if(___nl__bool__51){ goto label_14;}
 #line 114
-c_rt_lib0move(&___nl__im__56, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__2));
+c_rt_lib0move(&___nl__im__56, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__2));
 #line 114
 c_rt_lib0clear(&___nl__im__0);
 #line 114
@@ -1333,9 +1319,6 @@ label_13:
 c_rt_lib0clear(&___nl__im__56);
 #line 114
 c_rt_lib0clear(&___nl__im__3);
-#line 114
-label_2:
-;
 #line 115
 ___nl__int__4 = ___nl__int__4 + ___nl__int__5;
 #line 115
@@ -1346,7 +1329,7 @@ label_1:
 #line 116
 c_rt_lib0move(&___nl__im__58,___get_global_const(37));
 #line 116
-c_rt_lib0move(&___nl__im__57, c_rt_lib0ov_mk_arg(___get_global_const(80), ___nl__im__58));
+c_rt_lib0move(&___nl__im__57, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__58));
 #line 116
 c_rt_lib0clear(&___nl__im__58);
 #line 116
@@ -1427,6 +1410,7 @@ c_rt_lib0clear(&___nl__im__41);
 c_rt_lib0clear(&___nl__im__47);
 #line 116
 return ___nl__im__57;
+return NULL;
 }
 
 ImmT  string_compiler0compile_to_nlasm0ptr(int _num, ImmT *_tab){
@@ -1504,7 +1488,7 @@ c_rt_lib0move(&___nl__im__7, nparser0sparse(___nl__im__5, ___nl__im__3, ___nl__b
 #line 126
 //clear ___nl__bool__8;
 #line 126
-___nl__bool__9 = c_rt_lib0priv_is(___nl__im__7, ___get_global_const(80));
+___nl__bool__9 = c_rt_lib0priv_is(___nl__im__7, ___get_global_const(79));
 #line 126
 if(___nl__bool__9){ goto label_5;}
 #line 131
@@ -1521,7 +1505,7 @@ nl_die_arg(___nl__im__10);
 label_5:
 ;
 #line 126
-c_rt_lib0move(&___nl__im__12, c_rt_lib0priv_as(___nl__im__7, ___get_global_const(80)));
+c_rt_lib0move(&___nl__im__12, c_rt_lib0priv_as(___nl__im__7, ___get_global_const(79)));
 #line 126
 c_rt_lib0copy(&___nl__im__11, ___nl__im__12);
 #line 127
@@ -1578,9 +1562,6 @@ c_rt_lib0clear(&___nl__im__14);
 c_rt_lib0clear(&___nl__im__18);
 #line 133
 c_rt_lib0clear(&___nl__im__19);
-#line 133
-label_2:
-;
 #line 134
 c_rt_lib0move(&___nl__im__6, c_rt_lib0next_iter(___nl__im__6));
 #line 134
@@ -1607,7 +1588,7 @@ ___nl__bool__20 = !___nl__bool__20;
 #line 135
 if(___nl__bool__20){ goto label_8;}
 #line 135
-c_rt_lib0move(&___nl__im__24, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__1));
+c_rt_lib0move(&___nl__im__24, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__1));
 #line 135
 c_rt_lib0clear(&___nl__im__0);
 #line 135
@@ -1683,7 +1664,7 @@ if(___nl__bool__26){ goto label_10;}
 #line 137
 c_rt_lib0move(&___nl__im__32, c_rt_lib0hash_get_value_dec(___nl__im__25, ___get_global_const(51)));
 #line 137
-c_rt_lib0move(&___nl__im__31, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__32));
+c_rt_lib0move(&___nl__im__31, c_rt_lib0ov_mk_arg(___get_global_const(78), ___nl__im__32));
 #line 137
 c_rt_lib0clear(&___nl__im__32);
 #line 137
@@ -1761,9 +1742,6 @@ c_rt_lib0clear(&___nl__im__39);
 c_rt_lib0delete(hash0set_value(&___nl__im__33, ___nl__im__34, ___nl__im__38));
 #line 140
 c_rt_lib0clear(&___nl__im__38);
-#line 140
-label_12:
-;
 #line 141
 c_rt_lib0move(&___nl__im__37, c_rt_lib0next_iter(___nl__im__37));
 #line 141
@@ -1774,7 +1752,7 @@ label_11:
 #line 142
 c_rt_lib0move(&___nl__im__41, c_rt_lib0hash_mk(0));
 #line 142
-c_rt_lib0move(&___nl__im__42, c_rt_lib0ov_mk_none(___get_global_const(82)));
+c_rt_lib0move(&___nl__im__42, c_rt_lib0ov_mk_none(___get_global_const(81)));
 #line 142
 c_rt_lib0move(&___nl__im__40, post_processing0init(___nl__im__41, ___nl__im__42));
 #line 142
@@ -1784,7 +1762,7 @@ c_rt_lib0clear(&___nl__im__42);
 #line 143
 c_rt_lib0delete(post_processing0find(&___nl__im__40, &___nl__im__33));
 #line 144
-c_rt_lib0move(&___nl__im__43, c_rt_lib0ov_mk_arg(___get_global_const(80), ___nl__im__33));
+c_rt_lib0move(&___nl__im__43, c_rt_lib0ov_mk_arg(___get_global_const(79), ___nl__im__33));
 #line 144
 c_rt_lib0clear(&___nl__im__0);
 #line 144
@@ -1833,6 +1811,7 @@ c_rt_lib0clear(&___nl__im__37);
 c_rt_lib0clear(&___nl__im__40);
 #line 144
 return ___nl__im__43;
+return NULL;
 }
 
 

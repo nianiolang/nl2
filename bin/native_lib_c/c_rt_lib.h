@@ -176,6 +176,8 @@ ImmT c_rt_lib0array_set(ImmT *arrI, INT indexI, ImmT el);
 bool c_rt_lib0is_array(ImmT imm);
 bool c_rt_lib0is_hash(ImmT imm);
 bool c_rt_lib0is_sim(ImmT imm);
+bool c_rt_lib0is_int(ImmT imm);
+bool c_rt_lib0is_string(ImmT imm);
 bool c_rt_lib0is_variant(ImmT imm);
 
 //operators

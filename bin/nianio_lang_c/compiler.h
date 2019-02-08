@@ -15,6 +15,7 @@
 #include "nparser.h"
 #include "pretty_printer.h"
 #include "generator_c.h"
+#include "generator_js.h"
 #include "translator.h"
 #include "nlasm.h"
 #include "post_processing.h"

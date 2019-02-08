@@ -71,6 +71,7 @@ ImmT  ___nl__im__0 = NULL;
 c_rt_lib0move(&___nl__im__0, c_olympic_io0readln());
 #line 18
 return ___nl__im__0;
+return NULL;
 }
 
 INT  console0read_int0ptr(int _num, ImmT *_tab){
@@ -84,6 +85,7 @@ INT  ___nl__int__0 = 0;
 ___nl__int__0 = c_olympic_io0read_int();
 #line 22
 return ___nl__int__0;
+return 0;
 }
 
 ImmT  console0read_char0ptr(int _num, ImmT *_tab){
@@ -97,6 +99,7 @@ ImmT  ___nl__im__0 = NULL;
 c_rt_lib0move(&___nl__im__0, c_olympic_io0read_char());
 #line 26
 return ___nl__im__0;
+return NULL;
 }
 
 

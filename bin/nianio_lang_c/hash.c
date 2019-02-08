@@ -43,6 +43,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 9
 return NULL;
+return NULL;
 }
 
 bool  hash0has_key0ptr(int _num, ImmT *_tab){
@@ -71,6 +72,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 13
 //clear ___nl__bool__2;
 #line 13
+return false;
 return false;
 }
 
@@ -133,6 +135,7 @@ c_rt_lib0clear(&___nl__im__0);
 //clear ___nl__int__1;
 #line 25
 return 0;
+return 0;
 }
 
 ImmT  hash0keys0ptr(int _num, ImmT *_tab){
@@ -165,9 +168,6 @@ c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__2));
 #line 31
 c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__2));
-#line 31
-label_2:
-;
 #line 32
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 32
@@ -200,6 +200,7 @@ c_rt_lib0clear(&___nl__im__4);
 #line 33
 c_rt_lib0clear(&___nl__im__5);
 #line 33
+return NULL;
 return NULL;
 }
 
@@ -233,9 +234,6 @@ c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__2));
 #line 39
 c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__4));
-#line 39
-label_2:
-;
 #line 40
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 40
@@ -269,6 +267,7 @@ c_rt_lib0clear(&___nl__im__4);
 c_rt_lib0clear(&___nl__im__5);
 #line 41
 return NULL;
+return NULL;
 }
 
 ImmT  hash0merge0ptr(int _num, ImmT *_tab){
@@ -300,6 +299,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 47
 return NULL;
+return NULL;
 }
 
 ImmT  hash0add_all0ptr(int _num, ImmT *_tab){
@@ -330,9 +330,6 @@ c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__1, ___nl__im__2));
 #line 51
 c_rt_lib0delete(hash0set_value(___ref___im__0, ___nl__im__2, ___nl__im__4));
-#line 51
-label_2:
-;
 #line 51
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 51
@@ -413,6 +410,7 @@ c_rt_lib0clear(&___nl__im__3);
 c_rt_lib0clear(&___nl__im__4);
 #line 58
 return NULL;
+return NULL;
 }
 
 ImmT  hash0has2keys0ptr(int _num, ImmT *_tab){
@@ -472,6 +470,7 @@ c_rt_lib0clear(&___nl__im__2);
 c_rt_lib0clear(&___nl__im__6);
 #line 62
 return NULL;
+return NULL;
 }
 
 ImmT  hash0get2keys0ptr(int _num, ImmT *_tab){
@@ -511,6 +510,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 66
 c_rt_lib0clear(&___nl__im__3);
 #line 66
+return NULL;
 return NULL;
 }
 
@@ -576,6 +576,7 @@ c_rt_lib0clear(&___nl__im__4);
 #line 73
 c_rt_lib0clear(&___nl__im__5);
 #line 73
+return NULL;
 return NULL;
 }
 

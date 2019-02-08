@@ -432,9 +432,6 @@ c_rt_lib0clear(&___nl__im__35);
 c_rt_lib0move(&___nl__im__25, c_rt_lib0concat_add(___nl__im__25, ___nl__im__30));
 #line 25
 c_rt_lib0clear(&___nl__im__30);
-#line 25
-label_19:
-;
 #line 26
 c_rt_lib0move(&___nl__im__29, c_rt_lib0next_iter(___nl__im__29));
 #line 26
@@ -1124,9 +1121,6 @@ c_rt_lib0clear(&___nl__im__58);
 c_rt_lib0clear(&___nl__im__59);
 #line 50
 c_rt_lib0clear(&___nl__im__60);
-#line 50
-label_22:
-;
 #line 51
 c_rt_lib0move(&___nl__im__56, c_rt_lib0next_iter(___nl__im__56));
 #line 51
@@ -1346,6 +1340,7 @@ goto label_1;
 #line 56
 label_1:
 ;
+return NULL;
 }
 
 ImmT  anon_naming0get_anon_name0ptr(int _num, ImmT *_tab){
@@ -1373,6 +1368,7 @@ c_rt_lib0clear(&___nl__im__3);
 c_rt_lib0clear(&___nl__im__0);
 #line 60
 return ___nl__im__1;
+return NULL;
 }
 
 ImmT  anon_naming0func_ref_to_struct_name0ptr(int _num, ImmT *_tab){
@@ -1443,6 +1439,7 @@ c_rt_lib0clear(&___nl__im__8);
 c_rt_lib0clear(&___nl__im__0);
 #line 67
 return ___nl__im__4;
+return NULL;
 }
 
 
