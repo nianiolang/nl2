@@ -31,5 +31,5 @@ INT c_olympic_io0read_int() {
 ImmT c_olympic_io0read_char() {
 	char c;
 	scanf(" %c ", &c);
-	c_rt_lib0string_new_from_bytes(&c, 1);
+	return c_rt_lib0string_new_from_bytes(&c, 1);
 }

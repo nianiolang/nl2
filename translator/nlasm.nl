@@ -34,6 +34,7 @@ def nlasm::function_t() {
 			registers => ptd::arr(@nlasm::reg_t),
 			args_type => @nlasm::args_type,
 			ret_type => @tct::meta_type,
+			ret_reg_type => @nlasm::reg_type,
 			commands => @nlasm::cmds_t,
 			name => ptd::string(),
 			defines_type => ptd::var({no => ptd::none(), yes => @tct::meta_type}),

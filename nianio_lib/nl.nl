@@ -17,6 +17,14 @@ def nl::is_sim(variable) : ptd::bool() {
 	return c_std_lib::is_sim(variable) ? true : false;
 }
 
+#def nl::is_int(variable) : ptd::bool() {
+#	return c_std_lib::is_int(variable) ? true : false;
+#}
+#
+#def nl::is_string(variable) : ptd::bool() {
+#	return c_std_lib::is_string(variable) ? true : false;
+#}
+
 def nl::is_variant(variable) : ptd::bool() {
 	return c_std_lib::is_variant(variable) ? true : false;
 }

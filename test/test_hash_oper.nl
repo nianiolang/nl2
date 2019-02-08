@@ -3,9 +3,7 @@
 ###
 
 
-use hash;
 use nassert;
-use array;
 
 def test_hash_oper::test() {
 	var h = {};

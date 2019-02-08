@@ -7,11 +7,10 @@ use nassert;
 
 def test_mod::test() {
 	var a = 10;
-	var b = 5;
-	test_function(ref a, b);
+	test_function(ref a);
 }
 
-def test_function(ref arg1, arg2) {
+def test_function(ref arg1) {
 	var arr = [1, 2, 3];
 	var h = {a => 1, b => 2, c => 3, d => 4};
 	1 if true;

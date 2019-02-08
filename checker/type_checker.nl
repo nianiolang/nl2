@@ -267,7 +267,7 @@ def check_func(i : ptd::int(), ref modules : @tc_types::modules_t, ref own_conv 
 	check_cmd(ref module->fun_def[i]->cmd, ref modules, ref fun_vars, ref errors, known_types);
 	check_types_imported(modules->env->ret_type, ref modules, ref errors);
 	var fun_name = get_function_name(module->name, fun_def->name);
-	if (hash::has_key(get_special_functions(), fun_name)) {
+	if (fun_def->access is :pub && hash::has_key(get_special_functions(), fun_name)) {
 		var special_fun_def = get_special_functions(){fun_name};
 		module->fun_def[i]->ret_type->tct_type = special_fun_def->r;
 		rep var j (array::len(module->fun_def[i]->args)) {
@@ -370,11 +370,11 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 	var ret : ptd::hash(@tc_types::var_t) = {};
 	var vars : @tc_types::vars_t = b_vars;
 	match (cmd->cmd) case :if(var as_if) {
-		var if_cond_type : @tc_types::type = check_val(as_if->cond, ref modules, ref vars, ref errors, known_types);
+		var vars_op : @tc_types::vars_t = vars;
+		var if_cond_type : @tc_types::type = check_val(as_if->cond, ref modules, ref vars_op, ref errors, known_types);
 		add_error(ref errors, 'if argument should be sim or boolean instead of ' . 
 				get_print_tct_type_name(if_cond_type->type))
 			unless ptd_system::is_condition_type(if_cond_type, ref modules, ref errors);
-		var vars_op : @tc_types::vars_t = vars;
 		check_cmd(ref as_if->if, ref modules, ref vars_op, ref errors, known_types);
 
 		rep var i (array::len(as_if->elsif)) {
@@ -430,11 +430,11 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 		check_while(ref as_while, ref modules, ref vars, ref errors, known_types);
 		cmd->cmd = :while(as_while);
 	} case :if_mod(var if_mod) {
-		var if_cond_type : @tc_types::type = check_val(if_mod->cond, ref modules, ref vars, ref errors, known_types);
+		var vars_op : @tc_types::vars_t = vars;
+		var if_cond_type : @tc_types::type = check_val(if_mod->cond, ref modules, ref vars_op, ref errors, known_types);
 		add_error(ref errors, 'if argument should be sim or boolean type instead of ' . 
 				get_print_tct_type_name(if_cond_type->type))
 			unless ptd_system::is_condition_type(if_cond_type, ref modules, ref errors);
-		var vars_op : @tc_types::vars_t = vars;
 		check_cmd(ref if_mod->cmd, ref modules, ref vars_op, ref errors, known_types);
 		join_vars(ref vars, vars_op, ref modules, ref errors, known_types);
 		cmd->cmd = :if_mod(if_mod);
@@ -891,7 +891,6 @@ def check_val(val : @nast::value_t, ref modules : @tc_types::modules_t, ref vars
 	return ret;
 }
 
-
 def check_fun_val(fun_val : @nast::fun_val_t, ref modules : @tc_types::modules_t, ref vars : @tc_types::vars_t, 
 		ref errors : @tc_types::errors_t, known_types : ptd::hash(@tct::meta_type))  : @tc_types::type {
 	var ret = tc_types::get_default_type();
@@ -1165,6 +1164,10 @@ def get_special_functions() : @tc_types::special_functions {
 			r => tct::arr(tct::string()),
 			a => [{mod => :none, type => tct::string(), name => ''}]
 		});
+	hash::set_value(ref f, 'string::encode_utf16', {
+			r => tct::string(),
+			a => [{mod => :none, type => tct::tct_im(), name => ''}]
+		});
 	hash::set_value(ref f, 'c_std_lib::fast_substr', {
 			r => tct::string(),
 			a => [
@@ -1194,6 +1197,18 @@ def get_special_functions() : @tc_types::special_functions {
 			]
 		});
 	hash::set_value(ref f, 'c_std_lib::is_sim', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_std_lib::is_int', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_std_lib::is_string', {
 			r => tct::bool(),
 			a => [
 				{mod => :none, type => tct::tct_im(), name => ''},
@@ -1284,6 +1299,18 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::tct_im(), name => ''},
 			]
 		});
+	hash::set_value(ref f, 'c_rt_lib::is_int', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::is_string', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'c_rt_lib::is_array', {
 			r => tct::bool(),
 			a => [
@@ -1340,7 +1367,7 @@ def get_special_function_def(module : ptd::string(), name : ptd::string()) : @tc
 			module => module,
 			access => :pub,
 			args => [],
-			ret_type => tct::empty()
+			ret_type => tct::tct_im()
 		};
 	name = get_function_name(module, name);
 	if (hash::has_key(f, name)) {
@@ -1658,7 +1685,8 @@ def get_type_from_bin_op_and_check(bin_op : @nast::bin_op_t, ref modules : @tc_t
 			return ret_type;
 		}
 		if (!ptd_system::is_accepted(right_type, tct::int(), ref modules, ref errors)) {
-			add_error(ref errors, 'array index should be number');
+			add_error(ref errors, 'array index should be number, got ' .
+				get_print_tct_type_name(right_type->type));
 		}
 		left_type2->type = left_type2->type as :tct_arr if left_type2->type is :tct_arr;
 		left_type2->type = left_type2->type as :tct_own_arr if left_type2->type is :tct_own_arr;
@@ -2177,7 +2205,9 @@ def fill_value_types_in_fora(ref as_fora : @nast::fora_t, vars : @tc_types::vars
 	fill_value_types(ref as_fora->array, vars, modules, ref errors, known_types, ref anon_own_conv, curr_module_name);
 	var arr_type = unwrap_ref(as_fora->array->type, ref modules, ref errors);
 	var inner_type;
-	if (arr_type is :tct_arr || arr_type is :tct_im) {
+	if (arr_type is :tct_arr) {
+		inner_type = arr_type as :tct_arr;
+	} elsif (arr_type is :tct_im) {
 		inner_type = :tct_im;
 	} elsif (arr_type is :tct_own_arr) {
 		inner_type = arr_type as :tct_own_arr;
@@ -2436,7 +2466,10 @@ def fill_fun_val_type(ref fun_val : @nast::value_t, vars : @tc_types::vars_t, mo
 			hash::set_value(ref anon_own_conv, name, type);
 		}
 	} else {
-		return unless check_function_exists(as_fun->module, as_fun->name, ref modules, ref errors);
+		if (!check_function_exists(as_fun->module, as_fun->name, ref modules, ref errors)) {
+			fun_val->type = :tct_im;
+			return;
+		}
 		var fun_def = get_function_def(as_fun->module, as_fun->name, modules);
 		fun_val->type = fun_def->ret_type;
 		rep var i (array::len(as_fun->args)) {

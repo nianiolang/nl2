@@ -131,6 +131,7 @@ def ptd::ensure_dyn(type, value, ref path) : ptd::var({ok => ptd::string(), err 
 		}
 		array::pop(ref path);
 	} case :ptd_string {
+		# TODO precise check
 		return :err({err => '8 wrong string ref ', path => path}) unless c_std_lib::is_sim(value);
 	} case :ptd_var(var ptd_var) {
 		return :err({err => '9 not ov ref', path => path}) unless c_std_lib::is_variant(value);
@@ -146,12 +147,22 @@ def ptd::ensure_dyn(type, value, ref path) : ptd::var({ok => ptd::string(), err 
 		}
 		array::pop(ref path);
 	} case :ptd_int {
+		# TODO precise check
+		return :err({err => '13 wrong int ', path => path}) unless c_std_lib::is_sim(value);
 	} case :ptd_im {
 	} case :ref(var ptd_ref) {
 		path []= ptd_ref;
 		var ret = ptd::ensure_dyn(exec(type, []), value, ref path);
 		array::pop(ref path);
 		return ret;
+	} case :ptd_bool {
+		# TODO precise check
+		return :ok('') if true;
+		return :err({err => '14 not bool ref', path => path}) unless c_std_lib::is_variant(value);
+		var name = ov::get_element(value);
+		if (name ne 'TRUE' && name ne 'FALSE') {
+			return :err({err => '15 Case ' . name . ' not allowed in bool', path => path});
+		}
 	}
 	return :ok('');
 }

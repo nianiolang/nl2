@@ -111,6 +111,7 @@ def ptd_system::is_accepted_info(from : @tc_types::type, as_type : @tct::meta_ty
 	ref errors : @tc_types::errors_t) : @tc_types::check_info {
 	from = ptd_system::can_delete(from, ref modules, ref errors);
 	return :ok if from->type is :tct_im;
+	return :ok if as_type is :tct_im;
 	if (as_type is :tct_rec) {
 		return :ok if hash::size(as_type as :tct_rec) == 0 && from->type is :tct_rec;
 	} elsif (as_type is :tct_own_rec) {
@@ -185,6 +186,8 @@ def cross_type(a : @tct::meta_type, b : @tct::meta_type, ref_inf : @tc_types::re
 		return :tct_im;
 	}
 	return a if (b is :tct_empty);
+
+
 	match (a) case :tct_empty {
 		return b;
 	} case :tct_im {
@@ -206,8 +209,8 @@ def cross_type(a : @tct::meta_type, b : @tct::meta_type, ref_inf : @tc_types::re
 	} case :tct_bool {
 		if (b is :tct_bool) {
 			return :tct_bool;
-		} else {
-			return :tct_im;
+		} elsif (b is :tct_var) {
+			return :tct_bool if (is_variant_bool(b));
 		}
 	} case :tct_ref(var ref_name) {
 		die;
@@ -258,6 +261,8 @@ def cross_type(a : @tct::meta_type, b : @tct::meta_type, ref_inf : @tc_types::re
 				}
 			}
 			return tct::var(fin);
+		} elsif (b is :tct_bool) {
+			return :tct_bool if (is_variant_bool(a));
 		}
 	} case :tct_own_var(var variants) {
 		var fin = variants;
@@ -549,6 +554,7 @@ def check_assignment_info(to : @tct::meta_type, from : @tct::meta_type, ref_inf 
 		return mk_err(to, from);
 	} case :tct_bool {
 		return :ok if from is :tct_bool;
+		return :ok if from is :tct_var && is_variant_bool(from);
 		return mk_err(to, from);
 	} case :tct_var(var vars) {
 		var from_var;
@@ -556,6 +562,9 @@ def check_assignment_info(to : @tct::meta_type, from : @tct::meta_type, ref_inf 
 			from_var = from as :tct_var;
 		} elsif (from is :tct_own_var) {
 			from_var = from as :tct_own_var;
+		} elsif (from is :tct_bool) {
+			return :ok if is_variant_bool(to);
+			return mk_err(to, from);
 		} else {
 			return mk_err(to, from);
 		}
@@ -785,3 +794,10 @@ def ptd_system::get_ref_type(type_name : ptd::string(), ref modules : @tc_types:
 	return fun_as_type;
 }
 
+def is_variant_bool(variant : @tct::meta_type) : ptd::bool() {
+	var as_var = variant as :tct_var;
+	if (hash::size(as_var) == 2 && hash::has_key(as_var, 'TRUE') && hash::has_key(as_var, 'FALSE')) {
+		return true;
+	}
+	return false;
+}

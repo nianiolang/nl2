@@ -11,7 +11,8 @@ OUT=mk_cache.exe
 BINEXEC=./bin/mk_cache.exe
 CACHEDIR=cache_nl
 CACHETEST=cache_test
-CFLAGS=-std=c99 -O0 -ggdb -Werror
+CACHEJS=cache_js
+CFLAGS=-std=c99 -O0 -ggdb -Wall -Wno-unused-but-set-variable #-Werror TODO restore
 LINKS=-lm
 
 NLDIR=ast checker compiler nianio_lib parser pretty_printer translator compiler_base
@@ -81,6 +82,9 @@ main: main.nl
 
 main_exe: main.nl
 	gcc ${CFLAGS} -o main main_c.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
+
+main_js: main.nl
+	./${OUT} nianio_lib main.nl --deref --strict --o ${CACHEJS} --js --O2 --profile
 
 nls:
 	./$(OUT) nls/ --strict --c --o nls/cache_nl/

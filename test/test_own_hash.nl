@@ -2,7 +2,6 @@
 # (c) Atinea Sp. z o.o.
 ###
 
-use nl;
 use ptd;
 use own;
 use own_array;

@@ -13,6 +13,7 @@ use nast;
 use nparser;
 use pretty_printer;
 use generator_c;
+use generator_js;
 use translator;
 use nlasm;
 use post_processing;
@@ -70,6 +71,7 @@ def compiler::language_t() {
 	return ptd::var({
 			nla => ptd::none(),
 			c => ptd::none(),
+			js => ptd::rec({namespace => ptd::string()}),
 			nl => ptd::none(),
 			ast => ptd::none(),
 			call_graph => ptd::none(),
@@ -78,13 +80,11 @@ def compiler::language_t() {
 
 def compiler::destination_t() {
 	return ptd::var({
-			pm => ptd::string(),
 			nla => ptd::string(),
 			c => ptd::rec({c => ptd::string(), h => ptd::string()}),
 			nl => ptd::string(),
 			ast => ptd::string(),
 			js => ptd::string(),
-			java => ptd::string(),
 			none => ptd::none(),
 			call_graph => ptd::none(),
 		});
@@ -193,6 +193,8 @@ def get_out_ext(language : @compiler::language_t) : ptd::string() {
 		return '.nla';
 	} case :c {
 		return '.c';
+	} case :js(var params) {
+		return '.js';
 	} case :ast {
 		return '.ast';
 	} case :nl {
@@ -216,6 +218,8 @@ def mk_path_module(file : ptd::rec({dir => ptd::string(), file => ptd::string()}
 		return {src => src, dst => :nla(dst . '.nla')};
 	} case :c {
 		return {src => src, dst => :c({c => dst . '.c', h => dst . '.h'})};
+	} case :js(var params) {
+		return {src => src, dst => :js(dst . '.js')};
 	} case :nl {
 		var len = string::length(file->dir);
 		var dir = get_dir(src);
@@ -333,7 +337,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			ret => '',
 			header => '',
 			fun_args => [],
-			ret_type => :tct_im,
+			ret_reg_type => :im,
 			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
 			mod_name => '',
 			additional_imports => {},
@@ -482,7 +486,7 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 			ret => '',
 			header => '',
 			fun_args => [],
-			ret_type => :tct_im,
+			ret_reg_type => :im,
 			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
 			mod_name => '',
 			additional_imports => {},
@@ -707,6 +711,15 @@ def generate_modules_to_files(modules : ptd::hash(@nlasm::result_t), nianio_file
 		c_fe_lib::print('saving global const file');
 		try_save_file(ret->global_const->c, cache_path . 'c_global_const.c', ref error);
 		try_save_file(ret->global_const->h, cache_path . 'c_global_const.h', ref error);
+	} case :js(var params) {
+		forh var module, var nlasm (modules) {
+			var error = false;
+			var ret = generator_js::generate(nlasm, params->namespace);
+			var path = nianio_files{module}->dst as :js;
+			c_fe_lib::print('saving file: ' . module);
+			try_save_file(ret, path, ref error);
+			hash::set_value(ref error_modules, module, '') if (error);
+		}
 	} case :nl {
 		die;
 	} case :ast {
@@ -732,11 +745,7 @@ def save_module_to_file(ast : @nast::module_t, mod_dst : @compiler::destination_
 		die;
 	} case :c(var paths) {
 		die;
-	} case :pm(var path) {
-		die;
 	} case :js(var path) {
-		die;
-	} case :java(var path) {
 		die;
 	} case :nl(var path) {
 		return ptd::ensure(@compiler::file_t, c_fe_lib::string_to_file(path, pretty_printer::print_module_to_str(ast)));
@@ -784,6 +793,10 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 				ret->language = :ast;
 			} elsif (opt eq 'c') {
 				ret->language = :c;
+			} elsif (opt eq 'js') {
+				if (!ret->language is :js) {
+					ret->language = :js({namespace => 'nl'});
+				}
 			} elsif (opt eq 'call_graph') {
 				ret->language = :call_graph;
 			} elsif (opt eq 'nl') {
@@ -823,6 +836,10 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 				ret->check_public_fun = true;
 			} elsif (opt eq 'profile') {
 				ret->profile = true;
+			} elsif (opt eq 'namespace') {
+				++i;
+				die unless (i < array::len(args));
+				ret->language = :js({namespace => args[i]});
 			} else {
 				c_fe_lib::print('unknown compiler option: ' . el);
 			}

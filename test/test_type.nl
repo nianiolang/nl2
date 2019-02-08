@@ -31,6 +31,7 @@ def test_type::test() {
 	} else {
 		die;
 	}
+	b;
 	funkcja(d);
 }
 
@@ -77,6 +78,7 @@ def funkcja(a : ptd::var({a => ptd::string(), b => ptd::rec({a => ptd::string(),
 		var cop = dd;
 		emp = cop;
 		emp = a as :d;
+		emp;
 		cop->g = '';
 		die;
 	}
