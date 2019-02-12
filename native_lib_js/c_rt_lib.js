@@ -625,4 +625,26 @@ var instadb;
 		return _namespace.c_rt_lib.native_to_nl(!_namespace.c_rt_lib.check_true_native(arg));
 	}
 
+// ---> TODO temporary float
+	_namespace.c_rt_lib.str_float_add = function(lhs, rhs) {
+		return _namespace.imm_str(lhs.as_float() + rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_mul = function(lhs, rhs) {
+		return _namespace.imm_str(lhs.as_float() * rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_sub = function(lhs, rhs) {
+		return _namespace.imm_str(lhs.as_float() - rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_div = function(lhs, rhs) {
+		return _namespace.imm_str(lhs.as_float() / rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_mod = function(lhs, rhs) {
+		return _namespace.imm_str(lhs.as_float() % rhs.as_float());
+	}
+// TODO temporary float <---
+
 })(instadb = instadb || {});

@@ -5,6 +5,8 @@
 use string;
 use ptd;
 use array;
+use float;
+use c_rt_lib;
 
 def string_utils::is_int(char) {
 	return (string::ord(char) > 47 && string::ord(char) < 58);
@@ -80,7 +82,7 @@ def string_utils::is_number(string) : ptd::bool() {
 	return string_utils::is_integer(sim) || string_utils::is_float(sim);
 }
 
-def string_utils::get_number(str) {
+def string_utils::get_number(str) : ptd::var({ok => ptd::string(), err => ptd::none()}) {
 	return :err if str eq '' || str eq '-';
 	var split_res = string::split('', str);
 	var ret = '';
@@ -109,7 +111,7 @@ def eat_ws(str, ref pos) {
 	return pos == array::len(str);
 }
 
-def get_number(str, ref pos) {
+def get_number(str, ref pos) : ptd::var({ok => ptd::string(), err => ptd::string()}) {
 	var num = '';
 	if (str[pos] eq '-') {
 		++pos;
@@ -125,18 +127,18 @@ def get_number(str, ref pos) {
 		num .= char;
 		++pos;
 	}
-	return :err if (num eq '' || num eq '-');
+	return :err('') if (num eq '' || num eq '-');
 	return :ok(num);
 }
 
-def cal_expr(str, ref pos, prio) {
-	return :err if eat_ws(str, ref pos);
-	var ret;
+def cal_expr(str, ref pos, prio) : ptd::var({ok => ptd::string(), err => ptd::string()}) {
+	return :err('') if eat_ws(str, ref pos);
+	var ret : ptd::string();
 	if (str[pos] eq '(') {
 		++pos;
 		try ret = cal_expr(str, ref pos, 0);
-		return :err if eat_ws(str, ref pos);
-		return :err unless str[pos] eq ')';
+		return :err('') if eat_ws(str, ref pos);
+		return :err('') unless str[pos] eq ')';
 		++pos;
 	} else {
 		try ret = get_number(str, ref pos);
@@ -148,38 +150,38 @@ def cal_expr(str, ref pos, prio) {
 			return :ok(ret) if prio >= 5;
 			++pos;
 			try var tmp = cal_expr(str, ref pos, 5);
-			ret *= tmp;
+			ret = float::mul(ret, tmp);
 		} elsif (char eq '/') {
 			return :ok(ret) if prio >= 5;
 			++pos;
 			try var tmp = cal_expr(str, ref pos, 5);
-			ret = ret / tmp;
+			ret = float::div(ret, tmp);
 		} elsif (char eq '%') {
 			return :ok(ret) if prio >= 5;
 			++pos;
 			try var tmp = cal_expr(str, ref pos, 5);
-			ret = ret % tmp;
+			ret = float::mod(ret, tmp);
 		} elsif (char eq '+') {
 			return :ok(ret) if prio >= 2;
 			++pos;
 			try var tmp = cal_expr(str, ref pos, 2);
-			ret += tmp;
+			ret = float::add(ret, tmp);
 		} elsif (char eq '-') {
 			return :ok(ret) if prio >= 2;
 			++pos;
 			try var tmp = cal_expr(str, ref pos, 2);
-			ret -= tmp;
+			ret = float::sub(ret, tmp);
 		} elsif (char eq ')') {
-			return :err if prio < 0;
+			return :err('') if prio < 0;
 			return :ok(ret);
 		} else {
-			return :err;
+			return :err('');
 		}
 	}
 	die;
 }
 
-def string_utils::eval_number(string) {
+def string_utils::eval_number(string : ptd::string()) : ptd::string() {
 	return string if string eq '';
 	var split_res = string::split('', string);
 	return string if split_res[0] ne '=';
@@ -194,7 +196,7 @@ def string_utils::eval_number(string) {
 	}
 	var str = string::split('', ret);
 	var pos = 0;
-	match (cal_expr(str, ref pos, -1)) case :err {
+	match (cal_expr(str, ref pos, -1)) case :err(var err) {
 		return '';
 	} case :ok(var val) {
 		return val;
@@ -202,7 +204,7 @@ def string_utils::eval_number(string) {
 }
 
 def string_utils::get_date(string, char) : ptd::var({
-		ok => ptd::rec({first => ptd::string(), second => ptd::string(), third => ptd::string()}),
+		ok => ptd::rec({first => ptd::int(), second => ptd::int(), third => ptd::int()}),
 		err => ptd::string()
 	}) {
 	var split_result = string::split(char, string);
@@ -212,10 +214,13 @@ def string_utils::get_date(string, char) : ptd::var({
 			string_utils::is_integer_possibly_leading_zeros(split_result[0]) && 
 			string_utils::is_integer_possibly_leading_zeros(split_result[1]) && 
 			string_utils::is_integer_possibly_leading_zeros(split_result[2]);
-	return :ok({first => split_result[0], second => split_result[1], third => split_result[2]});
+	ensure var first = string_utils::get_integer(split_result[0]);
+	ensure var second = string_utils::get_integer(split_result[1]);
+	ensure var third = string_utils::get_integer(split_result[2]);
+	return :ok({first => first, second => second, third => third});
 }
 
-def string_utils::change(str, from, to) {
+def string_utils::change(str, from, to) : ptd::string() {
 	var ret = '';
 	fora var char (string::split('', str)) {
 		ret .= char eq from ? to : char;
@@ -298,8 +303,8 @@ def max(a, b) {
 	return a > b ? a : b;
 }
 
-def string_utils::int2str(int, len) {
-	var str = '000000000000000000000000' . int;
+def string_utils::int2str(int, len) : ptd::string() {
+	var str = '000000000000000000000000' . ptd::int_to_string(int);
 	return string::substr2(str, string::length(str) - len);
 }
 
@@ -307,3 +312,32 @@ def string_utils::starts_with(el, prefix) {
 	return string::length(el) >= string::length(prefix) && string::substr(el, 0, string::length(prefix)) eq prefix;
 }
 
+def string_utils::normalize_newlines(str : ptd::string()) : ptd::string() {
+	var res = string::replace_arr(str,
+			[string::r() . string::lf(), string::r() , string::lf()],
+			[string::lf()              , string::lf(), string::r() . string::lf()]
+		);
+	return ptd::ensure(ptd::string(), res);
+}
+
+def string_utils::float2str(float : ptd::string(), prec : ptd::int()) : ptd::string() {
+	var pot = 1;
+	rep var i (prec) {
+		pot *= 10;
+	}
+	float = float::mul(float, ptd::ensure(ptd::string(), ptd::int_to_string(pot)));
+	float = float::round(float);
+	var sign = '';
+	if (string::substr(float, 0, 1) eq '-') {
+		sign = '-';
+		float = string::substr2(float, 1);
+	}
+	var str = string_utils::int2str_leading_digits(float, prec + 1);
+	var len = string::length(str);
+	return sign . str if prec == 0;
+	return sign . string::substr(str, 0, len - prec) . '.' . string::substr(str, len - prec, prec);
+}
+
+def string_utils::float2str_fixed(num : ptd::string()) : ptd::string() {
+	return ptd::ensure(ptd::string(), c_rt_lib::float_fixed_str(num));
+}

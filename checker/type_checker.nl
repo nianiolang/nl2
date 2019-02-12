@@ -1329,6 +1329,12 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::tct_im(), name => ''},
 			]
 		});
+	hash::set_value(ref f, 'c_rt_lib::int_to_string', {
+			r => tct::string(),
+			a => [
+				{mod => :none, type => tct::int(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'c_olympic_io::print', {
 			r => tct::void(),
 			a => [

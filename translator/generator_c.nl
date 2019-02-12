@@ -1369,8 +1369,6 @@ def generate_call(ref state : @generator_c::state_t, call : @nlasm::call_t) : pt
 def create_sim(obj : ptd::string()) : ptd::string() {
 	if (string_utils::is_integer(obj)) {
 		return get_lib_fun('int_new') . '(' . obj . ')';
-	} elsif (string_utils::is_float(obj)) {
-		return get_lib_fun('float_new') . '(' . obj . ')';
 	} else {
 		var str = obj . '';
 		str = string::replace(str, '\', '\\');
@@ -1386,8 +1384,6 @@ def create_sim(obj : ptd::string()) : ptd::string() {
 def create_sim_to_memory(obj : ptd::string(), memory : ptd::string()) : ptd::string() {
 	if (string_utils::is_integer(obj)) {
 		return get_lib_fun('int_new_to_memory') . '(' . obj . ',' . memory . ')';
-	} elsif (string_utils::is_float(obj)) {
-		return get_lib_fun('float_new_to_memory') . '(' . obj . ',' . memory . ')';
 	} else {
 		var str = obj . '';
 		str = string::replace(str, '\', '\\');
