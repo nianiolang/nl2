@@ -1155,7 +1155,15 @@ ImmT c_rt_lib0float_round(ImmT f) {
 	FLOAT number = getFloatFromImm(f);
 	number = round(number);
 	if (number == 0) number = 0;
-	return c_rt_lib0float_new(number);
+	char number_str[20];
+	sPrintFloat(number_str, number);
+	return c_rt_lib0string_new(number_str);
+}
+
+ImmT c_rt_lib0float_fixed_str(ImmT f) {
+	char tab[FTABS];
+	sPrintFloat(tab, getFloatFromImm(f));
+	return (NlString*)c_rt_lib0string_new(tab);
 }
 
 ImmT c_rt_lib0array_get(ImmT ___nl__arrI, INT ___nl__int__indexI) {
@@ -1803,3 +1811,37 @@ void gdb_die(const char *msg){
 		exit(1);
 	}
 }
+
+// ---> TODO temporary float
+
+ImmT c_rt_lib0str_float_add(ImmT lhs, ImmT rhs) {
+	char res_str[20];
+	sPrintFloat(res_str, getFloatFromImm(lhs) + getFloatFromImm(rhs));
+	return c_rt_lib0string_new(res_str);
+}
+
+ImmT c_rt_lib0str_float_mul(ImmT lhs, ImmT rhs) {
+	char res_str[20];
+	sPrintFloat(res_str, getFloatFromImm(lhs) * getFloatFromImm(rhs));
+	return c_rt_lib0string_new(res_str);
+}
+
+ImmT c_rt_lib0str_float_sub(ImmT lhs, ImmT rhs) {
+	char res_str[20];
+	sPrintFloat(res_str, getFloatFromImm(lhs) - getFloatFromImm(rhs));
+	return c_rt_lib0string_new(res_str);
+}
+
+ImmT c_rt_lib0str_float_div(ImmT lhs, ImmT rhs) {
+	char res_str[20];
+	sPrintFloat(res_str, getFloatFromImm(lhs) / getFloatFromImm(rhs));
+	return c_rt_lib0string_new(res_str);
+}
+
+ImmT c_rt_lib0str_float_mod(ImmT lhs, ImmT rhs) {
+	char res_str[20];
+	sPrintFloat(res_str, fmod(getFloatFromImm(lhs), getFloatFromImm(rhs)));
+	return c_rt_lib0string_new(res_str);
+}
+
+// TODO temporary float <---

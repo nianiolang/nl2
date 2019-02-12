@@ -145,6 +145,7 @@ FLOAT getFloatFromImm(ImmT num);
 ImmT c_rt_lib0float_new(FLOAT f);
 void c_rt_lib0float_new_to_memory(FLOAT f, ImmT memory);
 ImmT c_rt_lib0float_round(ImmT f);
+ImmT c_rt_lib0float_fixed_str(ImmT f);
 //string
 NlString* toStringIfSim(ImmT sim);
 NlString* toStringIfImm(ImmT imm);
@@ -251,3 +252,10 @@ ImmT c_rt_lib0gen_imm(ImmT imm);
 
 char *c_rt_lib0get_die_additional_info();
 char *c_rt_lib0get_logs_dir();
+
+//TODO temporary float
+ImmT c_rt_lib0str_float_add(ImmT lhs, ImmT rhs);
+ImmT c_rt_lib0str_float_mul(ImmT lhs, ImmT rhs);
+ImmT c_rt_lib0str_float_sub(ImmT lhs, ImmT rhs);
+ImmT c_rt_lib0str_float_div(ImmT lhs, ImmT rhs);
+ImmT c_rt_lib0str_float_mod(ImmT lhs, ImmT rhs);
