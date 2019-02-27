@@ -367,11 +367,15 @@ def print_unary_op(unary_op : @nast::unary_op_t, destination : @nlasm::reg_t, re
 def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref state : @translator::state_t) {
 	var bin_op : @nast::bin_op_t = as_bin_op->value as :bin_op;
 	if (bin_op->op eq '=') {
-		var lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
-		var dest = lvalue[array::len(lvalue) - 1] as :value;
+		var lvalue;
+		var dest;
 		if (tct::is_own_type(bin_op->left->type, state->logic->defined_types)) {
+			lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
+			dest = lvalue[array::len(lvalue) - 1] as :value;
 			print_val_init(bin_op->right, dest, ref state);
 		} elsif (bin_op->left->value is :var) {
+			lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
+			dest = lvalue[array::len(lvalue) - 1] as :value;
 			print_val(bin_op->right, dest, ref state);
 		} else {
 			var destination_empty = nlasm::is_empty(destination);
@@ -379,6 +383,8 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 				destination = {type => :im, reg_no => -1, access_type => :value};
 			}
 			var right = dest_val(bin_op->right, ref state);
+			lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
+			dest = lvalue[array::len(lvalue) - 1] as :value;
 			move(dest, right, ref state);
 			if (!destination_empty) {
 				move(destination, dest, ref state);
