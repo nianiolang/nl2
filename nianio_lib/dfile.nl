@@ -10,6 +10,7 @@ use hash;
 use array;
 use nl;
 use ptd;
+use string_utils;
 
 def dfile::deep_eq(left, right) {
 	return dfile::ssave(left) eq dfile::ssave(right);
@@ -68,7 +69,7 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::stri
 	var l = state->len;
 	if (state->pos >= l) {
 		error = true;
-		return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
 	}
 	loop {
 		var char = get_char(ref state);
@@ -79,20 +80,20 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::stri
 	}
 	if (ret eq '') {
 		error = true;
-		return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
 	}
 	return ret;
 }
 
-def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
+def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::meta_type) {
 	eat_ws(ref state);
+	var ret = '';
 	if (get_char(ref state) eq '"') {
 		++state->pos;
-		var ret = '';
 		loop {
 			if (state->pos >= state->len) {
 				error = true;
-				return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected "';
+				return 'pos ' . ptd::int_to_string(state->pos) . ': expected "';
 			}
 			var char = get_char(ref state);
 			++state->pos;
@@ -113,9 +114,21 @@ def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::st
 				ret .= char;
 			}
 		}
-		return ret;
 	} else {
-		return eat_non_ws(ref state, ref error);
+		ret = eat_non_ws(ref state, ref error);
+	}
+	if (type is :ptd_string || type is :ptd_im) {
+		return ret;
+	} elsif (type is :ptd_int) {
+		match (string_utils::get_integer(ret)) case :ok(var n) {
+			return n;
+		} case :err(var err) {
+			error = true;
+			return 'incorrect number';
+		}
+	} else {
+		error = true;
+		return 'expected ' . dfile::ssave(type) . ', got scalar';
 	}
 }
 
@@ -133,28 +146,48 @@ def dfile::state_t() {
 	return ptd::rec({str => ptd::arr(ptd::string()), len => ptd::int(), pos => ptd::int()});
 }
 
-def parse(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::ptd_im() {
+def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::meta_type) : ptd::ptd_im() {
 	eat_ws(ref state);
 	var char = get_char(ref state);
+	while (type is :ref) {
+		var args = [];
+		type = ptd::ensure(@ptd::meta_type, c_std_lib::exec(type, ref args));
+	}
 	if (char eq '{') {
 		state->pos += 1;
 		var hash = {};
 		eat_ws(ref state);
 		while (!match_s(ref state, '}')) {
-			var key = parse_scalar(ref state, ref error);
+			var key = parse_scalar(ref state, ref error, ptd::string());
 			return key if error;
 			eat_ws(ref state);
 			if (!match_s(ref state, '=>')) {
 				error = true;
-				return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected =>';
+				return 'pos ' . ptd::int_to_string(state->pos) . ': expected =>';
 			}
-			var value = parse(ref state, ref error);
+			var field_type;
+			if (type is :ptd_rec) {
+				if (hash::has_key(type as :ptd_rec, key)) {
+					field_type = (type as :ptd_rec){key};
+				} else {
+					error = true;
+					return 'unexpected hash key ' . key;
+				}
+			} elsif (type is :ptd_hash) {
+				field_type = type as :ptd_hash;
+			} elsif (type is :ptd_im) {
+				field_type = :ptd_im;
+			} else {
+				error = true;
+				return 'expected ' . dfile::ssave(type) . ', got '  . dfile::ssave(:ptd_hash);
+			}
+			var value = parse(ref state, ref error, field_type);
 			return value if error;
 			hash::set_value(ref hash, key, value);
 			eat_ws(ref state);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
@@ -164,40 +197,68 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::ptd_im() 
 		var arr = [];
 		eat_ws(ref state);
 		while (!match_s(ref state, ']')) {
-			var value = parse(ref state, ref error);
+			var field_type;
+			if (type is :ptd_arr) {
+				field_type = type as :ptd_arr;
+			} elsif (type is :ptd_im) {
+				field_type = :ptd_im;
+			} else {
+				error = true;
+				return 'expected ' . dfile::ssave(type) . ', got '  . dfile::ssave(:ptd_hash);
+			}
+			var value = parse(ref state, ref error, field_type);
 			return value if error;
 			array::push(ref arr, value);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
 		return arr;
 	} elsif (char eq 'o' && is_ov(ref state)) {
 		state->pos += 7;
-		var key = parse_scalar(ref state, ref error);
+		var key = parse_scalar(ref state, ref error, ptd::string());
 		return key if error;
 		eat_ws(ref state);
 		if (match_s(ref state, ',')) {
-			var val = parse(ref state, ref error);
+			var inner_type;
+			if (type is :ptd_var) {
+				if (hash::has_key(type as :ptd_var, key)) {
+					match ((type as :ptd_var){key}) case :with_param(var param_type) {
+						inner_type = param_type;
+					} case :no_param {
+						error = true;
+						return 'unexpected variant value';
+					}
+				} else {
+					error = true;
+					return 'unexpected variant label ' . key;
+				}
+			} elsif (type is :ptd_im) {
+				inner_type = :ptd_im;
+			} else {
+				error = true;
+				return 'expected ' . dfile::ssave(type) . ', got '  . dfile::ssave(:ptd_hash);
+			}
+			var val = parse(ref state, ref error, inner_type);
 			return val if error;
 			eat_ws(ref state);
 			if (!match_s(ref state, ')')) {
 				error = true;
-				return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected )';
+				return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
 			}
 			return ov::mk_val(key, val);
 		}
 		eat_ws(ref state);
 		if (!match_s(ref state, ')')) {
 			error = true;
-			return 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected )';
+			return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
 		}
 		eat_ws(ref state);
 		return ov::mk(key);
 	} else {
-		return parse_scalar(ref state, ref error);
+		return parse_scalar(ref state, ref error, type);
 	}
 }
 
@@ -206,17 +267,26 @@ def dfile::sload(str_im) : ptd::ptd_im() {
 	return result;
 }
 
+def dfile::sload_type(str_im, type : @ptd::meta_type) : ptd::ptd_im() {
+	ensure var result = dfile::try_sload_type(str_im, type);
+	return result;
+}
+
 def dfile::try_sload(str_im) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
+	return dfile::try_sload_type(str_im, ptd::ptd_im());
+}
+
+def dfile::try_sload_type(str_im, type : @ptd::meta_type) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
 	var str = ptd::ensure(ptd::string(), str_im);
 	var state = {str => [str], pos => 0, len => string::length(str)};
 	var error = false;
 	match_s(ref state, 'use utf8;');
 	eat_ws(ref state);
-	var val = parse(ref state, ref error);
+	var val = parse(ref state, ref error, type);
 	eat_ws(ref state);
 	if (!error && state->pos != state->len) {
 		error = true;
-		val = 'pos ' . c_std_lib::int_to_string(state->pos) . ': expected eof';
+		val = 'pos ' . ptd::int_to_string(state->pos) . ': expected eof';
 	}
 	if (error) {
 		val = ptd::ensure(ptd::string(), val);

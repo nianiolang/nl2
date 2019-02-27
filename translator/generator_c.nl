@@ -12,7 +12,6 @@ use hash;
 use ov;
 use singleton;
 use nl;
-use string_utils;
 use tct;
 use generator_c_struct_dependence_sort;
 use anon_naming;
@@ -671,8 +670,10 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 		} else {
 			print(ref state, get_lib_fun('ov_mk_none') . '(' . variant_label . ')');
 		}
-	} elsif (nl::is_sim(obj)) {
+	} elsif (nl::is_string(obj)) {
 		print(ref state, get_const_sim(ref state, ptd::ensure(ptd::string(), obj)));
+	} elsif (nl::is_int(obj)) {
+		print(ref state, get_const_sim(ref state, ptd::ensure(ptd::string(), ptd::int_to_string(ptd::ensure(ptd::int(), obj)))));
 	} else {
 		die;
 	}
@@ -1366,8 +1367,8 @@ def generate_call(ref state : @generator_c::state_t, call : @nlasm::call_t) : pt
 	}
 }
 
-def create_sim(obj : ptd::string()) : ptd::string() {
-	if (string_utils::is_integer(obj)) {
+def create_sim(obj) : ptd::string() {
+	if (nl::is_int(obj)) {
 		return get_lib_fun('int_new') . '(' . obj . ')';
 	} else {
 		var str = obj . '';
@@ -1381,8 +1382,8 @@ def create_sim(obj : ptd::string()) : ptd::string() {
 	}
 }
 
-def create_sim_to_memory(obj : ptd::string(), memory : ptd::string()) : ptd::string() {
-	if (string_utils::is_integer(obj)) {
+def create_sim_to_memory(obj, memory : ptd::string()) : ptd::string() {
+	if (nl::is_int(obj)) {
 		return get_lib_fun('int_new_to_memory') . '(' . obj . ',' . memory . ')';
 	} else {
 		var str = obj . '';

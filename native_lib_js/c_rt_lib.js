@@ -14,7 +14,7 @@ var instadb;
 					return null;
 				}
 				if (typeof x.get_imm_type === 'function') {
-					if (x.get_imm_type() == 'sim') {
+					if (x.get_imm_type() == 'int' || x.get_imm_type() == 'string') {
 						return ['object', {'object' : x.as_js_str()}];
 					}
 					return ["span", {}, "Imm: " +   x.get_imm_type()];
@@ -44,7 +44,7 @@ var instadb;
 							['span', {}, 'value: '], 
 							['object', {'object' : x.ov_get_value()}]
 						]);
-				} else if (x.get_imm_type() == 'sim') {
+				} else if (x.get_imm_type() == 'int' || x.get_imm_type() == 'string') {
 				} else if (x.get_imm_type() == 'array') {
 					list.push(x.get_debug_body());
 				} else if (x.get_imm_type() == 'hash') {
@@ -132,6 +132,10 @@ var instadb;
 	_namespace.imm_deep = function(value) {
 		if (typeof value == 'string') {
 			return _namespace.imm_str(value);
+		} else if (typeof value == 'number') {
+			return _namespace.imm_int(value);
+		} else if (typeof value == 'boolean') {
+			return _namespace.c_rt_lib.native_to_nl(value);
 		} else if (value instanceof Array) {
 			var arr = [];
 			for (var i = 0; i < value.length; ++i) {
@@ -258,7 +262,7 @@ var instadb;
 		}
 		var name = n;
 		var value = v;
-		if (name.get_imm_type() != 'sim') {
+		if (name.get_imm_type() != 'string') {
 			_namespace.nl_die();
 		}
 
@@ -327,7 +331,7 @@ var instadb;
 					return Math.floor(parseFloat(value));
 				},
 				get_imm_type: function() {
-					return 'sim';
+					return 'string';
 				},
 				as_byte_string : function() {
 					return value;
@@ -344,13 +348,13 @@ var instadb;
 				return v.toString();
 			},
 			as_float: function() {
-				return v;
+				return parseFloat(v);
 			},
 			as_int: function() {
-				return v;
+				return parseInt(v);
 			},
 			get_imm_type: function() {
-				return 'sim';
+				return 'int';
 			},
 			as_byte_string: function() {
 				return v.toString();
@@ -618,7 +622,11 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.float_round = function(imm_s) {
-		return _namespace.imm_float(Math.round(Number(imm_s.as_byte_string())));
+		return _namespace.imm_str(Math.round(Number(imm_s.as_byte_string())));
+	}
+
+	_namespace.c_rt_lib.float_round = function(imm_s) {
+		return _namespace.imm_str(Number(imm_s.as_byte_string()).toFixed(20));
 	}
 
 	_namespace.c_rt_lib.bool_not = function(arg) {

@@ -97,16 +97,29 @@ var instadb;
 		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'hash');
 	}
 
-	_namespace.c_std_lib.is_sim = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'sim');
+	_namespace.c_std_lib.is_int = function(imm) {
+		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int');
+	}
+
+	_namespace.c_std_lib.is_string = function(imm) {
+		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'string');
 	}
 
 	_namespace.c_std_lib.is_variant = function(imm) {
 		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'ov');
 	}
 
+	// TODO remove it
+	_namespace.c_std_lib.is_sim = function(imm) {
+		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int' || imm.get_imm_type() == 'string');
+	}
+
 	_namespace.c_std_lib.exec = function(func, /*ref*/arr) {
 		func = func.ov_as(_namespace.imm_str('ref'));
 		return _namespace[func.get_value_byte_str('module').as_byte_string()]['__dyn_' + func.get_value_byte_str('name').as_byte_string()].apply(null, [arr]);
+	}
+
+	_namespace.c_std_lib.int_to_string = function(imm) {
+		return _namespace.imm_str(imm.as_int());
 	}
 })(instadb = instadb || {});

@@ -402,9 +402,9 @@ def print_const_ov(variant) : ptd::string() {
 }
 
 def print_const_value(value) {
-	if (nl::is_sim(value) && string_utils::is_integer(value . '')) {
+	if (nl::is_int(value)) {
 		return imm_call('int') . '(' . value . ')';
-	} elsif (nl::is_sim(value)) {
+	} elsif (nl::is_string(value)) {
 		return imm_call('str') . '(' . escape_string(value) . ')';
 	} elsif (nl::is_array(value)) {
 		return print_const_arr(value);

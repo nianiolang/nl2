@@ -1234,7 +1234,7 @@ bool c_rt_lib0is_int(ImmT ___nl__imm) {
 }
 bool c_rt_lib0is_string(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;
-	return IS_STRING(d);
+	return IS_STRING(d) || IS_FUNC(d);
 }
 bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;

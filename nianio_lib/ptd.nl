@@ -86,6 +86,12 @@ def ptd::ensure(type, value) {
 	return value;
 }
 
+def ptd::ensure_with_cast(type, value) {
+	var path = [];
+	ensure value = ensure_dyn(type, value, true, ref path);
+	return value;
+}
+
 def ptd::try_ensure(type, value) {
 	var path = [];
 	try ptd::ensure_dyn(type, value, ref path);
@@ -98,41 +104,58 @@ def ptd::ensure_only_dynamic(type, value) {
 	return value;
 }
 
+def ptd::ensure_only_dynamic_with_cast(type, value) {
+	var path = [];
+	ensure ensure_dyn(type, value, true, ref path);
+	return value;
+}
+
 def ptd::ensure_only_static_do_not_touch_without_permission(type, value) {
 	type;
 	return value;
 }
 
-def ptd::ensure_dyn(type, value, ref path) : ptd::var({ok => ptd::string(), err => ptd::rec({err => ptd::string(), path => ptd::ptd_im()})}) {
+def ptd::ensure_dyn(type, value, ref path) : ptd::var({ok => ptd::ptd_im(), err => ptd::rec({err => ptd::string(), path => ptd::ptd_im()})}) {
+	return ensure_dyn(type, value, false, ref path);
+}
+
+def ensure_dyn(type, value, cast, ref path) : ptd::var({ok => ptd::ptd_im(), err => ptd::rec({err => ptd::string(), path => ptd::ptd_im()})}) {
 	return :err({err => '1 Not ov reference in ensure', path => path}) unless c_std_lib::is_variant(type);
+	var new_value;
 	match (type) case :ptd_hash(var ptd_hash) {
 		return :err({err => '2 HASH ref expected ', path => path}) unless c_std_lib::is_hash(value);
+		new_value = {};
 		forh var key, var val (value) {
 			path []= key;
-			try ptd::ensure_dyn(ptd_hash, val, ref path);
+			try new_value{key} = ensure_dyn(ptd_hash, val, cast, ref path);
 			array::pop(ref path);
 		}
+		value = new_value;
 	} case :ptd_arr(var ptd_arr) {
 		return :err({err => '3 ARRAY ref expected ', path => path}) unless c_std_lib::is_array(value);
+		new_value = [];
 		fora var item (value) {
 			path []= ':arr';
-			try ptd::ensure_dyn(ptd_arr, item, ref path);
+			try var el = ensure_dyn(ptd_arr, item, cast, ref path);
+			new_value []= el;
 			array::pop(ref path);
 		}
 	} case :ptd_rec(var ptd_rec) {
 		return :err({err => '4 HASH ref expected ', path => path}) unless c_std_lib::is_hash(value);
 		return :err({err => '5 keys amount mismatch in ptd_rec', path => path}) unless hash::size(ptd_rec) == hash::size(value);
 		path []= ':hash';
+		new_value = {};
 		forh var key, var val (ptd_rec) {
 			path []= key;
 			return :err({err => '6 key ' . key . ' not exists in hash', path => path}) unless hash::has_key(value, key);
-			try ptd::ensure_dyn(val, hash::get_value(value, key), ref path);
+			try new_value{key} = ensure_dyn(val, hash::get_value(value, key), cast, ref path);
 			array::pop(ref path);
 		}
 		array::pop(ref path);
 	} case :ptd_string {
-		# TODO precise check
-		return :err({err => '8 wrong string ref ', path => path}) unless c_std_lib::is_sim(value);
+		value = c_std_lib::int_to_string(value) if (cast && c_std_lib::is_int(value));
+		return :err({err => '8 wrong string ref ', path => path}) unless c_std_lib::is_string(value);
+		new_value = value;
 	} case :ptd_var(var ptd_var) {
 		return :err({err => '9 not ov ref', path => path}) unless c_std_lib::is_variant(value);
 		var name = ov::get_element(value);
@@ -141,30 +164,32 @@ def ptd::ensure_dyn(type, value, ref path) : ptd::var({ok => ptd::string(), err 
 		var variant = hash::get_value(ptd_var, name);
 		match (variant) case :with_param(var par) {
 			return :err({err => '12 with_param ov has no value', path => path}) unless ov::has_value(value);
-			return ptd::ensure_dyn(par, ov::get_value(value), ref path);
+			try var inner = ensure_dyn(par, ov::get_value(value), cast, ref path);
+			new_value = ov::mk_val(name, inner);
 		} case :no_param {
 			return :err({err => '11 no_param ov has value', path => path}) if ov::has_value(value);
+			new_value = ov::mk(name);
 		}
 		array::pop(ref path);
 	} case :ptd_int {
-		# TODO precise check
-		return :err({err => '13 wrong int ', path => path}) unless c_std_lib::is_sim(value);
+		value = ptd::string_to_int(value) if (cast && c_std_lib::is_string(value));
+		return :err({err => '13 wrong int ', path => path}) unless c_std_lib::is_int(value);
+		new_value = value;
 	} case :ptd_im {
+		new_value = value;
 	} case :ref(var ptd_ref) {
 		path []= ptd_ref;
-		var ret = ptd::ensure_dyn(exec(type, []), value, ref path);
+		try new_value = ensure_dyn(exec(type, []), value, cast, ref path);
 		array::pop(ref path);
-		return ret;
 	} case :ptd_bool {
-		# TODO precise check
-		return :ok('') if true;
 		return :err({err => '14 not bool ref', path => path}) unless c_std_lib::is_variant(value);
 		var name = ov::get_element(value);
 		if (name ne 'TRUE' && name ne 'FALSE') {
 			return :err({err => '15 Case ' . name . ' not allowed in bool', path => path});
 		}
+		new_value = value;
 	}
-	return :ok('');
+	return :ok(new_value);
 }
 
 def ptd::is_ref_type(ptd, type_name) {
@@ -358,7 +383,11 @@ def reconstruct(value, type, f, args : ptd::arr(ptd::ptd_im())) : ptd::var({
 		var tmp = reconstruct(value, item_ptd, f, args);
 		return tmp if tmp is :to_return;
 		return :new_value(ov::mk_val(name, tmp as :new_value));
-	} case :ptd_sim {
+	} case :ptd_int {
+		return :new_value(value);
+	} case :ptd_string {
+		return :new_value(value);
+	} case :ptd_bool {
 		return :new_value(value);
 	} case :ptd_im {
 		return :new_value(value);
@@ -376,6 +405,15 @@ def reconstruct(value, type, f, args : ptd::arr(ptd::ptd_im())) : ptd::var({
 	}
 }
 
-def ptd::int_to_string(i) {
-	return i;
+def ptd::int_to_string(i) : ptd::string() {
+	return c_std_lib::int_to_string(i);
+}
+
+def ptd::string_to_int(s) {
+	ensure var ret = ptd::try_string_to_int(s);
+	return ret;
+}
+
+def ptd::try_string_to_int(s) {
+	return c_std_lib::try_string_to_int(s);
 }
