@@ -12,6 +12,7 @@
 #include "array.h"
 #include "nl.h"
 #include "ptd.h"
+#include "string_utils.h"
 typedef ImmT  dfile0state_t0type;
 
 typedef ImmT  dfile0state_out0type;
@@ -30,7 +31,11 @@ ImmT  dfile0state_t();
 ImmT  dfile0state_t0ptr(int _num, ImmT *_tab);
 ImmT  dfile0sload(ImmT  ___nl__im__0);
 ImmT  dfile0sload0ptr(int _num, ImmT *_tab);
+ImmT  dfile0sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1);
+ImmT  dfile0sload_type0ptr(int _num, ImmT *_tab);
 ImmT  dfile0try_sload(ImmT  ___nl__im__0);
 ImmT  dfile0try_sload0ptr(int _num, ImmT *_tab);
+ImmT  dfile0try_sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1);
+ImmT  dfile0try_sload_type0ptr(int _num, ImmT *_tab);
 ImmT  dfile0state_out();
 ImmT  dfile0state_out0ptr(int _num, ImmT *_tab);

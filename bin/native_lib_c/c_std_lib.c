@@ -371,3 +371,13 @@ ImmT c_std_lib0string_decode_utf16(ImmT ___nl__str, ImmT ___nl__a) {
 ImmT c_std_lib0int_to_string(INT n) {
 	return c_rt_lib0int_to_string(n);
 }
+
+ImmT c_std_lib0try_string_to_int(ImmT num) {
+	char *end;
+	char *s = ((NlString*)num)->s;
+	INT res = strtoll(s, &end, 10);
+	if (*end != '\0' || *s == '\0') {
+		return c_rt_lib0ov_arg_new(c_rt_lib0string_new("err"), c_rt_lib0string_new("Invalid number"));
+	}
+	return c_rt_lib0ov_arg_new(c_rt_lib0string_new("ok"), c_rt_lib0int_new(res));
+}

@@ -15,7 +15,6 @@
 #include "ov.h"
 #include "singleton.h"
 #include "nl.h"
-#include "string_utils.h"
 #include "tct.h"
 #include "generator_c_struct_dependence_sort.h"
 #include "anon_naming.h"
