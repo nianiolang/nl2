@@ -1185,9 +1185,9 @@ INT  ___nl__int__80 = 0;
 bool  ___nl__bool__81 = false;
 INT  ___nl__int__82 = 0;
 ImmT  ___nl__im__83 = NULL;
-INT  ___nl__int__84 = 0;
+ImmT  ___nl__im__84 = NULL;
 INT  ___nl__int__85 = 0;
-ImmT  ___nl__im__86 = NULL;
+INT  ___nl__int__86 = 0;
 #line 126
 ___nl__int__6 = getIntFromImm(___nl__im__2);
 #line 126
@@ -1315,23 +1315,23 @@ c_rt_lib0move(&___nl__im__22, c_rt_lib0array_get((*___ref___im__0), ___nl__int__
 #line 129
 //clear ___nl__int__23;
 #line 130
-___nl__int__25 = getIntFromImm(___nl__im__1);
+___nl__int__25 = getIntFromImm(___nl__im__2);
 #line 130
-___nl__int__27 = getIntFromImm(___nl__im__2);
-#line 130
-c_rt_lib0move(&___nl__im__26, c_rt_lib0array_get((*___ref___im__0), ___nl__int__27));
-#line 130
-//clear ___nl__int__27;
-#line 130
-c_rt_lib0copy(&___nl__im__24, ___nl__im__26);
-#line 130
-c_rt_lib0array_set(___ref___im__0, ___nl__int__25, ___nl__im__24);
-#line 130
-c_rt_lib0clear(&___nl__im__24);
+c_rt_lib0move(&___nl__im__24, c_rt_lib0array_get((*___ref___im__0), ___nl__int__25));
 #line 130
 //clear ___nl__int__25;
 #line 130
+___nl__int__27 = getIntFromImm(___nl__im__1);
+#line 130
+c_rt_lib0copy(&___nl__im__26, ___nl__im__24);
+#line 130
+c_rt_lib0array_set(___ref___im__0, ___nl__int__27, ___nl__im__26);
+#line 130
+c_rt_lib0clear(&___nl__im__24);
+#line 130
 c_rt_lib0clear(&___nl__im__26);
+#line 130
+//clear ___nl__int__27;
 #line 131
 ___nl__int__29 = getIntFromImm(___nl__im__2);
 #line 131
@@ -1639,23 +1639,23 @@ ___nl__bool__81 = ___nl__int__82;
 #line 155
 if(___nl__bool__81){ goto label_14;}
 #line 155
-___nl__int__85 = getIntFromImm(___nl__im__1);
+c_rt_lib0move(&___nl__im__83, c_rt_lib0array_get(___nl__im__51, ___nl__int__79));
 #line 155
-___nl__int__84 = ___nl__int__85 + ___nl__int__79;
+___nl__int__86 = getIntFromImm(___nl__im__1);
 #line 155
-//clear ___nl__int__85;
+___nl__int__85 = ___nl__int__86 + ___nl__int__79;
 #line 155
-c_rt_lib0move(&___nl__im__86, c_rt_lib0array_get(___nl__im__51, ___nl__int__79));
+//clear ___nl__int__86;
 #line 155
-c_rt_lib0copy(&___nl__im__83, ___nl__im__86);
+c_rt_lib0copy(&___nl__im__84, ___nl__im__83);
 #line 155
-c_rt_lib0array_set(___ref___im__0, ___nl__int__84, ___nl__im__83);
+c_rt_lib0array_set(___ref___im__0, ___nl__int__85, ___nl__im__84);
 #line 155
 c_rt_lib0clear(&___nl__im__83);
 #line 155
-//clear ___nl__int__84;
+c_rt_lib0clear(&___nl__im__84);
 #line 155
-c_rt_lib0clear(&___nl__im__86);
+//clear ___nl__int__85;
 #line 155
 ___nl__int__79 = ___nl__int__79 + ___nl__int__80;
 #line 155

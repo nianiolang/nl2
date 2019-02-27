@@ -832,11 +832,11 @@ ___nl__int__7 = ___nl__int__7 + ___nl__int__15;
 #line 93
 //clear ___nl__int__15;
 #line 94
-c_rt_lib0move(&___nl__im__17, string0chr(___nl__int__7));
+c_rt_lib0move(&___nl__im__16, string0chr(___nl__int__7));
 #line 94
-c_rt_lib0copy(&___nl__im__16, ___nl__im__17);
+c_rt_lib0copy(&___nl__im__17, ___nl__im__16);
 #line 94
-c_rt_lib0array_set(&___nl__im__1, ___nl__int__3, ___nl__im__16);
+c_rt_lib0array_set(&___nl__im__1, ___nl__int__3, ___nl__im__17);
 #line 94
 c_rt_lib0clear(&___nl__im__16);
 #line 94
@@ -997,11 +997,11 @@ ___nl__int__7 = ___nl__int__7 - ___nl__int__15;
 #line 105
 //clear ___nl__int__15;
 #line 106
-c_rt_lib0move(&___nl__im__17, string0chr(___nl__int__7));
+c_rt_lib0move(&___nl__im__16, string0chr(___nl__int__7));
 #line 106
-c_rt_lib0copy(&___nl__im__16, ___nl__im__17);
+c_rt_lib0copy(&___nl__im__17, ___nl__im__16);
 #line 106
-c_rt_lib0array_set(&___nl__im__1, ___nl__int__3, ___nl__im__16);
+c_rt_lib0array_set(&___nl__im__1, ___nl__int__3, ___nl__im__17);
 #line 106
 c_rt_lib0clear(&___nl__im__16);
 #line 106

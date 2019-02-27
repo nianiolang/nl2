@@ -717,11 +717,11 @@ c_rt_lib0delete(c_fe_lib0string_to_file(___nl__im__0, ___nl__im__8));
 #line 76
 c_rt_lib0clear(&___nl__im__8);
 #line 77
-c_rt_lib0move(&___nl__im__10,___get_global_const(37));
+c_rt_lib0move(&___nl__im__9,___get_global_const(37));
 #line 77
-c_rt_lib0copy(&___nl__im__9, ___nl__im__10);
+c_rt_lib0copy(&___nl__im__10, ___nl__im__9);
 #line 77
-c_rt_lib0hash_set_value_dec(&___nl__im__1, ___get_global_const(192), ___nl__im__9);
+c_rt_lib0hash_set_value_dec(&___nl__im__1, ___get_global_const(192), ___nl__im__10);
 #line 77
 c_rt_lib0clear(&___nl__im__9);
 #line 77
