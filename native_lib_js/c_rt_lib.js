@@ -625,7 +625,7 @@ var instadb;
 		return _namespace.imm_str(Math.round(Number(imm_s.as_byte_string())));
 	}
 
-	_namespace.c_rt_lib.float_round = function(imm_s) {
+	_namespace.c_rt_lib.float_fixed_str = function(imm_s) {
 		return _namespace.imm_str(Number(imm_s.as_byte_string()).toFixed(20));
 	}
 
