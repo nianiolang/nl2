@@ -9,7 +9,7 @@
 #include </usr/include/string.h>
 
 #include "c_rt_lib.h"
-#include "dfile.h"
+#include "dfile_dbg.h"
 
 
 int size = 0;
@@ -128,13 +128,13 @@ void gdb_save_stacktrace(const char *text_in, const char *text_out){
 			} else if(startsWith("___nl__bool__", name)) {
 				fprintf(fout, "	p%d %s=%p", param, name, ptr);
 			} else if(startsWith("___nl__", name) && ptr != NULL){
-				ImmT saved = dfile0ssave(ptr);
+				ImmT saved = dfile_dbg0ssave(ptr);
 				NlString* p = toStringIfSim(saved);
 				fprintf(fout, "	\"p%d ", param);
 				fprintString(fout, p->s, p->length);
 				fprintf(fout, "\"");
 			} else if(startsWith("___ref___", name) && ptr != NULL && *(ImmT*)ptr != NULL){
-				ImmT saved = dfile0ssave(*(ImmT*)ptr);
+				ImmT saved = dfile_dbg0ssave(*(ImmT*)ptr);
 				NlString* p = toStringIfSim(saved);
 				fprintf(fout, "	\"p%d REF ", param);
 				fprintString(fout, p->s, p->length);
