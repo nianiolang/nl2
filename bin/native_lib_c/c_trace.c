@@ -123,8 +123,10 @@ void gdb_save_stacktrace(const char *text_in, const char *text_out){
 				++poz;
 				ptr = read_pointer();
 			}
-			if(startsWith("___nl__int", name)) {
+			if(startsWith("___nl__int__", name)) {
 				fprintf(fout, "	p%d %s=%lld", param, name, (INT)ptr);
+			} else if(startsWith("___nl__bool__", name)) {
+				fprintf(fout, "	p%d %s=%p", param, name, ptr);
 			} else if(startsWith("___nl__", name) && ptr != NULL){
 				ImmT saved = dfile0ssave(ptr);
 				NlString* p = toStringIfSim(saved);
