@@ -191,6 +191,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			}
 			eat_ws(ref state);
 		}
+		eat_ws(ref state);
 		return hash;
 	} elsif (char eq '[') {
 		state->pos += 1;
