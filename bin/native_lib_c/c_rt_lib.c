@@ -1368,62 +1368,6 @@ bool c_rt_lib0ne(ImmT ___nl__left, ImmT ___nl__right) {
 	return ret;
 }
 
-INT c_rt_lib0int_add(INT left, INT right){
-	return left + right;
-}
-
-INT c_rt_lib0int_sub(INT left, INT right){
-	return left - right;
-}
-
-INT c_rt_lib0int_mul(INT left, INT right){
-	return left * right;
-}
-
-
-INT c_rt_lib0int_div(INT left, INT right){
-	return left / right;
-}
-
-
-INT c_rt_lib0int_mod(INT left, INT right){
-	return left % right;
-}
-
-ImmT c_rt_lib0int_le(INT left, INT right){
-	return priv_to_nl_native(left < right);
-}
-
-ImmT c_rt_lib0int_lt(INT left, INT right){
-	return priv_to_nl_native(left <= right);
-}
-
-ImmT c_rt_lib0int_gt(INT left, INT right){
-	return priv_to_nl_native(left > right);
-}
-
-ImmT c_rt_lib0int_ge(INT left, INT right){
-	return priv_to_nl_native(left >= right);
-}
-
-ImmT c_rt_lib0int_num_eq(INT left, INT right){
-	return priv_to_nl_native(left == right);
-}
-
-ImmT c_rt_lib0int_num_ne(INT left, INT right){
-	return priv_to_nl_native(left != right);
-}
-
-
-INT c_rt_lib0int_unary_minus(INT arg){
-	return -arg;
-}
-
-INT c_rt_lib0int_unary_plus(INT arg){
-	return arg;
-}
-
-
 ImmT priv_to_nl_native(int arg) {
 	return arg == 0 ? c_rt_lib0get_false() : c_rt_lib0get_true();
 }

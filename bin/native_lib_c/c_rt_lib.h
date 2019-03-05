@@ -207,23 +207,6 @@ ImmT c_rt_lib0not(ImmT arg);
 ImmT c_rt_lib0unary_minus(ImmT arg);
 ImmT c_rt_lib0unary_plus(ImmT arg);
 
-//INT operators
-INT c_rt_lib0int_add(INT left, INT right);
-INT c_rt_lib0int_sub(INT left, INT right);
-INT c_rt_lib0int_mul(INT left, INT right);
-INT c_rt_lib0int_div(INT left, INT right);
-INT c_rt_lib0int_mod(INT left, INT right);
-
-ImmT c_rt_lib0int_le(INT left, INT right);
-ImmT c_rt_lib0int_lt(INT left, INT right);
-ImmT c_rt_lib0int_gt(INT left, INT right);
-ImmT c_rt_lib0int_ge(INT left, INT right);
-ImmT c_rt_lib0int_num_eq(INT left, INT right);
-ImmT c_rt_lib0int_num_ne(INT left, INT right);
-
-INT c_rt_lib0int_unary_minus(INT arg);
-INT c_rt_lib0int_unary_plus(INT arg);
-
 //boolean
 bool c_rt_lib0check_true_native(ImmT imm);
 ImmT c_rt_lib0bool_to_nl_native(bool b);
