@@ -8,7 +8,6 @@
 #include "array.h"
 #include "nl.h"
 #include "string.h"
-#include "string_utils.h"
 #include "boolean_t.h"
 #include "ov.h"
 #include "nlasm.h"

@@ -10,7 +10,6 @@
 #include "hash.h"
 #include "nlasm.h"
 #include "flow_graph.h"
-#include "string_utils.h"
 typedef ImmT  unnecessary_commands0state_t0type;
 
 typedef ImmT  unnecessary_commands0block_state_t0type;
