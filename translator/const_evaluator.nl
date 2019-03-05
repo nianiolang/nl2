@@ -11,7 +11,6 @@ use interpreter;
 use hash;
 use flow_graph;
 use post_processing_t;
-use string_utils;
 
 
 def const_evaluator::evaluate_const_in_modules(ref state : @post_processing_t::state_t, changed_functions : ptd::hash(ptd::string()), ref 
@@ -289,7 +288,7 @@ def set_const_block_val(number : ptd::int(), blocks : @flow_graph::blocks_t, ref
 	}
 	new_blocks[number]->cmds = new_cmds;
 	fora var n (block->next) {
-		ensure var num = string_utils::get_integer(n);
+		var num = ptd::string_to_int(n);
 		set_const_block_val(num, blocks, ref new_blocks, math_fs, ref state, interpreter_state, regs, func, module);
 	}
 }

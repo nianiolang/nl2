@@ -6,7 +6,6 @@
 use array;
 use nl;
 use string;
-use string_utils;
 use boolean_t;
 use ov;
 use nlasm;

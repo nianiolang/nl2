@@ -22,20 +22,7 @@ def string_utils::is_alpha(char) {
 }
 
 def string_utils::get_integer(str) : ptd::var({ok => ptd::int(), err => ptd::string()}) {
-	return :err('') if str eq '' || str eq '-';
-	var split_res = string::split('', str);
-	var ret = 0;
-	var sign = 1;
-	if (split_res[0] eq '-') {
-		split_res = array::subarray(split_res, 1, array::len(split_res) - 1);
-		sign = -1;
-	}
-	fora var char (split_res) {
-		return :err('') unless string_utils::is_int(char);
-		ret *= 10;
-		ret += string::ord(char) - string::ord('0');
-	}
-	return :ok(sign * ret);
+	return ptd::try_string_to_int(str);
 }
 
 def string_utils::is_integer(obj : ptd::string()) : ptd::bool() {
@@ -49,15 +36,7 @@ def string_utils::is_integer(obj : ptd::string()) : ptd::bool() {
 }
 
 def string_utils::is_integer_possibly_leading_zeros(obj : ptd::string()) : ptd::bool() {
-	var string = obj . '';
-	var len = string::length(string);
-	var i = 0;
-	++i if (string::substr(string, i, 1) eq '-');
-	return false if i == len;
-	for(; i < len; ++i) {
-		return false unless string::is_digit(string::substr(string, i, 1));
-	}
-	return true;
+	return ptd::try_string_to_int(obj) is :ok;
 }
 
 def string_utils::is_float(obj : ptd::string()) : ptd::bool() {
@@ -214,9 +193,9 @@ def string_utils::get_date(string, char) : ptd::var({
 			string_utils::is_integer_possibly_leading_zeros(split_result[0]) && 
 			string_utils::is_integer_possibly_leading_zeros(split_result[1]) && 
 			string_utils::is_integer_possibly_leading_zeros(split_result[2]);
-	ensure var first = string_utils::get_integer(split_result[0]);
-	ensure var second = string_utils::get_integer(split_result[1]);
-	ensure var third = string_utils::get_integer(split_result[2]);
+	var first = ptd::string_to_int(split_result[0]);
+	var second = ptd::string_to_int(split_result[1]);
+	var third = ptd::string_to_int(split_result[2]);
 	return :ok({first => first, second => second, third => third});
 }
 

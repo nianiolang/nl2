@@ -8,7 +8,6 @@ use ptd;
 use hash;
 use nlasm;
 use flow_graph;
-use string_utils;
 
 def unnecessary_commands::state_t() {
 	return ptd::arr(@unnecessary_commands::block_state_t);
@@ -145,7 +144,7 @@ def visit_node(graph : @unnecessary_commands::graph_t, cmd_nr : ptd::int(), ref 
 	return if (hash::has_key(visited_nodes, ptd::int_to_string(cmd_nr)));
 	hash::set_value(ref visited_nodes, ptd::int_to_string(cmd_nr), '');
 	fora var next (graph[cmd_nr]) {
-		ensure var next_no = string_utils::get_integer(next);
+		var next_no = ptd::string_to_int(next);
 		visit_node(graph, next_no, ref visited_nodes);
 	}
 }
@@ -170,16 +169,16 @@ def build_block_state(ref state : @unnecessary_commands::state_t, blocks : @flow
 	var new_state = state[block_nr];
 	forh var reg_nr, var modif (blocks[block_nr]->last_modif) {
 		match (modif) case :write(var cmd_nr) {
-			ensure var reg_nr_int = string_utils::get_integer(reg_nr);
+			var reg_nr_int = ptd::string_to_int(reg_nr);
 			new_state[reg_nr_int] = {};
 			hash::set_value(ref new_state[reg_nr_int], cmd_nr, '');
 		} case :clear {
-			ensure var reg_nr_int = string_utils::get_integer(reg_nr);
+			var reg_nr_int = ptd::string_to_int(reg_nr);
 			new_state[reg_nr_int] = {};
 		}
 	}
 	fora var next (blocks[block_nr]->next) {
-		ensure var next_no = string_utils::get_integer(next);
+		var next_no = ptd::string_to_int(next);
 		build_block_state(ref state, blocks, next_no, new_state, ref visited_blocks);
 	}
 }

@@ -14,7 +14,6 @@ use interpreter;
 use const_evaluator;
 use post_processing_t;
 use register_cleaner;
-use string_utils;
 
 def get_command_for_const() : @post_processing_t::math_funs_t {
 	var ret = {};
@@ -305,7 +304,7 @@ def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, mat
 	block->cmds = cmds;
 	blocks[number] = block;
 	fora var n (block->next) {
-		ensure var num = string_utils::get_integer(n);
+		var num = ptd::string_to_int(n);
 		set_const_block(num, ref blocks, math_fs, ref state, mod_name, regs);
 	}
 }

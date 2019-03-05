@@ -377,7 +377,7 @@ ImmT c_std_lib0try_string_to_int(ImmT num) {
 	char *s = ((NlString*)num)->s;
 	INT res = strtoll(s, &end, 10);
 	if (*end != '\0' || *s == '\0') {
-		return c_rt_lib0ov_arg_new(c_rt_lib0string_new("err"), c_rt_lib0string_new("Invalid number"));
+		return c_rt_lib0ov_mk_arg_dec(c_rt_lib0string_new("err"), c_rt_lib0string_new("Invalid number"));
 	}
-	return c_rt_lib0ov_arg_new(c_rt_lib0string_new("ok"), c_rt_lib0int_new(res));
+	return c_rt_lib0ov_mk_arg_dec(c_rt_lib0string_new("ok"), c_rt_lib0int_new(res));
 }

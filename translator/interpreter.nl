@@ -1323,7 +1323,7 @@ def handle_return(return_i : ptd::var({val => @nlasm::reg_t, emp => ptd::none()}
 		state->top->next = array::len(state->func->commands);
 		var to_ret = {};
 		forh var nr, var none (state->top->ref_arguments) {
-			ensure var nr_int = string_utils::get_integer(nr);
+			var nr_int = ptd::string_to_int(nr);
 			hash::set_value(ref to_ret, nr, state->top->vars[nr_int]);
 		}
 		state->rstate = :finished({
@@ -1341,7 +1341,7 @@ def handle_return(return_i : ptd::var({val => @nlasm::reg_t, emp => ptd::none()}
 		state->top = selem;
 		state->func = hash::get_value(state->functions, state->top->func_key);
 		forh var arg, var reg (old_ref_arguments) {
-			ensure var arg_no = string_utils::get_integer(arg);
+			var arg_no = ptd::string_to_int(arg);
 			var value = old_vars[arg_no];
 			state->top->vars[reg->reg_no] = value;
 		}
