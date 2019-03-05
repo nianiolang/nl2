@@ -138,7 +138,6 @@ ImmT c_rt_lib0priv_as(ImmT variant, ImmT as);
 INT getIntFromImm(ImmT num);
 ImmT c_rt_lib0int_new(INT i);
 void c_rt_lib0int_new_to_memory(INT i, ImmT memory);
-INT* c_rt_lib0int_new_zpp(INT i);
 
 //float
 FLOAT getFloatFromImm(ImmT num);

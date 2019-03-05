@@ -1127,11 +1127,6 @@ ImmT c_rt_lib0int_new(INT i) {
 	return ret;
 }
 
-INT* c_rt_lib0int_new_zpp(INT i) {
-	INT* ret = (INT *)alloc_mem(sizeof(INT));
-	return ret;
-}
-
 void c_rt_lib0int_new_to_memory(INT i, ImmT memory) {
 	NlInt *ret = (NlInt *)memory;
 	nl_data_init(ret, ___TYPE_INT);
