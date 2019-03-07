@@ -3521,13 +3521,13 @@ return NULL;
 return NULL;
 }
 
-ImmT  dfile0sload_type0ptr(int _num, ImmT *_tab){
-c_rt_lib0func_num_args(_num, 2, "dfile0sload_type");
+ImmT  dfile0sload_with_type0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "dfile0sload_with_type");
 ImmT  *var0 = &(_tab[0]);
-ptd0meta_type0type *var1 = &(_tab[1]);
-return dfile0sload_type(*var0, *var1);
+ImmT  *var1 = &(_tab[1]);
+return dfile0sload_with_type(*var0, *var1);
 }
-ImmT  dfile0sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1) {
+ImmT  dfile0sload_with_type(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 dfile_priv0__const__init();
@@ -3535,7 +3535,7 @@ ImmT  ___nl__im__2 = NULL;
 bool  ___nl__bool__3 = false;
 ImmT  ___nl__im__4 = NULL;
 #line 272
-c_rt_lib0move(&___nl__im__4, dfile0try_sload_type(___nl__im__0, ___nl__im__1));
+c_rt_lib0move(&___nl__im__4, dfile0try_sload_with_type(___nl__im__0, ___nl__im__1));
 #line 272
 ___nl__bool__3 = c_rt_lib0priv_is(___nl__im__4, ___get_global_const(79));
 #line 272
@@ -3587,7 +3587,7 @@ ImmT  ___nl__im__2 = NULL;
 #line 277
 c_rt_lib0move(&___nl__im__2, ptd0ptd_im());
 #line 277
-c_rt_lib0move(&___nl__im__1, dfile0try_sload_type(___nl__im__0, ___nl__im__2));
+c_rt_lib0move(&___nl__im__1, dfile0try_sload_with_type(___nl__im__2, ___nl__im__0));
 #line 277
 c_rt_lib0clear(&___nl__im__2);
 #line 277
@@ -3597,13 +3597,13 @@ return ___nl__im__1;
 return NULL;
 }
 
-ImmT  dfile0try_sload_type0ptr(int _num, ImmT *_tab){
-c_rt_lib0func_num_args(_num, 2, "dfile0try_sload_type");
-ImmT  *var0 = &(_tab[0]);
-ptd0meta_type0type *var1 = &(_tab[1]);
-return dfile0try_sload_type(*var0, *var1);
+ImmT  dfile0try_sload_with_type0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "dfile0try_sload_with_type");
+ptd0meta_type0type *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+return dfile0try_sload_with_type(*var0, *var1);
 }
-ImmT  dfile0try_sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1) {
+ImmT  dfile0try_sload_with_type(ptd0meta_type0type ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 dfile_priv0__const__init();
@@ -3639,7 +3639,7 @@ ImmT  ___nl__im__30 = NULL;
 #line 281
 c_rt_lib0move(&___nl__im__3, ptd0string());
 #line 281
-c_rt_lib0move(&___nl__im__2, ptd0ensure(___nl__im__3, ___nl__im__0));
+c_rt_lib0move(&___nl__im__2, ptd0ensure(___nl__im__3, ___nl__im__1));
 #line 281
 c_rt_lib0clear(&___nl__im__3);
 #line 282
@@ -3675,7 +3675,7 @@ c_rt_lib0clear(&___nl__im__11);
 #line 285
 c_rt_lib0delete(dfile_priv0eat_ws(&___nl__im__4));
 #line 286
-c_rt_lib0move(&___nl__im__12, dfile_priv0parse(&___nl__im__4, &___nl__bool__10, ___nl__im__1));
+c_rt_lib0move(&___nl__im__12, dfile_priv0parse(&___nl__im__4, &___nl__bool__10, ___nl__im__0));
 #line 287
 c_rt_lib0delete(dfile_priv0eat_ws(&___nl__im__4));
 #line 288
