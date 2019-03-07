@@ -1130,6 +1130,13 @@ def get_special_functions() : @tc_types::special_functions {
 			a => [{mod => :none, type => tct::var({}), name => ''}, {mod => :none, type => tct::string(), name => ''}]
 		});
 	hash::set_value(ref f, 'dfile::ssave', {r => tct::string(), a => [{mod => :none, type => tct::tct_im(), name => ''}]});
+	hash::set_value(ref f, 'dfile::sload_with_type', {
+		r => tct::tct_im(),
+		a => [
+			{mod => :none, type => tct::tct_im(), name => ''},
+			{mod => :none, type => tct::string(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'string::lf', {r => tct::string(), a => []});
 	hash::set_value(ref f, 'string::length', {r => tct::int(), a => [{mod => :none, type => tct::string(), name => ''}]});
 	hash::set_value(ref f, 'string::substr', {
@@ -1487,6 +1494,14 @@ def check_special_function(ret_type : @tc_types::type, fun_val : @nast::fun_val_
 	}
 	if (name eq 'dfile::ssave') {
 		ptd_system::check_assignment(tct::tct_im(), fun_val_type[0], ref modules, ref errors);
+	}
+	if (name eq 'dfile::sload_with_type') {
+		match (ptd_parser::try_value_to_ptd(fun_val->args[0]->val)) case :err(var err) {
+			add_error(ref errors, err);
+			ret_type->type = tct::tct_im();
+		} case :ok(var ok) {
+			ret_type->type = ok;
+		}
 	}
 	if (name eq 'singleton::sigleton_do_not_use_without_approval') {
 		return fun_val_type[0];

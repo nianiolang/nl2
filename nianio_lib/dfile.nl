@@ -268,16 +268,16 @@ def dfile::sload(str_im) : ptd::ptd_im() {
 	return result;
 }
 
-def dfile::sload_type(str_im, type : @ptd::meta_type) : ptd::ptd_im() {
-	ensure var result = dfile::try_sload_type(str_im, type);
+def dfile::sload_with_type(type : @ptd::meta_type, str_im) : ptd::ptd_im() {
+	ensure var result = dfile::try_sload_with_type(type, str_im);
 	return result;
 }
 
 def dfile::try_sload(str_im) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
-	return dfile::try_sload_type(str_im, ptd::ptd_im());
+	return dfile::try_sload_with_type(ptd::ptd_im(), str_im);
 }
 
-def dfile::try_sload_type(str_im, type : @ptd::meta_type) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
+def dfile::try_sload_with_type(type : @ptd::meta_type, str_im) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
 	var str = ptd::ensure(ptd::string(), str_im);
 	var state = {str => [str], pos => 0, len => string::length(str)};
 	var error = false;
