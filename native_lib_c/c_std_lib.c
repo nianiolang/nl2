@@ -230,6 +230,39 @@ ImmT c_std_lib0string_replace(ImmT ___nl__str, ImmT ___nl__old, ImmT ___nl__new_
 	c_rt_lib0clear((void**)&nI);
 	return c_rt_lib0string_new_alloc(_out, l, _len);
 }
+
+static char hex(char a) {
+	if (a < 10)
+		return '0' + a;
+	return 'a' + a - 10;
+}
+
+ImmT c_std_lib0string_escape2hex31(ImmT ___nl__str) {
+	NlString *sI = toStringIfSim(___nl__str);
+	int counter = 0;
+	for (int i = 0; i < sI->length; ++i)
+		counter += (sI->s[i] >= 0) & (sI->s[i] < 32);
+	if (counter == 0)
+		return (ImmT)sI;
+	int len = sI->length + 3 * counter;
+	char *result = (char*)alloc_mem(len * sizeof(char));
+	int j = 0;
+	for (int i = 0; i < sI->length; ++i) {
+		if (sI->s[i] >= 0 && sI->s[i] < 32) {
+			result[j] = '\\';
+			result[j + 1] = 'x';
+			result[j + 2] = hex(sI->s[i] / 16);
+			result[j + 3] = hex(sI->s[i] % 16);
+			j += 4;
+		} else {
+			result[j] = sI->s[i];
+			++j;
+		}
+	}
+	return c_rt_lib0string_new_alloc(result, len, len);
+}
+
+
 INT c_std_lib0string_compare(ImmT ___nl__a, ImmT ___nl__b) {
 	NlString *sI = toStringIfSim(___nl__a);
 	NlString *oI = toStringIfSim(___nl__b);
