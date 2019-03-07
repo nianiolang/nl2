@@ -27,6 +27,7 @@ ImmT c_std_lib0string_index(ImmT s, ImmT substr, ImmT start);
 ImmT c_std_lib0string_sub(ImmT strg, ImmT start, ImmT length);
 ImmT c_std_lib0string_get_char_code(ImmT strI, ImmT position);
 ImmT c_std_lib0string_replace(ImmT str, ImmT old, ImmT new_part);
+ImmT c_std_lib0string_escape2hex31(ImmT ___nl__str);
 
 ImmT c_std_lib0string_lc(ImmT str);
 ImmT c_std_lib0string_uc(ImmT str);
