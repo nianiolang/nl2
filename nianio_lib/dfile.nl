@@ -13,7 +13,37 @@ use ptd;
 use string_utils;
 
 def dfile::deep_eq(left, right) {
-	return dfile::ssave(left) eq dfile::ssave(right);
+	if (nl::is_hash(left)) {
+		return false unless nl::is_hash(right);
+		return false unless hash::size(left) == hash::size(right);
+		forh var key, var value (left) {
+			return false unless hash::has_key(right, key);
+			return false unless dfile::deep_eq(value, right{key});
+		}
+	} elsif (nl::is_array(left)) {
+		return false unless nl::is_array(right);
+		return false unless array::len(left) == array::len(right);
+		rep var i (array::len(left)) {
+			return false unless dfile::deep_eq(left[i], right[i]);
+		}
+	} elsif (nl::is_variant(left)) {
+		return false unless nl::is_variant(right);
+		return false unless (ov::has_value(left) && ov::has_value(right)) ||
+			(!ov::has_value(left) && !ov::has_value(right));
+		return false unless ov::get_element(left) eq ov::get_element(right);
+		if (ov::has_value(left)) {
+			return false unless dfile::deep_eq(ov::get_value(left), ov::get_value(right));
+		}
+	} elsif (nl::is_string(left)) {
+		return false unless nl::is_string(right);
+		return left eq right;
+	} elsif (nl::is_int(left)) {
+		return false unless nl::is_int(right);
+		return left == right;
+	} else {
+		die;
+	}
+	return true;
 }
 
 def dfile::rs(str, is_key) {
@@ -87,33 +117,10 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::stri
 
 def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::meta_type) {
 	eat_ws(ref state);
-	var ret = '';
+	var ret;
 	if (get_char(ref state) eq '"') {
 		++state->pos;
-		loop {
-			if (state->pos >= state->len) {
-				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected "';
-			}
-			var char = get_char(ref state);
-			++state->pos;
-			break if (char eq '"');
-			if (char eq '\') {
-				var n = get_char(ref state);
-				if (n eq 'n') {
-					ret .= string::lf();
-				} elsif (n eq 'r') {
-					ret .= string::r();
-				} elsif (n eq 't') {
-					ret .= string::tab();
-				} else {
-					ret .= n;
-				}
-				++state->pos;
-			} else {
-				ret .= char;
-			}
-		}
+		ret = finish_quoted_scalar(ref state, ref error);
 	} else {
 		ret = eat_non_ws(ref state, ref error);
 	}
@@ -130,6 +137,66 @@ def parse_scalar(ref state : @dfile::state_t, ref error : ptd::bool(), type : @p
 		error = true;
 		return 'expected ' . dfile::ssave(type) . ', got scalar';
 	}
+}
+
+
+def finish_quoted_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
+	var str = '';
+	loop {
+		if (state->pos >= state->len) {
+			error = true;
+			return 'pos ' . ptd::int_to_string(state->pos) . ': expected "';
+		}
+		var char = get_char(ref state);
+		++state->pos;
+		if (char eq '"') {
+			break;
+		} elsif (char eq '\') {
+			var escaped_char = finish_escape_seq(ref state, ref error);
+			return escaped_char if error;
+			str .= escaped_char;
+		} else {
+			str .= char;
+		}
+	}
+	return str;
+}
+
+def finish_escape_seq(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
+	if (state->pos >= state->len) {
+		error = true;
+		return 'pos ' . ptd::int_to_string(state->pos) . ': expected escape sequence';
+	}
+	var char = get_char(ref state);
+	++state->pos;
+	if (char eq 'n') {
+		return string::lf();
+	} elsif (char eq 'r') {
+		return string::r();
+	} elsif (char eq 't') {
+		return string::tab();
+	} elsif (char eq '\' || char eq '"' || char eq '@' || char eq '$') {
+		return char;
+	} elsif (char eq 'x') {
+		var hex_digit1 = eat_hex_digit(ref state, ref error);
+		return hex_digit1 if error;
+		var hex_digit2 = eat_hex_digit(ref state, ref error);
+		return hex_digit2 if error;
+		return ptd::ensure(ptd::string(), string_utils::hex2char(string::ord(hex_digit1), string::ord(hex_digit2)));
+	} else {
+		error = true;
+		return 'pos ' . ptd::int_to_string(state->pos - 1) . ': expected escape sequence';
+	}
+}
+
+def eat_hex_digit(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
+	var char = get_char(ref state);
+	if (!string::is_hex_digit(char)) {
+		error = true;
+		return 'pos ' . ptd::int_to_string(state->pos) . ': expected hexadecimal digit';
+	}
+	++state->pos;
+	return char;
 }
 
 def match_s(ref state : @dfile::state_t, pattern : ptd::string()) : ptd::bool() {
@@ -210,6 +277,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			var value = parse(ref state, ref error, field_type);
 			return value if error;
 			array::push(ref arr, value);
+			eat_ws(ref state);
 			if (!match_s(ref state, ',')) {
 				error = true;
 				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
@@ -273,6 +341,11 @@ def dfile::sload_with_type(type : @ptd::meta_type, str_im) : ptd::ptd_im() {
 	return result;
 }
 
+def dfile::sload_with_type_only_dynamic(type : @ptd::meta_type, str_im) : ptd::ptd_im() {
+	ensure var result = dfile::try_sload_with_type(type, str_im);
+	return result;
+}
+
 def dfile::try_sload(str_im) : ptd::var({ok => ptd::ptd_im(), err => ptd::string()}) {
 	return dfile::try_sload_with_type(ptd::ptd_im(), str_im);
 }
@@ -281,7 +354,6 @@ def dfile::try_sload_with_type(type : @ptd::meta_type, str_im) : ptd::var({ok =>
 	var str = ptd::ensure(ptd::string(), str_im);
 	var state = {str => [str], pos => 0, len => string::length(str)};
 	var error = false;
-	match_s(ref state, 'use utf8;');
 	eat_ws(ref state);
 	var val = parse(ref state, ref error, type);
 	eat_ws(ref state);
@@ -308,8 +380,6 @@ def sp(ref state : @dfile::state_out, str) : ptd::void() {
 def sprintstr(ref state : @dfile::state_out, str) : ptd::void() {
 	str .= '';
 	str = string::replace(str, '\', '\\');
-	str = string::replace(str, '$', '\$');
-	str = string::replace(str, '@', '\@');
 	str = string::replace(str, '"', '\"');
 	sp(ref state, '"' . str . '"');
 }
@@ -395,9 +465,9 @@ def print_net_formatstr(ref state : @dfile::state_out, str) : ptd::void() {
 	str .= '';
 	str = string::replace(str, '\', '\\');
 	str = string::replace(str, string::lf(), '\n');
-	str = string::replace(str, '$', '\$');
-	str = string::replace(str, '@', '\@');
+	str = string::replace(str, string::r(), '\r');
 	str = string::replace(str, '"', '\"');
+	str = string_utils::escape2hex31(str);
 	sp(ref state, '"' . str . '"');
 }
 

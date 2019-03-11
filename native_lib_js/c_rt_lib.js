@@ -158,98 +158,113 @@ var instadb;
 	var arr_counter = 0;
 	var push_counter = 0;
 	var arr_copy_counter = 0;
+	var arr_copy_counter_size = 0;
+	_namespace.imm_print_debug = function() {
+		return 'arr_counter: ' + arr_counter + "\n" +
+			'push_counter: ' + push_counter + "\n" +
+			'arr_copy_counter: ' + arr_copy_counter + "\n" +
+			'arr_copy_counter_size: ' + arr_copy_counter_size + "\n";
+	}
+
 	_namespace.imm_arr = function(v) {
 		if (v instanceof Array) {
 		} else {
 			_namespace.nl_die();
 		}
 
-		return arr_priv(v.slice());
+		return new arr_priv(v.slice());
+	}
 
-		function arr_priv(v_priv) {
-			var value = v_priv;
-			var max_len = -1;
+	function arr_priv(v_priv) {
+		this.value = v_priv;
+		this.max_len = -1;
+	};
 
-			function update_value() {
-				if (max_len != -1) {
-					value = value.slice(0, max_len);
-					max_len = -1;
-					++arr_counter;
-				}
-			}
-
-			function new_array() {
-				update_value();
-				++arr_copy_counter;
-				return value.slice();
-			}
-			function check_index(idx) {
-				update_value();
-				if (idx < 0 || idx >= value.length) {
-					_namespace.nl_die();
-				}
-			}
-
-			function set_index_int(idx, value) {
-				update_value();
-				var ret = new_array();
-				check_index(idx);
-				ret[idx] = value;
-				return _namespace.imm_arr(ret);
-			}
-
-			return {
-				get_index: function(i) {
-					update_value();
-					var idx = i.as_int();
-					check_index(idx);
-					return value[idx];
-				},
-				set_index: function(ind, value) {
-					var idx = ind.as_int();
-					return set_index_int(idx, value);
-				},
-				set_index_int: function(idx, value) {
-					return set_index_int(idx, value);
-				},
-				get_index_int: function (i) {
-					check_index(i);
-					return value[i];
-				},
-				len: function() {
-					update_value();
-					return value.length;
-				},
-				push: function(el) {
-					update_value();
-					_namespace.check_null(el);
-					max_len = value.length;
-					value.push(el);
-					++push_counter;
-					return arr_priv(value);
-				},
-				get_imm_type: function() {
-					return 'array';
-				},
-				subarray: function(begin, length) {
-					update_value();
-					return arr_priv(value.slice(begin.as_int(), begin.as_int() + length.as_int()));
-				},
-				pop: function() {
-					update_value();
-					var ret  = new_array();
-					ret.pop();
-					return arr_priv(ret);
-				},
-				as_arr: function() {
-					update_value();
-					return new_array();
-				},
-				get_debug_body: function() {
-					return ['li', {}, ['span', {}, 'array'],  ['object', {'object' : value}]];
-				}
-			};
+	arr_priv.prototype.update_value = function() {
+		if (this.max_len != -1) {
+			this.value = this.value.slice(0, this.max_len);
+			arr_copy_counter_size += this.max_len;
+			this.max_len = -1;
+			++arr_counter;
 		}
+	}
+
+	arr_priv.prototype.new_array = function() {
+		this.update_value();
+		++arr_copy_counter;
+		return this.value.slice();
+	}
+
+	arr_priv.prototype.check_index = function(idx) {
+		this.update_value();
+		if (idx < 0 || idx >= this.value.length) {
+			_namespace.nl_die();
+		}
+	}
+
+	arr_priv.prototype.set_index_int = function(idx, value) {
+		this.update_value();
+		var ret = this.new_array();
+		this.check_index(idx);
+		ret[idx] = value;
+		return _namespace.imm_arr(ret);
+	}
+
+	arr_priv.prototype.get_index = function(i) {
+		this.update_value();
+		var idx = i.as_int();
+		this.check_index(idx);
+		return this.value[idx];
+	}
+
+	arr_priv.prototype.set_index = function(ind, value) {
+		var idx = ind.as_int();
+		return this.set_index_int(idx, value);
+	}
+
+	arr_priv.prototype.get_index_int = function(i) {
+		this.update_value();
+		this.check_index(i);
+		return this.value[i];
+	}
+
+	arr_priv.prototype.len = function() {
+		this.update_value();
+		return this.value.length;
+	}
+
+	arr_priv.prototype.push = function(el) {
+		this.update_value();
+		_namespace.check_null(el);
+		this.max_len = this.value.length;
+		this.value.push(el);
+		++push_counter;
+		return new arr_priv(this.value);
+	}
+
+	arr_priv.prototype.get_imm_type = function() {
+		return 'array';
+	}
+
+	arr_priv.prototype.subarray = function(begin, length) {
+		this.update_value();
+		return new arr_priv(this.value.slice(begin.as_int(), begin.as_int() + length.as_int()));
+	}
+
+	arr_priv.prototype.pop = function() {
+		this.update_value();
+		var ret  = this.new_array();
+		ret.pop();
+		return new arr_priv(ret);
+	}
+
+	arr_priv.prototype.as_arr = function() {
+		this.update_value();
+		return this.new_array();
+	}
+
+	arr_priv.prototype.get_debug_body = function() {
+		return ['li', {}, ['span', {}, 'array'],  ['object', {'object' : this.value}]];
 	}
 
 	_namespace.imm_ov_js_str = function(str, value) {
@@ -257,48 +272,53 @@ var instadb;
 	}
 
 	_namespace.imm_ov = function(n, v) {
+		return new ov_priv(n, v);
+	}
+
+	function ov_priv(n, v) {
 		if (typeof v === 'undefined') {
 			v = null;
 		}
-		var name = n;
-		var value = v;
-		if (name.get_imm_type() != 'string') {
+		this.name = n;
+		this.value = v;
+		if (this.name.get_imm_type() != 'string') {
 			_namespace.nl_die();
 		}
+	}
 
-		function ov_is(label) {
-			return name.as_byte_string() == label.as_byte_string();
+	ov_priv.prototype.ov_is = function(label) {
+		return this.name.as_byte_string() == label.as_byte_string();
+	}
+
+	ov_priv.prototype.ov_has_value = function() {
+		return this.value !== null;
+	}
+
+	ov_priv.prototype.ov_get_label = function() {
+		return this.name;
+	}
+
+	ov_priv.prototype.ov_as = function(label) {
+		if (this.value === null || this.name.as_byte_string() != label.as_byte_string()) {
+			_namespace.nl_die();
 		}
+		return this.value;
+	}
 
-		function ov_has_value() {
-			return value !== null;
-		}
+	ov_priv.prototype.ov_get_value = function() {
+		return this.value;
+	}
 
-		return {
-			ov_get_label: function() {
-				return name;
-			},
-			ov_as: function(label) {
-				if (value === null || name.as_byte_string() != label.as_byte_string()) {
-					_namespace.nl_die();
-				}
-				return value;
-			},
-			ov_get_value: function() {
-				return value;
-			},
-			ov_has_value: ov_has_value,
-			ov_has_value_nl: function() {
-				return _namespace.c_rt_lib.native_to_nl(ov_has_value());
-			},
-			ov_is: ov_is,
-			ov_is_nl: function(label) {
-				return _namespace.c_rt_lib.native_to_nl(ov_is(label));
-			},
-			get_imm_type: function() {
-				return 'ov';
-			},
-		};
+	ov_priv.prototype.ov_has_value_nl = function() {
+		return _namespace.c_rt_lib.native_to_nl(this.ov_has_value());
+	}
+	
+	ov_priv.prototype.ov_is_nl = function(label) {
+		return _namespace.c_rt_lib.native_to_nl(this.ov_is(label));
+	}
+
+	ov_priv.prototype.get_imm_type = function() {
+		return 'ov';
 	}
 
 	_namespace.imm_str = function(v) {
@@ -312,54 +332,65 @@ var instadb;
 	}
 
 	_namespace.imm_from_byte_string = function(v) {
+		return new str_priv(v);
+	}
+	
+	function str_priv(v) {
 		if (typeof v === "string") {
 		} else if (typeof v == "number") {
 			v = v.toString();
 		} else {
 			_namespace.nl_die();
 		}
-
-		function str_priv(value) {
-			return {
-				as_js_str: function() {
-					return from_utf8(value);
-				},
-				as_float: function() {
-					return parseFloat(value);
-				},
-				as_int: function() {
-					return Math.floor(parseFloat(value));
-				},
-				get_imm_type: function() {
-					return 'string';
-				},
-				as_byte_string : function() {
-					return value;
-				},
-			};
-		}
-		return str_priv(v);
+		this.value = v;
 	}
 
+	str_priv.prototype.as_js_str = function() {
+		return from_utf8(this.value);
+	}
 
+	str_priv.prototype.as_float = function() {
+		return parseFloat(this.value);
+	}
+
+	str_priv.prototype.as_int = function() {
+		return Math.floor(parseFloat(this.value));
+	}
+	str_priv.prototype.get_imm_type = function() {
+		return 'string';
+	}
+
+	str_priv.prototype.as_byte_string = function() {
+		return this.value;
+	}
+
+	
 	_namespace.imm_int = function(v) {
-		return {
-			as_js_str: function() {
-				return v.toString();
-			},
-			as_float: function() {
-				return parseFloat(v);
-			},
-			as_int: function() {
-				return parseInt(v);
-			},
-			get_imm_type: function() {
-				return 'int';
-			},
-			as_byte_string: function() {
-				return v.toString();
-			},
-		};
+		return new _namespace.imm_int_p(v);
+	}
+
+	_namespace.imm_int_p = function(v) {
+		this.v = v;
+	}
+
+	_namespace.imm_int_p.prototype.as_js_str = function() {
+		return this.v.toString();
+	}
+
+	_namespace.imm_int_p.prototype.as_float = function() {
+		return this.v;
+	}
+
+	_namespace.imm_int_p.prototype.as_int = function() {
+		return this.v;
+	}
+
+	_namespace.imm_int_p.prototype.get_imm_type = function() {
+		return 'int';
+	}
+
+	_namespace.imm_int_p.prototype.as_byte_string = function() {
+		return this.v.toString();
 	}
 
 	_namespace.imm_float = function(v) {
@@ -388,89 +419,131 @@ var instadb;
 
 	var set_value_counter = 0;
 	var copy_counter = 0;
+	var copy_counter_size = 0;
 	var old_copies = 0;
 
+	_namespace.imm_hash_debug = function() {
+		return "set_value_counter: " + set_value_counter + "\n" +
+			"copy_counter: " + copy_counter + "\n" +
+			"copy_counter_size: " + copy_counter_size + "\n" + 
+			"old_copies" + old_copies + "\n";
+	}
 
 	function hash_len(hash) {
 		return Object.keys(hash).length;
 	}
 
 	_namespace.imm_hash = function(v) {
-		return priv_hash(hash_copy(v));
+		return new priv_hash(hash_copy(v));
+	}
 
-		function priv_hash(priv_v) {
-			var value = priv_v;
+	function priv_hash(priv_v) {
+		this.value = priv_v;
+
+		this._old_hash = undefined;
+		this._old_key = undefined;
+		this._old_value = undefined;
+	}
 
 			
-			function update_hash() {
-			}
-
-			function new_hash() {
+	priv_hash.prototype.update_hash = function() {
+		if (this.value === undefined) {
+			var tmp_hash = this;
+			var hash_stack = [tmp_hash];
+			while (tmp_hash.value === undefined) {
 				++copy_counter;
-				update_hash();
-				return byte_hash_copy(value);
+				tmp_hash = tmp_hash._old_hash;
+				hash_stack.push(tmp_hash);
 			}
-
-			function get_value_byte_str(key) {
-				update_hash();
-				var ret = value[key];
-				_namespace.check_null(ret);
-				return ret;
-			}
-
-			function set_value_byte_str(key, hash_value) {
-				update_hash();
-				_namespace.check_null(hash_value);
-				var x = new_hash();
-				x[key] = hash_value;
-				++set_value_counter;
-				return priv_hash(x);
-			}
-
-			return {
-				has_key: function(key) {
-					update_hash();
-					return key.as_byte_string() in value;
-				},
-				get_value: function(key) {
-					return get_value_byte_str(key.as_byte_string());
-				},
-				get_value_byte_str: get_value_byte_str,
-				set_value:  function(key, value) {
-					return set_value_byte_str(key.as_byte_string(), value);
-				},
-				set_value_byte_str: set_value_byte_str,
-				delete_key: function(key) {
-					update_hash();
-					var ret = new_hash();
-					var byte_str = key.as_byte_string();
-					delete ret[byte_str];
-					return priv_hash(ret);
-				},
-				get_imm_type: function() {
-					return 'hash';
-				}, 
-				hash_size : function() {
-					update_hash();
-					return _namespace.imm_int(hash_len(value));
-				},
-				get_debug_body: function() {
-					return ['li', {}, ['span', {}, 'hash: '],  ['object', {'object' : value}]];
-				},
-				get_keys: function() {
-					update_hash();
-					var keys = [];
-					for (var key in value) {
-						keys.push(_namespace.imm_from_byte_string(key));
-					}
-					return _namespace.imm_arr(keys);
-				},
-			};
+			hash_stack.pop();
+			while (hash_stack.length > 0) {
+				var current_hash = hash_stack.pop();
+				current_hash.value = byte_hash_copy(current_hash._old_hash.value);
+				if (current_hash._old_value === undefined) {
+					delete current_hash.value[current_hash._old_key];
+				} else {
+					current_hash.value[current_hash._old_key] = current_hash._old_value;
+				}
+				current_hash._old_key = undefined;
+				current_hash._old_hash = undefined;
+				current_hash._old_value = undefined;
+			} 
 		}
 	}
 
+	priv_hash.prototype.new_hash = function() {
+		++copy_counter;
+		this.update_hash();
+		return byte_hash_copy(this.value);
+	}
+
+	priv_hash.prototype.get_value_byte_str = function(key) {
+		this.update_hash();
+		var ret = this.value[key];
+		_namespace.check_null(ret);
+		return ret;
+	}
+
+	priv_hash.prototype.set_value_byte_str = function(key, hash_value) {
+		
+		this.update_hash();
+		_namespace.check_null(hash_value);
+		this._old_key = key;
+		this._old_value = this.value[key];
+		this.value[key] = hash_value;
+		this._old_hash = new priv_hash(this.value);
+		this.value = undefined;
+		++set_value_counter;
+		return this._old_hash;
+	}
+
+	priv_hash.prototype.has_key = function(key) {
+		this.update_hash();
+		return key.as_byte_string() in this.value;
+	}
+
+	priv_hash.prototype.get_value = function(key) {
+		this.update_hash();
+		return this.get_value_byte_str(key.as_byte_string());
+	}
+
+	priv_hash.prototype.set_value = function(key, value) {
+		this.update_hash();
+		return this.set_value_byte_str(key.as_byte_string(), value);
+	}
+
+	priv_hash.prototype.delete_key = function(key) {
+		this.update_hash();
+		var ret = this.new_hash();
+		var byte_str = key.as_byte_string();
+		delete ret[byte_str];
+		return new priv_hash(ret);
+	}
+
+	priv_hash.prototype.get_imm_type = function() {
+		return 'hash';
+	}
+
+	priv_hash.prototype.hash_size = function() {
+		this.update_hash();
+		return _namespace.imm_int(hash_len(this.value));
+	}
+
+	priv_hash.prototype.get_debug_body = function() {
+		return ['li', {}, ['span', {}, 'hash: '],  ['object', {'object' : this.value}]];
+	}
+
+	priv_hash.prototype.get_keys = function() {
+		this.update_hash();
+		var keys = [];
+		for (var key in this.value) {
+			keys.push(_namespace.imm_from_byte_string(key));
+		}
+		return _namespace.imm_arr(keys);
+	}
+
 	_namespace.nl_die = function() {
-		throw "DIE";
+		throw new Error("DIE");
 	}
 
 	_namespace.c_rt_lib.array_len = function(arr) {
@@ -633,7 +706,6 @@ var instadb;
 		return _namespace.c_rt_lib.native_to_nl(!_namespace.c_rt_lib.check_true_native(arg));
 	}
 
-// ---> TODO temporary float
 	_namespace.c_rt_lib.str_float_add = function(lhs, rhs) {
 		return _namespace.imm_str(lhs.as_float() + rhs.as_float());
 	}
@@ -653,6 +725,5 @@ var instadb;
 	_namespace.c_rt_lib.str_float_mod = function(lhs, rhs) {
 		return _namespace.imm_str(lhs.as_float() % rhs.as_float());
 	}
-// TODO temporary float <---
 
 })(instadb = instadb || {});

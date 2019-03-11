@@ -144,6 +144,11 @@ def string::is_digit(char) : ptd::bool() {
 	return o >= 48 && o <= 57;
 }
 
+def string::is_hex_digit(char : ptd::string()) : ptd::bool() {
+	var code = string::ord(char);
+	return (code >= 48 && code <= 57) || (code >= 65 && code <= 70) || (code >= 97 && code <= 102);
+}
+
 def string::is_letter(char) : ptd::bool() {
 	var o = string::ord(char);
 	return (o >= 97 && o <= 122) || (o >= 65 && o <= 90);

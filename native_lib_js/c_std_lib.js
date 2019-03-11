@@ -83,6 +83,24 @@ var instadb;
 		return _namespace.imm_from_byte_string(str.as_byte_string().replace(new RegExp(find, 'g'), new_part.as_byte_string()));
 	}
 
+	_namespace.c_std_lib.string_escape2hex31 = function(str) {
+		var digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+		var byte_str = str.as_byte_string();
+		var result = '';
+		var i = 0;
+		var last = 0;
+		while (i < byte_str.length) {
+			while (i < byte_str.length && byte_str.charCodeAt(i) >= 32)
+				++i;
+			var x = '';
+			if (i < byte_str.length)
+				x = '\\x' + digits[Math.floor(byte_str.charCodeAt(i) / 16)] + digits[byte_str.charCodeAt(i) % 16];
+			result += byte_str.substring(last, i) + x;
+			last = ++i;
+		}
+		return _namespace.imm_from_byte_string(result);
+	}
+
 	_namespace.c_std_lib.string_compare = function(a, b) {
 		if (a.as_byte_string() != b.as_byte_string())
 			return _namespace.imm_int(a.as_byte_string() > b.as_byte_string() ? 1 : -1);
@@ -121,5 +139,11 @@ var instadb;
 
 	_namespace.c_std_lib.int_to_string = function(imm) {
 		return _namespace.imm_str(imm.as_int());
+	}
+
+	_namespace.c_std_lib.try_string_to_int = function(imm) {
+		if (isNaN(imm.as_int()))
+			return instadb.imm_ov_js_str('err', instadb.imm_str('Invalid number'));
+		return instadb.imm_ov_js_str('ok', instadb.imm_int(imm.as_js_str()));
 	}
 })(instadb = instadb || {});

@@ -98,11 +98,11 @@ def array::cmp(a, b) {
 }
 
 def array::sort(ref variable) {
-	priv_sort(ref variable, @array::cmp);
+	sort(ref variable, @array::cmp);
 }
 
 def array::sort_comparator(ref variable, comp) {
-	priv_sort(ref variable, comp);
+	sort(ref variable, comp);
 }
 
 def array::equal(arr1, arr2) {
@@ -113,7 +113,7 @@ def array::equal(arr1, arr2) {
 	return true;
 }
 
-def priv_sort(ref arr, comp) {
+def sort(ref arr, comp) {
 	part_sort(ref arr, 0, array::len(arr) - 1, comp);
 }
 

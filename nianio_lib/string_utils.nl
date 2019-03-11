@@ -7,6 +7,7 @@ use ptd;
 use array;
 use float;
 use c_rt_lib;
+use c_std_lib;
 
 def string_utils::is_int(char) {
 	return (string::ord(char) > 47 && string::ord(char) < 58);
@@ -22,7 +23,20 @@ def string_utils::is_alpha(char) {
 }
 
 def string_utils::get_integer(str) : ptd::var({ok => ptd::int(), err => ptd::string()}) {
-	return ptd::try_string_to_int(str);
+	return :err('') if str eq '' || str eq '-';
+	var split_res = string::split('', str);
+	var ret = 0;
+	var sign = 1;
+	if (split_res[0] eq '-') {
+		split_res = array::subarray(split_res, 1, array::len(split_res) - 1);
+		sign = -1;
+	}
+	fora var char (split_res) {
+		return :err('') unless string_utils::is_int(char);
+		ret *= 10;
+		ret += string::ord(char) - string::ord('0');
+	}
+	return :ok(sign * ret);
 }
 
 def string_utils::is_integer(obj : ptd::string()) : ptd::bool() {
@@ -36,7 +50,15 @@ def string_utils::is_integer(obj : ptd::string()) : ptd::bool() {
 }
 
 def string_utils::is_integer_possibly_leading_zeros(obj : ptd::string()) : ptd::bool() {
-	return ptd::try_string_to_int(obj) is :ok;
+	var string = obj . '';
+	var len = string::length(string);
+	var i = 0;
+	++i if (string::substr(string, i, 1) eq '-');
+	return false if i == len;
+	for(; i < len; ++i) {
+		return false unless string::is_digit(string::substr(string, i, 1));
+	}
+	return true;
 }
 
 def string_utils::is_float(obj : ptd::string()) : ptd::bool() {
@@ -273,6 +295,28 @@ def string_utils::hex2char(a, b) {
 	return string::chr(ret);
 }
 
+def string_utils::escape2hex31(str: ptd::string()) : ptd::string() {
+	return ptd::ensure(ptd::string(), c_std_lib::string_escape2hex31(str));
+}
+
+def string_utils::float2str(float : ptd::string(), prec : ptd::int()) : ptd::string() {
+	var pot = 1;
+	rep var i (prec) {
+		pot *= 10;
+	}
+	float = float::mul(float, ptd::ensure(ptd::string(), ptd::int_to_string(pot)));
+	float = float::round(float);
+	var sign = '';
+	if (string::substr(float, 0, 1) eq '-') {
+		sign = '-';
+		float = string::substr2(float, 1);
+	}
+	var str = string_utils::int2str_leading_digits(float, prec + 1);
+	var len = string::length(str);
+	return sign . str if prec == 0;
+	return sign . string::substr(str, 0, len - prec) . '.' . string::substr(str, len - prec, prec);
+}
+
 def string_utils::int2str_leading_digits(int, digits) {
 	var str = '000000000000000000000000' . int;
 	return string::substr2(str, string::length(str) - max(digits, string::length(int)));
@@ -297,24 +341,6 @@ def string_utils::normalize_newlines(str : ptd::string()) : ptd::string() {
 			[string::lf()              , string::lf(), string::r() . string::lf()]
 		);
 	return ptd::ensure(ptd::string(), res);
-}
-
-def string_utils::float2str(float : ptd::string(), prec : ptd::int()) : ptd::string() {
-	var pot = 1;
-	rep var i (prec) {
-		pot *= 10;
-	}
-	float = float::mul(float, ptd::ensure(ptd::string(), ptd::int_to_string(pot)));
-	float = float::round(float);
-	var sign = '';
-	if (string::substr(float, 0, 1) eq '-') {
-		sign = '-';
-		float = string::substr2(float, 1);
-	}
-	var str = string_utils::int2str_leading_digits(float, prec + 1);
-	var len = string::length(str);
-	return sign . str if prec == 0;
-	return sign . string::substr(str, 0, len - prec) . '.' . string::substr(str, len - prec, prec);
 }
 
 def string_utils::float2str_fixed(num : ptd::string()) : ptd::string() {

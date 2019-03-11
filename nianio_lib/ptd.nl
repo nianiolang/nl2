@@ -409,7 +409,7 @@ def ptd::int_to_string(i) : ptd::string() {
 	return c_std_lib::int_to_string(i);
 }
 
-def ptd::string_to_int(s) : ptd::int() {
+def ptd::string_to_int(s) : ptd::int(){
 	ensure var ret = ptd::try_string_to_int(s);
 	return ret;
 }
