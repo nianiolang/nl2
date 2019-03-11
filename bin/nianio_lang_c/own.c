@@ -33,6 +33,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 4
 return ___nl__im__1;
 return NULL;
+
 }
 
 ptd0meta_type0type own0rec0ptr(int _num, ImmT *_tab){
@@ -51,6 +52,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 8
 return ___nl__im__1;
 return NULL;
+
 }
 
 ptd0meta_type0type own0hash0ptr(int _num, ImmT *_tab){
@@ -69,6 +71,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 12
 return ___nl__im__1;
 return NULL;
+
 }
 
 ptd0meta_type0type own0var0ptr(int _num, ImmT *_tab){
@@ -95,12 +98,12 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(0));
 #line 17
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__0));
 #line 17
-label_3:
+label_2:
 ;
 #line 17
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 17
-if(___nl__bool__3){ goto label_1;}
+if(___nl__bool__3){ goto label_23;}
 #line 17
 c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 #line 17
@@ -110,20 +113,20 @@ ___nl__bool__7 = c_rt_lib0priv_is(___nl__im__4, ___get_global_const(1116));
 #line 19
 ___nl__bool__7 = !___nl__bool__7;
 #line 19
-if(___nl__bool__7){ goto label_5;}
+if(___nl__bool__7){ goto label_12;}
 #line 20
 c_rt_lib0move(&___nl__im__6, c_rt_lib0ov_mk_none(___get_global_const(29)));
 #line 21
-goto label_4;
+goto label_15;
 #line 21
-label_5:
+label_12:
 ;
 #line 22
 c_rt_lib0move(&___nl__im__6, c_rt_lib0ov_mk_arg(___get_global_const(28), ___nl__im__4));
 #line 23
-goto label_4;
+goto label_15;
 #line 23
-label_4:
+label_15:
 ;
 #line 23
 //clear ___nl__bool__7;
@@ -138,9 +141,9 @@ c_rt_lib0clear(&___nl__im__6);
 #line 25
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 25
-goto label_3;
+goto label_2;
 #line 25
-label_1:
+label_23:
 ;
 #line 26
 c_rt_lib0move(&___nl__im__10, c_rt_lib0func_new(ptd0meta_type0ptr, ___get_global_const(302), ___get_global_const(303)));
@@ -171,6 +174,7 @@ c_rt_lib0clear(&___nl__im__6);
 #line 26
 return ___nl__im__9;
 return NULL;
+
 }
 
 ImmT  own0to_im0ptr(int _num, ImmT *_tab){
@@ -188,6 +192,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 30
 return NULL;
 return NULL;
+
 }
 
 

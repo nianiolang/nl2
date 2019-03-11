@@ -44,6 +44,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 9
 return NULL;
 return NULL;
+
 }
 
 bool  hash0has_key0ptr(int _num, ImmT *_tab){
@@ -74,6 +75,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 13
 return false;
 return false;
+
 }
 
 ImmT  hash0set_value0ptr(int _num, ImmT *_tab){
@@ -95,6 +97,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 17
 return NULL;
+
 }
 
 ImmT  hash0delete0ptr(int _num, ImmT *_tab){
@@ -112,6 +115,7 @@ c_rt_lib0delete(c_std_lib0hash_delete(___ref___im__0, ___nl__im__1));
 c_rt_lib0clear(&___nl__im__1);
 #line 21
 return NULL;
+
 }
 
 INT  hash0size0ptr(int _num, ImmT *_tab){
@@ -136,6 +140,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 25
 return 0;
 return 0;
+
 }
 
 ImmT  hash0keys0ptr(int _num, ImmT *_tab){
@@ -156,12 +161,12 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0array_mk(0));
 #line 30
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__0));
 #line 30
-label_3:
+label_2:
 ;
 #line 30
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 30
-if(___nl__bool__3){ goto label_1;}
+if(___nl__bool__3){ goto label_10;}
 #line 30
 c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 #line 30
@@ -171,9 +176,9 @@ c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__2));
 #line 32
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 32
-goto label_3;
+goto label_2;
 #line 32
-label_1:
+label_10:
 ;
 #line 33
 c_rt_lib0clear(&___nl__im__0);
@@ -202,6 +207,7 @@ c_rt_lib0clear(&___nl__im__5);
 #line 33
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0values0ptr(int _num, ImmT *_tab){
@@ -222,12 +228,12 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0array_mk(0));
 #line 38
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__0));
 #line 38
-label_3:
+label_2:
 ;
 #line 38
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 38
-if(___nl__bool__3){ goto label_1;}
+if(___nl__bool__3){ goto label_10;}
 #line 38
 c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 #line 38
@@ -237,9 +243,9 @@ c_rt_lib0delete(c_std_lib0array_push(&___nl__im__1, ___nl__im__4));
 #line 40
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 40
-goto label_3;
+goto label_2;
 #line 40
-label_1:
+label_10:
 ;
 #line 41
 c_rt_lib0clear(&___nl__im__0);
@@ -268,6 +274,7 @@ c_rt_lib0clear(&___nl__im__5);
 #line 41
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0merge0ptr(int _num, ImmT *_tab){
@@ -300,6 +307,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 47
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0add_all0ptr(int _num, ImmT *_tab){
@@ -318,12 +326,12 @@ ImmT  ___nl__im__5 = NULL;
 #line 51
 c_rt_lib0move(&___nl__im__5, c_rt_lib0init_iter(___nl__im__1));
 #line 51
-label_3:
+label_1:
 ;
 #line 51
 ___nl__bool__3 = c_rt_lib0is_end_hash(___nl__im__5);
 #line 51
-if(___nl__bool__3){ goto label_1;}
+if(___nl__bool__3){ goto label_9;}
 #line 51
 c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 #line 51
@@ -333,9 +341,9 @@ c_rt_lib0delete(hash0set_value(___ref___im__0, ___nl__im__2, ___nl__im__4));
 #line 51
 c_rt_lib0move(&___nl__im__5, c_rt_lib0next_iter(___nl__im__5));
 #line 51
-goto label_3;
+goto label_1;
 #line 51
-label_1:
+label_9:
 ;
 #line 51
 c_rt_lib0clear(&___nl__im__1);
@@ -349,6 +357,7 @@ c_rt_lib0clear(&___nl__im__4);
 c_rt_lib0clear(&___nl__im__5);
 #line 51
 return NULL;
+
 }
 
 ImmT  hash0set2keys0ptr(int _num, ImmT *_tab){
@@ -371,18 +380,18 @@ ImmT  ___nl__im__7 = NULL;
 #line 55
 ___nl__bool__5 = hash0has_key((*___ref___im__0), ___nl__im__1);
 #line 55
-if(___nl__bool__5){ goto label_2;}
+if(___nl__bool__5){ goto label_4;}
 #line 55
 c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_mk(0));
 #line 55
-goto label_1;
+goto label_6;
 #line 55
-label_2:
+label_4:
 ;
 #line 55
 c_rt_lib0move(&___nl__im__4, hash0get_value((*___ref___im__0), ___nl__im__1));
 #line 55
-label_1:
+label_6:
 ;
 #line 55
 //clear ___nl__bool__5;
@@ -411,6 +420,7 @@ c_rt_lib0clear(&___nl__im__4);
 #line 58
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0has2keys0ptr(int _num, ImmT *_tab){
@@ -434,7 +444,7 @@ ___nl__bool__3 = hash0has_key(___nl__im__0, ___nl__im__1);
 #line 62
 ___nl__bool__4 = !___nl__bool__3;
 #line 62
-if(___nl__bool__4){ goto label_1;}
+if(___nl__bool__4){ goto label_6;}
 #line 62
 c_rt_lib0move(&___nl__im__5, hash0get_value(___nl__im__0, ___nl__im__1));
 #line 62
@@ -442,7 +452,7 @@ ___nl__bool__3 = hash0has_key(___nl__im__5, ___nl__im__2);
 #line 62
 c_rt_lib0clear(&___nl__im__5);
 #line 62
-label_1:
+label_6:
 ;
 #line 62
 //clear ___nl__bool__4;
@@ -471,6 +481,7 @@ c_rt_lib0clear(&___nl__im__6);
 #line 62
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0get2keys0ptr(int _num, ImmT *_tab){
@@ -512,6 +523,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 66
 return NULL;
 return NULL;
+
 }
 
 ImmT  hash0set3keys0ptr(int _num, ImmT *_tab){
@@ -536,18 +548,18 @@ ImmT  ___nl__im__8 = NULL;
 #line 70
 ___nl__bool__6 = hash0has_key((*___ref___im__0), ___nl__im__1);
 #line 70
-if(___nl__bool__6){ goto label_2;}
+if(___nl__bool__6){ goto label_4;}
 #line 70
 c_rt_lib0move(&___nl__im__5, c_rt_lib0hash_mk(0));
 #line 70
-goto label_1;
+goto label_6;
 #line 70
-label_2:
+label_4:
 ;
 #line 70
 c_rt_lib0move(&___nl__im__5, hash0get_value((*___ref___im__0), ___nl__im__1));
 #line 70
-label_1:
+label_6:
 ;
 #line 70
 //clear ___nl__bool__6;
@@ -578,6 +590,7 @@ c_rt_lib0clear(&___nl__im__5);
 #line 73
 return NULL;
 return NULL;
+
 }
 
 

@@ -41,7 +41,7 @@ ___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__3);
 #line 10
 c_rt_lib0clear(&___nl__im__3);
 #line 10
-if(___nl__bool__2){ goto label_3;}
+if(___nl__bool__2){ goto label_7;}
 #line 10
 c_rt_lib0move(&___nl__im__4, ov0has_value(___nl__im__1));
 #line 10
@@ -49,23 +49,20 @@ ___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__4);
 #line 10
 c_rt_lib0clear(&___nl__im__4);
 #line 10
-label_3:
+label_7:
 ;
 #line 10
 ___nl__bool__2 = !___nl__bool__2;
 #line 10
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_13;}
 #line 10
 c_rt_lib0move(&___nl__im__5, c_rt_lib0array_mk(0));
 #line 10
 nl_die_arg(___nl__im__5);
 #line 10
-goto label_1;
+goto label_13;
 #line 10
-label_2:
-;
-#line 10
-label_1:
+label_13:
 ;
 #line 10
 //clear ___nl__bool__2;
@@ -88,6 +85,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 11
 return ___nl__bool__6;
 return false;
+
 }
 
 

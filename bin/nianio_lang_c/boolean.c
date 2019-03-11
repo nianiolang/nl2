@@ -49,6 +49,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 7
 return NULL;
 return NULL;
+
 }
 
 ImmT  boolean0check_true0ptr(int _num, ImmT *_tab){
@@ -65,18 +66,18 @@ ImmT  ___nl__im__3 = NULL;
 #line 11
 ___nl__bool__2 = c_rt_lib0check_true_native(___nl__im__0);
 #line 11
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 11
 ___nl__int__1 = 0;
 #line 11
-goto label_1;
+goto label_6;
 #line 11
-label_2:
+label_4:
 ;
 #line 11
 ___nl__int__1 = 1;
 #line 11
-label_1:
+label_6:
 ;
 #line 11
 //clear ___nl__bool__2;
@@ -97,6 +98,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 11
 return NULL;
 return NULL;
+
 }
 
 

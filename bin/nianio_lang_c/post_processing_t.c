@@ -25,7 +25,11 @@ ImmT  post_processing_t0fun_tree_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0fun_tree_t");
 return post_processing_t0fun_tree_t();
 }
-ImmT  post_processing_t0fun_tree_t() {
+ImmT post_processing_t0fun_tree_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(0);
+}
+ImmT post_processing_t0fun_tree_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -57,13 +61,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 11
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0state_t");
 return post_processing_t0state_t();
 }
-ImmT  post_processing_t0state_t() {
+ImmT post_processing_t0state_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(1);
+}
+ImmT post_processing_t0state_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -137,13 +146,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 22
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0math_funs_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0math_funs_t");
 return post_processing_t0math_funs_t();
 }
-ImmT  post_processing_t0math_funs_t() {
+ImmT post_processing_t0math_funs_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(2);
+}
+ImmT post_processing_t0math_funs_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -160,13 +174,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 27
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0reg_const0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0reg_const");
 return post_processing_t0reg_const();
 }
-ImmT  post_processing_t0reg_const() {
+ImmT post_processing_t0reg_const(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(3);
+}
+ImmT post_processing_t0reg_const0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -193,13 +212,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 31
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0reg_val_const0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0reg_val_const");
 return post_processing_t0reg_val_const();
 }
-ImmT  post_processing_t0reg_val_const() {
+ImmT post_processing_t0reg_val_const(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(4);
+}
+ImmT post_processing_t0reg_val_const0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -241,13 +265,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 35
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0optimization_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0optimization_t");
 return post_processing_t0optimization_t();
 }
-ImmT  post_processing_t0optimization_t() {
+ImmT post_processing_t0optimization_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(5);
+}
+ImmT post_processing_t0optimization_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -289,13 +318,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 39
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0const_reg_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0const_reg_t");
 return post_processing_t0const_reg_t();
 }
-ImmT  post_processing_t0const_reg_t() {
+ImmT post_processing_t0const_reg_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(6);
+}
+ImmT post_processing_t0const_reg_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -334,13 +368,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 43
 return NULL;
 return NULL;
+
 }
 
 ImmT  post_processing_t0const_reg_val_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "post_processing_t0const_reg_val_t");
 return post_processing_t0const_reg_val_t();
 }
-ImmT  post_processing_t0const_reg_val_t() {
+ImmT post_processing_t0const_reg_val_t(){
+post_processing_t_priv0__const__init();
+return post_processing_t_priv0__const__sing(7);
+}
+ImmT post_processing_t0const_reg_val_t0cal() {
 post_processing_t_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -379,19 +418,20 @@ c_rt_lib0clear(&___nl__im__0);
 #line 47
 return NULL;
 return NULL;
+
 }
 
 
-static ImmT ___const__[1];
+static ImmT ___const__[9];
 static int ___const_init__ = 1;
 void post_processing_t_priv0__const__init(){
 if(___const_init__) {
 ___const_init__ = 0;
-__const__f = &___const__[0];
+__const__f = &___const__[8];
 
 
-for(int i=0;i<0;++i) ___const__[i] = NULL;
-c_rt_lib0register_const(___const__, 0);
+for(int i=0;i<8;++i) ___const__[i] = NULL;
+c_rt_lib0register_const(___const__, 8);
 }}
 ImmT post_processing_t_priv0__const__sim(int __nr) {
 ImmT ret = NULL;
@@ -401,6 +441,30 @@ return ret;
 ImmT post_processing_t_priv0__const__sing(int __nr) {
 if(___const__[__nr+0]==NULL) {
 switch(__nr){
+case 0:
+	___const__[0] = post_processing_t0fun_tree_t0cal();
+	break;
+case 1:
+	___const__[1] = post_processing_t0state_t0cal();
+	break;
+case 2:
+	___const__[2] = post_processing_t0math_funs_t0cal();
+	break;
+case 3:
+	___const__[3] = post_processing_t0reg_const0cal();
+	break;
+case 4:
+	___const__[4] = post_processing_t0reg_val_const0cal();
+	break;
+case 5:
+	___const__[5] = post_processing_t0optimization_t0cal();
+	break;
+case 6:
+	___const__[6] = post_processing_t0const_reg_t0cal();
+	break;
+case 7:
+	___const__[7] = post_processing_t0const_reg_val_t0cal();
+	break;
 default:
 	nl_die();
 }}

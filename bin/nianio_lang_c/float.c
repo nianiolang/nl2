@@ -47,6 +47,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 10
 return ___nl__im__2;
 return NULL;
+
 }
 
 ImmT  float0mul0ptr(int _num, ImmT *_tab){
@@ -79,6 +80,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 14
 return ___nl__im__2;
 return NULL;
+
 }
 
 ImmT  float0sub0ptr(int _num, ImmT *_tab){
@@ -111,6 +113,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 18
 return ___nl__im__2;
 return NULL;
+
 }
 
 ImmT  float0div0ptr(int _num, ImmT *_tab){
@@ -143,6 +146,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 22
 return ___nl__im__2;
 return NULL;
+
 }
 
 ImmT  float0mod0ptr(int _num, ImmT *_tab){
@@ -175,6 +179,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 26
 return ___nl__im__2;
 return NULL;
+
 }
 
 ImmT  float0round0ptr(int _num, ImmT *_tab){
@@ -203,6 +208,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 30
 return ___nl__im__1;
 return NULL;
+
 }
 
 

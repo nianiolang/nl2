@@ -53,6 +53,7 @@ own_array_priv0__const__init();
 #line 2
 return 0;
 return 0;
+
 }
 
 

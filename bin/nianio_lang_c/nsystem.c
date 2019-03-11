@@ -32,6 +32,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 9
 return NULL;
 return NULL;
+
 }
 
 ImmT  nsystem0get_pid0ptr(int _num, ImmT *_tab){
@@ -50,6 +51,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 13
 return NULL;
 return NULL;
+
 }
 
 ImmT  nsystem0time0ptr(int _num, ImmT *_tab){
@@ -68,6 +70,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 17
 return NULL;
 return NULL;
+
 }
 
 ImmT  nsystem0localtime0ptr(int _num, ImmT *_tab){
@@ -92,6 +95,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 21
 return NULL;
 return NULL;
+
 }
 
 

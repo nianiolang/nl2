@@ -21,7 +21,11 @@ ImmT  compiler_lib0error_type_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0error_type_t");
 return compiler_lib0error_type_t();
 }
-ImmT  compiler_lib0error_type_t() {
+ImmT compiler_lib0error_type_t(){
+compiler_lib_priv0__const__init();
+return compiler_lib_priv0__const__sing(0);
+}
+ImmT compiler_lib0error_type_t0cal() {
 compiler_lib_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -48,13 +52,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 7
 return NULL;
 return NULL;
+
 }
 
 ImmT  compiler_lib0error_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0error_t");
 return compiler_lib0error_t();
 }
-ImmT  compiler_lib0error_t() {
+ImmT compiler_lib0error_t(){
+compiler_lib_priv0__const__init();
+return compiler_lib_priv0__const__sing(1);
+}
+ImmT compiler_lib0error_t0cal() {
 compiler_lib_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -98,13 +107,18 @@ c_rt_lib0clear(&___nl__im__0);
 #line 17
 return NULL;
 return NULL;
+
 }
 
 ImmT  compiler_lib0errors_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0errors_t");
 return compiler_lib0errors_t();
 }
-ImmT  compiler_lib0errors_t() {
+ImmT compiler_lib0errors_t(){
+compiler_lib_priv0__const__init();
+return compiler_lib_priv0__const__sing(2);
+}
+ImmT compiler_lib0errors_t0cal() {
 compiler_lib_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -123,19 +137,20 @@ c_rt_lib0clear(&___nl__im__0);
 #line 22
 return NULL;
 return NULL;
+
 }
 
 
-static ImmT ___const__[1];
+static ImmT ___const__[4];
 static int ___const_init__ = 1;
 void compiler_lib_priv0__const__init(){
 if(___const_init__) {
 ___const_init__ = 0;
-__const__f = &___const__[0];
+__const__f = &___const__[3];
 
 
-for(int i=0;i<0;++i) ___const__[i] = NULL;
-c_rt_lib0register_const(___const__, 0);
+for(int i=0;i<3;++i) ___const__[i] = NULL;
+c_rt_lib0register_const(___const__, 3);
 }}
 ImmT compiler_lib_priv0__const__sim(int __nr) {
 ImmT ret = NULL;
@@ -145,6 +160,15 @@ return ret;
 ImmT compiler_lib_priv0__const__sing(int __nr) {
 if(___const__[__nr+0]==NULL) {
 switch(__nr){
+case 0:
+	___const__[0] = compiler_lib0error_type_t0cal();
+	break;
+case 1:
+	___const__[1] = compiler_lib0error_t0cal();
+	break;
+case 2:
+	___const__[2] = compiler_lib0errors_t0cal();
+	break;
 default:
 	nl_die();
 }}

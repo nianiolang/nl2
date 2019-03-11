@@ -30,18 +30,18 @@ bool  ___nl__bool__2 = false;
 #line 9
 ___nl__bool__2 = c_std_lib0is_array(___nl__im__0);
 #line 9
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 9
 ___nl__bool__1 = false;
 #line 9
-goto label_1;
+goto label_6;
 #line 9
-label_2:
+label_4:
 ;
 #line 9
 ___nl__bool__1 = true;
 #line 9
-label_1:
+label_6:
 ;
 #line 9
 //clear ___nl__bool__2;
@@ -50,6 +50,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 9
 return ___nl__bool__1;
 return false;
+
 }
 
 bool  nl0is_hash0ptr(int _num, ImmT *_tab){
@@ -65,18 +66,18 @@ bool  ___nl__bool__2 = false;
 #line 13
 ___nl__bool__2 = c_std_lib0is_hash(___nl__im__0);
 #line 13
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 13
 ___nl__bool__1 = false;
 #line 13
-goto label_1;
+goto label_6;
 #line 13
-label_2:
+label_4:
 ;
 #line 13
 ___nl__bool__1 = true;
 #line 13
-label_1:
+label_6:
 ;
 #line 13
 //clear ___nl__bool__2;
@@ -85,6 +86,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 13
 return ___nl__bool__1;
 return false;
+
 }
 
 bool  nl0is_sim0ptr(int _num, ImmT *_tab){
@@ -100,18 +102,18 @@ bool  ___nl__bool__2 = false;
 #line 17
 ___nl__bool__2 = c_std_lib0is_sim(___nl__im__0);
 #line 17
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 17
 ___nl__bool__1 = false;
 #line 17
-goto label_1;
+goto label_6;
 #line 17
-label_2:
+label_4:
 ;
 #line 17
 ___nl__bool__1 = true;
 #line 17
-label_1:
+label_6:
 ;
 #line 17
 //clear ___nl__bool__2;
@@ -120,6 +122,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 17
 return ___nl__bool__1;
 return false;
+
 }
 
 bool  nl0is_int0ptr(int _num, ImmT *_tab){
@@ -135,18 +138,18 @@ bool  ___nl__bool__2 = false;
 #line 21
 ___nl__bool__2 = c_std_lib0is_int(___nl__im__0);
 #line 21
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 21
 ___nl__bool__1 = false;
 #line 21
-goto label_1;
+goto label_6;
 #line 21
-label_2:
+label_4:
 ;
 #line 21
 ___nl__bool__1 = true;
 #line 21
-label_1:
+label_6:
 ;
 #line 21
 //clear ___nl__bool__2;
@@ -155,6 +158,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 21
 return ___nl__bool__1;
 return false;
+
 }
 
 bool  nl0is_string0ptr(int _num, ImmT *_tab){
@@ -170,18 +174,18 @@ bool  ___nl__bool__2 = false;
 #line 25
 ___nl__bool__2 = c_std_lib0is_string(___nl__im__0);
 #line 25
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 25
 ___nl__bool__1 = false;
 #line 25
-goto label_1;
+goto label_6;
 #line 25
-label_2:
+label_4:
 ;
 #line 25
 ___nl__bool__1 = true;
 #line 25
-label_1:
+label_6:
 ;
 #line 25
 //clear ___nl__bool__2;
@@ -190,6 +194,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 25
 return ___nl__bool__1;
 return false;
+
 }
 
 bool  nl0is_variant0ptr(int _num, ImmT *_tab){
@@ -205,18 +210,18 @@ bool  ___nl__bool__2 = false;
 #line 29
 ___nl__bool__2 = c_std_lib0is_variant(___nl__im__0);
 #line 29
-if(___nl__bool__2){ goto label_2;}
+if(___nl__bool__2){ goto label_4;}
 #line 29
 ___nl__bool__1 = false;
 #line 29
-goto label_1;
+goto label_6;
 #line 29
-label_2:
+label_4:
 ;
 #line 29
 ___nl__bool__1 = true;
 #line 29
-label_1:
+label_6:
 ;
 #line 29
 //clear ___nl__bool__2;
@@ -225,6 +230,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 29
 return ___nl__bool__1;
 return false;
+
 }
 
 ImmT  nl0print0ptr(int _num, ImmT *_tab){
@@ -242,6 +248,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 33
 return NULL;
 return NULL;
+
 }
 
 ImmT  nl0debug_die0ptr(int _num, ImmT *_tab){
@@ -264,6 +271,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 38
 return NULL;
 return NULL;
+
 }
 
 

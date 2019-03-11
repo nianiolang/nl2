@@ -22,7 +22,11 @@ ImmT  func0func_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "func0func_t");
 return func0func_t();
 }
-ImmT  func0func_t() {
+ImmT func0func_t(){
+func_priv0__const__init();
+return func_priv0__const__sing(0);
+}
+ImmT func0func_t0cal() {
 func_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
@@ -59,6 +63,7 @@ c_rt_lib0clear(&___nl__im__0);
 #line 14
 return NULL;
 return NULL;
+
 }
 
 ImmT  func0exec0ptr(int _num, ImmT *_tab){
@@ -89,6 +94,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 20
 return NULL;
 return NULL;
+
 }
 
 ImmT  func0exec_ref0ptr(int _num, ImmT *_tab){
@@ -114,6 +120,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 24
 return NULL;
 return NULL;
+
 }
 
 ImmT  func0exec_with_ref_arg0ptr(int _num, ImmT *_tab){
@@ -166,19 +173,20 @@ c_rt_lib0clear(&___nl__im__3);
 #line 32
 return NULL;
 return NULL;
+
 }
 
 
-static ImmT ___const__[1];
+static ImmT ___const__[2];
 static int ___const_init__ = 1;
 void func_priv0__const__init(){
 if(___const_init__) {
 ___const_init__ = 0;
-__const__f = &___const__[0];
+__const__f = &___const__[1];
 
 
-for(int i=0;i<0;++i) ___const__[i] = NULL;
-c_rt_lib0register_const(___const__, 0);
+for(int i=0;i<1;++i) ___const__[i] = NULL;
+c_rt_lib0register_const(___const__, 1);
 }}
 ImmT func_priv0__const__sim(int __nr) {
 ImmT ret = NULL;
@@ -188,6 +196,9 @@ return ret;
 ImmT func_priv0__const__sing(int __nr) {
 if(___const__[__nr+0]==NULL) {
 switch(__nr){
+case 0:
+	___const__[0] = func0func_t0cal();
+	break;
 default:
 	nl_die();
 }}

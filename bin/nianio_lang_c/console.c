@@ -42,6 +42,7 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__0);
 #line 10
 return NULL;
+
 }
 
 ImmT  console0print0ptr(int _num, ImmT *_tab){
@@ -58,6 +59,7 @@ c_rt_lib0delete(c_olympic_io0print(___nl__im__0));
 c_rt_lib0clear(&___nl__im__0);
 #line 14
 return NULL;
+
 }
 
 ImmT  console0readln0ptr(int _num, ImmT *_tab){
@@ -72,6 +74,7 @@ c_rt_lib0move(&___nl__im__0, c_olympic_io0readln());
 #line 18
 return ___nl__im__0;
 return NULL;
+
 }
 
 INT  console0read_int0ptr(int _num, ImmT *_tab){
@@ -86,6 +89,7 @@ ___nl__int__0 = c_olympic_io0read_int();
 #line 22
 return ___nl__int__0;
 return 0;
+
 }
 
 ImmT  console0read_char0ptr(int _num, ImmT *_tab){
@@ -100,6 +104,7 @@ c_rt_lib0move(&___nl__im__0, c_olympic_io0read_char());
 #line 26
 return ___nl__im__0;
 return NULL;
+
 }
 
 
