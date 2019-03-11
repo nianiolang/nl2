@@ -366,7 +366,7 @@ var instadb;
 
 	
 	_namespace.imm_int = function(v) {
-		return new _namespace.imm_int_p(v);
+		return new _namespace.imm_int_p(parseInt(v));
 	}
 
 	_namespace.imm_int_p = function(v) {
