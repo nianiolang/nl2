@@ -235,9 +235,9 @@ def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, mat
 			regs[set_at_idx->src->reg_no] = const;
 			array::push(ref set_c, set_at_idx->src);
 		} case :array_push(var push) {
-			die; #TODO
+			const = :no;
 		} case :array_len(var len) {
-			die; #TODO
+			const = :no;
 		} case :get_val(var get_val) {
 			check_sub(ref const, regs[get_val->src->reg_no], ref info);
 			regs[get_val->dest->reg_no] = const unless nlasm::is_empty(get_val->dest);
@@ -269,31 +269,55 @@ def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, mat
 			check_sub(ref const, regs[reg->reg_no], ref info);
 			regs[reg->reg_no] = :no;
 		} case :var_decl(var decl) {
-			#TODO
+			const = :no;
 		} case :use_field(var use_field) {
-			#TODO
+			check_sub(ref const, regs[use_field->old_owner->reg_no], ref info);
+			regs[use_field->new_owner->reg_no] = const unless nlasm::is_empty(use_field->new_owner);
+			array::push(ref set_c, use_field->new_owner);
 		} case :release_field(var release_field) {
-			#TODO
+			check_sub(ref const, regs[release_field->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[release_field->current_owner->reg_no], ref info);
+			regs[release_field->old_owner->reg_no] = const;
+			array::push(ref set_c, release_field->current_owner);
 		} case :use_index(var use_index) {
-			die; #TODO
+			check_sub(ref const, regs[use_index->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[use_index->index->reg_no], ref info);
+			regs[use_index->new_owner->reg_no] = const unless nlasm::is_empty(use_index->new_owner);
+			array::push(ref set_c, use_index->new_owner);
 		} case :release_index(var release_index) {
-			die; #TODO
+			check_sub(ref const, regs[release_index->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[release_index->index->reg_no], ref info);
+			check_sub(ref const, regs[release_index->current_owner->reg_no], ref info);
+			regs[release_index->old_owner->reg_no] = const;
+			array::push(ref set_c, release_index->old_owner);
 		} case :use_hash_index(var use_hash_index) {
-			die; #TODO
+			check_sub(ref const, regs[use_hash_index->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[use_hash_index->index->reg_no], ref info);
+			regs[use_hash_index->new_owner->reg_no] = const unless nlasm::is_empty(use_hash_index->new_owner);
+			array::push(ref set_c, use_hash_index->new_owner);
 		} case :release_hash_index(var release_hash_index) {
-			die; #TODO
+			check_sub(ref const, regs[release_hash_index->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[release_hash_index->index->reg_no], ref info);
+			check_sub(ref const, regs[release_hash_index->current_owner->reg_no], ref info);
+			regs[release_hash_index->old_owner->reg_no] = const;
+			array::push(ref set_c, release_hash_index->old_owner);
 		} case :use_variant(var use_variant) {
-			die; #TODO
+			check_sub(ref const, regs[use_variant->old_owner->reg_no], ref info);
+			regs[use_variant->new_owner->reg_no] = const unless nlasm::is_empty(use_variant->new_owner);
+			array::push(ref set_c, use_variant->new_owner);
 		} case :release_variant(var release_variant) {
-			die; #TODO
+			check_sub(ref const, regs[release_variant->old_owner->reg_no], ref info);
+			check_sub(ref const, regs[release_variant->current_owner->reg_no], ref info);
+			regs[release_variant->old_owner->reg_no] = const unless nlasm::is_empty(release_variant->old_owner);
+			array::push(ref set_c, release_variant->old_owner);
 		} case :hash_init_iter(var init_iter) {
-			die;
+			const = :no;
 		} case :hash_next_iter(var next_iter) {
-			die;
+			const = :no;
 		} case :hash_get_key_iter(var get_key_iter) {
-			die;
+			const = :no;
 		} case :hash_is_end(var is_end) {
-			die;
+			const = :no;
 		}
 		var set_len = array::len(set_c);
 		if (set_len > 0 && nlasm::is_empty(set_c[set_len - 1])) {

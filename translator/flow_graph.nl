@@ -211,9 +211,12 @@ def mk_blocks(commands : ptd::arr(@nlasm::cmd_t), args_types : ptd::arr(@nlasm::
 			read_reg(ref block, set_at_idx->val, nr);
 			write_reg(ref block, set_at_idx->src, nr);
 		} case :array_push(var push) {
-			die; #TODO
+			read_reg(ref block, push->val, nr);
+			read_reg(ref block, push->dest, nr);
+			write_reg(ref block, push->dest, nr);
 		} case :array_len(var len) {
-			die; #TODO
+			read_reg(ref block, len->src, nr);
+			write_reg(ref block, len->dest, nr);
 		} case :get_val(var get_val) {
 			read_reg(ref block, get_val->src, nr);
 			write_reg(ref block, get_val->dest, nr);
@@ -262,27 +265,49 @@ def mk_blocks(commands : ptd::arr(@nlasm::cmd_t), args_types : ptd::arr(@nlasm::
 		} case :clear(var reg) {
 			clear_reg(ref block, reg, nr);
 		} case :var_decl(var decl) {
-			#TODO
 		} case :use_field(var use_field) {
-			#TODO
+			read_reg(ref block, use_field->old_owner, nr);
+			write_reg(ref block, use_field->new_owner, nr);
 		} case :release_field(var release_field) {
-			#TODO
+			read_reg(ref block, release_field->current_owner, nr);
+			write_reg(ref block, release_field->old_owner, nr);
 		} case :use_index(var use_index) {
-			#TODO
+			read_reg(ref block, use_index->old_owner, nr);
+			read_reg(ref block, use_index->index, nr);
+			write_reg(ref block, use_index->new_owner, nr);
 		} case :release_index(var release_index) {
-			#TODO
+			read_reg(ref block, release_index->current_owner, nr);
+			read_reg(ref block, release_index->index, nr);
+			write_reg(ref block, release_index->old_owner, nr);
 		} case :use_hash_index(var use_hash_index) {
-			#TODO
+			read_reg(ref block, use_hash_index->old_owner, nr);
+			read_reg(ref block, use_hash_index->index, nr);
+			write_reg(ref block, use_hash_index->new_owner, nr);
 		} case :release_hash_index(var release_hash_index) {
-			#TODO
+			read_reg(ref block, release_hash_index->current_owner, nr);
+			read_reg(ref block, release_hash_index->index, nr);
+			write_reg(ref block, release_hash_index->old_owner, nr);
 		} case :use_variant(var use_variant) {
-			#TODO
+			read_reg(ref block, use_variant->old_owner, nr);
+			write_reg(ref block, use_variant->new_owner, nr);
 		} case :release_variant(var release_variant) {
-			#TODO
+			read_reg(ref block, release_variant->current_owner, nr);
+			write_reg(ref block, release_variant->old_owner, nr);
 		} case :hash_init_iter(var init_iter) {
+			read_reg(ref block, init_iter->hash, nr);
+			write_reg(ref block, init_iter->iter, nr);
 		} case :hash_next_iter(var next_iter) {
+			read_reg(ref block, next_iter->hash, nr);
+			read_reg(ref block, next_iter->iter, nr);
+			write_reg(ref block, next_iter->iter, nr);
 		} case :hash_get_key_iter(var get_key_iter) {
+			read_reg(ref block, get_key_iter->hash, nr);
+			read_reg(ref block, get_key_iter->iter, nr);
+			write_reg(ref block, get_key_iter->dest, nr);
 		} case :hash_is_end(var is_end) {
+			read_reg(ref block, is_end->hash, nr);
+			read_reg(ref block, is_end->iter, nr);
+			write_reg(ref block, is_end->dest, nr);
 		}
 		++nr;
 	}

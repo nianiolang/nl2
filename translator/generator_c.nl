@@ -463,7 +463,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 			var fun_name = get_function_name(func, state->mod_name);
 			println(ref state, im_t() . fun_name . '(){');
 			println(ref state, get_fun_name('', '__const__init', state->mod_name) . '();');
-			println(ref state, 'return ' . get_const_singleton(ref state, fun_name) . ';}');
+			println(ref state, 'return ' . get_const_singleton(ref state, fun_name) . ';' . string::lf() . '}');
 			print(ref state, im_t() . fun_name . '0cal()');
 		} else {
 			print(ref state, get_function_header(func, state->mod_name));
@@ -541,7 +541,11 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 				}
 			}
 			var len = array::len(tab);
-			if (len == 0) {
+			var all_im = true;
+			fora var const_reg (tab) {
+				all_im = false unless const_reg->type is :im;
+			}
+			if (len == 0 || !all_im) {
 				print_cmd(ref state, cmd, defined_types);
 				continue;
 			} else {
@@ -549,14 +553,15 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 				println(ref state, 'if(__const__f[' . ptd::int_to_string(nr) . '] == NULL) {');
 				print_cmd(ref state, cmd, defined_types);
 				fora var reg (tab) {
-					println(ref state, get_fun_lib('copy', ['&__const__f[' . ptd::int_to_string(nr) . ']', get_reg(ref state, reg)]) . ';');
+					println(ref state, get_fun_lib('copy', ['&__const__f[' . ptd::int_to_string(nr) . ']',
+						get_reg_value(ref state, reg)]) . ';');
 					nr++;
 				}
 				println(ref state, '}');
 				nr -= len;
 				fora var reg (tab) {
-					println(ref state, get_fun_lib('copy', [get_reg_ref(ref state, reg), '__const__f[' . ptd::int_to_string(nr) . ']']) . 
-						';');
+					println(ref state, get_fun_lib('copy', [get_reg_ref(ref state, reg),
+						'__const__f[' . ptd::int_to_string(nr) . ']']) . ';');
 					nr++;
 				}
 				state->const->dynamic_nr = nr;
@@ -565,11 +570,11 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 	}
 	var empty_val = get_empty_value(state->ret_reg_type);
 	println(ref state, 'return ' . empty_val . ';') unless func->ret_type is :tct_void;
-	println(ref state, '}' . string::lf());
+	println(ref state, string::lf() . '}' . string::lf());
 }
 
 def is_singleton_use_function(function : @nlasm::function_t) : ptd::bool() {
-	return false if (array::len(function->args_type) > 0);
+	return false if (array::len(function->args_type) > 0 || !function->ret_reg_type is :im);
 	var is_math = function->annotation is :math;
 	var was_singleton = false;
 	var dest = -1;

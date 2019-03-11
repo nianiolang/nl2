@@ -12,7 +12,7 @@ BINEXEC=./bin/mk_cache.exe
 CACHEDIR=cache_nl
 CACHETEST=cache_test
 CACHEJS=cache_js
-CFLAGS=-std=c99 -O0 -ggdb -Wall -Wno-unused-but-set-variable -Werror
+CFLAGS=-std=c99 -O0 -ggdb -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Werror
 LINKS=-lm
 
 NLDIR=ast checker compiler nianio_lib parser pretty_printer translator compiler_base
