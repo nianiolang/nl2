@@ -10,6 +10,7 @@
 #include "array.h"
 #include "float.h"
 #include "c_rt_lib.h"
+#include "c_std_lib.h"
 ImmT  string_utils0is_int(ImmT  ___nl__im__0);
 ImmT  string_utils0is_int0ptr(int _num, ImmT *_tab);
 ImmT  string_utils0is_whitespace(ImmT  ___nl__im__0);
@@ -44,6 +45,9 @@ ImmT  string_utils0char2hex(ImmT  ___nl__im__0);
 ImmT  string_utils0char2hex0ptr(int _num, ImmT *_tab);
 ImmT  string_utils0hex2char(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  string_utils0hex2char0ptr(int _num, ImmT *_tab);
+ImmT  string_utils0escape2hex31(ImmT  ___nl__im__0);
+ImmT  string_utils0escape2hex310ptr(int _num, ImmT *_tab);
+ImmT  string_utils0float2str(ImmT  ___nl__im__0,INT  ___nl__int__1);
 ImmT  string_utils0int2str_leading_digits(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  string_utils0int2str_leading_digits0ptr(int _num, ImmT *_tab);
 ImmT  string_utils0int2str(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
@@ -52,6 +56,5 @@ ImmT  string_utils0starts_with(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  string_utils0starts_with0ptr(int _num, ImmT *_tab);
 ImmT  string_utils0normalize_newlines(ImmT  ___nl__im__0);
 ImmT  string_utils0normalize_newlines0ptr(int _num, ImmT *_tab);
-ImmT  string_utils0float2str(ImmT  ___nl__im__0,INT  ___nl__int__1);
 ImmT  string_utils0float2str_fixed(ImmT  ___nl__im__0);
 ImmT  string_utils0float2str_fixed0ptr(int _num, ImmT *_tab);

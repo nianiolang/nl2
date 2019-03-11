@@ -33,6 +33,8 @@ ImmT  dfile0sload(ImmT  ___nl__im__0);
 ImmT  dfile0sload0ptr(int _num, ImmT *_tab);
 ImmT  dfile0sload_with_type(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  dfile0sload_with_type0ptr(int _num, ImmT *_tab);
+ImmT  dfile0sload_with_type_only_dynamic(ptd0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
+ImmT  dfile0sload_with_type_only_dynamic0ptr(int _num, ImmT *_tab);
 ImmT  dfile0try_sload(ImmT  ___nl__im__0);
 ImmT  dfile0try_sload0ptr(int _num, ImmT *_tab);
 ImmT  dfile0try_sload_with_type(ptd0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);

@@ -15,7 +15,7 @@ void array_priv0__const__init();
 ImmT array_priv0__const__sim(int __nr);
 ImmT array_priv0__const__sing(int __nr);
 
-ImmT  array_priv0priv_sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1);
+ImmT  array_priv0sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1);
 ImmT  array_priv0exec(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2);
 ImmT  array_priv0part_sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3);
 
@@ -806,7 +806,7 @@ c_rt_lib0move(&___nl__im__1, c_rt_lib0func_new(array0cmp0ptr, ___get_global_cons
 #line 101
 c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_const(40), ___nl__im__1));
 #line 101
-c_rt_lib0delete(array_priv0priv_sort(___ref___im__0, ___nl__im__1));
+c_rt_lib0delete(array_priv0sort(___ref___im__0, ___nl__im__1));
 #line 101
 c_rt_lib0clear(&___nl__im__1);
 #line 101
@@ -823,7 +823,7 @@ ImmT  array0sort_comparator(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
 array_priv0__const__init();
 #line 105
-c_rt_lib0delete(array_priv0priv_sort(___ref___im__0, ___nl__im__1));
+c_rt_lib0delete(array_priv0sort(___ref___im__0, ___nl__im__1));
 #line 105
 c_rt_lib0clear(&___nl__im__1);
 #line 105
@@ -1022,7 +1022,7 @@ return false;
 return false;
 }
 
-ImmT  array_priv0priv_sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
+ImmT  array_priv0sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
 array_priv0__const__init();
 INT  ___nl__int__2 = 0;

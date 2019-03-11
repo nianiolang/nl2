@@ -51,6 +51,8 @@ INT  string0ord(ImmT  ___nl__im__0);
 INT  string0ord0ptr(int _num, ImmT *_tab);
 bool  string0is_digit(ImmT  ___nl__im__0);
 bool  string0is_digit0ptr(int _num, ImmT *_tab);
+bool  string0is_hex_digit(ImmT  ___nl__im__0);
+bool  string0is_hex_digit0ptr(int _num, ImmT *_tab);
 bool  string0is_letter(ImmT  ___nl__im__0);
 bool  string0is_letter0ptr(int _num, ImmT *_tab);
 ImmT  string0encode_utf16(ImmT  ___nl__im__0);

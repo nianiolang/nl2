@@ -1751,8 +1751,6 @@ void gdb_die(const char *msg){
 	}
 }
 
-// ---> TODO temporary float
-
 ImmT c_rt_lib0str_float_add(ImmT lhs, ImmT rhs) {
 	char res_str[20];
 	sPrintFloat(res_str, getFloatFromImm(lhs) + getFloatFromImm(rhs));
@@ -1783,4 +1781,3 @@ ImmT c_rt_lib0str_float_mod(ImmT lhs, ImmT rhs) {
 	return c_rt_lib0string_new(res_str);
 }
 
-// TODO temporary float <---
