@@ -39,7 +39,7 @@ c_rt_lib0move(&___nl__im__4, ptd0string());
 #line 14
 c_rt_lib0move(&___nl__im__5, ptd0string());
 #line 14
-c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_const(151), ___nl__im__4, ___get_global_const(167), ___nl__im__5));
+c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_string_const(151), ___nl__im__4, ___get_global_string_const(167), ___nl__im__5));
 #line 14
 c_rt_lib0clear(&___nl__im__4);
 #line 14
@@ -49,7 +49,7 @@ c_rt_lib0move(&___nl__im__2, ptd0rec(___nl__im__3));
 #line 14
 c_rt_lib0clear(&___nl__im__3);
 #line 14
-c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(1, ___get_global_const(40), ___nl__im__2));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(1, ___get_global_string_const(40), ___nl__im__2));
 #line 14
 c_rt_lib0clear(&___nl__im__2);
 #line 14
@@ -141,7 +141,7 @@ INT  ___nl__int__6 = 0;
 #line 28
 c_rt_lib0delete(array0push(&___nl__im__1, (*___ref___im__2)));
 #line 29
-c_rt_lib0move(___ref___im__2,___get_global_const(21));
+c_rt_lib0move(___ref___im__2,___get_global_int_const(0));
 #line 30
 c_rt_lib0move(&___nl__im__3, func0exec_ref(___nl__im__0, &___nl__im__1));
 #line 31

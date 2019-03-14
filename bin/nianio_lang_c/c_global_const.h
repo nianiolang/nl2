@@ -5,4 +5,5 @@
 #pragma once
 #include "c_rt_lib.h"
 void ___global_const_init();
-ImmT  ___get_global_const(int __nr);
+ImmT  ___get_global_int_const(int __nr);
+ImmT  ___get_global_string_const(int __nr);
