@@ -183,12 +183,6 @@ void c_rt_lib0register_const(ImmT *a, int size) {
 	++_consts_size;
 }
 
-//TODO REMOVE
-void c_rt_lib0register_global_const(ImmT begin, ImmT end) {
-	_global_const_int_begin_ = begin;
-	_global_const_int_end_ = end;
-}
-
 void c_rt_lib0register_global_int_const(ImmT begin, ImmT end) {
 	_global_const_int_begin_ = begin;
 	_global_const_int_end_ = end;
