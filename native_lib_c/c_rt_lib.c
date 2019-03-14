@@ -84,8 +84,10 @@ ImmT** _consts = NULL;
 int* _consts_s = NULL;
 int _consts_size = 0;
 int _consts_capacity = 0;
-ImmT _global_const_begin_ = NULL;
-ImmT _global_const_end_ = NULL;
+ImmT _global_const_int_begin_ = NULL;
+ImmT _global_const_int_end_ = NULL;
+ImmT _global_const_string_begin_ = NULL;
+ImmT _global_const_string_end_ = NULL;
 int _global_const_offset_ = 0;
 
 char* aprint(ImmT val, int deep);
@@ -180,10 +182,23 @@ void c_rt_lib0register_const(ImmT *a, int size) {
 	_consts[_consts_size]=a;
 	++_consts_size;
 }
+
+//TODO REMOVE
 void c_rt_lib0register_global_const(ImmT begin, ImmT end) {
-	_global_const_begin_ = begin;
-	_global_const_end_ = end;
+	_global_const_int_begin_ = begin;
+	_global_const_int_end_ = end;
 }
+
+void c_rt_lib0register_global_int_const(ImmT begin, ImmT end) {
+	_global_const_int_begin_ = begin;
+	_global_const_int_end_ = end;
+}
+
+void c_rt_lib0register_global_string_const(ImmT begin, ImmT end) {
+	_global_const_string_begin_ = begin;
+	_global_const_string_end_ = end;
+}
+
 const char* type_name(char a){
 	switch(a){
 		case ___TYPE_STRING: return "string";
@@ -198,6 +213,18 @@ const char* type_name(char a){
 		default: return "unknown";
 	}
 }
+
+void deregister_const(ImmT begin, ImmT end) {
+	if (begin != NULL) {
+		ImmT const_element = begin;
+		while (const_element < end) {
+			dec_ref_adv(const_element, 0);
+			const_element += _global_const_offset_;
+		}
+	}
+	free_mem(begin, end - begin);
+}
+
 void c_rt_lib0finish(){
 	c_rt_lib0clear(&_false);
 	c_rt_lib0clear(&_true);
@@ -212,14 +239,8 @@ void c_rt_lib0finish(){
 			c_rt_lib0clear(&arr[j]);
 		}
 	}
-	if (_global_const_begin_ != NULL) {
-		ImmT const_element = _global_const_begin_;
-		while (const_element < _global_const_end_) {
-			dec_ref_adv(const_element, 0);
-			const_element += _global_const_offset_;
-		}
-	}
-	free_mem(_global_const_begin_, _global_const_end_ - _global_const_begin_);
+	deregister_const(_global_const_int_begin_, _global_const_int_end_);
+	deregister_const(_global_const_string_begin_, _global_const_string_end_);
 	if(_mem_sum != _free_sum)
 		fprintf(stderr, "\nmemory unreleased: %d\n", (int)(_mem_sum - _free_sum));
 	for(int i=1;i<=9;++i)
@@ -320,8 +341,12 @@ int compare_strings(NlString* left, NlString* right){
 }
 
 int nl_compare_internal(ImmT left, ImmT right) {
-	if (_global_const_begin_ != NULL && left >= _global_const_begin_ && left < _global_const_end_ 
-			&& right >= _global_const_begin_ && right < _global_const_end_) {
+	if (_global_const_int_begin_ != NULL && left >= _global_const_int_begin_ && left < _global_const_int_end_ 
+			&& right >= _global_const_int_begin_ && right < _global_const_int_end_) {
+		return left == right;
+	}
+	if (_global_const_string_begin_ != NULL && left >= _global_const_string_begin_ && left < _global_const_string_end_ 
+			&& right >= _global_const_string_begin_ && right < _global_const_string_end_) {
 		return left == right;
 	}
 	if (((NlData *)left)->type != ((NlData *)right)->type) {
@@ -935,12 +960,7 @@ NlString* toStringIfSim(ImmT sim){
 INT getIntFromImm(ImmT num){
 	if(IS_INT(num))
 		return ((NlInt *)num)->i;
-	else if(IS_FLOAT(num))
-		return ((NlFloat *)num)->f;
-	else if(IS_STRING(num))
-		return atoll(((NlString*)num)->s);
-	else
-		nl_die_internal("can not converted to int %s;", NAME(num));
+	nl_die_internal("expected int, got %s;", NAME(num));
 	return 0;
 }
 FLOAT getFloatFromImm(ImmT num){
@@ -952,36 +972,6 @@ FLOAT getFloatFromImm(ImmT num){
 		return atof(((NlString*)num)->s);
 	else
 		nl_die_internal("can not converted to float %s;", NAME(num));
-	return 0;
-}
-int getNumberFromImm(ImmT num, FLOAT* f, INT* i){
-	if(IS_INT(num)){
-		*i = ((NlInt *)num)->i;
-		*f = ((NlInt *)num)->i;
-		return 0;
-	}else if(IS_FLOAT(num)){
-		*i = ((NlFloat *)num)->f;
-		*f = ((NlFloat *)num)->f;
-		return 1;
-	}else if(IS_STRING(num)){
-		char* str = ((NlString*)num)->s;
-		int p = 0;
-		if(((NlString*)num)->length > 0 && (str[p] == '-' || str[p] == '+')) ++p;
-		if(p>=((NlString*)num)->length) nl_die_internal("can not converted string to number '%s';", ((NlString*)num)->s);
-		for(;p<((NlString*)num)->length;++p) {
-			if(str[p] == '.'){
-				*i = atof(str);
-				*f = atof(str);
-				return 1;
-			} else if(str[p]<'0' || str[p]>'9'){
-				nl_die_internal("can not converted string to number '%s';", ((NlString*)num)->s);
-			}
-		}
-		*i = atoll(str);
-		*f = atoll(str);
-		return 0;
-	}else
-		nl_die_internal("can not converted to number %s;", NAME(num));
 	return 0;
 }
 
@@ -1238,32 +1228,22 @@ bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 	return false;
 }
 #define BIN_OP_NUM_TO_BOOL(OP)	\
-	return priv_to_nl_native(getFloatFromImm(___nl__left) OP getFloatFromImm(___nl__right));
+	return priv_to_nl_native(getIntFromImm(___nl__left) OP getIntFromImm(___nl__right));
 
 #define BIN_MOD_OP_NUM(OP)	\
-	if(((NlData*)___nl__left)->refs==1 && is_float && IS_FLOAT(___nl__left)){	\
-		((NlFloat *)___nl__left)->f OP fr;	\
-		inc_ref(___nl__left);	\
-		return ___nl__left;	\
-	}	\
-	if(((NlData*)___nl__left)->refs==1 && !is_float && IS_INT(___nl__left)){	\
+	if(((NlData*)___nl__left)->refs==1 && IS_INT(___nl__left)){	\
 		((NlInt *)___nl__left)->i OP ir;	\
 		inc_ref(___nl__left);	\
 		return ___nl__left;	\
 	}
 
 #define BIN_OP_NUM_GET	\
-	int is_float = 0;	\
-	FLOAT fl=0,fr=0;	\
 	INT il=0,ir=0;	\
-	is_float += getNumberFromImm(___nl__left, &fl, &il);	\
-	is_float += getNumberFromImm(___nl__right, &fr, &ir);
+	il = getIntFromImm(___nl__left);	\
+	ir += getIntFromImm(___nl__right);
 
 #define BIN_OP_NUM(OP)	\
-	if(is_float)	\
-		return c_rt_lib0float_new(fl OP fr);	\
-	else	\
-		return c_rt_lib0int_new(il OP ir);
+	return c_rt_lib0int_new(il OP ir);
 
 ImmT c_rt_lib0add(ImmT ___nl__left, ImmT ___nl__right) {
 	BIN_OP_NUM_GET;
@@ -1286,10 +1266,7 @@ ImmT c_rt_lib0div(ImmT ___nl__left, ImmT ___nl__right) {
 
 ImmT c_rt_lib0mod(ImmT ___nl__left, ImmT ___nl__right) {
 	BIN_OP_NUM_GET;
-	if(is_float)
-		return c_rt_lib0float_new(fmod(fl, fr));
-	else
-		return c_rt_lib0int_new(il % ir);
+	return c_rt_lib0int_new(il % ir);
 }
 
 ImmT c_rt_lib0add_mod(ImmT ___nl__left, ImmT ___nl__right) {
@@ -1314,21 +1291,12 @@ ImmT c_rt_lib0div_mod(ImmT ___nl__left, ImmT ___nl__right) {
 }
 ImmT c_rt_lib0mod_mod(ImmT ___nl__left, ImmT ___nl__right) {
 	BIN_OP_NUM_GET;
-	if(is_float){
-		if(REFS(___nl__left)==1 && IS_FLOAT(___nl__left)){
-			((NlFloat *)___nl__left)->f = fmod(fl, fr);
-			inc_ref(___nl__left);
-			return ___nl__left;
-		}
-		return c_rt_lib0float_new(fmod(fl, fr));
-	}else{
-		if(REFS(___nl__left)==1 && IS_INT(___nl__left)){
-			((NlInt *)___nl__left)->i = il % ir;
-			inc_ref(___nl__left);
-			return ___nl__left;
-		}
-		return c_rt_lib0int_new(il % ir);
+	if(REFS(___nl__left)==1 && IS_INT(___nl__left)){
+		((NlInt *)___nl__left)->i = il % ir;
+		inc_ref(___nl__left);
+		return ___nl__left;
 	}
+	return c_rt_lib0int_new(il % ir);
 }
 
 ImmT c_rt_lib0le(ImmT ___nl__left, ImmT ___nl__right) {
@@ -1403,13 +1371,7 @@ ImmT c_rt_lib0not(ImmT ___nl__arg) {
 }
 
 ImmT c_rt_lib0unary_minus(ImmT ___nl__arg) {
-	FLOAT f;
-	INT i;
-	if(getNumberFromImm(___nl__arg, &f, &i))
-		return c_rt_lib0float_new(-f);
-	else
-		return c_rt_lib0int_new(-i);
-	return NULL;
+	return c_rt_lib0int_new(-getIntFromImm(___nl__arg));
 }
 
 ImmT c_rt_lib0unary_plus(ImmT ___nl__arg) {

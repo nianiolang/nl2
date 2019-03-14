@@ -80,7 +80,7 @@ def generator_c::const_t() {
 
 def generator_c::global_const_t() {
 	return ptd::rec({
-			arr => ptd::arr(ptd::rec({key => ptd::string(), uses => ptd::int()})),
+			arr => ptd::arr(ptd::rec({value => ptd::ptd_im(), uses => ptd::int()})),
 			hash => ptd::hash(ptd::int()),
 			holes => ptd::arr(ptd::int()),
 			module_consts => ptd::hash(ptd::hash(ptd::string()))
@@ -89,7 +89,8 @@ def generator_c::global_const_t() {
 
 def generator_c::state_t() {
 	return own::rec({
-			global_const => @generator_c::global_const_t,
+			global_int_const => @generator_c::global_const_t,
+			global_string_const => @generator_c::global_const_t,
 			header => ptd::string(),
 			ret => ptd::string(),
 			additional_imports => own::hash(ptd::bool()),
@@ -97,7 +98,8 @@ def generator_c::state_t() {
 			fun_args => @generator_c::fun_args_t,
 			ret_reg_type => @nlasm::reg_type,
 			const => own::rec({
-					sim => @generator_c::const_t,
+					int => @generator_c::const_t,
+					string => @generator_c::const_t,
 					singleton => @generator_c::const_t,
 					dynamic_nr => ptd::int()
 				}),
@@ -193,11 +195,17 @@ def generator_c::generate(nlasms : ptd::hash(@nlasm::result_t), ref state : @gen
 	fora var module (modules_names) {
 		var nlasm = hash::get_value(nlasms, module);
 		generator_c::clear_module_from_state(ref state, module);
-		hash::set_value(ref state->global_const->module_consts, module, {});
+		hash::set_value(ref state->global_int_const->module_consts, module, {});
+		hash::set_value(ref state->global_string_const->module_consts, module, {});
 		state->ret = '';
 		state->header = '';
 		state->fun_args = [];
-		state->const = {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}};
+		state->const = {
+			dynamic_nr => 0,
+			int => {arr => [], hash => {}},
+			string => {arr => [], hash => {}},
+			singleton => {arr => [], hash => {}}
+		};
 		state->mod_name = module;
 		state->additional_imports = {};
 		print_mod(ref state, nlasm, state->defined_types);
@@ -222,37 +230,60 @@ def generate_global_const_files(ref state : @generator_c::state_t) : @generator_
 	state->ret = '';
 	state->header = '';
 	state->fun_args = [];
-	state->const = {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}};
+	state->const = {
+		dynamic_nr => 0,
+		int => {arr => [], hash => {}},
+		string => {arr => [], hash => {}},
+		singleton => {arr => [], hash => {}}
+	};
 	state->mod_name = '';
 	print_to_header(ref state, get_cr());
 	println_to_header(ref state, '#pragma once');
 	println_to_header(ref state, get_include('c_rt_lib'));
 	print(ref state, get_cr());
 	println(ref state, get_include('c_global_const'));
-	var sim = state->global_const->arr;
-	var const_len = array::len(sim);
+	var int = state->global_int_const->arr;
+	var string = state->global_string_const->arr;
+	var int_len = array::len(int);
+	var string_len = array::len(string);
 	println_to_header(ref state, 'void ___global_const_init();');
-	println_to_header(ref state, im_t() . ' ___get_global_const(int __nr);');
+	println_to_header(ref state, im_t() . ' ___get_global_int_const(int __nr);');
+	println_to_header(ref state, im_t() . ' ___get_global_string_const(int __nr);');
 	println(ref state, '
-		'static ' . im_t() . ' ___global_const__ = NULL;
+		'static ' . im_t() . ' ___global_int_const__ = NULL;
+		'static ' . im_t() . ' ___global_string_const__ = NULL;
 		'static int ___global_const_init__ = 1;
 		'static int ___global_const_offset;');
 	println(ref state, 'void ___global_const_init(){
 		'if(___global_const_init__) {
 		'___global_const_init__ = 0;
 		'___global_const_offset = c_rt_lib0get_global_const_offset();
-		'___global_const__ = alloc_mem(' . ptd::int_to_string(const_len) . ' * ___global_const_offset);
+		'___global_int_const__ = alloc_mem(' . ptd::int_to_string(int_len) . ' * ___global_const_offset);
+		'___global_string_const__ = alloc_mem(' . ptd::int_to_string(string_len) . ' * ___global_const_offset);
 		'');
-	rep var i (const_len) {
-		println(ref state, create_sim_to_memory(sim[i]->key, '___global_const__ + ___global_const_offset * ' . ptd::int_to_string(i)) . ';');
+	rep var i (int_len) {
+		println(ref state, create_sim_to_memory(int[i]->value,
+			'___global_int_const__ + ___global_const_offset * ' . ptd::int_to_string(i)) . ';');
+	}
+	rep var i (string_len) {
+		println(ref state, create_sim_to_memory(string[i]->value,
+			'___global_string_const__ + ___global_const_offset * ' . ptd::int_to_string(i)) . ';');
 	}
 	println(ref state, '
-		'' . get_lib_fun('register_global_const') . '((' . im_t() . ')___global_const__,(' . im_t() . 
-		')___global_const__ + ' . ptd::int_to_string(const_len) . ' * ___global_const_offset);
-		'}}');
-	println(ref state, im_t() . '___get_global_const(int __nr) {
+		'' . get_lib_fun('register_global_int_const') . '((' . im_t() . ')___global_int_const__,(' . im_t() . 
+		')___global_int_const__ + ' . ptd::int_to_string(int_len) . ' * ___global_const_offset);
+		'' . get_lib_fun('register_global_string_const') . '((' . im_t() . ')___global_string_const__,(' . im_t() . 
+		')___global_string_const__ + ' . ptd::int_to_string(string_len) . ' * ___global_const_offset);
+		'}
+		'}');
+	println(ref state, im_t() . '___get_global_int_const(int __nr) {
 		'' . im_t() . 'ret = NULL;
-		'' . get_fun_lib('copy', ['&ret', '(' . im_t() . ')___global_const__ + ___global_const_offset * __nr']) . ';
+		'' . get_fun_lib('copy', ['&ret', '(' . im_t() . ')___global_int_const__ + ___global_const_offset * __nr']) . ';
+		'return ret;
+		'}');
+	println(ref state, im_t() . '___get_global_string_const(int __nr) {
+		'' . im_t() . 'ret = NULL;
+		'' . get_fun_lib('copy', ['&ret', '(' . im_t() . ')___global_string_const__ + ___global_const_offset * __nr']) . ';
 		'return ret;
 		'}');
 	return {c => state->ret, h => state->header};
@@ -320,16 +351,17 @@ def insert_const_to_modules_hash(ref global_const : @generator_c::global_const_t
 	hash::set_value(ref global_const->module_consts, module, hash);
 }
 
-def get_global_const(ref global_const : @generator_c::global_const_t, key : ptd::string(), module : ptd::string()) : ptd::int() {
+def get_global_const(ref global_const : @generator_c::global_const_t, key : ptd::string(), value : ptd::ptd_im(),
+		module : ptd::string()) : ptd::int() {
 	var nr = -1;
 	if (!hash::has_key(global_const->hash, key)) {
 		if (array::len(global_const->holes) > 0) {
 			nr = global_const->holes[array::len(global_const->holes) - 1];
 			array::pop(ref global_const->holes);
-			global_const->arr[nr] = {key => key, uses => 1};
+			global_const->arr[nr] = {value => value, uses => 1};
 		} else {
 			nr = array::len(global_const->arr);
-			array::push(ref global_const->arr, {key => key, uses => 1});
+			array::push(ref global_const->arr, {value => value, uses => 1});
 		}
 		insert_const_to_modules_hash(ref global_const, key, module);
 		hash::set_value(ref global_const->hash, key, nr);
@@ -345,23 +377,33 @@ def get_global_const(ref global_const : @generator_c::global_const_t, key : ptd:
 }
 
 def generator_c::clear_module_from_state(ref state : @generator_c::state_t, module : ptd::string()) {
-	if (hash::has_key(state->global_const->module_consts, module)) {
-		var consts = hash::get_value(state->global_const->module_consts, module);
+	clear_module_from_const(ref state->global_int_const, module);
+	clear_module_from_const(ref state->global_string_const, module);
+}
+
+def clear_module_from_const(ref const : @generator_c::global_const_t, module : ptd::string()) {
+	if (hash::has_key(const->module_consts, module)) {
+		var consts = hash::get_value(const->module_consts, module);
 		forh var key, var none (consts) {
-			var nr = hash::get_value(state->global_const->hash, key);
-			--state->global_const->arr[nr]->uses;
-			if (state->global_const->arr[nr]->uses == 0) {
-				hash::delete(ref state->global_const->hash, key);
-				array::push(ref state->global_const->holes, nr);
+			var nr = hash::get_value(const->hash, key);
+			--const->arr[nr]->uses;
+			if (const->arr[nr]->uses == 0) {
+				hash::delete(ref const->hash, key);
+				array::push(ref const->holes, nr);
 			}
 		}
-		hash::delete(ref state->global_const->module_consts, module);
+		hash::delete(ref const->module_consts, module);
 	}
 }
 
-def get_const_sim(ref state : @generator_c::state_t, sim : ptd::string()) : ptd::string() {
-	var nr = get_global_const(ref state->global_const, sim, state->mod_name);
-	return '___get_global_const(' . ptd::int_to_string(nr) . ')';
+def get_const_int(ref state : @generator_c::state_t, int : ptd::int()) : ptd::string() {
+	var nr = get_global_const(ref state->global_int_const, ptd::int_to_string(int), int, state->mod_name);
+	return '___get_global_int_const(' . ptd::int_to_string(nr) . ')';
+}
+
+def get_const_string(ref state : @generator_c::state_t, string : ptd::string()) : ptd::string() {
+	var nr = get_global_const(ref state->global_string_const, string, string, state->mod_name);
+	return '___get_global_string_const(' . ptd::int_to_string(nr) . ')';
 }
 
 def get_const_singleton(ref state : @generator_c::state_t, sim : ptd::string()) : ptd::string() {
@@ -478,23 +520,28 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 }
 
 def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
-	var sim_len = own_array::len(ref state->const->sim->arr);
+	var int_len = own_array::len(ref state->const->int->arr);
+	var string_len = own_array::len(ref state->const->string->arr);
 	var sing_len = own_array::len(ref state->const->singleton->arr);
 	var dyna_len = state->const->dynamic_nr;
-	var const_len = sim_len + sing_len + dyna_len;
+	var const_len = int_len + string_len + sing_len + dyna_len;
 	println(ref state, '
 		'static ' . im_t() . '___const__[' . ptd::int_to_string(1 + const_len) . '];
 		'static int ___const_init__ = 1;');
 	println(ref state, 'void ' . get_fun_name('', '__const__init', state->mod_name) . '(){
 		'if(___const_init__) {
 		'___const_init__ = 0;
-		'__const__f = &___const__[' . ptd::int_to_string(sim_len + sing_len) . '];
+		'__const__f = &___const__[' . ptd::int_to_string(int_len + string_len + sing_len) . '];
 		'');
-	rep var i (sim_len) {
-		println(ref state, '___const__[' . ptd::int_to_string(i) . '] = ' . create_sim(state->const->sim->arr[i]) . ';');
+	rep var i (int_len) {
+		println(ref state, '___const__[' . ptd::int_to_string(i) . '] = ' . create_int(state->const->int->arr[i]) . ';');
+	}
+	rep var i (string_len) {
+		println(ref state, '___const__[' . ptd::int_to_string(i + int_len) . '] = ' .
+			create_string(state->const->string->arr[i]) . ';');
 	}
 	println(ref state, '
-		'for(int i=' . ptd::int_to_string(sim_len) . ';i<' . ptd::int_to_string(const_len) . ';++i) ___const__[i] = NULL;
+		'for(int i=' . ptd::int_to_string(int_len + string_len) . ';i<' . ptd::int_to_string(const_len) . ';++i) ___const__[i] = NULL;
 		'' . get_lib_fun('register_const') . '(___const__, ' . ptd::int_to_string(const_len) . ');
 		'}}');
 	println(ref state, im_t() . get_fun_name('', '__const__sim', state->mod_name) . '(int __nr) {
@@ -503,18 +550,19 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 		'return ret;
 		'}');
 	println(ref state, im_t() . get_fun_name('', '__const__sing', state->mod_name) . '(int __nr) {
-		'if(___const__[__nr+' . ptd::int_to_string(sim_len) . ']==NULL) {
+		'if(___const__[__nr+' . ptd::int_to_string(int_len + string_len) . ']==NULL) {
 		'switch(__nr){');
 	rep var i (sing_len) {
 		println(ref state, 'case ' . ptd::int_to_string(i) . ':');
-		println(ref state, '	___const__[' . ptd::int_to_string(i + sim_len) . '] = ' . state->const->singleton->arr[i] . '0cal();');
+		println(ref state, '	___const__[' . ptd::int_to_string(i + int_len + string_len) . '] = ' .
+			state->const->singleton->arr[i] . '0cal();');
 		println(ref state, '	break;');
 	}
 	println(ref state, 'default:
 		'	nl_die();
 		'}}
 		'' . im_t() . 'ret = NULL;
-		'' . get_fun_lib('copy', ['&ret', '___const__[__nr+' . ptd::int_to_string(sim_len) . ']']) . ';
+		'' . get_fun_lib('copy', ['&ret', '___const__[__nr+' . ptd::int_to_string(int_len + string_len) . ']']) . ';
 		'return ret;
 		'}');
 }
@@ -642,7 +690,7 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 		print(ref state, get_lib_fun('hash_mk_dec') . '(' . ptd::int_to_string(hash::size(obj)));
 		forh var key, var value (obj) {
 			print(ref state, ', ');
-			print(ref state, get_const_sim(ref state, key));
+			print(ref state, get_const_string(ref state, key));
 			print(ref state, ', ');
 			generate_imm(ref state, value);
 		}
@@ -656,7 +704,7 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 		print(ref state, ')');
 	} elsif (nl::is_variant(obj)) {
 
-		var variant_label = get_const_sim(ref state, ptd::ensure(ptd::string(), ov::get_element(obj)));
+		var variant_label = get_const_string(ref state, ptd::ensure(ptd::string(), ov::get_element(obj)));
 		if (ov::has_value(obj)) {
 			print(ref state, get_lib_fun('ov_mk_arg_dec') . '(' . variant_label . ', ');
 
@@ -676,9 +724,9 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 			print(ref state, get_lib_fun('ov_mk_none') . '(' . variant_label . ')');
 		}
 	} elsif (nl::is_string(obj)) {
-		print(ref state, get_const_sim(ref state, ptd::ensure(ptd::string(), obj)));
+		print(ref state, get_const_string(ref state, ptd::ensure(ptd::string(), obj)));
 	} elsif (nl::is_int(obj)) {
-		print(ref state, get_const_sim(ref state, ptd::ensure(ptd::string(), ptd::int_to_string(ptd::ensure(ptd::int(), obj)))));
+		print(ref state, get_const_int(ref state, ptd::ensure(ptd::int(), obj)));
 	} else {
 		die;
 	}
@@ -689,8 +737,8 @@ def get_func_pointer(ref state : @generator_c::state_t, module_name : ptd::strin
 	state->additional_imports{module_name} = true;
 	return get_fun_lib('func_new', [
 		get_fun_name(module_name, fun_name, state->mod_name) . '0ptr',
-		get_const_sim(ref state, module_name),
-		get_const_sim(ref state, fun_name),
+		get_const_string(ref state, module_name),
+		get_const_string(ref state, fun_name),
 	]);
 }
 
@@ -748,7 +796,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		print_bin_op(ref state, bin_op);
 	} case :ov_is(var ov_is) {
 		if (ov_is->src->type is :im) {
-			var r = get_fun_lib('priv_is', [get_reg(ref state, ov_is->src), get_const_sim(ref state, ov_is->type)]);
+			var r = get_fun_lib('priv_is', [get_reg(ref state, ov_is->src), get_const_string(ref state, ov_is->type)]);
 			print(ref state, get_assign(ref state, ov_is->dest, r));
 		} elsif (ov_is->src->type is :variant) {
 			print(ref state, get_reg_value(ref state, ov_is->dest) . ' = (' .
@@ -758,7 +806,8 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		}
 	} case :ov_as(var ov_as) {
 		if (ov_as->src->type is :im) {
-			var r = get_fun_lib('priv_as', [get_reg_value(ref state, ov_as->src), get_const_sim(ref state, ov_as->type)]);
+			var r = get_fun_lib('priv_as',
+				[get_reg_value(ref state, ov_as->src), get_const_string(ref state, ov_as->type)]);
 			print(ref state, get_assign(ref state, ov_as->dest, r));
 		} elsif (ov_as->src->type is :variant) {
 			var access_op = get_access_op(ov_as->src);
@@ -852,12 +901,13 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 	} case :get_val(var get) {
 		var r;
 		match (get->src->access_type) case :value {
-			r = get_fun_lib('hash_get_value_dec', [get_reg(ref state, get->src), get_const_sim(ref state, get->key)]);
+			r = get_fun_lib('hash_get_value_dec', [get_reg(ref state, get->src), get_const_string(ref state, get->key)]);
 		} case :reference {
 			if (get->src->type is :rec) {
 				r = get_reg(ref state, get->src) . '->' . get_field_name(get->key);
 			} elsif (get->src->type is :im){
-				r = get_fun_lib('hash_get_value_dec', ['*' . get_reg(ref state, get->src), get_const_sim(ref state, get->key)]);
+				r = get_fun_lib('hash_get_value_dec',
+					['*' . get_reg(ref state, get->src), get_const_string(ref state, get->key)]);
 			} else {
 				die;
 			}
@@ -866,21 +916,21 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 	} case :set_val(var set) {
 		print(ref state, get_fun_lib('hash_set_value_dec', [
 					get_reg_ref(ref state, set->src),
-					get_const_sim(ref state, set->key),
+					get_const_string(ref state, set->key),
 					get_reg(ref state, set->val)
 				]));
 	} case :ov_mk(var mk) {
 		if (mk->src is :emp && (mk->label eq 'TRUE')) {
 			if (mk->dest->type is :im) {
 				print(ref state, get_assign(ref state, mk->dest,
-					get_fun_lib('ov_mk_none', [get_const_sim(ref state, 'TRUE')])));
+					get_fun_lib('ov_mk_none', [get_const_string(ref state, 'TRUE')])));
 			} elsif (mk->dest->type is :bool) {
 				print(ref state, get_assign(ref state, mk->dest, 'true'));
 			}
 		} elsif (mk->src is :emp && (mk->label eq 'FALSE')) {
 			if (mk->dest->type is :im) {
 				print(ref state, get_assign(ref state, mk->dest,
-					get_fun_lib('ov_mk_none', [get_const_sim(ref state, 'FALSE')])));
+					get_fun_lib('ov_mk_none', [get_const_string(ref state, 'FALSE')])));
 			} elsif (mk->dest->type is :bool) {
 				print(ref state, get_assign(ref state, mk->dest, 'false'));
 			}
@@ -888,9 +938,9 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			if (mk->dest->type is :im) {
 				var r;
 				match (mk->src) case :arg(var a) {
-					r = get_fun_lib('ov_mk_arg', [get_const_sim(ref state, mk->label), get_reg(ref state, a)]);
+					r = get_fun_lib('ov_mk_arg', [get_const_string(ref state, mk->label), get_reg(ref state, a)]);
 				} case :emp {
-					r = get_fun_lib('ov_mk_none', [get_const_sim(ref state, mk->label)]);
+					r = get_fun_lib('ov_mk_none', [get_const_string(ref state, mk->label)]);
 				}
 				print(ref state, get_assign(ref state, mk->dest, r));
 			} elsif (mk->dest->type is :variant) {
@@ -1157,7 +1207,7 @@ def print_hash_declaration(ref state : @generator_c::state_t, hash_decl : @nlasm
 		var args = [ptd::int_to_string(array::len(hash_decl->src))];
 		fora var el (hash_decl->src) {
 			die unless el->val->type is :im;
-			array::push(ref args, get_const_sim(ref state, el->key));
+			array::push(ref args, get_const_string(ref state, el->key));
 			array::push(ref args, get_reg_value(ref state, el->val));
 		}
 		var r = get_fun_lib('hash_mk', args);
@@ -1312,13 +1362,13 @@ def print_get_val(ref state : @generator_c::state_t, src : @nlasm::reg_t, dest :
 	var r;
 	match (src->access_type) case :value {
 		r = get_value_from_im(dest->type,
-			get_fun_lib('hash_get_value_dec', [get_reg(ref state, src), get_const_sim(ref state, key)]));
+			get_fun_lib('hash_get_value_dec', [get_reg(ref state, src), get_const_string(ref state, key)]));
 	} case :reference {
 		if (src->type is :rec) {
 			r = get_reg(ref state, src) . '->' . get_field_name(key);
 		} elsif (src->type is :im){
 			r = get_value_from_im(dest->type,
-				get_fun_lib('hash_get_value_dec', ['*' . get_reg(ref state, src), get_const_sim(ref state, key)]));
+				get_fun_lib('hash_get_value_dec', ['*' . get_reg(ref state, src), get_const_string(ref state, key)]));
 		} else {
 			die;
 		}
@@ -1372,19 +1422,18 @@ def generate_call(ref state : @generator_c::state_t, call : @nlasm::call_t) : pt
 	}
 }
 
-def create_sim(obj) : ptd::string() {
-	if (nl::is_int(obj)) {
-		return get_lib_fun('int_new') . '(' . obj . ')';
-	} else {
-		var str = obj . '';
-		str = string::replace(str, '\', '\\');
-		str = string::replace(str, string::lf(), '\n');
-		str = string::replace(str, string::r(), '\r');
-		str = string::replace(str, string::tab(), '\t');
-		str = string::replace(str, '"', '\"');
-		str = string::replace(str, '''', '\''');
-		return get_lib_fun('string_new') . '("' . str . '")';
-	}
+def create_int(int : ptd::string()) : ptd::string() {
+	return get_lib_fun('int_new') . '(' . int . ')';
+}
+
+def create_string(str : ptd::string()) : ptd::string() {
+	str = string::replace(str, '\', '\\');
+	str = string::replace(str, string::lf(), '\n');
+	str = string::replace(str, string::r(), '\r');
+	str = string::replace(str, string::tab(), '\t');
+	str = string::replace(str, '"', '\"');
+	str = string::replace(str, '''', '\''');
+	return get_lib_fun('string_new') . '("' . str . '")';
 }
 
 def create_sim_to_memory(obj, memory : ptd::string()) : ptd::string() {

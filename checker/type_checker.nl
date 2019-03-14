@@ -1803,13 +1803,15 @@ def get_type_from_bin_op_and_check(bin_op : @nast::bin_op_t, ref modules : @tc_t
 		add_error(ref errors, 'incorrect type of the first argument operator ''' . op . ''': ' .
 			get_print_tct_type_name(left_type2->type));
 	} elsif(bin_op->left->value is :var) {
-		vars{bin_op->left->value as :var}->type = op_def2->arg1;
+		vars{bin_op->left->value as :var}->type = ptd_system::cross_type(op_def2->arg1,
+			vars{bin_op->left->value as :var}->type, ref modules, ref errors, known_types);
 	}
 	if (!ptd_system::is_accepted(right_type, op_def2->arg2, ref modules, ref errors)) {
 		add_error(ref errors, 'incorrect type of the second argument operator ''' . op . ''': ' . 
 			get_print_tct_type_name(right_type->type));
 	} elsif(bin_op->right->value is :var) {
-		vars{bin_op->right->value as :var}->type = op_def2->arg2;
+		vars{bin_op->right->value as :var}->type = ptd_system::cross_type(op_def2->arg2,
+			vars{bin_op->right->value as :var}->type, ref modules, ref errors, known_types);
 	}
 	return {type => op_def2->ret, src => :speculation};
 }

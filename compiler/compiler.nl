@@ -8,6 +8,7 @@ use string;
 use hash;
 use array;
 use dfile;
+use dfile_dbg;
 use ptd;
 use nast;
 use nparser;
@@ -333,12 +334,18 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 	var const_state = post_processing::init(get_mathematical_func(opt_cli), opt_cli->optimization);
 	var old_files = {};
 	var generator_state : @generator_c::state_t = {
-			global_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			global_int_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			global_string_const => {arr => [], hash => {}, holes => [], module_consts => {}},
 			ret => '',
 			header => '',
 			fun_args => [],
 			ret_reg_type => :im,
-			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
+			const => {
+				dynamic_nr => 0,
+				int => {arr => [], hash => {}},
+				string => {arr => [], hash => {}},
+				singleton => {arr => [], hash => {}}
+			},
 			mod_name => '',
 			additional_imports => {},
 			defined_types => {},
@@ -474,7 +481,7 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 	check_modules(ref asts, ref errors, opt_cli->deref, opt_cli->check_public_fun);
 	profile::end('module_checking');
 	if (hash::has_key(asts, 'main')) {
-		c_fe_lib::string_to_file('asts.df', dfile::ssave(asts->main));
+		c_fe_lib::string_to_file('asts.df', dfile_dbg::ssave(asts->main));
 	}
 	if (show_and_count_errors(errors, opt_cli, nianio_files) > 0) {
 		return 1;
@@ -482,12 +489,18 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 	if (!(opt_cli->language is :ast || opt_cli->language is :nl)) {
 		profile::begin('post processing');
 		var generator_state : @generator_c::state_t = {
-			global_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			global_int_const => {arr => [], hash => {}, holes => [], module_consts => {}},
+			global_string_const => {arr => [], hash => {}, holes => [], module_consts => {}},
 			ret => '',
 			header => '',
 			fun_args => [],
 			ret_reg_type => :im,
-			const => {dynamic_nr => 0, sim => {arr => [], hash => {}}, singleton => {arr => [], hash => {}}},
+			const => {
+				dynamic_nr => 0,
+				int => {arr => [], hash => {}},
+				string => {arr => [], hash => {}},
+				singleton => {arr => [], hash => {}}
+			},
 			mod_name => '',
 			additional_imports => {},
 			defined_types => {},
@@ -501,7 +514,7 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 		profile::end('translate to nlasm');
 
 		if (hash::has_key(modules, 'main')) {
-			c_fe_lib::string_to_file('nlasm.df', dfile::ssave(modules->main));
+			c_fe_lib::string_to_file('nlasm.df', dfile_dbg::ssave(modules->main));
 		}
 
 		profile::begin('save files');
