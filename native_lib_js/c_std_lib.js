@@ -142,7 +142,7 @@ var instadb;
 	}
 
 	_namespace.c_std_lib.try_string_to_int = function(imm) {
-		if (isNaN(imm.as_int()))
+		if (isNaN(parseInt(imm.as_js_str())))
 			return instadb.imm_ov_js_str('err', instadb.imm_str('Invalid number'));
 		return instadb.imm_ov_js_str('ok', instadb.imm_int(imm.as_js_str()));
 	}
