@@ -354,7 +354,7 @@ var instadb;
 	}
 
 	str_priv.prototype.as_int = function() {
-		return Math.floor(parseFloat(this.value));
+		_namespace.nl_die();
 	}
 	str_priv.prototype.get_imm_type = function() {
 		return 'string';
@@ -678,6 +678,10 @@ var instadb;
 
 	_namespace.c_rt_lib.imm_to_float = function(el) {
 		return el.as_float();
+	}
+
+	_namespace.c_rt_lib.imm_to_int = function(el) {
+		return el.as_int();
 	}
 
 	var concat_counter = 0;

@@ -305,8 +305,8 @@ def print_bin_op(bin_op : @nlasm::bin_op, ref call_counter : ptd::int()) : ptd::
 	var result = print_register_to_assign(bin_op->dest);
 	if (bin_op->op eq '>=' || bin_op->op eq '<=' || bin_op->op eq '<' || bin_op->op eq '>' || bin_op->op eq '==' || 
 		bin_op->op eq '!=') {
-		var left = print_int_call_sim('c_rt_lib', 'imm_to_float', [bin_op->left]);
-		var right = print_int_call_sim('c_rt_lib', 'imm_to_float', [bin_op->right]);
+		var left = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->left]);
+		var right = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->right]);
 		return result . print_internal_call('c_rt_lib', 'native_to_nl', [:str(left . bin_op->op . right)], ref call_counter) . ';';
 	} elsif (bin_op->op eq 'eq' || bin_op->op eq 'ne') {
 		return result . print_int_call_sim('c_rt_lib', bin_op->op, [bin_op->left, bin_op->right]);
@@ -314,9 +314,9 @@ def print_bin_op(bin_op : @nlasm::bin_op, ref call_counter : ptd::int()) : ptd::
 		return result . print_internal_call('c_rt_lib', 'concat', [
 			:str(print_register(bin_op->left)), :str(print_register(bin_op->right))], ref call_counter) . ';';
 	} else {
-		var left = print_int_call_sim('c_rt_lib', 'imm_to_float', [bin_op->left]);
-		var right = print_int_call_sim('c_rt_lib', 'imm_to_float', [bin_op->right]);
-		return result . imm_call('float') . '(' . left . bin_op->op . right . ');';
+		var left = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->left]);
+		var right = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->right]);
+		return result . imm_call('int') . '(' . left . bin_op->op . right . ');';
 	}
 }
 
@@ -483,7 +483,7 @@ def print_una_op(una_op : @nlasm::una_op_t) : ptd::string() {
 	if (una_op->op eq '!') {
 		return result . print_int_call_sim('c_rt_lib', 'bool_not', [una_op->src]);
 	} else {
-		return result . imm_call('float') . '(' . una_op->op . 
-			print_int_call_sim('c_rt_lib', 'imm_to_float', [una_op->src]) . ');';
+		return result . imm_call('int') . '(' . una_op->op . 
+			print_int_call_sim('c_rt_lib', 'imm_to_int', [una_op->src]) . ');';
 	}
 }
