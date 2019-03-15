@@ -951,10 +951,10 @@ NlString* toStringIfSim(ImmT sim){
 		nl_die_internal("can not converted to string %s;", NAME(sim));
 	return NULL;
 }
-INT getIntFromImm(ImmT num){
-	if(IS_INT(num))
-		return ((NlInt *)num)->i;
-	nl_die_internal("expected int, got %s;", NAME(num));
+INT getIntFromImm(ImmT ___nl__num){
+	if(IS_INT(___nl__num))
+		return ((NlInt *)___nl__num)->i;
+	nl_die_internal("expected int, got %s;", NAME(___nl__num));
 	return 0;
 }
 FLOAT getFloatFromImm(ImmT num){
