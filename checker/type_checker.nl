@@ -2497,14 +2497,14 @@ def fill_fun_val_type(ref fun_val : @nast::value_t, vars : @tc_types::vars_t, mo
 			hash::set_value(ref anon_own_conv, name, type);
 		}
 	} else {
-		if (!check_function_exists(as_fun->module, as_fun->name, ref modules, ref errors)) {
+		if (check_function_exists(as_fun->module, as_fun->name, ref modules, ref errors)) {
+			var fun_def = get_function_def(as_fun->module, as_fun->name, modules);
+			fun_val->type = fun_def->ret_type;
+			rep var i (array::len(as_fun->args)) {
+				as_fun->args[i]->expected_type = fun_def->args[i]->type;
+			}
+		} else {
 			fun_val->type = :tct_im;
-			return;
-		}
-		var fun_def = get_function_def(as_fun->module, as_fun->name, modules);
-		fun_val->type = fun_def->ret_type;
-		rep var i (array::len(as_fun->args)) {
-			as_fun->args[i]->expected_type = fun_def->args[i]->type;
 		}
 	}
 
