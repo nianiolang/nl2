@@ -597,6 +597,7 @@ def print_cmd(cmd : @nast::cmd_t, ref state : @translator::state_t) {
 }
 
 def print_loop_break(ref state : @translator::state_t, info : @translator::loop) {
+	restore_registers(info->logic, ref state);
 	print(ref state, :goto(info->label));
 }
 
