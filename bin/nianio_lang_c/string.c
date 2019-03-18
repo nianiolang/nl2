@@ -324,16 +324,18 @@ ___nl__bool__13 = ___nl__int__15;
 #line 44
 ___nl__bool__13 = !___nl__bool__13;
 #line 44
-if(___nl__bool__13){ goto label_33;}
+if(___nl__bool__13){ goto label_35;}
+#line 44
+c_rt_lib0clear(&___nl__im__6);
+#line 44
+//clear ___nl__bool__13;
 #line 44
 goto label_67;
 #line 44
-goto label_33;
+goto label_35;
 #line 44
-label_33:
+label_35:
 ;
-#line 44
-//clear ___nl__bool__13;
 #line 45
 ___nl__int__17 = 0;
 #line 45
@@ -351,7 +353,7 @@ ___nl__bool__16 = ___nl__int__19;
 #line 45
 ___nl__bool__16 = !___nl__bool__16;
 #line 45
-if(___nl__bool__16){ goto label_51;}
+if(___nl__bool__16){ goto label_53;}
 #line 46
 ___nl__int__21 = ___nl__int__5 - ___nl__int__3;
 #line 46
@@ -363,11 +365,13 @@ c_rt_lib0delete(array0push(&___nl__im__2, ___nl__im__20));
 #line 46
 c_rt_lib0clear(&___nl__im__20);
 #line 47
+//clear ___nl__bool__16;
+#line 47
 goto label_67;
 #line 48
-goto label_63;
+goto label_65;
 #line 48
-label_51:
+label_53:
 ;
 #line 49
 ___nl__int__24 = getIntFromImm(___nl__im__6);
@@ -390,14 +394,10 @@ ___nl__int__3 = ___nl__int__25 + ___nl__int__4;
 #line 50
 //clear ___nl__int__25;
 #line 51
-goto label_63;
+goto label_65;
 #line 51
-label_63:
+label_65:
 ;
-#line 51
-//clear ___nl__bool__16;
-#line 51
-c_rt_lib0clear(&___nl__im__6);
 #line 41
 goto label_4;
 #line 41
@@ -414,8 +414,6 @@ c_rt_lib0clear(&___nl__im__1);
 #line 53
 //clear ___nl__int__5;
 #line 53
-c_rt_lib0clear(&___nl__im__6);
-#line 53
 return ___nl__im__2;
 #line 53
 c_rt_lib0clear(&___nl__im__0);
@@ -429,8 +427,6 @@ c_rt_lib0clear(&___nl__im__2);
 //clear ___nl__int__4;
 #line 53
 //clear ___nl__int__5;
-#line 53
-c_rt_lib0clear(&___nl__im__6);
 #line 53
 return NULL;
 return NULL;

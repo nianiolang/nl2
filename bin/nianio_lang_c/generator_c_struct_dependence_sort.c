@@ -1694,16 +1694,16 @@ ___nl__bool__2 = ___nl__int__6;
 #line 162
 ___nl__bool__2 = !___nl__bool__2;
 #line 162
-if(___nl__bool__2){ goto label_16;}
+if(___nl__bool__2){ goto label_17;}
+#line 163
+//clear ___nl__bool__2;
 #line 163
 goto label_43;
 #line 164
-goto label_16;
+goto label_17;
 #line 164
-label_16:
+label_17:
 ;
-#line 164
-//clear ___nl__bool__2;
 #line 165
 c_rt_lib0move(&___nl__im__8, c_rt_lib0array_get((*___ref___im__0), ___nl__int__1));
 #line 165

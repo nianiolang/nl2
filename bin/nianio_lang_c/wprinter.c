@@ -1955,7 +1955,7 @@ c_rt_lib0clear(&___nl__im__12);
 #line 197
 ___nl__bool__11 = !___nl__bool__11;
 #line 197
-if(___nl__bool__11){ goto label_26;}
+if(___nl__bool__11){ goto label_27;}
 #line 198
 c_rt_lib0move(&___nl__im__14, string0lf());
 #line 198
@@ -1977,14 +1977,14 @@ ___nl__int__3 = ___nl__int__2 * ___nl__int__16;
 #line 199
 //clear ___nl__int__16;
 #line 200
+//clear ___nl__bool__11;
+#line 200
 goto label_30;
 #line 201
-goto label_26;
+goto label_27;
 #line 201
-label_26:
+label_27:
 ;
-#line 201
-//clear ___nl__bool__11;
 #line 202
 ___nl__int__3 = wprinter_priv0print_t_rec(___ref___im__0, ___nl__im__4, ___nl__int__3, ___nl__int__2);
 #line 202
