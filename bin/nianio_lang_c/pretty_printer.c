@@ -2889,7 +2889,7 @@ c_rt_lib0clear(&___nl__im__7);
 #line 227
 ___nl__bool__6 = !___nl__bool__6;
 #line 227
-if(___nl__bool__6){ goto label_40;}
+if(___nl__bool__6){ goto label_41;}
 #line 228
 c_rt_lib0move(&___nl__im__9, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_string_const(219)));
 #line 228
@@ -2939,12 +2939,14 @@ c_rt_lib0clear(&___nl__im__8);
 #line 233
 //clear ___nl__bool__13;
 #line 233
-goto label_69;
+goto label_78;
 #line 234
 goto label_35;
 #line 234
 label_35:
 ;
+#line 234
+//clear ___nl__bool__13;
 #line 235
 ___nl__int__17 = 0;
 #line 235
@@ -2952,9 +2954,9 @@ c_rt_lib0move(&___nl__im__0, c_rt_lib0array_get(___nl__im__8, ___nl__int__17));
 #line 235
 //clear ___nl__int__17;
 #line 236
-goto label_67;
+goto label_73;
 #line 236
-label_40:
+label_41:
 ;
 #line 236
 c_rt_lib0move(&___nl__im__18, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_string_const(219)));
@@ -2965,7 +2967,7 @@ c_rt_lib0clear(&___nl__im__18);
 #line 236
 ___nl__bool__6 = !___nl__bool__6;
 #line 236
-if(___nl__bool__6){ goto label_61;}
+if(___nl__bool__6){ goto label_64;}
 #line 237
 c_rt_lib0move(&___nl__im__20, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_string_const(219)));
 #line 237
@@ -2991,13 +2993,17 @@ c_rt_lib0clear(&___nl__im__23);
 #line 240
 c_rt_lib0move(&___nl__im__3, pretty_printer_priv0join_print_hash_elem(___nl__im__19));
 #line 241
+//clear ___nl__bool__6;
+#line 241
+c_rt_lib0clear(&___nl__im__8);
+#line 241
 c_rt_lib0clear(&___nl__im__19);
 #line 241
-goto label_69;
+goto label_78;
 #line 242
-goto label_67;
+goto label_73;
 #line 242
-label_61:
+label_64:
 ;
 #line 243
 c_rt_lib0move(&___nl__im__24, pretty_printer_priv0print_val(___nl__im__0));
@@ -3006,16 +3012,28 @@ c_rt_lib0move(&___nl__im__3, c_rt_lib0array_mk(1, ___nl__im__24));
 #line 243
 c_rt_lib0clear(&___nl__im__24);
 #line 244
-goto label_69;
+//clear ___nl__bool__6;
+#line 244
+c_rt_lib0clear(&___nl__im__8);
+#line 244
+c_rt_lib0clear(&___nl__im__19);
+#line 244
+goto label_78;
 #line 245
-goto label_67;
+goto label_73;
 #line 245
-label_67:
+label_73:
 ;
+#line 245
+//clear ___nl__bool__6;
+#line 245
+c_rt_lib0clear(&___nl__im__8);
+#line 245
+c_rt_lib0clear(&___nl__im__19);
 #line 226
 goto label_3;
 #line 226
-label_69:
+label_78:
 ;
 #line 247
 c_rt_lib0move(&___nl__im__25, wprinter0build_pretty_arr_decl(___nl__im__3, ___nl__im__4, ___nl__im__5));

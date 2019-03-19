@@ -1941,7 +1941,7 @@ ___nl__int__9 = ___nl__int__5 >= ___nl__int__7;
 #line 196
 ___nl__bool__8 = ___nl__int__9;
 #line 196
-if(___nl__bool__8){ goto label_33;}
+if(___nl__bool__8){ goto label_34;}
 #line 196
 c_rt_lib0move(&___nl__im__10, c_rt_lib0array_get(___nl__im__1, ___nl__int__5));
 #line 196
@@ -1979,25 +1979,27 @@ ___nl__int__3 = ___nl__int__2 * ___nl__int__16;
 #line 200
 //clear ___nl__bool__11;
 #line 200
-goto label_30;
+goto label_31;
 #line 201
 goto label_27;
 #line 201
 label_27:
 ;
+#line 201
+//clear ___nl__bool__11;
 #line 202
 ___nl__int__3 = wprinter_priv0print_t_rec(___ref___im__0, ___nl__im__4, ___nl__int__3, ___nl__int__2);
 #line 202
 c_rt_lib0clear(&___nl__im__4);
 #line 202
-label_30:
+label_31:
 ;
 #line 203
 ___nl__int__5 = ___nl__int__5 + ___nl__int__6;
 #line 203
 goto label_3;
 #line 203
-label_33:
+label_34:
 ;
 #line 204
 c_rt_lib0clear(&___nl__im__1);
