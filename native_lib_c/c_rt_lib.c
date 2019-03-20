@@ -33,7 +33,6 @@
 #define ___TYPE_ARR 4
 #define ___TYPE_OV_NONE 5
 #define ___TYPE_OV 6
-#define ___TYPE_FLOAT 7
 #define ___TYPE_FUNC 8
 #define ___TYPE_HASH 9
 
@@ -43,7 +42,6 @@ int IS_ARRHASH(ImmT x) 	{return ((NlData*)x)->type == ___TYPE_ARRHASH;}
 int IS_ARR(ImmT x) 		{return ((NlData*)x)->type == ___TYPE_ARR;}
 int IS_OV_NONE(ImmT x) 	{return ((NlData*)x)->type == ___TYPE_OV_NONE;}
 int IS_OV(ImmT x) 		{return ((NlData*)x)->type == ___TYPE_OV;}
-int IS_FLOAT(ImmT x)	{return ((NlData*)x)->type == ___TYPE_FLOAT;}
 int IS_FUNC(ImmT x) 	{return ((NlData*)x)->type == ___TYPE_FUNC;}
 int IS_HASH(ImmT x) 	{return ((NlData*)x)->type == ___TYPE_HASH;}
 
@@ -148,8 +146,6 @@ void c_rt_lib0init(int catch_signals) {
 
 void c_rt_lib0init_advanced(int catch_signals, char * (*die_f)(), char * (*logs_f)()) {
 	_global_const_offset_ = sizeof(NlInt);
-	if (sizeof(NlFloat) > _global_const_offset_)
-		_global_const_offset_ = sizeof(NlFloat);
 	if (sizeof(NlString) > _global_const_offset_)
 		_global_const_offset_ = sizeof(NlString);
 	_false = c_rt_lib0ov_mk_none(c_rt_lib0string_new("FALSE"));
@@ -201,7 +197,6 @@ const char* type_name(char a){
 		case ___TYPE_ARR: return "array";
 		case ___TYPE_OV_NONE: return "ov_none";
 		case ___TYPE_OV: return "ov";
-		case ___TYPE_FLOAT: return "float";
 		case ___TYPE_FUNC: return "func";
 		case ___TYPE_HASH: return "hash";
 		default: return "unknown";
@@ -300,20 +295,13 @@ int eq_int_string(NlInt* a, NlString* b){
 	l+=i>=10;
 	return l+1==len;
 }
-void sPrintFloat(char* tab, FLOAT f){
+void sPrintFloat(char* tab, double f){
 	int i;
 	sprintf(tab, "%.10f", f);
 	for(i=0; tab[i] != '\0'; ++i);
 	for(--i; tab[i] == '0'; --i);
 	if(tab[i] == '.') --i;
 	tab[i+1] = '\0';
-}
-int eq_float_string(NlFloat* a, NlString* b){
-	char tab[FTABS];
-	if(b->length>FTABS) return 0;
-	sPrintFloat(tab, a->f);
-	if(b->length != (int)strlen(tab)) return 0;
-	return strncmp(b->s, tab, b->length);
 }
 
 int compare_bytes(const void* left, int size_left, const void* right, int size_right){
@@ -344,28 +332,12 @@ int nl_compare_internal(ImmT left, ImmT right) {
 		return left == right;
 	}
 	if (((NlData *)left)->type != ((NlData *)right)->type) {
-		if(IS_INT(left) && IS_STRING(right))
-			return eq_int_string((NlInt *)left, (NlString *)right);
-		if(IS_INT(right) && IS_STRING(left))
-			return eq_int_string((NlInt *)right, (NlString *)left);
-			
-		if(IS_INT(right) && IS_FLOAT(left))
-			return ((NlInt *)right)->i == ((NlFloat *)left)->f;
-		if(IS_INT(left) && IS_FLOAT(right))
-			return ((NlInt *)left)->i == ((NlFloat *)right)->f;
-			
-		if(IS_FLOAT(left) && IS_STRING(right))
-			return eq_float_string((NlFloat *)left, (NlString *)right);
-		if(IS_FLOAT(right) && IS_STRING(left))
-			return eq_float_string((NlFloat *)right, (NlString *)left);
-		return 0;
+		nl_die();
 	}
 	if (((NlData *)left)->type == ___TYPE_STRING) {
 		return compare_strings((NlString *)left, (NlString *)right) == 0;
 	} else if (((NlData *)left)->type == ___TYPE_INT) {
 		return (((NlInt *)left)->i == ((NlInt *)right)->i);
-	} else if (((NlData *)left)->type == ___TYPE_FLOAT) {
-		return (((NlFloat *)left)->f == ((NlFloat *)right)->f);
 	} else {
 		return left == right;
 	}
@@ -657,6 +629,7 @@ ImmT c_rt_lib0hash_set_value_dec(ImmT *___ref___hashI, ImmT ___nl__keyI, ImmT __
 }
 ImmT c_rt_lib0hash_set_value(ImmT *___ref___hashI, ImmT ___nl__keyI, ImmT ___nl__val) {
 	ImmT hash = *___ref___hashI;
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("string expected %s", NAME(___nl__keyI));
 	if(IS_ARRHASH(hash) && ((NlArrHash *)hash)->size == MAX_ARR_HASH_SIZE){
 		hash = arr_hash_to_hash(hash);
 		dec_ref(*___ref___hashI);
@@ -936,10 +909,6 @@ NlString* toStringIfSim(ImmT sim){
 		char tab[ITABS];
 		sprintf(tab,"%lld",((NlInt *)sim)->i);
 		return (NlString*)c_rt_lib0string_new(tab);
-	} else if(IS_FLOAT(sim)){
-		char tab[FTABS];
-		sPrintFloat(tab, ((NlFloat *)sim)->f);
-		return (NlString*)c_rt_lib0string_new(tab);
 	} else if(IS_STRING(sim)){
 		inc_ref(sim);
 		return (NlString*)sim;
@@ -957,16 +926,10 @@ INT getIntFromImm(ImmT ___nl__num){
 	nl_die_internal("expected int, got %s;", NAME(___nl__num));
 	return 0;
 }
-FLOAT getFloatFromImm(ImmT num){
-	if(IS_INT(num))
-		return ((NlInt *)num)->i;
-	else if(IS_FLOAT(num))
-		return ((NlFloat *)num)->f;
-	else if(IS_STRING(num))
-		return atof(((NlString*)num)->s);
-	else
+double getFloatFromString(ImmT num){
+	if(!IS_STRING(num))
 		nl_die_internal("can not converted to float %s;", NAME(num));
-	return 0;
+	return atof(((NlString*)num)->s);
 }
 
 ImmT concat_new_string(NlString *ls, NlString *rs) {
@@ -1117,21 +1080,8 @@ void c_rt_lib0int_new_to_memory(INT i, ImmT memory) {
 	ret->i = i;
 }
 
-ImmT c_rt_lib0float_new(FLOAT f) {
-	NlFloat *ret = (NlFloat *)alloc_mem(sizeof(NlFloat));
-	nl_data_init(ret, ___TYPE_FLOAT);
-	ret->f = f;
-	return ret;
-}
-
-void c_rt_lib0float_new_to_memory(FLOAT f, ImmT memory) {
-	NlFloat *ret = (NlFloat *)memory;
-	nl_data_init(ret, ___TYPE_FLOAT);
-	ret->f = f;
-}
-
 ImmT c_rt_lib0float_round(ImmT f) {
-	FLOAT number = getFloatFromImm(f);
+	double number = getFloatFromString(f);
 	number = round(number);
 	if (number == 0) number = 0;
 	char number_str[20];
@@ -1141,7 +1091,7 @@ ImmT c_rt_lib0float_round(ImmT f) {
 
 ImmT c_rt_lib0float_fixed_str(ImmT f) {
 	char tab[FTABS];
-	sPrintFloat(tab, getFloatFromImm(f));
+	sPrintFloat(tab, getFloatFromString(f));
 	return (NlString*)c_rt_lib0string_new(tab);
 }
 
@@ -1203,7 +1153,7 @@ bool c_rt_lib0is_hash(ImmT ___nl__imm) {
 }
 bool c_rt_lib0is_sim(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;
-	if (IS_STRING(d) || IS_INT(d) || IS_FLOAT(d) || IS_FUNC(d))
+	if (IS_STRING(d) || IS_INT(d) || IS_FUNC(d))
 		return true;
 	return false;
 }
@@ -1419,10 +1369,6 @@ ImmT c_rt_lib0print(ImmT ___nl__arg) {
 		fwrite(((NlString *)___nl__arg)->s, sizeof(char), ((NlString *)___nl__arg)->length, stdout);
 	} else if (IS_INT(d)) {
 		printf("%lld", ((NlInt *)___nl__arg)->i);
-	} else if (IS_FLOAT(d)) {
-		char tab[FTABS];
-		sPrintFloat(tab, ((NlFloat *)___nl__arg)->f);
-		printf("%s", tab);
 	} else if (IS_FUNC(d)) {
 		printf("%s", ((NlFunction*)___nl__arg)->name->s);
 	} else {
@@ -1467,7 +1413,7 @@ char* sprint_debug(ImmT val, BUFFER *buf, int deep){
 		return buf->str;
 	}
 	bprintf(buf, 0, NAME(val));
-	if(deep==0 && !(IS_STRING(val) || IS_INT(val) || IS_FLOAT(val) || IS_FUNC(val))){
+	if(deep==0 && !(IS_STRING(val) || IS_INT(val) || IS_FUNC(val))){
 		return buf->str;
 	}
 	--deep;
@@ -1515,8 +1461,6 @@ char* sprint_debug(ImmT val, BUFFER *buf, int deep){
 		bprintf(buf, 0, "); ");
 	} else if (type == ___TYPE_INT) {
 		bprintf(buf, 20, " %lld; ", ((NlInt *)val)->i);
-	} else if (type == ___TYPE_FLOAT) {
-		bprintf(buf, 20, " %f; ", ((NlFloat *)val)->f);
 	} else if (type == ___TYPE_FUNC) {
 		NlFunction *f = (NlFunction *)val;
 		bprintf(buf, f->name->length + f->module->length, " \"%s::%s\"; ", f->name->s, f->module->s);
@@ -1611,8 +1555,6 @@ void dec_ref_adv(ImmT dI, int with_struct) {
 			if(with_struct) free_mem(dI, sizeof(NlArray));
 		} else if (type == ___TYPE_INT) {
 			if(with_struct) free_mem(dI, sizeof(NlInt));
-		} else if (type == ___TYPE_FLOAT) {
-			if(with_struct) free_mem(dI, sizeof(NlFloat));
 		} else if (type == ___TYPE_STRING) {
 			free_mem(((NlString *)d)->s, ((NlString*)dI)->capacity);
 			if(with_struct) free_mem(dI, sizeof(NlString));
@@ -1709,31 +1651,31 @@ void gdb_die(const char *msg){
 
 ImmT c_rt_lib0str_float_add(ImmT lhs, ImmT rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromImm(lhs) + getFloatFromImm(rhs));
+	sPrintFloat(res_str, getFloatFromString(lhs) + getFloatFromString(rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_mul(ImmT lhs, ImmT rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromImm(lhs) * getFloatFromImm(rhs));
+	sPrintFloat(res_str, getFloatFromString(lhs) * getFloatFromString(rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_sub(ImmT lhs, ImmT rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromImm(lhs) - getFloatFromImm(rhs));
+	sPrintFloat(res_str, getFloatFromString(lhs) - getFloatFromString(rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_div(ImmT lhs, ImmT rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromImm(lhs) / getFloatFromImm(rhs));
+	sPrintFloat(res_str, getFloatFromString(lhs) / getFloatFromString(rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_mod(ImmT lhs, ImmT rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, fmod(getFloatFromImm(lhs), getFloatFromImm(rhs)));
+	sPrintFloat(res_str, fmod(getFloatFromString(lhs), getFloatFromString(rhs)));
 	return c_rt_lib0string_new(res_str);
 }
 

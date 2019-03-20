@@ -142,8 +142,6 @@ var instadb;
 				arr.push(_namespace.imm_deep(value[i]));
 			}
 			return _namespace.imm_arr(arr);
-		} else if (+value == value) {
-			return _namespace.imm_float(value);
 		} else if (value instanceof Object) {
 			var keys = {};
 			for (var key in value) {
@@ -391,14 +389,6 @@ var instadb;
 
 	_namespace.imm_int_p.prototype.as_byte_string = function() {
 		return this.v.toString();
-	}
-
-	_namespace.imm_float = function(v) {
-		if (v === (v|0)) {
-			return _namespace.imm_int(v);
-		} else {
-			return _namespace.imm_str(v.toString());
-		}
 	}
 
 	function hash_copy(hash) {

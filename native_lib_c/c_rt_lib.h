@@ -8,7 +8,6 @@
 #include </usr/include/stdio.h>
 #include <stdbool.h>
 
-typedef double FLOAT;
 typedef long long INT;
 typedef void * ImmT;
 
@@ -74,11 +73,6 @@ typedef struct {
 	INT i;
 } NlInt;
 
-typedef struct {
-	NlData d;
-	FLOAT f;
-} NlFloat;
-
 void c_rt_lib0init();
 void c_rt_lib0init_advanced(int catch_signals, char * (*die_f)(), char * (*logs_f)());
 void c_rt_lib0register_const(ImmT *,int);
@@ -141,9 +135,7 @@ ImmT c_rt_lib0int_new(INT i);
 void c_rt_lib0int_new_to_memory(INT i, ImmT memory);
 
 //float
-FLOAT getFloatFromImm(ImmT num);
-ImmT c_rt_lib0float_new(FLOAT f);
-void c_rt_lib0float_new_to_memory(FLOAT f, ImmT memory);
+double getFloatFromString(ImmT num);
 ImmT c_rt_lib0float_round(ImmT f);
 ImmT c_rt_lib0float_fixed_str(ImmT f);
 //string
