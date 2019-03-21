@@ -1083,8 +1083,7 @@ def print_move(ref state : @generator_c::state_t, src : @nlasm::reg_t, dest : @n
 			print(ref state, get_reg_value(ref state, dest) . ' = ' . get_reg_value(ref state, src));
 		}
 	} case :string {
-		var arg = [get_reg_ref(ref state, dest), get_reg_value(ref state, src)];
-		print(ref state, get_fun_lib('copy', arg));
+		print_move_to_string(ref state, src, dest);
 	} case :bool {
 		if(src->type is :im) {
 			print(ref state, get_reg_value(ref state, dest) . ' = c_rt_lib0check_true_native(' . get_reg_value(ref state, src) . ')');
@@ -1123,6 +1122,29 @@ def print_move_to_im(ref state : @generator_c::state_t, src : @nlasm::reg_t, des
 	} case :string {
 		var arg = [get_reg_ref(ref state, dest), get_im_from_reg(ref state, src)];
 		print(ref state, get_fun_lib('copy', arg));
+	} case :rec(var type) {
+		die;
+	} case :arr(var type) {
+		die;
+	} case :variant(var type) {
+		die;
+	} case :hash(var type) {
+		die;
+	}
+}
+
+def print_move_to_string(ref state : @generator_c::state_t, src : @nlasm::reg_t, dest : @nlasm::reg_t) {
+	match (src->type) case :im {
+		var arg = [get_reg_ref(ref state, dest), get_im_from_reg(ref state, src)];
+		print(ref state, get_fun_lib('copy', arg));
+	} case :int {
+		var arg = [get_reg_ref(ref state, dest), get_fun_lib('int_to_string', [get_reg_value(ref state, src)])];
+		print(ref state, get_fun_lib('move', arg));
+	} case :bool {
+		die;
+	} case :string {
+		var arg = [get_reg_ref(ref state, dest), get_im_from_reg(ref state, src)];
+		print(ref state, get_fun_lib('move', arg));
 	} case :rec(var type) {
 		die;
 	} case :arr(var type) {

@@ -1798,6 +1798,19 @@ def get_type_from_bin_op_and_check(bin_op : @nast::bin_op_t, ref modules : @tc_t
 			return ret_type;
 		}
 	}
+	if (op eq '.') {
+		if (!ptd_system::is_accepted(left_type2, tct::string(), ref modules, ref errors) &&
+			!ptd_system::is_accepted(left_type2, tct::int(), ref modules, ref errors)) {
+				add_error(ref errors, 'incorrect type of the first argument operator '' . '': ' .
+					get_print_tct_type_name(left_type2->type));
+			}
+		if (!ptd_system::is_accepted(right_type, tct::string(), ref modules, ref errors) &&
+			!ptd_system::is_accepted(right_type, tct::int(), ref modules, ref errors)) {
+				add_error(ref errors, 'incorrect type of the first argument operator '' . '': ' .
+					get_print_tct_type_name(left_type2->type));
+			}
+		return {type => tct::string(), src => :speculation};
+	}
 	var op_def2 = tc_types::get_bin_op_def(op);
 	if (!ptd_system::is_accepted(left_type2, op_def2->arg1, ref modules, ref errors)) {
 		add_error(ref errors, 'incorrect type of the first argument operator ''' . op . ''': ' .
