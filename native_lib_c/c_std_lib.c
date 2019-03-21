@@ -12,12 +12,14 @@ static ImmT global_profile[1] = {NULL};
 ImmT c_std_lib0print(ImmT ___nl__el) {
 	return c_rt_lib0print(___nl__el);
 }
+
 ImmT c_std_lib0set_profile_global(ImmT ___nl__el) {
 	if(global_profile[0] == NULL)
 		c_rt_lib0register_const(global_profile, 1);
 	c_rt_lib0copy(&global_profile[0], ___nl__el);
 	return NULL;
 }
+
 ImmT c_std_lib0get_profile_global() {
 	if(global_profile[0] == NULL){
 		c_rt_lib0register_const(global_profile, 1);
@@ -61,6 +63,7 @@ ImmT c_std_lib0array_push(ImmT *___ref___arr, ImmT ___nl__el) {
 INT c_std_lib0array_len(ImmT ___nl__arr) {
 	return c_rt_lib0array_len(___nl__arr);
 }
+
 ImmT c_std_lib0array_pop(ImmT *___ref___arr){
 	return c_rt_lib0array_pop(___ref___arr);
 }
@@ -98,6 +101,7 @@ ImmT c_std_lib0string_ord(ImmT ___nl__c) {
 ImmT c_std_lib0string_length(ImmT ___nl__s) {
 	return c_rt_lib0string_length(___nl__s);
 }
+
 int *compute_prefix_function(const char *pattern, int psize){
 	int k = -1;
 	int i = 1;
@@ -115,6 +119,7 @@ int *compute_prefix_function(const char *pattern, int psize){
 	}
 	return pi;
 }
+
 int kmp_index(char *str, int l_s, char *fin, int l_f, int start){
 	int i, k = -1;
 	int *pi = compute_prefix_function(fin, l_f);
@@ -129,6 +134,7 @@ int kmp_index(char *str, int l_s, char *fin, int l_f, int start){
 	free_mem(pi, sizeof(int)*(l_f+1));
 	return -1;
 }
+
 int kmp_replace(char *str, int l_s, const char *old, int l_o, const char *_new, int l_n, char **_out, int *s_out){
 	int i,j,l_d, k = -1, d=0, count=0;
 	int *pi = compute_prefix_function(old, l_o);
@@ -207,6 +213,7 @@ ImmT c_std_lib0string_sub(ImmT ___nl__strg, ImmT ___nl__start, ImmT ___nl__lengt
 	c_rt_lib0clear((void**)&str);
 	return c_rt_lib0string_new_alloc(_out, len, len+1);
 }
+
 ImmT c_std_lib0string_get_char_code(ImmT ___nl__strI, ImmT ___nl__position) {
 	NlString *str = toStringIfSim(___nl__strI);
 	INT pos = getIntFromImm(___nl__position);
@@ -401,13 +408,13 @@ ImmT c_std_lib0string_decode_utf16(ImmT ___nl__str, ImmT ___nl__a) {
 	return c_rt_lib0ov_arg_new(c_rt_lib0string_new("ok"), c_rt_lib0string_new_alloc((char*)utf8, set, size));
 }
 
-ImmT c_std_lib0int_to_string(INT n) {
-	return c_rt_lib0int_to_string(n);
+ImmT c_std_lib0int_to_string(INT ___nl__int__n) {
+	return c_rt_lib0int_to_string(___nl__int__n);
 }
 
-ImmT c_std_lib0try_string_to_int(ImmT num) {
+ImmT c_std_lib0try_string_to_int(ImmT ___nl__num) {
 	char *end;
-	char *s = ((NlString*)num)->s;
+	char *s = ((NlString*)___nl__num)->s;
 	INT res = strtoll(s, &end, 10);
 	if (*end != '\0' || *s == '\0') {
 		return c_rt_lib0ov_mk_arg_dec(c_rt_lib0string_new("err"), c_rt_lib0string_new("Invalid number"));

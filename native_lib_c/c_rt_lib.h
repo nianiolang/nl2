@@ -75,7 +75,7 @@ typedef struct {
 
 void c_rt_lib0init();
 void c_rt_lib0init_advanced(int catch_signals, char * (*die_f)(), char * (*logs_f)());
-void c_rt_lib0register_const(ImmT *,int);
+void c_rt_lib0register_const(ImmT *,INT);
 void c_rt_lib0register_global_int_const(ImmT begin, ImmT end);
 void c_rt_lib0register_global_string_const(ImmT begin, ImmT end);
 void c_rt_lib0finish();
