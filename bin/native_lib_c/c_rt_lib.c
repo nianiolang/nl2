@@ -298,6 +298,9 @@ int compare_strings(NlString* ___nl__left, NlString* ___nl__right){
 }
 
 int nl_compare_internal(ImmT ___nl__left, ImmT ___nl__right) {
+	if (((NlData *)___nl__left)->type != ((NlData *)___nl__right)->type) {
+		nl_die();
+	}
 	if (_global_const_int_begin_ != NULL
 			&& ___nl__left >= _global_const_int_begin_
 			&& ___nl__left < _global_const_int_end_
@@ -311,9 +314,6 @@ int nl_compare_internal(ImmT ___nl__left, ImmT ___nl__right) {
 			&& ___nl__right >= _global_const_string_begin_
 			&& ___nl__right < _global_const_string_end_) {
 		return ___nl__left == ___nl__right;
-	}
-	if (((NlData *)___nl__left)->type != ((NlData *)___nl__right)->type) {
-		nl_die();
 	}
 	if (((NlData *)___nl__left)->type == ___TYPE_STRING) {
 		return compare_strings((NlString *)___nl__left, (NlString *)___nl__right) == 0;
@@ -591,6 +591,7 @@ ImmT arr_hash_to_hash(ImmT ___nl__hashI) {
 
 ImmT c_rt_lib0hash_delete(ImmT *___ref___hashI, ImmT ___nl__keyI) {
 	ImmT hash = priv_hash_to_change(___ref___hashI);
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	if(IS_ARRHASH(hash))	del_from_arr_hash((NlArrHash*) hash, ___nl__keyI);
 	else if(IS_HASH(hash))	del_from_hash((NlHash*) hash, ___nl__keyI);
 	else	nl_die_internal("Hash expected %s;", NAME(hash));
@@ -599,6 +600,7 @@ ImmT c_rt_lib0hash_delete(ImmT *___ref___hashI, ImmT ___nl__keyI) {
 
 bool c_rt_lib0hash_has_key(ImmT ___nl__hashI, ImmT ___nl__keyI) {
 	ImmT ret = NULL;
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	if(IS_ARRHASH(___nl__hashI))	ret = get_from_arr_hash((NlArrHash*) ___nl__hashI, ___nl__keyI);
 	else if(IS_HASH(___nl__hashI))	ret = get_from_hash((NlHash*) ___nl__hashI, ___nl__keyI);
 	else	nl_die_internal("Hash expected %s;", NAME(___nl__hashI));
@@ -607,6 +609,7 @@ bool c_rt_lib0hash_has_key(ImmT ___nl__hashI, ImmT ___nl__keyI) {
 
 ImmT c_rt_lib0hash_get_value(ImmT ___nl__hashI, ImmT ___nl__keyI) {
 	ImmT ret = NULL;
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	if(IS_ARRHASH(___nl__hashI))	ret = get_from_arr_hash((NlArrHash*) ___nl__hashI, ___nl__keyI);
 	else if(IS_HASH(___nl__hashI))	ret = get_from_hash((NlHash*) ___nl__hashI, ___nl__keyI);
 	else	nl_die_internal("Hash expected %s;", NAME(___nl__hashI));
@@ -618,12 +621,14 @@ ImmT c_rt_lib0hash_get_value(ImmT ___nl__hashI, ImmT ___nl__keyI) {
 }
 
 ImmT c_rt_lib0hash_get_value_dec(ImmT ___nl__hashI, ImmT ___nl__keyI) {
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	ImmT ret = c_rt_lib0hash_get_value(___nl__hashI, ___nl__keyI);
 	dec_ref(___nl__keyI);
 	return ret;
 }
 
 ImmT c_rt_lib0hash_set_value_dec(ImmT *___ref___hashI, ImmT ___nl__keyI, ImmT ___nl__val) {
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	c_rt_lib0hash_set_value(___ref___hashI, ___nl__keyI, ___nl__val);
 	dec_ref(___nl__keyI);
 	return NULL;
@@ -631,7 +636,7 @@ ImmT c_rt_lib0hash_set_value_dec(ImmT *___ref___hashI, ImmT ___nl__keyI, ImmT __
 
 ImmT c_rt_lib0hash_set_value(ImmT *___ref___hashI, ImmT ___nl__keyI, ImmT ___nl__val) {
 	ImmT hash = *___ref___hashI;
-	if (!IS_STRING(___nl__keyI)) nl_die_internal("string expected %s", NAME(___nl__keyI));
+	if (!IS_STRING(___nl__keyI)) nl_die_internal("String expected %s;", NAME(___nl__keyI));
 	if(IS_ARRHASH(hash) && ((NlArrHash *)hash)->size == MAX_ARR_HASH_SIZE){
 		hash = arr_hash_to_hash(hash);
 		dec_ref(*___ref___hashI);
@@ -1202,6 +1207,8 @@ bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 }
 
 bool c_rt_lib0eq(ImmT ___nl__left, ImmT ___nl__right) {
+	if (!IS_STRING(___nl__left)) nl_die_internal("String expected %s;", NAME(___nl__left));
+	if (!IS_STRING(___nl__right)) nl_die_internal("String expected %s;", NAME(___nl__right));
 	NlString *ls = toStringIfSim(___nl__left);
 	NlString *rs = toStringIfSim(___nl__right);
 	bool ret = nl_compare_internal(ls, rs);
