@@ -1207,8 +1207,8 @@ bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 }
 
 bool c_rt_lib0eq(ImmT ___nl__left, ImmT ___nl__right) {
-	if (!IS_STRING(___nl__left)) nl_die_internal("String expected %s;", NAME(___nl__left));
-	if (!IS_STRING(___nl__right)) nl_die_internal("String expected %s;", NAME(___nl__right));
+	if (!IS_STRING(___nl__left) && !IS_FUNC(___nl__left)) nl_die_internal("String expected %s;", NAME(___nl__left));
+	if (!IS_STRING(___nl__right) && !IS_FUNC(___nl__right)) nl_die_internal("String expected %s;", NAME(___nl__right));
 	NlString *ls = toStringIfSim(___nl__left);
 	NlString *rs = toStringIfSim(___nl__right);
 	bool ret = nl_compare_internal(ls, rs);
