@@ -1145,7 +1145,7 @@ def handle_ptd_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args :
 			return :err('incorrect type');
 		}
 	} elsif (key eq 'ptd::int_to_string') {
-		ret_val = args[0];
+		ret_val = ptd::int_to_string(args[0]);
 	} else {
 		return error_message;
 	}
