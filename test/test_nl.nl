@@ -5,6 +5,7 @@
 
 use test_forh;
 use test_hash_oper;
+use test_hash_decl;
 use test_mod;
 use test_op;
 use test_pub;
@@ -50,6 +51,8 @@ def test_nl::test() {
 	test_forh::test();
 	p('test_hash_oper');
 	test_hash_oper::test();
+	p('test_hash_decl');
+	test_hash_decl::test();
 	p('ensure');
 	test_ensure::test();
 	p('type');

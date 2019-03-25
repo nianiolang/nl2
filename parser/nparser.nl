@@ -239,8 +239,12 @@ def parse_label(ref state : @nparser::state_t) : ptd::var({
 
 def parse_hash_key(ref state : @nparser::state_t) : @nast::value_t {
 	var begin_place = ntokenizer::get_place(ref state->state);
-	var ret = :hash_key(ntokenizer::is_text(ref state->state) ?
-		ntokenizer::eat_text(ref state->state) : '');
+	var ret = :hash_key('');
+	if (ntokenizer::is_text(ref state->state)) {
+		ret = :hash_key(ntokenizer::eat_text(ref state->state));
+	} elsif (ntokenizer::is_type(ref state->state, :string)) {
+		ret = :hash_key(ntokenizer::eat_type(ref state->state, :string));
+	}
 	return {
 		debug => {begin => begin_place, end => ntokenizer::get_place(ref state->state)},
 		value => ret,

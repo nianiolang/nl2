@@ -911,9 +911,7 @@ def check_fun_val(fun_val : @nast::fun_val_t, ref modules : @tc_types::modules_t
 		fun_def = get_function_def(fun_val->module, fun_val->name, modules);
 	}
 	if (array::len(fun_val->args) != array::len(fun_def->args)) {
-		add_error(ref errors, 'wrong number ' .
-			ptd::int_to_string(array::len(fun_val->args)) .
-			' of function arguments : ' . 
+		add_error(ref errors, 'wrong number ' . array::len(fun_val->args) . ' of function arguments : ' . 
 			get_function_name(fun_val->module, fun_val->name));
 		return ret;
 	}
