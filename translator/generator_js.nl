@@ -6,7 +6,6 @@
 use array;
 use nl;
 use string;
-use boolean_t;
 use ov;
 use nlasm;
 use ptd;
@@ -77,7 +76,7 @@ def print_str_imm(string : ptd::string(), ref consts) : ptd::string() {
 	return print_const_value_aggr(string, ref consts);
 }
 
-def is_singleton_use_function(function : @nlasm::function_t) : @boolean_t::type {
+def is_singleton_use_function(function : @nlasm::function_t) : ptd::bool() {
 	return false if (array::len(function->args_type) > 0);
 	return true if function->annotation is :math;
 	var was_singleton = false;
