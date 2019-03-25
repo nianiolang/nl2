@@ -147,7 +147,6 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 			}
 			ret .= string::lf();
 			++i;
-			i = ptd::int_to_string(i);
 		}
 		ret .= 'var ret = ' . get_function_call_name(function, module_name) . '(' . call . ')' . string::lf();
 		ret .= after;
