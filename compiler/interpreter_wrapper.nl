@@ -162,8 +162,7 @@ def construct_error_message(error : @compiler_lib::error_t, path_dict) : ptd::st
 		? hash::get_value(path_dict, error->module)->src
 		: error->module)
 			unless (string::length(error->module) == 0);
-	msg .= ' line: ' . ptd::int_to_string(error->line)
-			unless (error->line == -1);
+	msg .= ' line: ' . error->line unless (error->line == -1);
 	msg .= string::lf() . '     ' . error->message;
 	return msg;
 }
@@ -184,8 +183,7 @@ def show_and_count_errors(all_errors : @interpreter_wrapper::errors_group_t, nia
 		}
 		num_errors += array::len(module_errors);
 	}
-	c_fe_lib::print('ERR: ' . ptd::int_to_string(num_errors) .
-		' WAR: ' . ptd::int_to_string(num_warnings));
+	c_fe_lib::print('ERR: ' . num_errors . ' WAR: ' . num_warnings);
 	return num_errors;
 }
 

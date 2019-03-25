@@ -216,8 +216,8 @@ def ntokenizer::eat_text(ref state : @ntokenizer::state_t) : ptd::string() {
 
 def ntokenizer::info(ref state : @ntokenizer::state_t) : ptd::string() {
 	return 'token: ''' . state->next_token . '''
-		'line:  ' . ptd::int_to_string(state->ln_nr) . '
-		'pos:   ' . ptd::int_to_string(1 + state->pos - state->ln_pos - string::length(state->next_token)) . '
+		'line:  ' . state->ln_nr . '
+		'pos:   ' . (1 + state->pos - state->ln_pos - string::length(state->next_token)) . '
 		'type: ' . ov::get_element(state->type) . '
 		'';
 }

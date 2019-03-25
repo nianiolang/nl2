@@ -258,22 +258,22 @@ def generate_global_const_files(ref state : @generator_c::state_t) : @generator_
 		'if(___global_const_init__) {
 		'___global_const_init__ = 0;
 		'___global_const_offset = c_rt_lib0get_global_const_offset();
-		'___global_int_const__ = alloc_mem(' . ptd::int_to_string(int_len) . ' * ___global_const_offset);
-		'___global_string_const__ = alloc_mem(' . ptd::int_to_string(string_len) . ' * ___global_const_offset);
+		'___global_int_const__ = alloc_mem(' . int_len . ' * ___global_const_offset);
+		'___global_string_const__ = alloc_mem(' . string_len . ' * ___global_const_offset);
 		'');
 	rep var i (int_len) {
 		println(ref state, create_sim_to_memory(int[i]->value,
-			'___global_int_const__ + ___global_const_offset * ' . ptd::int_to_string(i)) . ';');
+			'___global_int_const__ + ___global_const_offset * ' . i) . ';');
 	}
 	rep var i (string_len) {
 		println(ref state, create_sim_to_memory(string[i]->value,
-			'___global_string_const__ + ___global_const_offset * ' . ptd::int_to_string(i)) . ';');
+			'___global_string_const__ + ___global_const_offset * ' . i) . ';');
 	}
 	println(ref state, '
 		'' . get_lib_fun('register_global_int_const') . '((' . im_t() . ')___global_int_const__,(' . im_t() . 
-		')___global_int_const__ + ' . ptd::int_to_string(int_len) . ' * ___global_const_offset);
+		')___global_int_const__ + ' . int_len . ' * ___global_const_offset);
 		'' . get_lib_fun('register_global_string_const') . '((' . im_t() . ')___global_string_const__,(' . im_t() . 
-		')___global_string_const__ + ' . ptd::int_to_string(string_len) . ' * ___global_const_offset);
+		')___global_string_const__ + ' . string_len . ' * ___global_const_offset);
 		'}
 		'}');
 	println(ref state, im_t() . '___get_global_int_const(int __nr) {
@@ -398,17 +398,17 @@ def clear_module_from_const(ref const : @generator_c::global_const_t, module : p
 
 def get_const_int(ref state : @generator_c::state_t, int : ptd::int()) : ptd::string() {
 	var nr = get_global_const(ref state->global_int_const, ptd::int_to_string(int), int, state->mod_name);
-	return '___get_global_int_const(' . ptd::int_to_string(nr) . ')';
+	return '___get_global_int_const(' . nr . ')';
 }
 
 def get_const_string(ref state : @generator_c::state_t, string : ptd::string()) : ptd::string() {
 	var nr = get_global_const(ref state->global_string_const, string, string, state->mod_name);
-	return '___get_global_string_const(' . ptd::int_to_string(nr) . ')';
+	return '___get_global_string_const(' . nr . ')';
 }
 
 def get_const_singleton(ref state : @generator_c::state_t, sim : ptd::string()) : ptd::string() {
 	var nr = get_const(ref state->const->singleton, sim);
-	return get_fun_name('', '__const__sing', state->mod_name) . '(' . ptd::int_to_string(nr) . ')';
+	return get_fun_name('', '__const__sing', state->mod_name) . '(' . nr . ')';
 }
 
 def get_func_ptr_header(func : @nlasm::function_t, mod_name : ptd::string()) : ptd::string() {
@@ -484,8 +484,8 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 			println(ref state, get_fun_lib('func_num_args', ['_num', ptd::int_to_string(number), get_string(fun_name)]) . ';');
 			rep var arg_id (number) {
 				var type = get_type_to_c(func->args_type[arg_id]->type, '');
-				var value = get_value_from_im(func->args_type[arg_id]->register->type, '(_tab[' . ptd::int_to_string(arg_id) . '])');
-				print(ref state, type . ' *var' . ptd::int_to_string(arg_id) . ' = &' . value . ';' . string::lf());
+				var value = get_value_from_im(func->args_type[arg_id]->register->type, '(_tab[' . arg_id . '])');
+				print(ref state, type . ' *var' . arg_id . ' = &' . value . ';' . string::lf());
 			}
 			print(ref state, 'return ' . fun_name . '(');
 			rep var arg_id (number) {
@@ -496,7 +496,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 				} case :val {
 					ref_mark = '*';
 				}
-				print (ref state, ref_mark . 'var' . ptd::int_to_string(arg_id));
+				print (ref state, ref_mark . 'var' . arg_id);
 			}
 			println(ref state, ');');
 			println(ref state, '}');
@@ -526,23 +526,23 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 	var dyna_len = state->const->dynamic_nr;
 	var const_len = int_len + string_len + sing_len + dyna_len;
 	println(ref state, '
-		'static ' . im_t() . '___const__[' . ptd::int_to_string(1 + const_len) . '];
+		'static ' . im_t() . '___const__[' . (1 + const_len) . '];
 		'static int ___const_init__ = 1;');
 	println(ref state, 'void ' . get_fun_name('', '__const__init', state->mod_name) . '(){
 		'if(___const_init__) {
 		'___const_init__ = 0;
-		'__const__f = &___const__[' . ptd::int_to_string(int_len + string_len + sing_len) . '];
+		'__const__f = &___const__[' . (int_len + string_len + sing_len) . '];
 		'');
 	rep var i (int_len) {
-		println(ref state, '___const__[' . ptd::int_to_string(i) . '] = ' . create_int(state->const->int->arr[i]) . ';');
+		println(ref state, '___const__[' . i . '] = ' . create_int(state->const->int->arr[i]) . ';');
 	}
 	rep var i (string_len) {
-		println(ref state, '___const__[' . ptd::int_to_string(i + int_len) . '] = ' .
+		println(ref state, '___const__[' . (i + int_len) . '] = ' .
 			create_string(state->const->string->arr[i]) . ';');
 	}
 	println(ref state, '
-		'for(int i=' . ptd::int_to_string(int_len + string_len) . ';i<' . ptd::int_to_string(const_len) . ';++i) ___const__[i] = NULL;
-		'' . get_lib_fun('register_const') . '(___const__, ' . ptd::int_to_string(const_len) . ');
+		'for(int i=' . (int_len + string_len) . ';i<' . const_len . ';++i) ___const__[i] = NULL;
+		'' . get_lib_fun('register_const') . '(___const__, ' . const_len . ');
 		'}}');
 	println(ref state, im_t() . get_fun_name('', '__const__sim', state->mod_name) . '(int __nr) {
 		'' . im_t() . 'ret = NULL;
@@ -550,11 +550,11 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 		'return ret;
 		'}');
 	println(ref state, im_t() . get_fun_name('', '__const__sing', state->mod_name) . '(int __nr) {
-		'if(___const__[__nr+' . ptd::int_to_string(int_len + string_len) . ']==NULL) {
+		'if(___const__[__nr+' . (int_len + string_len) . ']==NULL) {
 		'switch(__nr){');
 	rep var i (sing_len) {
-		println(ref state, 'case ' . ptd::int_to_string(i) . ':');
-		println(ref state, '	___const__[' . ptd::int_to_string(i + int_len + string_len) . '] = ' .
+		println(ref state, 'case ' . i . ':');
+		println(ref state, '	___const__[' . (i + int_len + string_len) . '] = ' .
 			state->const->singleton->arr[i] . '0cal();');
 		println(ref state, '	break;');
 	}
@@ -562,7 +562,7 @@ def print_init_const(ref state : @generator_c::state_t) : ptd::void() {
 		'	nl_die();
 		'}}
 		'' . im_t() . 'ret = NULL;
-		'' . get_fun_lib('copy', ['&ret', '___const__[__nr+' . ptd::int_to_string(int_len + string_len) . ']']) . ';
+		'' . get_fun_lib('copy', ['&ret', '___const__[__nr+' . (int_len + string_len) . ']']) . ';
 		'return ret;
 		'}');
 }
@@ -598,10 +598,10 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 				continue;
 			} else {
 				var nr = state->const->dynamic_nr;
-				println(ref state, 'if(__const__f[' . ptd::int_to_string(nr) . '] == NULL) {');
+				println(ref state, 'if(__const__f[' . nr . '] == NULL) {');
 				print_cmd(ref state, cmd, defined_types);
 				fora var reg (tab) {
-					println(ref state, get_fun_lib('copy', ['&__const__f[' . ptd::int_to_string(nr) . ']',
+					println(ref state, get_fun_lib('copy', ['&__const__f[' . nr . ']',
 						get_reg_value(ref state, reg)]) . ';');
 					nr++;
 				}
@@ -609,7 +609,7 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 				nr -= len;
 				fora var reg (tab) {
 					println(ref state, get_fun_lib('copy', [get_reg_ref(ref state, reg),
-						'__const__f[' . ptd::int_to_string(nr) . ']']) . ';');
+						'__const__f[' . nr . ']']) . ';');
 					nr++;
 				}
 				state->const->dynamic_nr = nr;
@@ -687,7 +687,7 @@ def get_lib_fun(fun_name : ptd::string()) : ptd::string() {
 
 def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 	if (nl::is_hash(obj)) {
-		print(ref state, get_lib_fun('hash_mk_dec') . '(' . ptd::int_to_string(hash::size(obj)));
+		print(ref state, get_lib_fun('hash_mk_dec') . '(' . hash::size(obj));
 		forh var key, var value (obj) {
 			print(ref state, ', ');
 			print(ref state, get_const_string(ref state, key));
@@ -696,7 +696,7 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 		}
 		print(ref state, ')');
 	} elsif (nl::is_array(obj)) {
-		print(ref state, get_lib_fun('array_mk_dec') . '(' . ptd::int_to_string(array::len(obj)));
+		print(ref state, get_lib_fun('array_mk_dec') . '(' . array::len(obj));
 		fora var el (obj) {
 			print(ref state, ', ');
 			generate_imm(ref state, el);
@@ -743,7 +743,7 @@ def get_func_pointer(ref state : @generator_c::state_t, module_name : ptd::strin
 }
 
 def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_types : ptd::hash(@tct::meta_type)) : ptd::void() {
-	print(ref state, '#line ' . ptd::int_to_string(asm->debug->nast_debug->begin->line) . string::lf());
+	print(ref state, '#line ' . asm->debug->nast_debug->begin->line . string::lf());
 	var is_nop = false;
 	match (asm->cmd) case :arr_decl(var decl) {
 		if (decl->dest->type is :im) {
@@ -800,7 +800,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			print(ref state, get_assign(ref state, ov_is->dest, r));
 		} elsif (ov_is->src->type is :variant) {
 			print(ref state, get_reg_value(ref state, ov_is->dest) . ' = (' .
-				get_reg_value(ref state, ov_is->src) . '.label' . ' == ' . ptd::int_to_string(ov_is->label_no) . ')');
+				get_reg_value(ref state, ov_is->src) . '.label' . ' == ' . ov_is->label_no . ')');
 		} else {
 			die;
 		}
@@ -956,20 +956,20 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 					size = '0';
 				}
 				print(ref state, get_variant_make_fun_name(type_name, state->mod_name, anon) . '(' .
-					get_reg_ref(ref state, mk->dest) . ', ' . ptd::int_to_string(mk->label_no) . ', ' .
+					get_reg_ref(ref state, mk->dest) . ', ' . mk->label_no . ', ' .
 					val . ', ' . size .  ')');
 			}
 		}
 	} case :prt_lbl(var l) {
-		print(ref state, 'label_' . ptd::int_to_string(l) . ':' . string::lf() . ';' . string::lf());
+		print(ref state, 'label_' . l . ':' . string::lf() . ';' . string::lf());
 		return;
 	} case :if_goto(var ifgoto) {
 		print(ref state, 'if(');
 		print(ref state, get_reg(ref state, ifgoto->src));
-		print(ref state, '){ goto label_' . ptd::int_to_string(ifgoto->dest) . ';}' . string::lf());
+		print(ref state, '){ goto label_' . ifgoto->dest . ';}' . string::lf());
 		return;
 	} case :goto(var goto) {
-		print(ref state, 'goto label_' . ptd::int_to_string(goto));
+		print(ref state, 'goto label_' . goto);
 	} case :clear(var reg) {
 		match (reg->type) case :im {
 			print(ref state, get_fun_lib('clear', [get_reg_ref(ref state, reg)]));
@@ -1313,7 +1313,8 @@ def print_use_hash_index(ref state : @generator_c::state_t, use_hash_index : @nl
 
 def print_use_variant(ref state : @generator_c::state_t, use_variant : @nlasm::use_variant_t) : ptd::void() {
 	var access_op = get_access_op(use_variant->old_owner);
-	var ret = 'if (' . get_reg(ref state, use_variant->old_owner) . access_op . 'label != ' . ptd::int_to_string(use_variant->label_no) . ') nl_die();' . string::lf();
+	var ret = 'if (' . get_reg(ref state, use_variant->old_owner) . access_op . 'label != ' . use_variant->label_no .
+		') nl_die();' . string::lf();
 	ret .= get_reg(ref state, use_variant->new_owner) . ' = ' . get_reg(ref state, use_variant->old_owner) . access_op;
 	ret .= 'value.' . get_case_name(use_variant->label);
 	print(ref state, ret);
@@ -1632,7 +1633,7 @@ def reg_suffix(reg : @nlasm::reg_t) : ptd::string() {
 	} case :reference {
 		ret .= '_ptr';
 	}
-	ret .= '__' . ptd::int_to_string(reg->reg_no);
+	ret .= '__' . reg->reg_no;
 	return ret;
 }
 
@@ -2092,7 +2093,7 @@ def get_variant_clean_fun_def(variant_type_name : ptd::string(),
 	forh var key, var value (variant_type) {
 		match (value) case :no_param {
 		} case :with_param(var param_type) {
-			ret .= 'case ' . ptd::int_to_string(i) . ':
+			ret .= 'case ' . i . ':
 				'' . get_free_fun_call(param_type, mod_name, 'var.value.' . get_case_name(key)) . ';
 				'break;' . string::lf();
 		}

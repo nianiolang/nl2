@@ -921,7 +921,7 @@ def check_fun_val(fun_val : @nast::fun_val_t, ref modules : @tc_types::modules_t
 	rep var i (array::len(fun_val->args)) {
 		var fun_val_arg : @nast::fun_val_arg_t = fun_val->args[i];
 		var fun_def_arg : @tc_types::fun_arg_t = fun_def->args[i];
-		add_error(ref errors, 'arg no. ' . ptd::int_to_string(i + 1) .
+		add_error(ref errors, 'arg no. ' . (i + 1) .
 				' ''' . fun_def_arg->name . 
 				''' ref mismatched with function prototype')
 			unless 
@@ -955,8 +955,7 @@ def check_fun_val(fun_val : @nast::fun_val_t, ref modules : @tc_types::modules_t
 		}
 		if (check_info is :err) {
 			add_error(ref errors, 'In function call: ' . get_function_name(fun_val->module, fun_val->name) . 
-				' argument no.' . ptd::int_to_string(i + 1) .
-				' ''' . fun_def_arg->name . ''' has invalid type: ' . 
+				' argument no.' . (i + 1) .  ' ''' . fun_def_arg->name . ''' has invalid type: ' . 
 				get_print_check_info(check_info));
 		}
 	}

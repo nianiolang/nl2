@@ -99,7 +99,7 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::stri
 	var l = state->len;
 	if (state->pos >= l) {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . state->pos . ': expected scalar';
 	}
 	loop {
 		var char = get_char(ref state);
@@ -110,7 +110,7 @@ def eat_non_ws(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::stri
 	}
 	if (ret eq '') {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . state->pos . ': expected scalar';
 	}
 	return ret;
 }
@@ -145,7 +145,7 @@ def finish_quoted_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) :
 	loop {
 		if (state->pos >= state->len) {
 			error = true;
-			return 'pos ' . ptd::int_to_string(state->pos) . ': expected "';
+			return 'pos ' . state->pos . ': expected "';
 		}
 		var char = get_char(ref state);
 		++state->pos;
@@ -165,7 +165,7 @@ def finish_quoted_scalar(ref state : @dfile::state_t, ref error : ptd::bool()) :
 def finish_escape_seq(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::string() {
 	if (state->pos >= state->len) {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected escape sequence';
+		return 'pos ' . state->pos . ': expected escape sequence';
 	}
 	var char = get_char(ref state);
 	++state->pos;
@@ -185,7 +185,7 @@ def finish_escape_seq(ref state : @dfile::state_t, ref error : ptd::bool()) : pt
 		return ptd::ensure(ptd::string(), string_utils::hex2char(string::ord(hex_digit1), string::ord(hex_digit2)));
 	} else {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos - 1) . ': expected escape sequence';
+		return 'pos ' . (state->pos - 1) . ': expected escape sequence';
 	}
 }
 
@@ -193,7 +193,7 @@ def eat_hex_digit(ref state : @dfile::state_t, ref error : ptd::bool()) : ptd::s
 	var char = get_char(ref state);
 	if (!string::is_hex_digit(char)) {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected hexadecimal digit';
+		return 'pos ' . state->pos . ': expected hexadecimal digit';
 	}
 	++state->pos;
 	return char;
@@ -230,7 +230,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			eat_ws(ref state);
 			if (!match_s(ref state, '=>')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected =>';
+				return 'pos ' . state->pos . ': expected =>';
 			}
 			var field_type;
 			if (type is :ptd_rec) {
@@ -254,7 +254,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			eat_ws(ref state);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . state->pos . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
@@ -280,7 +280,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			eat_ws(ref state);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . state->pos . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
@@ -315,14 +315,14 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 			eat_ws(ref state);
 			if (!match_s(ref state, ')')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
+				return 'pos ' . state->pos . ': expected )';
 			}
 			return ov::mk_val(key, val);
 		}
 		eat_ws(ref state);
 		if (!match_s(ref state, ')')) {
 			error = true;
-			return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
+			return 'pos ' . state->pos . ': expected )';
 		}
 		eat_ws(ref state);
 		return ov::mk(key);
@@ -359,7 +359,7 @@ def dfile::try_sload_with_type(type : @ptd::meta_type, str_im) : ptd::var({ok =>
 	eat_ws(ref state);
 	if (!error && state->pos != state->len) {
 		error = true;
-		val = 'pos ' . ptd::int_to_string(state->pos) . ': expected eof';
+		val = 'pos ' . state->pos . ': expected eof';
 	}
 	if (error) {
 		val = ptd::ensure(ptd::string(), val);

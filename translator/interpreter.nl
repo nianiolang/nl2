@@ -198,8 +198,8 @@ def interpreter::start_args(ref state : @interpreter::state_t, main_fun : ptd::s
 	}
 	var func = hash::get_value(state->functions, key);
 	if (array::len(func->args_type) != array::len(func_args)) {
-		return :err('niewlasciwa liczba argumentow w funkcji ' . func->name . ': ' . ptd::int_to_string(array::len(func_args)) . ' zamiast: ' . 
-			ptd::int_to_string(array::len(func->args_type)));
+		return :err('niewlasciwa liczba argumentow w funkcji ' . func->name . ': ' . array::len(func_args) .
+			' zamiast: ' .  array::len(func->args_type));
 	}
 	state->profile = [];
 	profile_inter::begin(ref state->profile, key);

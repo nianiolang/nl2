@@ -84,8 +84,8 @@ def test_own_arr::test() {
 	die if d[1]->a ne 'a1' || d[1]->b ne 'b1';
 	i = 0;
 	fora var el (d) {
-		die if el->a ne ('a' . ptd::int_to_string(i));
-		die if el->b ne ('b' . ptd::int_to_string(i));
+		die if el->a ne ('a' . i);
+		die if el->b ne ('b' . i);
 		i++;
 	}
 

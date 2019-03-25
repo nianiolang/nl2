@@ -327,7 +327,7 @@ def max(a, b) {
 }
 
 def string_utils::int2str(int, len) : ptd::string() {
-	var str = '000000000000000000000000' . ptd::int_to_string(int);
+	var str = '000000000000000000000000' . int;
 	return string::substr2(str, string::length(str) - len);
 }
 

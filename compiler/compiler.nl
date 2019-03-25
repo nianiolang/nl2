@@ -400,7 +400,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		to_parse = new_to_parse;
 		if (hash::size(to_parse) > 0) {
 			show_and_count_errors(errors, opt_cli, nianio_files);
-			c_fe_lib::print(string::lf() . 'ERROR: while parsing ' . ptd::int_to_string(hash::size(to_parse)) . ' modules');
+			c_fe_lib::print(string::lf() . 'ERROR: while parsing ' . hash::size(to_parse) . ' modules');
 			c_fe_lib::print('############################################################');
 			continue;
 		}
@@ -441,7 +441,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			to_save = new_to_save;
 		}
 		if (hash::size(to_save) > 0) {
-			var msg = 'Can not save ' . ptd::int_to_string(hash::size(to_save)) . ' files. ';
+			var msg = 'Can not save ' . hash::size(to_save) . ' files. ';
 			c_fe_lib::print(string::lf() . 'ERROR: ' . msg);
 		} else {
 			c_fe_lib::exec_cmd(opt_cli->mode as :idex) if opt_cli->mode is :idex;
@@ -539,8 +539,7 @@ def construct_error_message(error : @compiler_lib::error_t, path_dict) : ptd::st
 		? hash::get_value(path_dict, error->module)->src
 		: error->module)
 			unless (string::length(error->module) == 0);
-	msg .= ' line: ' . ptd::int_to_string(error->line)
-			unless (error->line == -1);
+	msg .= ' line: ' . error->line unless (error->line == -1);
 	msg .= string::lf() . '     ' . error->message;
 	return msg;
 }
@@ -589,8 +588,7 @@ def show_and_count_errors(all_errors : @compiler::errors_group_t, opt_cli : @com
 		num_errors += num_warnings;
 		num_warnings = 0;
 	}
-	c_fe_lib::print('ERR: ' . ptd::int_to_string(num_errors) .
-		' WAR: ' . ptd::int_to_string(num_warnings));
+	c_fe_lib::print('ERR: ' . num_errors .  ' WAR: ' . num_warnings);
 	return num_errors;
 }
 
@@ -651,7 +649,7 @@ def check_modules(ref asts : ptd::hash(@nast::module_t), ref errors : @compiler:
 		array::push(ref old_warnings, warning);
 		hash::set_value(ref errors->type_warnings, warning->module, old_warnings);
 	}
-	c_fe_lib::print('Found ' . ptd::int_to_string(type_errors) . ' errors of types. ') unless (type_errors == 0);
+	c_fe_lib::print('Found ' . type_errors . ' errors of types. ') unless (type_errors == 0);
 	var imports = {};
 	forh var module, var ast (asts) {
 		var mod_import = [];
@@ -662,8 +660,8 @@ def check_modules(ref asts : ptd::hash(@nast::module_t), ref errors : @compiler:
 	}
 	errors->loop_error = module_checker::search_loops(imports);
 	if (deref is :yes) {
-		c_fe_lib::print('deleted types: ' . ptd::int_to_string(array::len(ret->deref->delete)));
-		c_fe_lib::print('created types: ' . ptd::int_to_string(array::len(ret->deref->create)));
+		c_fe_lib::print('deleted types: ' . array::len(ret->deref->delete));
+		c_fe_lib::print('created types: ' . array::len(ret->deref->create));
 		var references = reference_generator::generate(asts);
 		ensure c_fe_lib::string_to_file(deref as :yes, serialize_deref(ret->deref, references));
 	}

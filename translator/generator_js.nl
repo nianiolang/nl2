@@ -22,7 +22,7 @@ def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string()) 
 	result .= 'var ' . consts->name . ' = [];';
 	var no = 0;
 	fora var el (consts->arr) {
-		result .= consts->name . '[' . ptd::int_to_string(no) . '] = ' . print_const_value(el) . ';';
+		result .= consts->name . '[' . no . '] = ' . print_const_value(el) . ';';
 		++no;
 	}
 	return 'var ' . namespace . ';
@@ -34,7 +34,7 @@ def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string()) 
 
 def print_const_value_aggr(const_val, ref consts) : ptd::string() {
 	array::push(ref consts->arr, const_val);
-	return consts->name . '[' . ptd::int_to_string(array::len(consts->arr) - 1) . ']';
+	return consts->name . '[' . (array::len(consts->arr) - 1) . ']';
 }
 
 def get_function_name(function : @nlasm::function_t, module_name : ptd::string()) {
@@ -133,22 +133,21 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 	match (function->access) case :pub {
 		ret .= get_namespace_name() . '.' . module_name . '.__dyn_' . function->name . ' = function(arr) {' . string::lf();
 		var i = 0;
-		var i_str = ptd::int_to_string(i);
 		var call = '';
 		var after = '';
 		fora var arg (function->args_type) {
 			call .= ', ' unless i == 0;
-			call .= 'arg' . i_str;
-			ret .= 'var arg' . i_str . ' = ';
+			call .= 'arg' . i;
+			ret .= 'var arg' . i . ' = ';
 			match (arg->by) case :ref {
-				ret .= 'new ' . imm_call('ref') . '(' . 'arr.value.get_index_int(' . i_str . '));';
-				after .= 'arr.value = arr.value.set_index_int(' . i_str . ', arg' . i_str . '.value);' . string::lf();
+				ret .= 'new ' . imm_call('ref') . '(' . 'arr.value.get_index_int(' . i . '));';
+				after .= 'arr.value = arr.value.set_index_int(' . i . ', arg' . i . '.value);' . string::lf();
 			} case :val {
-				ret .= 'arr.value.get_index_int('. i_str . ');';
+				ret .= 'arr.value.get_index_int('. i . ');';
 			}
 			ret .= string::lf();
 			++i;
-			i_str = ptd::int_to_string(i);
+			i = ptd::int_to_string(i);
 		}
 		ret .= 'var ret = ' . get_function_call_name(function, module_name) . '(' . call . ')' . string::lf();
 		ret .= after;
@@ -169,21 +168,20 @@ def print_function(function : @nlasm::function_t, module_name : ptd::string(), r
 	}
 	rep var i (array::len(function->args_type)) {
 		result .= ', ' unless i == 0;
-		result .= '___arg__' . ptd::int_to_string(i);
+		result .= '___arg__' . i;
 	}
 	result .= ') {' . string::lf();
 	rep var i (array::len(function->args_type)) {
-		var i_str = ptd::int_to_string(i);
 		match (function->args_type[i]->by) case :val {
-			result .= 'var ___nl__' . i_str . ' = ___arg__' . i_str . ';';
+			result .= 'var ___nl__' . i . ' = ___arg__' . i . ';';
 		} case :ref {
-			result .= 'var ___nl__' . i_str . ' = ___arg__' . i_str . '.value;';
+			result .= 'var ___nl__' . i . ' = ___arg__' . i . '.value;';
 		}
-		result .= get_namespace_name() . '.check_null(___nl__' . i_str . ');';
+		result .= get_namespace_name() . '.check_null(___nl__' . i . ');';
 	}
 	result .= string::lf();
 	for(var i = array::len(function->args_type); i < array::len(function->registers); ++i) {
-		result .= 'var ___nl__' . ptd::int_to_string(i) . ' = null;' . string::lf();
+		result .= 'var ___nl__' . i . ' = null;' . string::lf();
 	}
 	result .= 'var label = null; while (1) { switch (label) { default: ' . string::lf();
 	var call_counter = 0;
@@ -242,7 +240,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :ov_mk(var ov_mk) {
 		result = print_ov_mk(ov_mk, ref consts, ref call_counter);
 	} case :prt_lbl(var prt_lbl) {
-		result = 'case ' . ptd::int_to_string(prt_lbl) . ':';
+		result = 'case ' . prt_lbl . ':';
 	} case :if_goto(var if_goto) {
 		result = 'if (' . print_int_call_sim('c_rt_lib', 'check_true_native', [if_goto->src]) . ') {' . print_goto(if_goto->dest) . 
 			'}';
@@ -288,7 +286,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		return print_register_to_assign(is_end->dest) .
 				print_internal_call('c_rt_lib', 'is_end_hash', [:reg(is_end->iter)], ref call_counter) . ';';
 	}
-	return '//line ' . ptd::int_to_string(command->debug->nast_debug->begin->line) . string::lf() . result . string::lf();
+	return '//line ' . command->debug->nast_debug->begin->line . string::lf() . result . string::lf();
 }
 
 def print_arr(arr : ptd::arr(@nlasm::reg_t)) : ptd::string() {
@@ -342,7 +340,7 @@ def print_call(cmodule : ptd::string(), cname : ptd::string(),
 
 def process_ref_reg(ref pre : ptd::string(), ref result : ptd::string(), ref after : ptd::string(), reg : @nlasm::reg_t,
 		i : ptd::int(), call_counter : ptd::int()) {
-	var reg_name = 'call_' . ptd::int_to_string(call_counter) . '_' . ptd::int_to_string(i);
+	var reg_name = 'call_' . call_counter . '_' . i;
 	pre .= 'var ' . reg_name . ' = new ' . imm_call('ref') . '(' . print_register(reg) . ');';
 	result .= reg_name;
 	after .= print_register_to_assign(reg) . reg_name . '.value;'; 
@@ -433,7 +431,7 @@ def is_false(value) {
 #TODO REMOVE
 
 def print_goto(goto : ptd::int()) : ptd::string() {
-	return 'label = ' . ptd::int_to_string(goto) . '; continue;';
+	return 'label = ' . goto . '; continue;';
 }
 
 def print_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_t}))) : ptd::string() {
@@ -453,7 +451,7 @@ def print_ov_mk(ov_mk : @nlasm::ov_mk_t, ref consts, ref call_counter : ptd::int
 }
 
 def print_register(register : @nlasm::reg_t) : ptd::string() {
-	return '___nl__' . ptd::int_to_string(register->reg_no);
+	return '___nl__' . register->reg_no;
 }
 
 def print_register_to_assign(register : @nlasm::reg_t) : ptd::string() {
@@ -466,7 +464,7 @@ def print_return(return_i : @nlasm::return, fun_args : @nlasm::args_type) : ptd:
 	var no = 0;
 	fora var arg (fun_args) {
 		match (arg->by) case :ref {
-			result .= '___arg__' . ptd::int_to_string(no) . '.value = ' . '___nl__' . ptd::int_to_string(no) . ';';
+			result .= '___arg__' . no . '.value = ' . '___nl__' . no . ';';
 		} case :val {
 		}
 		++no;

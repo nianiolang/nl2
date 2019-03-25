@@ -69,7 +69,7 @@ def eat_non_ws(ref state : @dfile_dbg::state_t, ref error : ptd::bool()) : ptd::
 	var l = state->len;
 	if (state->pos >= l) {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . state->pos . ': expected scalar';
 	}
 	loop {
 		var char = get_char(ref state);
@@ -80,7 +80,7 @@ def eat_non_ws(ref state : @dfile_dbg::state_t, ref error : ptd::bool()) : ptd::
 	}
 	if (ret eq '') {
 		error = true;
-		return 'pos ' . ptd::int_to_string(state->pos) . ': expected scalar';
+		return 'pos ' . state->pos . ': expected scalar';
 	}
 	return ret;
 }
@@ -93,7 +93,7 @@ def parse_scalar(ref state : @dfile_dbg::state_t, ref error : ptd::bool(), type 
 		loop {
 			if (state->pos >= state->len) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected "';
+				return 'pos ' . state->pos . ': expected "';
 			}
 			var char = get_char(ref state);
 			++state->pos;
@@ -163,7 +163,7 @@ def parse(ref state : @dfile_dbg::state_t, ref error : ptd::bool(), type : @ptd:
 			eat_ws(ref state);
 			if (!match_s(ref state, '=>')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected =>';
+				return 'pos ' . state->pos . ': expected =>';
 			}
 			var field_type;
 			if (type is :ptd_rec) {
@@ -187,7 +187,7 @@ def parse(ref state : @dfile_dbg::state_t, ref error : ptd::bool(), type : @ptd:
 			eat_ws(ref state);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . state->pos . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
@@ -211,7 +211,7 @@ def parse(ref state : @dfile_dbg::state_t, ref error : ptd::bool(), type : @ptd:
 			array::push(ref arr, value);
 			if (!match_s(ref state, ',')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected ,';
+				return 'pos ' . state->pos . ': expected ,';
 			}
 			eat_ws(ref state);
 		}
@@ -246,14 +246,14 @@ def parse(ref state : @dfile_dbg::state_t, ref error : ptd::bool(), type : @ptd:
 			eat_ws(ref state);
 			if (!match_s(ref state, ')')) {
 				error = true;
-				return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
+				return 'pos ' . state->pos . ': expected )';
 			}
 			return ov::mk_val(key, val);
 		}
 		eat_ws(ref state);
 		if (!match_s(ref state, ')')) {
 			error = true;
-			return 'pos ' . ptd::int_to_string(state->pos) . ': expected )';
+			return 'pos ' . state->pos . ': expected )';
 		}
 		eat_ws(ref state);
 		return ov::mk(key);
@@ -286,7 +286,7 @@ def dfile_dbg::try_sload_type(str_im, type : @ptd::meta_type) : ptd::var({ok => 
 	eat_ws(ref state);
 	if (!error && state->pos != state->len) {
 		error = true;
-		val = 'pos ' . ptd::int_to_string(state->pos) . ': expected eof';
+		val = 'pos ' . state->pos . ': expected eof';
 	}
 	if (error) {
 		val = ptd::ensure(ptd::string(), val);
