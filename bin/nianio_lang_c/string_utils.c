@@ -5606,39 +5606,34 @@ string_utils_priv0__const__init();
 ImmT  ___nl__im__2 = NULL;
 ImmT  ___nl__im__3 = NULL;
 ImmT  ___nl__im__4 = NULL;
-ImmT  ___nl__im__5 = NULL;
+INT  ___nl__int__5 = 0;
 INT  ___nl__int__6 = 0;
 INT  ___nl__int__7 = 0;
-INT  ___nl__int__8 = 0;
-ImmT  ___nl__im__9 = NULL;
+ImmT  ___nl__im__8 = NULL;
 #line 330
 c_rt_lib0move(&___nl__im__3,___get_global_string_const(1299));
 #line 330
-c_rt_lib0move(&___nl__im__4, ptd0int_to_string(___nl__im__0));
-#line 330
-c_rt_lib0move(&___nl__im__2, c_rt_lib0concat_new(___nl__im__3, ___nl__im__4));
+c_rt_lib0move(&___nl__im__2, c_rt_lib0concat_new(___nl__im__3, ___nl__im__0));
 #line 330
 c_rt_lib0clear(&___nl__im__3);
-#line 330
-c_rt_lib0clear(&___nl__im__4);
 #line 331
-___nl__int__7 = string0length(___nl__im__2);
+___nl__int__6 = string0length(___nl__im__2);
 #line 331
-___nl__int__8 = getIntFromImm(___nl__im__1);
+___nl__int__7 = getIntFromImm(___nl__im__1);
 #line 331
-___nl__int__6 = ___nl__int__7 - ___nl__int__8;
-#line 331
-//clear ___nl__int__7;
-#line 331
-//clear ___nl__int__8;
-#line 331
-c_rt_lib0move(&___nl__im__9, c_rt_lib0int_new(___nl__int__6));
-#line 331
-c_rt_lib0move(&___nl__im__5, string0substr2(___nl__im__2, ___nl__im__9));
+___nl__int__5 = ___nl__int__6 - ___nl__int__7;
 #line 331
 //clear ___nl__int__6;
 #line 331
-c_rt_lib0clear(&___nl__im__9);
+//clear ___nl__int__7;
+#line 331
+c_rt_lib0move(&___nl__im__8, c_rt_lib0int_new(___nl__int__5));
+#line 331
+c_rt_lib0move(&___nl__im__4, string0substr2(___nl__im__2, ___nl__im__8));
+#line 331
+//clear ___nl__int__5;
+#line 331
+c_rt_lib0clear(&___nl__im__8);
 #line 331
 c_rt_lib0clear(&___nl__im__0);
 #line 331
@@ -5646,7 +5641,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 331
 c_rt_lib0clear(&___nl__im__2);
 #line 331
-return ___nl__im__5;
+return ___nl__im__4;
 return NULL;
 
 }
