@@ -494,6 +494,7 @@ var instadb;
 
 	priv_hash.prototype.get_value = function(key) {
 		this.update_hash();
+		if (key.get_imm_type() != 'string') _namespace.nl_die();
 		return this.get_value_byte_str(key.as_byte_string());
 	}
 
