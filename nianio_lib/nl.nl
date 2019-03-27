@@ -29,7 +29,7 @@ def nl::is_variant(variable) : ptd::bool() {
 	return c_std_lib::is_variant(variable) ? true : false;
 }
 
-def nl::print(str : ptd::string()) {
+def nl::print(str) {
 	c_std_lib::print(str);
 }
 
