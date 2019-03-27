@@ -3325,7 +3325,7 @@ c_rt_lib0move(&___nl__im__6, c_rt_lib0ov_mk_arg(___get_global_string_const(40), 
 #line 221
 c_rt_lib0move(&___nl__im__7, c_std_lib0exec(___nl__im__2, &___nl__im__5));
 #line 221
-c_rt_lib0move(&___nl__im__2, ptd0ensure(___nl__im__6, ___nl__im__7));
+c_rt_lib0move(&___nl__im__2, ptd0ensure_only_static_do_not_touch_without_permission(___nl__im__6, ___nl__im__7));
 #line 221
 c_rt_lib0clear(&___nl__im__6);
 #line 221
