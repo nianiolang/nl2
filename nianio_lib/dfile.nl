@@ -218,7 +218,7 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 	var char = get_char(ref state);
 	while (type is :ref) {
 		var args = [];
-		type = ptd::ensure(@ptd::meta_type, c_std_lib::exec(type, ref args));
+		type = ptd::ensure_only_static_do_not_touch_without_permission(@ptd::meta_type, c_std_lib::exec(type, ref args));
 	}
 	if (char eq '{') {
 		state->pos += 1;
