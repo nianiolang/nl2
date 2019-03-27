@@ -948,10 +948,14 @@ INT getIntFromImm(ImmT ___nl__num){
 	return 0;
 }
 
-double getFloatFromString(ImmT ___nl__num){
-	if(!IS_STRING(___nl__num))
-		nl_die_internal("can not converted to float %s;", NAME(___nl__num));
-	return atof(((NlString*)___nl__num)->s);
+double getFloatFromImm(ImmT ___nl__num){
+	if (IS_STRING(___nl__num)) 
+		return atof(((NlString*)___nl__num)->s);
+	else if (IS_INT(___nl__num))
+		return (double)((NlInt*)___nl__num)->i;
+
+	nl_die_internal("can not converted to float %s;", NAME(___nl__num));
+	return 0;
 }
 
 ImmT concat_new_string(NlString *ls, NlString *rs) {
@@ -1108,7 +1112,7 @@ void c_rt_lib0int_new_to_memory(INT i, ImmT memory) {
 }
 
 ImmT c_rt_lib0float_round(ImmT ___nl__f) {
-	double number = getFloatFromString(___nl__f);
+	double number = getFloatFromImm(___nl__f);
 	number = round(number);
 	if (number == 0) number = 0;
 	char number_str[20];
@@ -1118,7 +1122,7 @@ ImmT c_rt_lib0float_round(ImmT ___nl__f) {
 
 ImmT c_rt_lib0float_fixed_str(ImmT ___nl__f) {
 	char tab[FTABS];
-	sPrintFloat(tab, getFloatFromString(___nl__f));
+	sPrintFloat(tab, getFloatFromImm(___nl__f));
 	return (NlString*)c_rt_lib0string_new(tab);
 }
 
@@ -1605,31 +1609,31 @@ void gdb_die(const char *msg){
 
 ImmT c_rt_lib0str_float_add(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromString(___nl__lhs) + getFloatFromString(___nl__rhs));
+	sPrintFloat(res_str, getFloatFromImm(___nl__lhs) + getFloatFromImm(___nl__rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_mul(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromString(___nl__lhs) * getFloatFromString(___nl__rhs));
+	sPrintFloat(res_str, getFloatFromImm(___nl__lhs) * getFloatFromImm(___nl__rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_sub(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromString(___nl__lhs) - getFloatFromString(___nl__rhs));
+	sPrintFloat(res_str, getFloatFromImm(___nl__lhs) - getFloatFromImm(___nl__rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_div(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, getFloatFromString(___nl__lhs) / getFloatFromString(___nl__rhs));
+	sPrintFloat(res_str, getFloatFromImm(___nl__lhs) / getFloatFromImm(___nl__rhs));
 	return c_rt_lib0string_new(res_str);
 }
 
 ImmT c_rt_lib0str_float_mod(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	char res_str[20];
-	sPrintFloat(res_str, fmod(getFloatFromString(___nl__lhs), getFloatFromString(___nl__rhs)));
+	sPrintFloat(res_str, fmod(getFloatFromImm(___nl__lhs), getFloatFromImm(___nl__rhs)));
 	return c_rt_lib0string_new(res_str);
 }
 
