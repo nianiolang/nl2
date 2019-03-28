@@ -776,6 +776,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		} else {
 			die;
 		}
+	} case :empty_hash_decl(var hash_decl) {
 	} case :func(var func) {
 		var r = get_func_pointer(ref state, func->module, func->name);
 		print(ref state, get_assign(ref state, func->dest, r));

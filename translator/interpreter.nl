@@ -454,6 +454,7 @@ def step(ref state : @interpreter::state_t) : ptd::void() {
 			hash::set_value(ref h, map->key, val);
 		}
 		state->top->vars[hash_decl->dest->reg_no] = h unless nlasm::is_empty(hash_decl->dest);
+	} case :empty_hash_decl(var hash_decl) {
 	} case :call(var call) {
 		var key;
 		if (call->mod eq '') {
@@ -621,6 +622,7 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 	return true unless state->check_all_instructions;
 	match (cmd) case :arr_decl(var arr_decl) {
 	} case :hash_decl(var hash_decl) {
+	} case :empty_hash_decl(var hash_decl) {
 	} case :call(var call) {
 	} case :func(var func) {
 	} case :una_op(var una_op) {

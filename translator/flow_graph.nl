@@ -166,6 +166,8 @@ def mk_blocks(commands : ptd::arr(@nlasm::cmd_t), args_types : ptd::arr(@nlasm::
 				read_reg(ref block, one->val, nr);
 			}
 			write_reg(ref block, hash_decl->dest, nr);
+		} case :empty_hash_decl(var hash_decl) {
+			write_reg(ref block, hash_decl->dest, nr);
 		} case :call(var call) {
 			fora var one (call->args) {
 				match (one) case :val(var val) {

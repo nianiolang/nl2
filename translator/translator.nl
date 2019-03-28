@@ -1629,8 +1629,10 @@ def print_val_init(val : @nast::value_t, destination : @nlasm::reg_t, ref state 
 		}
 	} case :hash_decl(var hash_decl) {
 		var hash_type = unwrap_ref(val->type, state->logic->defined_types);
-		print(ref state, :hash_decl({dest => destination, src => []}));
 		if (hash_type is :tct_own_rec) {
+			var fields = [];
+			fields []= field->key->value as :hash_key fora var field (hash_decl);
+			print(ref state, :empty_hash_decl({dest => destination, fields => fields}));
 			fora var hash_el (hash_decl) {
 				var new_reg = new_reference_register(ref state, var_type_to_reg_type(hash_el->val->type, state->logic->defined_types));
 				var field_name = hash_el->key->value as :hash_key;
@@ -1639,6 +1641,7 @@ def print_val_init(val : @nast::value_t, destination : @nlasm::reg_t, ref state 
 				release_field(new_reg, destination, field_name, ref state);
 			}
 		} elsif (hash_type is :tct_own_hash) {
+			print(ref state, :hash_decl({dest => destination, src => []}));
 			fora var hash_el (hash_decl) {
 				var new_reg = new_reference_register(ref state, var_type_to_reg_type(hash_el->val->type, state->logic->defined_types));
 				var key = new_register(ref state, :string);

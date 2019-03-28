@@ -171,6 +171,9 @@ def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, mat
 			}
 			regs[hash_decl->dest->reg_no] = const unless nlasm::is_empty(hash_decl->dest);
 			array::push(ref set_c, hash_decl->dest);
+		} case :empty_hash_decl(var hash_decl) {
+			regs[hash_decl->dest->reg_no] = const unless nlasm::is_empty(hash_decl->dest);
+			array::push(ref set_c, hash_decl->dest);
 		} case :call(var call) {
 			var fun_name = (call->mod eq '' ? mod_name . '_priv' : call->mod) . '::' . call->fun_name;
 			if (hash::has_key(math_fs, fun_name)) {

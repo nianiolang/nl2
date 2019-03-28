@@ -194,6 +194,8 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = print_register_to_assign(arr_decl->dest) . print_arr(arr_decl->src) . ';';
 	} case :hash_decl(var hash_decl) {
 		result = print_register_to_assign(hash_decl->dest) . print_hash(hash_decl->src) . ';';
+	} case :empty_hash_decl(var hash_decl) {
+		result = print_register_to_assign(hash_decl->dest) . print_empty_hash(hash_decl->fields) . ';';
 	} case :call(var call) {
 		result = print_call(call->mod, call->fun_name, call->args, call->dest, ref call_counter);
 	} case :func(var func) {
@@ -435,6 +437,12 @@ def print_goto(goto : ptd::int()) : ptd::string() {
 def print_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_t}))) : ptd::string() {
 	var result = imm_call('hash') . '({';
 	result .= escape_string(map->key) . ':' . print_register(map->val) . ',' fora var map (harr);
+	return result . '})';
+}
+
+def print_empty_hash(fields : ptd::arr(ptd::string())) : ptd::string() {
+	var result = imm_call('hash') . '({';
+	result .= escape_string(field) . ': undefined,' fora var field (fields);
 	return result . '})';
 }
 

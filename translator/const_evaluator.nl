@@ -158,6 +158,9 @@ def set_const_block_val(number : ptd::int(), blocks : @flow_graph::blocks_t, ref
 			}
 			const_dest = [hash_decl->dest];
 			evaluate_const(func, module, ins_nr, ref const, ref regs, interpreter_state, const_dest);
+		} case :empty_hash_decl(var hash_decl) {
+			const_dest = [hash_decl->dest];
+			evaluate_const(func, module, ins_nr, ref const, ref regs, interpreter_state, const_dest);
 		} case :call(var call) {
 			fora var one (call->args) {
 				match (one) case :val(var val) {

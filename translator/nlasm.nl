@@ -82,6 +82,7 @@ def nlasm::order_t() {
 	return ptd::var({
 			arr_decl => ptd::rec({dest => @nlasm::reg_t, src => ptd::arr(@nlasm::reg_t)}),
 			hash_decl => @nlasm::hash_decl_t,
+			empty_hash_decl => @nlasm::empty_hash_decl_t,
 			func => ptd::rec({dest => @nlasm::reg_t, module => ptd::string(), name => ptd::string()}),
 			call => @nlasm::call_t,
 			una_op => @nlasm::una_op_t,
@@ -197,6 +198,13 @@ def nlasm::hash_decl_t() {
 	return ptd::rec({
 		dest => @nlasm::reg_t,
 		src => ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_t}))
+	});
+}
+
+def nlasm::empty_hash_decl_t() {
+	return ptd::rec({
+		dest => @nlasm::reg_t,
+		fields => ptd::arr(ptd::string()),
 	});
 }
 

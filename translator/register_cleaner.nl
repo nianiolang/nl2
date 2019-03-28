@@ -69,6 +69,11 @@ def recalculate_registers(cmds : @nlasm::cmds_t, map : ptd::hash(@nlasm::reg_t))
 				dest => map{ptd::int_to_string(hash->dest->reg_no)},
 				src => new_keys,
 			});
+		} case :empty_hash_decl(var hash) {
+			new_cmd = :empty_hash_decl({
+				dest => map{ptd::int_to_string(hash->dest->reg_no)},
+				fields => hash->fields,
+			});
 		} case :func(var func) {
 			new_cmd = :func({
 				dest => map{ptd::int_to_string(func->dest->reg_no)},
@@ -314,6 +319,8 @@ def find_unused_regs(func : @nlasm::function_t) : ptd::hash(ptd::bool()) {
 			fora var el (hash->src) {
 				regs{ptd::int_to_string(el->val->reg_no)} = true;
 			}
+		} case :empty_hash_decl(var hash) {
+			regs{ptd::int_to_string(hash->dest->reg_no)} = true;
 		} case :func(var func_cmd) {
 			regs{ptd::int_to_string(func_cmd->dest->reg_no)} = true;
 		} case :call(var call) {
