@@ -8,23 +8,11 @@
 #include "ptd.h"
 #include "nast.h"
 #include "tct.h"
-typedef ImmT  nlasm0hash_dest_iter_t0type;
-
 typedef ImmT  nlasm0args_type0type;
-
-typedef ImmT  nlasm0release_index_t0type;
-
-typedef ImmT  nlasm0result_t0type;
-
-typedef ImmT  nlasm0release_variant_t0type;
-
-typedef ImmT  nlasm0una_op_t0type;
 
 typedef INT  nlasm0label_t0type;
 
 typedef ImmT  nlasm0reg_access_type_t0type;
-
-typedef ImmT  nlasm0return0type;
 
 typedef ImmT  nlasm0use_index_t0type;
 
@@ -32,21 +20,9 @@ typedef ImmT  nlasm0reg_t0type;
 
 typedef ImmT  nlasm0use_hash_index_t0type;
 
-typedef ImmT  nlasm0access_t0type;
-
 typedef ImmT  nlasm0function_t0type;
 
-typedef ImmT  nlasm0release_field_t0type;
-
-typedef ImmT  nlasm0var_decl_t0type;
-
-typedef ImmT  nlasm0order_t0type;
-
 typedef ImmT  nlasm0cmds_t0type;
-
-typedef ImmT  nlasm0ov_mk_t0type;
-
-typedef ImmT  nlasm0hash_iter_t0type;
 
 typedef ImmT  nlasm0annotation_t0type;
 
@@ -68,7 +44,33 @@ typedef ImmT  nlasm0use_variant_t0type;
 
 typedef ImmT  nlasm0bin_op0type;
 
+typedef ImmT  nlasm0hash_dest_iter_t0type;
+
 typedef ImmT  nlasm0cmd_t0type;
+
+typedef ImmT  nlasm0release_index_t0type;
+
+typedef ImmT  nlasm0empty_hash_decl_t0type;
+
+typedef ImmT  nlasm0result_t0type;
+
+typedef ImmT  nlasm0release_variant_t0type;
+
+typedef ImmT  nlasm0una_op_t0type;
+
+typedef ImmT  nlasm0return0type;
+
+typedef ImmT  nlasm0access_t0type;
+
+typedef ImmT  nlasm0release_field_t0type;
+
+typedef ImmT  nlasm0var_decl_t0type;
+
+typedef ImmT  nlasm0order_t0type;
+
+typedef ImmT  nlasm0ov_mk_t0type;
+
+typedef ImmT  nlasm0hash_iter_t0type;
 
 ImmT  nlasm0result_t();
 ImmT  nlasm0result_t0ptr(int _num, ImmT *_tab);
@@ -114,6 +116,8 @@ ImmT  nlasm0release_variant_t();
 ImmT  nlasm0release_variant_t0ptr(int _num, ImmT *_tab);
 ImmT  nlasm0hash_decl_t();
 ImmT  nlasm0hash_decl_t0ptr(int _num, ImmT *_tab);
+ImmT  nlasm0empty_hash_decl_t();
+ImmT  nlasm0empty_hash_decl_t0ptr(int _num, ImmT *_tab);
 ImmT  nlasm0hash_iter_t();
 ImmT  nlasm0hash_iter_t0ptr(int _num, ImmT *_tab);
 ImmT  nlasm0hash_dest_iter_t();
