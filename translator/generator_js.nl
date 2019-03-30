@@ -255,7 +255,8 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 			ref call_counter) . ';';
 	} case :release_field(var release_field) {
 		result = print_internal_call('c_rt_lib', 'hash_set_value', [:ref(release_field->old_owner),
-			:str(release_field->field_name), :reg(release_field->current_owner)], ref call_counter) . ';';
+			:str(print_str_imm(release_field->field_name, ref consts)), :reg(release_field->current_owner)],
+			ref call_counter) . ';';
 	} case :use_index(var use_index) {
 		result = print_register_to_assign(use_index->new_owner) . print_register(use_index->old_owner) . '.get_index(' . 
 			print_register(use_index->index) . ');';
