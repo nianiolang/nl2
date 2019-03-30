@@ -9900,129 +9900,211 @@ return NULL;
 bool  pretty_printer_priv0is_proper_hash_key(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 pretty_printer_priv0__const__init();
-ImmT  ___nl__im__1 = NULL;
-ImmT  ___nl__im__2 = NULL;
+bool  ___nl__bool__1 = false;
+INT  ___nl__int__2 = 0;
 INT  ___nl__int__3 = 0;
 INT  ___nl__int__4 = 0;
-INT  ___nl__int__5 = 0;
+bool  ___nl__bool__5 = false;
 bool  ___nl__bool__6 = false;
-INT  ___nl__int__7 = 0;
-ImmT  ___nl__im__8 = NULL;
-bool  ___nl__bool__9 = false;
-ImmT  ___nl__im__10 = NULL;
-bool  ___nl__bool__11 = false;
-bool  ___nl__bool__12 = false;
+ImmT  ___nl__im__7 = NULL;
+INT  ___nl__int__8 = 0;
+INT  ___nl__int__9 = 0;
+bool  ___nl__bool__10 = false;
+ImmT  ___nl__im__11 = NULL;
+ImmT  ___nl__im__12 = NULL;
+INT  ___nl__int__13 = 0;
+INT  ___nl__int__14 = 0;
+INT  ___nl__int__15 = 0;
+bool  ___nl__bool__16 = false;
+INT  ___nl__int__17 = 0;
+ImmT  ___nl__im__18 = NULL;
+bool  ___nl__bool__19 = false;
+ImmT  ___nl__im__20 = NULL;
+bool  ___nl__bool__21 = false;
+bool  ___nl__bool__22 = false;
 #line 619
-c_rt_lib0move(&___nl__im__1, string0to_array(___nl__im__0));
+___nl__int__2 = string0length(___nl__im__0);
 #line 619
 ___nl__int__3 = 0;
 #line 619
-___nl__int__4 = 1;
+___nl__int__4 = ___nl__int__2 == ___nl__int__3;
 #line 619
-___nl__int__5 = c_rt_lib0array_len(___nl__im__1);
+___nl__bool__1 = ___nl__int__4;
 #line 619
-label_4:
+//clear ___nl__int__2;
+#line 619
+//clear ___nl__int__3;
+#line 619
+//clear ___nl__int__4;
+#line 619
+___nl__bool__1 = !___nl__bool__1;
+#line 619
+if(___nl__bool__1){ goto label_14;}
+#line 619
+___nl__bool__5 = false;
+#line 619
+c_rt_lib0clear(&___nl__im__0);
+#line 619
+//clear ___nl__bool__1;
+#line 619
+return ___nl__bool__5;
+#line 619
+goto label_14;
+#line 619
+label_14:
 ;
 #line 619
-___nl__int__7 = ___nl__int__3 >= ___nl__int__5;
+//clear ___nl__bool__1;
 #line 619
-___nl__bool__6 = ___nl__int__7;
-#line 619
-if(___nl__bool__6){ goto label_41;}
-#line 619
-c_rt_lib0move(&___nl__im__8, c_rt_lib0array_get(___nl__im__1, ___nl__int__3));
-#line 619
-c_rt_lib0copy(&___nl__im__2, ___nl__im__8);
+//clear ___nl__bool__5;
 #line 620
-___nl__bool__9 = string0is_letter(___nl__im__2);
+___nl__int__8 = 0;
 #line 620
-if(___nl__bool__9){ goto label_13;}
+___nl__int__9 = 1;
 #line 620
-___nl__bool__9 = string0is_digit(___nl__im__2);
+c_rt_lib0move(&___nl__im__7, string0substr(___nl__im__0, ___nl__int__8, ___nl__int__9));
 #line 620
-label_13:
-;
+//clear ___nl__int__8;
 #line 620
-if(___nl__bool__9){ goto label_18;}
+//clear ___nl__int__9;
 #line 620
-c_rt_lib0move(&___nl__im__10,___get_global_string_const(108));
+___nl__bool__6 = string0is_letter(___nl__im__7);
 #line 620
-___nl__bool__9 = c_rt_lib0eq(___nl__im__2, ___nl__im__10);
+c_rt_lib0clear(&___nl__im__7);
 #line 620
-c_rt_lib0clear(&___nl__im__10);
+___nl__bool__6 = !___nl__bool__6;
 #line 620
-label_18:
-;
+___nl__bool__6 = !___nl__bool__6;
 #line 620
-___nl__bool__9 = !___nl__bool__9;
+if(___nl__bool__6){ goto label_32;}
 #line 620
-___nl__bool__9 = !___nl__bool__9;
-#line 620
-if(___nl__bool__9){ goto label_35;}
-#line 620
-___nl__bool__11 = false;
+___nl__bool__10 = false;
 #line 620
 c_rt_lib0clear(&___nl__im__0);
 #line 620
-c_rt_lib0clear(&___nl__im__1);
+//clear ___nl__bool__6;
 #line 620
-c_rt_lib0clear(&___nl__im__2);
+return ___nl__bool__10;
 #line 620
-//clear ___nl__int__3;
+goto label_32;
 #line 620
-//clear ___nl__int__4;
-#line 620
-//clear ___nl__int__5;
+label_32:
+;
 #line 620
 //clear ___nl__bool__6;
 #line 620
-//clear ___nl__int__7;
-#line 620
-c_rt_lib0clear(&___nl__im__8);
-#line 620
-//clear ___nl__bool__9;
-#line 620
-return ___nl__bool__11;
-#line 620
-goto label_35;
-#line 620
-label_35:
+//clear ___nl__bool__10;
+#line 621
+c_rt_lib0move(&___nl__im__11, string0to_array(___nl__im__0));
+#line 621
+___nl__int__13 = 0;
+#line 621
+___nl__int__14 = 1;
+#line 621
+___nl__int__15 = c_rt_lib0array_len(___nl__im__11);
+#line 621
+label_39:
 ;
-#line 620
-//clear ___nl__bool__9;
-#line 620
-//clear ___nl__bool__11;
-#line 620
-c_rt_lib0clear(&___nl__im__2);
 #line 621
-___nl__int__3 = ___nl__int__3 + ___nl__int__4;
+___nl__int__17 = ___nl__int__13 >= ___nl__int__15;
 #line 621
-goto label_4;
+___nl__bool__16 = ___nl__int__17;
 #line 621
-label_41:
+if(___nl__bool__16){ goto label_76;}
+#line 621
+c_rt_lib0move(&___nl__im__18, c_rt_lib0array_get(___nl__im__11, ___nl__int__13));
+#line 621
+c_rt_lib0copy(&___nl__im__12, ___nl__im__18);
+#line 622
+___nl__bool__19 = string0is_letter(___nl__im__12);
+#line 622
+if(___nl__bool__19){ goto label_48;}
+#line 622
+___nl__bool__19 = string0is_digit(___nl__im__12);
+#line 622
+label_48:
 ;
 #line 622
-___nl__bool__12 = true;
+if(___nl__bool__19){ goto label_53;}
+#line 622
+c_rt_lib0move(&___nl__im__20,___get_global_string_const(108));
+#line 622
+___nl__bool__19 = c_rt_lib0eq(___nl__im__12, ___nl__im__20);
+#line 622
+c_rt_lib0clear(&___nl__im__20);
+#line 622
+label_53:
+;
+#line 622
+___nl__bool__19 = !___nl__bool__19;
+#line 622
+___nl__bool__19 = !___nl__bool__19;
+#line 622
+if(___nl__bool__19){ goto label_70;}
+#line 622
+___nl__bool__21 = false;
 #line 622
 c_rt_lib0clear(&___nl__im__0);
 #line 622
-c_rt_lib0clear(&___nl__im__1);
+c_rt_lib0clear(&___nl__im__11);
 #line 622
-c_rt_lib0clear(&___nl__im__2);
+c_rt_lib0clear(&___nl__im__12);
 #line 622
-//clear ___nl__int__3;
+//clear ___nl__int__13;
 #line 622
-//clear ___nl__int__4;
+//clear ___nl__int__14;
 #line 622
-//clear ___nl__int__5;
+//clear ___nl__int__15;
 #line 622
-//clear ___nl__bool__6;
+//clear ___nl__bool__16;
 #line 622
-//clear ___nl__int__7;
+//clear ___nl__int__17;
 #line 622
-c_rt_lib0clear(&___nl__im__8);
+c_rt_lib0clear(&___nl__im__18);
 #line 622
-return ___nl__bool__12;
+//clear ___nl__bool__19;
+#line 622
+return ___nl__bool__21;
+#line 622
+goto label_70;
+#line 622
+label_70:
+;
+#line 622
+//clear ___nl__bool__19;
+#line 622
+//clear ___nl__bool__21;
+#line 622
+c_rt_lib0clear(&___nl__im__12);
+#line 623
+___nl__int__13 = ___nl__int__13 + ___nl__int__14;
+#line 623
+goto label_39;
+#line 623
+label_76:
+;
+#line 624
+___nl__bool__22 = true;
+#line 624
+c_rt_lib0clear(&___nl__im__0);
+#line 624
+c_rt_lib0clear(&___nl__im__11);
+#line 624
+c_rt_lib0clear(&___nl__im__12);
+#line 624
+//clear ___nl__int__13;
+#line 624
+//clear ___nl__int__14;
+#line 624
+//clear ___nl__int__15;
+#line 624
+//clear ___nl__bool__16;
+#line 624
+//clear ___nl__int__17;
+#line 624
+c_rt_lib0clear(&___nl__im__18);
+#line 624
+return ___nl__bool__22;
 return false;
 
 }
