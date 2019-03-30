@@ -800,7 +800,7 @@ c_rt_lib0string_new_to_memory("get_true",___global_string_const__ + ___global_co
 c_rt_lib0string_new_to_memory("get_false",___global_string_const__ + ___global_const_offset * 781);
 c_rt_lib0string_new_to_memory("label = ",___global_string_const__ + ___global_const_offset * 782);
 c_rt_lib0string_new_to_memory("; continue;",___global_string_const__ + ___global_const_offset * 783);
-c_rt_lib0string_new_to_memory(": undefined,",___global_string_const__ + ___global_const_offset * 784);
+c_rt_lib0string_new_to_memory(": {},",___global_string_const__ + ___global_const_offset * 784);
 c_rt_lib0string_new_to_memory(".value = ",___global_string_const__ + ___global_const_offset * 785);
 c_rt_lib0string_new_to_memory("return null;",___global_string_const__ + ___global_const_offset * 786);
 c_rt_lib0string_new_to_memory("bool_not",___global_string_const__ + ___global_const_offset * 787);
