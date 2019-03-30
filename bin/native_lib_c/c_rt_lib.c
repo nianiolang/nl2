@@ -1186,13 +1186,6 @@ bool c_rt_lib0is_hash(ImmT ___nl__imm) {
 	return false;
 }
 
-bool c_rt_lib0is_sim(ImmT ___nl__imm) {
-	NlData *d =  (NlData *)___nl__imm;
-	if (IS_STRING(d) || IS_INT(d) || IS_FUNC(d))
-		return true;
-	return false;
-}
-
 bool c_rt_lib0is_int(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;
 	return IS_INT(d);

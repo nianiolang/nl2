@@ -27,7 +27,7 @@ bool  ___nl__bool__1 = false;
 ImmT  ___nl__im__2 = NULL;
 ImmT  ___nl__im__3 = NULL;
 #line 7
-c_rt_lib0move(&___nl__im__2,___get_global_string_const(41));
+c_rt_lib0move(&___nl__im__2,___get_global_string_const(40));
 #line 7
 ___nl__bool__1 = c_rt_lib0eq(___nl__im__0, ___nl__im__2);
 #line 7

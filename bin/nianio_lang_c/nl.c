@@ -89,42 +89,6 @@ return false;
 
 }
 
-bool  nl0is_sim0ptr(int _num, ImmT *_tab){
-c_rt_lib0func_num_args(_num, 1, "nl0is_sim");
-ImmT  *var0 = &(_tab[0]);
-return nl0is_sim(*var0);
-}
-bool  nl0is_sim(ImmT  ___nl__im__0) {
-c_rt_lib0arg_val(___nl__im__0);
-nl_priv0__const__init();
-bool  ___nl__bool__1 = false;
-bool  ___nl__bool__2 = false;
-#line 17
-___nl__bool__2 = c_std_lib0is_sim(___nl__im__0);
-#line 17
-if(___nl__bool__2){ goto label_4;}
-#line 17
-___nl__bool__1 = false;
-#line 17
-goto label_6;
-#line 17
-label_4:
-;
-#line 17
-___nl__bool__1 = true;
-#line 17
-label_6:
-;
-#line 17
-//clear ___nl__bool__2;
-#line 17
-c_rt_lib0clear(&___nl__im__0);
-#line 17
-return ___nl__bool__1;
-return false;
-
-}
-
 bool  nl0is_int0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_int");
 ImmT  *var0 = &(_tab[0]);
@@ -135,27 +99,27 @@ c_rt_lib0arg_val(___nl__im__0);
 nl_priv0__const__init();
 bool  ___nl__bool__1 = false;
 bool  ___nl__bool__2 = false;
-#line 21
+#line 17
 ___nl__bool__2 = c_std_lib0is_int(___nl__im__0);
-#line 21
+#line 17
 if(___nl__bool__2){ goto label_4;}
-#line 21
+#line 17
 ___nl__bool__1 = false;
-#line 21
+#line 17
 goto label_6;
-#line 21
+#line 17
 label_4:
 ;
-#line 21
+#line 17
 ___nl__bool__1 = true;
-#line 21
+#line 17
 label_6:
 ;
-#line 21
+#line 17
 //clear ___nl__bool__2;
-#line 21
+#line 17
 c_rt_lib0clear(&___nl__im__0);
-#line 21
+#line 17
 return ___nl__bool__1;
 return false;
 
@@ -171,8 +135,44 @@ c_rt_lib0arg_val(___nl__im__0);
 nl_priv0__const__init();
 bool  ___nl__bool__1 = false;
 bool  ___nl__bool__2 = false;
-#line 25
+#line 21
 ___nl__bool__2 = c_std_lib0is_string(___nl__im__0);
+#line 21
+if(___nl__bool__2){ goto label_4;}
+#line 21
+___nl__bool__1 = false;
+#line 21
+goto label_6;
+#line 21
+label_4:
+;
+#line 21
+___nl__bool__1 = true;
+#line 21
+label_6:
+;
+#line 21
+//clear ___nl__bool__2;
+#line 21
+c_rt_lib0clear(&___nl__im__0);
+#line 21
+return ___nl__bool__1;
+return false;
+
+}
+
+bool  nl0is_printable0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 1, "nl0is_printable");
+ImmT  *var0 = &(_tab[0]);
+return nl0is_printable(*var0);
+}
+bool  nl0is_printable(ImmT  ___nl__im__0) {
+c_rt_lib0arg_val(___nl__im__0);
+nl_priv0__const__init();
+bool  ___nl__bool__1 = false;
+bool  ___nl__bool__2 = false;
+#line 25
+___nl__bool__2 = c_std_lib0is_printable(___nl__im__0);
 #line 25
 if(___nl__bool__2){ goto label_4;}
 #line 25
