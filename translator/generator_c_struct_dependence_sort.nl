@@ -93,7 +93,6 @@ def get_required_types_list(name : ptd::string(), type : @tct::meta_type,
 			array::push(ref node->struct, get_fun_name(ref_name)) if name ne get_name(type);
 		}
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {
@@ -125,7 +124,6 @@ def generator_c_struct_dependence_sort::is_divisible(type : @tct::meta_type) : p
 		return true;
 	} case :tct_ref(var ref_name) {
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {

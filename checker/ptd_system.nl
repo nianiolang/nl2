@@ -40,7 +40,6 @@ def ptd_system::is_equal(a : @tct::meta_type, b : @tct::meta_type) : ptd::bool()
 		return false;
 	} case :tct_ref(var ref_name) {
 		return false unless ref_name eq b as :tct_ref;
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 		return false;
@@ -192,8 +191,6 @@ def cross_type(a : @tct::meta_type, b : @tct::meta_type, ref_inf : @tc_types::re
 		return b;
 	} case :tct_im {
 		return :tct_im;
-	} case :tct_sim {
-		return :tct_sim if b is :tct_sim;
 	} case :tct_int {
 		if (b is :tct_int) {
 			return :tct_int;
@@ -543,9 +540,6 @@ def check_assignment_info(to : @tct::meta_type, from : @tct::meta_type, ref_inf 
 		die;
 	} case :tct_void {
 		die;
-	} case :tct_sim {
-		return :ok if from is :tct_sim;
-		return mk_err(to, from);
 	} case :tct_int {
 		return :ok if from is :tct_int;
 		return mk_err(to, from);
@@ -732,7 +726,6 @@ def get_ref_in_type(type : @tct::meta_type, ref refs : ptd::hash(ptd::string()))
 	} case :tct_ref(var ref_name) {
 		hash::set_value(ref refs, ref_name, '');
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {

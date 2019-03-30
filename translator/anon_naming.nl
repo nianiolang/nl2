@@ -30,8 +30,6 @@ def anon_naming::get_anon_name_loop(type : @tct::meta_type) : ptd::string() {
 		return '0ref' . anon_naming::func_ref_to_struct_name(ref_name);
 	} case :tct_void {
 		return '0void';
-	} case :tct_sim {
-		return '0im';
 	} case :tct_int {
 		return '0int';
 	} case :tct_string {

@@ -68,7 +68,6 @@ def ptd::meta_type() {
 				module => ptd::string(), 
 				name => ptd::string()
 			}),
-			ptd_sim => ptd::none(),
 			ptd_int => ptd::none(),
 			ptd_string => ptd::none(),
 			ptd_bool => ptd::none(),
@@ -204,7 +203,6 @@ def ptd::is_ref_type(ptd, type_name) {
 		}
 		return true;
 	} case :ptd_im {
-	} case :ptd_sim {
 	} case :ptd_arr(var arr) {
 	} case :ptd_var(var variants) {
 	} case :ptd_rec(var recs) {
@@ -237,7 +235,8 @@ def ptd::try_dynamic_cast(type, value) : @ptd::cast_t {
 
 def ptd::imm_kind_t(){
 	return ptd::var({
-		sim => ptd::none(),
+		int => ptd::none(),
+		string => ptd::none(),
 		hash => ptd::none(),
 		variant => ptd::none(),
 		array => ptd::none(),
@@ -258,7 +257,8 @@ def ptd::cast_error_t(){
 			hash_expected => @ptd::imm_kind_t,
 			array_expected => @ptd::imm_kind_t,
 			rec_expected => @ptd::imm_kind_t,
-			sim_expected => @ptd::imm_kind_t,
+			int_expected => @ptd::imm_kind_t,
+			string_expected => @ptd::imm_kind_t,
 			variant_expected => @ptd::imm_kind_t,
 			rec_size => ptd::int(),
 			no_key => ptd::string(),
@@ -269,7 +269,8 @@ def ptd::cast_error_t(){
 	}));
 }
 def ptd::get_imm_kind(imm) : @ptd::imm_kind_t {
-	return :sim if c_std_lib::is_sim(imm);
+	return :int if c_std_lib::is_int(imm);
+	return :string if c_std_lib::is_string(imm);
 	return :variant if c_std_lib::is_variant(imm);
 	return :hash if c_std_lib::is_hash(imm);
 	return :array if c_std_lib::is_array(imm);
@@ -307,9 +308,9 @@ def try_dynamic_cast(type, value) : @ptd::cast_error_t {
 			}
 		}
 	} case :ptd_int {
-		return [:error(:sim_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_sim(value);
+		return [:error(:int_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_int(value);
 	} case :ptd_string {
-		return [:error(:sim_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_sim(value);
+		return [:error(:string_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_string(value);
 	} case :ptd_var(var ptd_var) {
 		return [:error(:variant_expected(ptd::get_imm_kind(type)))] unless c_std_lib::is_variant(value);
 		var name = ov::get_element(value);

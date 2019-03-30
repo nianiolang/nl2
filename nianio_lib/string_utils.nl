@@ -79,8 +79,8 @@ def string_utils::is_float(obj : ptd::string()) : ptd::bool() {
 }
 
 def string_utils::is_number(string) : ptd::bool() {
-	var sim : ptd::string() = string . '';
-	return string_utils::is_integer(sim) || string_utils::is_float(sim);
+	var str : ptd::string() = string . '';
+	return string_utils::is_integer(str) || string_utils::is_float(str);
 }
 
 def string_utils::get_number(str) : ptd::var({ok => ptd::string(), err => ptd::none()}) {

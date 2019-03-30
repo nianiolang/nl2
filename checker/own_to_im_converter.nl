@@ -63,8 +63,6 @@ def own_to_im_converter::get_required_arg_type(type : @tct::meta_type, known_typ
 		return 'ref';
 	} case :tct_ref (var p) {
 		return own_to_im_converter::get_required_arg_type(known_types{p}, known_types);
-	} case :tct_sim {
-		return '';
 	} case :tct_int {
 		return '';
 	} case :tct_string {
@@ -132,8 +130,6 @@ def get_type_constructor(type : @tct::meta_type, remove_owns : ptd::bool(), know
 		} else {
 			res = '@' . p;
 		}
-	} case :tct_sim {
-		res = 'ptd::string()';
 	} case :tct_int {
 		res = 'ptd::int()';
 	} case :tct_string {
@@ -204,8 +200,6 @@ def own_to_im_converter::get_function(type : @tct::meta_type, known_types : ptd:
 			}
 		}
 	} case :tct_ref (var p) {
-		die;
-	} case :tct_sim {
 		die;
 	} case :tct_int {
 		die;

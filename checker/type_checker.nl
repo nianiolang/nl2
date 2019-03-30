@@ -86,7 +86,6 @@ def check_types_imported(type : @tct::meta_type, ref modules : @tc_types::module
 			add_error(ref errors, 'wrong type name ''' . ref_name . ''' ');
 		}
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {
@@ -372,7 +371,7 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 	match (cmd->cmd) case :if(var as_if) {
 		var vars_op : @tc_types::vars_t = vars;
 		var if_cond_type : @tc_types::type = check_val(as_if->cond, ref modules, ref vars_op, ref errors, known_types);
-		add_error(ref errors, 'if argument should be sim or boolean instead of ' . 
+		add_error(ref errors, 'if argument should be boolean instead of ' . 
 				get_print_tct_type_name(if_cond_type->type))
 			unless ptd_system::is_condition_type(if_cond_type, ref modules, ref errors);
 		check_cmd(ref as_if->if, ref modules, ref vars_op, ref errors, known_types);
@@ -381,7 +380,7 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 			var elsif_s = as_if->elsif[i];
 			errors->current_line = elsif_s->cmd->debug->begin->line;
 			var elsif_cond : @tc_types::type = check_val(elsif_s->cond, ref modules, ref vars, ref errors, known_types);
-			add_error(ref errors, 'elsif condition should be sim or boolean instead of ' . 
+			add_error(ref errors, 'elsif condition should be boolean instead of ' . 
 					get_print_tct_type_name(elsif_cond->type))
 				unless ptd_system::is_condition_type(elsif_cond, ref modules, ref errors);
 			var vars_cmd : @tc_types::vars_t = vars;
@@ -400,7 +399,7 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 		var vars_op : @tc_types::vars_t = vars;
 		if (!(as_for->cond->value is :nop)) {
 			var for_cond : @tc_types::type = check_val(as_for->cond, ref modules, ref vars_op, ref errors, known_types);
-			add_error(ref errors, 'for condition should be sim or boolean instead of ' . 
+			add_error(ref errors, 'for condition should be boolean instead of ' . 
 					get_print_tct_type_name(for_cond->type))
 				unless ptd_system::is_condition_type(for_cond, ref modules, ref errors);
 			join_vars(ref vars_op, vars, ref modules, ref errors, known_types);
@@ -432,7 +431,7 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 	} case :if_mod(var if_mod) {
 		var vars_op : @tc_types::vars_t = vars;
 		var if_cond_type : @tc_types::type = check_val(if_mod->cond, ref modules, ref vars_op, ref errors, known_types);
-		add_error(ref errors, 'if argument should be sim or boolean type instead of ' . 
+		add_error(ref errors, 'if argument should be boolean type instead of ' . 
 				get_print_tct_type_name(if_cond_type->type))
 			unless ptd_system::is_condition_type(if_cond_type, ref modules, ref errors);
 		check_cmd(ref if_mod->cmd, ref modules, ref vars_op, ref errors, known_types);
@@ -440,7 +439,7 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 		cmd->cmd = :if_mod(if_mod);
 	} case :unless_mod(var unless_mod) {
 		var unless_cond_type : @tc_types::type = check_val(unless_mod->cond, ref modules, ref vars, ref errors, known_types);
-		add_error(ref errors, 'unless argument should be sim or boolean type instead of ' . 
+		add_error(ref errors, 'unless argument should be boolean type instead of ' . 
 				get_print_tct_type_name(unless_cond_type->type))
 			unless ptd_system::is_condition_type(unless_cond_type, ref modules, ref errors);
 		var vars_op : @tc_types::vars_t = vars;
@@ -643,7 +642,7 @@ def check_fora(ref as_fora : @nast::fora_t, ref modules : @tc_types::modules_t, 
 def check_while(ref as_while : @nast::while_t, ref modules : @tc_types::modules_t, ref vars : @tc_types::vars_t, ref errors
 		: @tc_types::errors_t, known_types : ptd::hash(@tct::meta_type)) : ptd::void() {
 	var cond_type : @tc_types::type = check_val(as_while->cond, ref modules, ref vars, ref errors, known_types);
-	add_error(ref errors, 'while argument should be sim or boolean type insteand of ' . 
+	add_error(ref errors, 'while argument should be boolean type insteand of ' . 
 			get_print_tct_type_name(cond_type->type))
 		unless ptd_system::is_condition_type(cond_type, ref modules, ref errors);
 	var vars_op : @tc_types::vars_t = vars;
@@ -766,7 +765,7 @@ def check_val(val : @nast::value_t, ref modules : @tc_types::modules_t, ref vars
 	var ret = tc_types::get_default_type();
 	match (val->value) case :ternary_op(var ternary_op) {
 		var cond_type = check_val(ternary_op->fst, ref modules, ref vars, ref errors, known_types);
-		add_error(ref errors, 'ternary op first argument should be sim or boolean type instead of ' . 
+		add_error(ref errors, 'ternary op first argument should be boolean type instead of ' . 
 				get_print_tct_type_name(cond_type->type))
 			unless ptd_system::is_condition_type(cond_type, ref modules, ref errors);
 		var rt = check_val(ternary_op->snd, ref modules, ref vars, ref errors, known_types)->type;
@@ -1208,18 +1207,6 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::arr(tct::tct_im()), name => ''},
 			]
 		});
-	hash::set_value(ref f, 'c_std_lib::is_sim', {
-			r => tct::bool(),
-			a => [
-				{mod => :none, type => tct::tct_im(), name => ''},
-			]
-		});
-	hash::set_value(ref f, 'c_std_lib::is_printable', {
-			r => tct::bool(),
-			a => [
-				{mod => :none, type => tct::tct_im(), name => ''},
-			]
-		});
 	hash::set_value(ref f, 'c_std_lib::is_int', {
 			r => tct::bool(),
 			a => [
@@ -1227,6 +1214,12 @@ def get_special_functions() : @tc_types::special_functions {
 			]
 		});
 	hash::set_value(ref f, 'c_std_lib::is_string', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_std_lib::is_printable', {
 			r => tct::bool(),
 			a => [
 				{mod => :none, type => tct::tct_im(), name => ''},
@@ -1311,18 +1304,6 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::tct_im(), name => ''},
 			]
 		});
-	hash::set_value(ref f, 'c_rt_lib::is_sim', {
-			r => tct::bool(),
-			a => [
-				{mod => :none, type => tct::tct_im(), name => ''},
-			]
-		});
-	hash::set_value(ref f, 'c_rt_lib::is_printable', {
-			r => tct::bool(),
-			a => [
-				{mod => :none, type => tct::tct_im(), name => ''},
-			]
-		});
 	hash::set_value(ref f, 'c_rt_lib::is_int', {
 			r => tct::bool(),
 			a => [
@@ -1330,6 +1311,12 @@ def get_special_functions() : @tc_types::special_functions {
 			]
 		});
 	hash::set_value(ref f, 'c_rt_lib::is_string', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::is_printable', {
 			r => tct::bool(),
 			a => [
 				{mod => :none, type => tct::tct_im(), name => ''},
@@ -1845,8 +1832,6 @@ def get_print_tct_type_name(type : @tct::meta_type) : ptd::string() {
 		return 'ptd::ptd_im()';
 	} case :tct_void {
 		return 'ptd::void()';
-	} case :tct_sim {
-		return 'ptd::string()';
 	} case :tct_int {
 		return 'ptd::int()';
 	} case :tct_string {
@@ -1906,8 +1891,6 @@ def get_print_tct_label(type : @tct::meta_type) : ptd::string() {
 		return 'ptd::ptd_im';
 	} case :tct_void {
 		return 'ptd::void';
-	} case :tct_sim {
-		return 'ptd::string';
 	} case :tct_int {
 		return 'ptd::int';
 	} case :tct_string {

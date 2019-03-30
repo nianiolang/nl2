@@ -247,7 +247,6 @@ def check_types_imported(type : @tct::meta_type, ref state : @module_checker::st
 			add_error(ref state->errors, 'wrong type function name ''' . ref_name . ''' ');
 		}
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {

@@ -262,11 +262,11 @@ def generate_global_const_files(ref state : @generator_c::state_t) : @generator_
 		'___global_string_const__ = alloc_mem(' . string_len . ' * ___global_const_offset);
 		'');
 	rep var i (int_len) {
-		println(ref state, create_sim_to_memory(int[i]->value,
+		println(ref state, create_int_to_memory(int[i]->value,
 			'___global_int_const__ + ___global_const_offset * ' . i) . ';');
 	}
 	rep var i (string_len) {
-		println(ref state, create_sim_to_memory(string[i]->value,
+		println(ref state, create_string_to_memory(string[i]->value,
 			'___global_string_const__ + ___global_const_offset * ' . i) . ';');
 	}
 	println(ref state, '
@@ -583,7 +583,7 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 		} case :const(var tab) {
 			if (cmd->cmd is :load_const) {
 				var value = (cmd->cmd as :load_const)->val;
-				if (nl::is_sim(value)) {
+				if (nl::is_int(value) || nl::is_string(value)) {
 					print_cmd(ref state, cmd, defined_types);
 					continue;
 				}
@@ -710,7 +710,7 @@ def generate_imm(ref state : @generator_c::state_t, obj) : ptd::void() {
 
 			var obj_val = ov::get_value(obj);
 			if ((obj is :ref) && nl::is_hash(obj_val) && (hash::size(obj_val) == 2) && hash::has_key(obj_val, 'name') && hash::has_key(obj_val, 'module')) {
-				if (nl::is_sim(obj_val->name) && nl::is_sim(obj_val->module)) {
+				if (nl::is_string(obj_val->name) && nl::is_string(obj_val->module)) {
 					print(ref state, get_func_pointer(ref state, ptd::ensure(ptd::string(), obj_val->module), ptd::ensure(ptd::string(), obj_val->name)));
 				} else {
 					generate_imm(ref state, obj_val);	
@@ -1460,20 +1460,20 @@ def create_string(str : ptd::string()) : ptd::string() {
 	return get_lib_fun('string_new') . '("' . str . '")';
 }
 
-def create_sim_to_memory(obj, memory : ptd::string()) : ptd::string() {
-	if (nl::is_int(obj)) {
-		return get_lib_fun('int_new_to_memory') . '(' . obj . ',' . memory . ')';
-	} else {
-		var str = obj . '';
-		str = string::replace(str, '\', '\\');
-		str = string::replace(str, string::lf(), '\n');
-		str = string::replace(str, string::r(), '\r');
-		str = string::replace(str, string::tab(), '\t');
-		str = string::replace(str, '"', '\"');
-		str = string::replace(str, '''', '\''');
-		str = string::replace(str, string::chr(0), '\0');
-		return get_lib_fun('string_new_to_memory') . '("' . str . '",' . memory . ')';
-	}
+def create_int_to_memory(obj, memory : ptd::string()) : ptd::string() {
+	return get_lib_fun('int_new_to_memory') . '(' . obj . ',' . memory . ')';
+}
+
+def create_string_to_memory(obj, memory : ptd::string()) : ptd::string() {
+	var str = obj . '';
+	str = string::replace(str, '\', '\\');
+	str = string::replace(str, string::lf(), '\n');
+	str = string::replace(str, string::r(), '\r');
+	str = string::replace(str, string::tab(), '\t');
+	str = string::replace(str, '"', '\"');
+	str = string::replace(str, '''', '\''');
+	str = string::replace(str, string::chr(0), '\0');
+	return get_lib_fun('string_new_to_memory') . '("' . str . '",' . memory . ')';
 }
 
 def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() {
@@ -1510,8 +1510,6 @@ def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() 
 	} case :tct_ref(var ref_name) {
 		return anon_naming::func_ref_to_struct_name(ref_name);
 	} case :tct_void {
-		return im_t();
-	} case :tct_sim {
 		return im_t();
 	} case :tct_int {
 		return int_t();
@@ -1681,7 +1679,6 @@ def get_additional_type_functions_decl(type_name : ptd::string(), type : @tct::m
 		ret .= get_rec_free_fun_header(type_name, state->mod_name, anon) . ';' . string::lf();
 	} case :tct_ref(var ref_name) {
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {
@@ -1718,7 +1715,6 @@ def get_additional_type_functions_def(type_name : ptd::string(), type : @tct::me
 		ret .= get_rec_free_fun_def(type_name, state->mod_name, anon) . string::lf();
 	} case :tct_ref(var ref_name) {
 	} case :tct_void {
-	} case :tct_sim {
 	} case :tct_int {
 	} case :tct_string {
 	} case :tct_bool {
@@ -2007,8 +2003,6 @@ def get_clean_fun_call_exact(type : @tct::meta_type, type_name : ptd::string(), 
 		}
 	} case :tct_string {
 		ret = get_fun_lib('delete', [var_name]);
-	} case :tct_sim {
-		ret = get_fun_lib('delete', [var_name]);
 	} case :tct_bool {
 	} case :tct_void {
 	} case :tct_empty {
@@ -2051,7 +2045,7 @@ def get_hash_clean_fun_def(hash_type_name : ptd::string(), hash_type : @tct::met
 	return get_hash_clean_fun_header(hash_type_name, mod_name, anon) . ' {
 		'for (unsigned int i = 0; i < hash.capacity; i++) {
 		'	if (hash.keys[i] != NULL) {
-		'		' . get_clean_fun_call(:tct_sim, mod_name, 'hash.keys[i]', defined_types) . ';
+		'		' . get_clean_fun_call(:tct_string, mod_name, 'hash.keys[i]', defined_types) . ';
 		'		' . get_clean_fun_call(hash_type, mod_name, 'hash.values[i]', defined_types) . ';
 		'	}
 		'}
@@ -2145,9 +2139,6 @@ def get_free_fun_call_exact(type : @tct::meta_type, type_name : ptd::string(), m
 	} case :tct_string {
 		ret = get_fun_lib('clear', [var_name]) . ';
 			'free_mem(var.value.internal, sizeof(ImmT))';
-	} case :tct_sim {
-		ret = get_fun_lib('clear', [var_name]) . ';
-			'free_mem(var.value.internal, sizeof(ImmT))';
 	} case :tct_bool {
 		ret = 'free_mem(' . var_name . ', sizeof(bool))';
 	} case :tct_void {
@@ -2238,8 +2229,6 @@ def is_anon(type : @tct::meta_type) : ptd::bool() {
 	} case :tct_own_var(var inner_type) {
 		return true;
 	} case :tct_ref(var inner_type) {
-		return false;
-	} case :tct_sim {
 		return false;
 	} case :tct_int {
 		return false;

@@ -123,13 +123,12 @@ var instadb;
 		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'string');
 	}
 
-	_namespace.c_std_lib.is_variant = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'ov');
+	_namespace.c_std_lib.is_printable = function(imm) {
+		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int' || imm.get_imm_type() == 'string');
 	}
 
-	// TODO remove it
-	_namespace.c_std_lib.is_sim = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int' || imm.get_imm_type() == 'string');
+	_namespace.c_std_lib.is_variant = function(imm) {
+		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'ov');
 	}
 
 	_namespace.c_std_lib.exec = function(func, /*ref*/arr) {

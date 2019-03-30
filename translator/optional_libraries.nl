@@ -14,7 +14,7 @@ def optional_libraries::c_olympic_io(key : ptd::string(), ref ret_val : ptd::ptd
 	var error_message = :err('incorrect command');
 # c_olympic_io BEGIN
 	if (key eq 'c_olympic_io::print') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		c_olympic_io::print(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_olympic_io::readln') {
@@ -39,35 +39,35 @@ def optional_libraries::c_fe_lib(key : ptd::string(), ref ret_val : ptd::ptd_im(
 	var error_message = :err('incorrect command');
 # c_fe_lib BEGIN
 	if (key eq 'c_fe_lib::print') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		c_fe_lib::print(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::file_to_string') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::file_to_string(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::string_to_file') {
-		return error_message unless array::len(args) == 2 && nl::is_sim(args[0]) && nl::is_sim(args[1]);
+		return error_message unless array::len(args) == 2 && nl::is_printable(args[0]) && nl::is_printable(args[1]);
 		ret_val = c_fe_lib::string_to_file(args[0], args[1]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::get_file_size') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::get_file_size(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::get_modif_time') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::get_modif_time(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::get_module_files') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::get_module_files(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::get_module_files_rec') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::get_module_files_rec(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::mk_path') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::mk_path(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::get_time') {
@@ -91,7 +91,7 @@ def optional_libraries::c_fe_lib(key : ptd::string(), ref ret_val : ptd::ptd_im(
 		ret_val = c_fe_lib::sleep(args[0]);
 		return :ok('');
 	} elsif (key eq 'c_fe_lib::exec_cmd') {
-		return error_message unless array::len(args) == 1 && nl::is_sim(args[0]);
+		return error_message unless array::len(args) == 1 && nl::is_printable(args[0]);
 		ret_val = c_fe_lib::exec_cmd(args[0]);
 		return :ok('');
 	}

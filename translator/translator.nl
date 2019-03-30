@@ -1557,8 +1557,6 @@ def var_type_to_reg_type(type : @tct::meta_type, defined_types : ptd::hash(@tct:
 			return :int;
 		}
 		return :im;
-	} case :tct_sim {
-		return :im;
 	} case :tct_int {
 		return :int;
 	} case :tct_string {

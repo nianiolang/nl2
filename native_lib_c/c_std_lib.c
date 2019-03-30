@@ -287,10 +287,6 @@ bool c_std_lib0is_hash(ImmT ___nl__imm) {
 	return c_rt_lib0is_hash(___nl__imm);
 }
 
-bool c_std_lib0is_sim(ImmT ___nl__imm) {
-	return c_rt_lib0is_sim(___nl__imm);
-}
-
 bool c_std_lib0is_int(ImmT ___nl__imm) {
 	return c_rt_lib0is_int(___nl__imm);
 }

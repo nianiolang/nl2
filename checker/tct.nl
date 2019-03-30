@@ -114,7 +114,6 @@ def tct::meta_type() {
 			tct_var => ptd::hash(ptd::var({with_param => @tct::meta_type, no_param => ptd::none()})),
 			tct_own_var => ptd::hash(ptd::var({with_param => @tct::meta_type, no_param => ptd::none()})),
 			tct_ref => ptd::string(),
-			tct_sim => ptd::none(),
 			tct_int => ptd::none(),
 			tct_string => ptd::none(),
 			tct_bool => ptd::none(),
@@ -156,8 +155,6 @@ def tct::own_type_to_ptd(type : @tct::meta_type, defined_types : ptd::hash(@tct:
 	} case :tct_ref (var p) {
 		return :tct_ref(p) unless hash::has_key(defined_types, p);
 		return tct::own_type_to_ptd(defined_types{p}, defined_types);
-	} case :tct_sim {
-		return :tct_sim;
 	} case :tct_int {
 		return :tct_int;
 	} case :tct_string {
@@ -201,8 +198,6 @@ def tct::is_own_type(type : @tct::meta_type, defined_types : ptd::hash(@tct::met
 			return tct::is_own_type(defined_types{get_fun_name(p)}, defined_types);
 		}
 		return false; #assume somebody else handles the problem
-	} case :tct_sim {
-		return false;
 	} case :tct_int {
 		return false;
 	} case :tct_string {

@@ -3,11 +3,11 @@
 ###
 
 
-def boolean::to_nl(sim) {
-	return sim eq '1';
+def boolean::to_nl(str) {
+	return str eq '1';
 }
 
-def boolean::check_true(sim) {
-	return sim ? 1 : 0;
+def boolean::check_true(bool) {
+	return bool ? 1 : 0;
 }
 

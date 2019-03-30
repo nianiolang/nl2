@@ -365,14 +365,13 @@ def handle_debug(ref state : @dfile_dbg::state_out, obj) : ptd::bool() {
 def sprint(ref state : @dfile_dbg::state_out, obj : ptd::ptd_im(), indent : ptd::int(), is_debug : ptd::bool()) :
 		ptd::void() {
 	return if is_debug && handle_debug(ref state, obj);
-	if (nl::is_sim(obj)) {
-		if (nl::is_int(obj)) {
-			sp(ref state, 'int(');
-			sprintstr(ref state, obj);
-		} else {
-			sp(ref state, 'string(');
-			sprintstr(ref state, obj);
-		}
+	if (nl::is_int(obj)) {
+		sp(ref state, 'int(');
+		sprintstr(ref state, obj);
+		sp(ref state, ')');
+	} elsif(nl::is_string(obj)) {
+		sp(ref state, 'string(');
+		sprintstr(ref state, obj);
 		sp(ref state, ')');
 	} elsif (nl::is_array(obj)) {
 		sp(ref state, '[' . string::lf());
@@ -408,7 +407,7 @@ def print_net_formatstr(ref state : @dfile_dbg::state_out, str) : ptd::void() {
 }
 
 def print_net_format(ref state : @dfile_dbg::state_out, obj : ptd::ptd_im()) : ptd::void() {
-	if (nl::is_sim(obj)) {
+	if (nl::is_int(obj) || nl::is_string(obj)) {
 		print_net_formatstr(ref state, obj);
 	} elsif (nl::is_array(obj)) {
 		sp(ref state, '[');

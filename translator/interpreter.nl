@@ -631,20 +631,20 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 			return false unless nl::is_variant(arg);
 			return false unless (arg is :TRUE || arg is :FALSE);
 		} else {
-			return false unless nl::is_sim(arg);
+			return false unless nl::is_printable(arg);
 		}
 	} case :bin_op(var bin_op) {
 		var left = state->top->vars[bin_op->left->reg_no];
 		var right = state->top->vars[bin_op->right->reg_no];
-		return false unless nl::is_sim(left);
-		return false unless nl::is_sim(right);
+		return false unless nl::is_printable(left);
+		return false unless nl::is_printable(right);
 	} case :ov_is(var ov_is) {
 		return false unless nl::is_variant(state->top->vars[ov_is->src->reg_no]);
-		return false unless nl::is_sim(ov_is->type);
+		return false unless nl::is_printable(ov_is->type);
 	} case :ov_as(var ov_as) {
 		var arg = state->top->vars[ov_as->src->reg_no];
 		return false unless nl::is_variant(arg);
-		return false unless nl::is_sim(ov_as->type);
+		return false unless nl::is_printable(ov_as->type);
 		return false unless ov::is(arg, ov_as->type);
 	} case :return(var return_i) {
 	} case :die(var die_i) {
@@ -654,14 +654,14 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 		var arr = state->top->vars[get_frm_idx->src->reg_no];
 		return false unless nl::is_array(arr);
 		var idx = state->top->vars[get_frm_idx->idx->reg_no];
-		return false unless nl::is_sim(idx);
+		return false unless nl::is_printable(idx);
 		return false unless idx < array::len(arr);
 		return false unless idx >= 0;
 	} case :set_at_idx(var set_at_idx) {
 		var arr = state->top->vars[set_at_idx->src->reg_no];
 		return false unless nl::is_array(arr);
 		var idx = state->top->vars[set_at_idx->idx->reg_no];
-		return false unless nl::is_sim(idx);
+		return false unless nl::is_printable(idx);
 		return false unless idx < array::len(arr);
 	} case :array_push(var push) {
 		var arr = state->top->vars[push->dest->reg_no];
@@ -672,14 +672,14 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 	} case :get_val(var get_val) {
 		var hash = state->top->vars[get_val->src->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(get_val->key);
+		return false unless nl::is_printable(get_val->key);
 		return false unless hash::has_key(hash, get_val->key);
 	} case :set_val(var set_val) {
 		var hash = state->top->vars[set_val->src->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(set_val->key);
+		return false unless nl::is_printable(set_val->key);
 	} case :ov_mk(var ov_mk) {
-		return false unless nl::is_sim(ov_mk->label);
+		return false unless nl::is_printable(ov_mk->label);
 	} case :prt_lbl(var prt_lbl) {
 	} case :if_goto(var if_goto) {
 		var arg = state->top->vars[if_goto->src->reg_no];
@@ -692,41 +692,41 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 	} case :use_field(var use_field) {
 		var hash = state->top->vars[use_field->old_owner->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(use_field->field_name);
+		return false unless nl::is_printable(use_field->field_name);
 	} case :release_field(var release_field) {
 		var hash = state->top->vars[release_field->old_owner->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(release_field->field_name);
+		return false unless nl::is_printable(release_field->field_name);
 	} case :use_index(var use_index) {
 		var arr = state->top->vars[use_index->old_owner->reg_no];
 		return false unless nl::is_array(arr);
 		var idx = state->top->vars[use_index->index->reg_no];
-		return false unless nl::is_sim(idx);
+		return false unless nl::is_printable(idx);
 		return false unless idx < array::len(arr);
 		return false unless idx >= 0;
 	} case :release_index(var release_index) {
 		var arr = state->top->vars[release_index->old_owner->reg_no];
 		return false unless nl::is_array(arr);
 		var idx = state->top->vars[release_index->index->reg_no];
-		return false unless nl::is_sim(idx);
+		return false unless nl::is_printable(idx);
 		return false unless idx < array::len(arr);
 	} case :use_hash_index(var use_hash_index) {
 		var hash = state->top->vars[use_hash_index->old_owner->reg_no];
 		var index = state->top->vars[use_hash_index->index->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(index);
+		return false unless nl::is_printable(index);
 	} case :release_hash_index(var release_hash_index) {
 		var hash = state->top->vars[release_hash_index->old_owner->reg_no];
 		var index = state->top->vars[release_hash_index->index->reg_no];
 		return false unless nl::is_hash(hash);
-		return false unless nl::is_sim(index);
+		return false unless nl::is_printable(index);
 	} case :use_variant(var use_variant) {
 		var arg = state->top->vars[use_variant->old_owner->reg_no];
 		return false unless nl::is_variant(arg);
-		return false unless nl::is_sim(use_variant->label);
+		return false unless nl::is_printable(use_variant->label);
 		return false unless ov::is(arg, use_variant->label);
 	} case :release_variant(var release_variant) {
-		return false unless nl::is_sim(release_variant->label);
+		return false unless nl::is_printable(release_variant->label);
 	} case :hash_init_iter(var init_iter) {
 		var hash = state->top->vars[init_iter->hash->reg_no];
 		return false unless nl::is_hash(hash);
@@ -941,7 +941,9 @@ def get_compiler_functions() : ptd::hash(ptd::string()) {
 	hash::set_value(ref ret, 'c_rt_lib::next_iter', '');
 	hash::set_value(ref ret, 'c_std_lib::is_array', '');
 	hash::set_value(ref ret, 'c_std_lib::is_hash', '');
-	hash::set_value(ref ret, 'c_std_lib::is_sim', '');
+	hash::set_value(ref ret, 'c_std_lib::is_int', '');
+	hash::set_value(ref ret, 'c_std_lib::is_string', '');
+	hash::set_value(ref ret, 'c_std_lib::is_printable', '');
 	hash::set_value(ref ret, 'c_std_lib::is_variant', '');
 	hash::set_value(ref ret, 'c_std_lib::string_replace', '');
 	hash::set_value(ref ret, 'c_std_lib::set_profile_global', '');
@@ -989,7 +991,7 @@ def handle_array_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args
 		return error_message unless array::len(args[0]) > 0;
 		array::pop(ref args[0]);
 	} elsif (key eq 'array::subarray') {
-		return error_message unless (nl::is_sim(args[1]) && nl::is_sim(args[2]));
+		return error_message unless (nl::is_printable(args[1]) && nl::is_printable(args[2]));
 		return error_message unless (string_utils::is_number(args[1]) && string_utils::is_number(args[2]));
 		return error_message unless (args[1] >= 0 && args[1] < array::len(args[0]));
 		return error_message unless args[2] >= 0;
@@ -1019,17 +1021,17 @@ def handle_hash_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args 
 	var error_message = :err('incorrect command');
 	return error_message unless nl::is_hash(args[0]);
 	if (key eq 'hash::get_value') {
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		return error_message unless hash::has_key(args[0], args[1]);
 		ret_val = hash::get_value(args[0], args[1]);
 	} elsif (key eq 'hash::has_key') {
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		ret_val = hash::has_key(args[0], args[1]);
 	} elsif (key eq 'hash::set_value') {
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		hash::set_value(ref args[0], args[1], args[2]);
 	} elsif (key eq 'hash::delete') {
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		hash::delete(ref args[0], args[1]);
 	} elsif (key eq 'hash::size') {
 		ret_val = hash::size(args[0]);
@@ -1051,19 +1053,19 @@ def handle_string_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref arg
 	} elsif (key eq 'string::tab') {
 		ret_val = string::tab();
 	} elsif (key eq 'string::ord') {
-		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_printable(args[0]);
 		return error_message unless string::length(args[0]) == 1;
 		ret_val = string::ord(args[0]);
 	} elsif (key eq 'string::chr') {
-		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_printable(args[0]);
 		return error_message unless string_utils::is_number(args[0]);
 		ret_val = string::chr(args[0]);
 	} else {
-		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_printable(args[0]);
 		if (key eq 'string::length') {
 			ret_val = string::length(args[0]);
 		} elsif (key eq 'string::substr') {
-			return error_message unless (nl::is_sim(args[1]) && nl::is_sim(args[2]));
+			return error_message unless (nl::is_printable(args[1]) && nl::is_printable(args[2]));
 			return error_message unless (string_utils::is_number(args[1]) && string_utils::is_number(args[2]));
 			return error_message unless (args[1] >= 0 && args[1] < string::length(args[0]));
 			return error_message unless args[2] >= 0;
@@ -1088,10 +1090,10 @@ def handle_ov_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args : 
 	}) {
 	var error_message = :err('incorrect command');
 	if (key eq 'ov::mk') {
-		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_printable(args[0]);
 		ret_val = ov::mk(args[0]);
 	} elsif (key eq 'ov::mk_val') {
-		return error_message unless nl::is_sim(args[0]);
+		return error_message unless nl::is_printable(args[0]);
 		ret_val = ov::mk_val(args[0], args[1]);
 	} else {
 		return error_message unless nl::is_variant(args[0]);
@@ -1102,10 +1104,10 @@ def handle_ov_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref args : 
 		} elsif (key eq 'ov::get_value') {
 			ret_val = ov::get_value(args[0]);
 		} elsif (key eq 'ov::is') {
-			return error_message unless nl::is_sim(args[1]);
+			return error_message unless nl::is_printable(args[1]);
 			ret_val = ov::is(args[0], args[1]);
 		} elsif (key eq 'ov::as') {
-			return error_message unless nl::is_sim(args[1]);
+			return error_message unless nl::is_printable(args[1]);
 			return error_message unless ov::is(args[0], args[1]);
 			ret_val = ov::as(args[0], args[1]);
 		}
@@ -1167,23 +1169,23 @@ def handle_c_rt_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref a
 		array::push(ref args[0], args[1]);
 	} elsif (key eq 'c_rt_lib::set_ref_arr') {
 		return error_message unless nl::is_array(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		return error_message unless string_utils::is_number(args[1]);
 		return error_message unless (args[1] >= 0 && args[1] < array::len(args[0]));
 		c_rt_lib::set_ref_arr(ref args[0], args[1], args[2]);
 	} elsif (key eq 'c_rt_lib::set_ref_hash') {
 		return error_message unless nl::is_hash(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		c_rt_lib::set_ref_hash(ref args[0], args[1], args[2]);
 	} elsif (key eq 'c_rt_lib::get_ref_arr') {
 		return error_message unless nl::is_array(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		return error_message unless string_utils::is_number(args[1]);
 		return error_message unless (args[1] >= 0 && args[1] < array::len(args[0]));
 		ret_val = c_rt_lib::get_ref_arr(args[0], args[1]);
 	} elsif (key eq 'c_rt_lib::get_ref_hash') {
 		return error_message unless nl::is_hash(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		return error_message unless hash::has_key(args[0], args[1]);
 		ret_val = c_rt_lib::get_ref_hash(args[0], args[1]);
 	} elsif (key eq 'c_rt_lib::init_iter') {
@@ -1195,12 +1197,12 @@ def handle_c_rt_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref a
 		ret_val = c_rt_lib::get_key_iter(args[0]);
 	} elsif (key eq 'c_rt_lib::hash_get_value') {
 		return error_message unless nl::is_hash(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		return error_message unless hash::has_key(args[0], args[1]);
 		ret_val = c_rt_lib::hash_get_value(args[0], args[1]);
 	} elsif (key eq 'c_rt_lib::hash_set_value') {
 		return error_message unless nl::is_hash(args[0]);
-		return error_message unless nl::is_sim(args[1]);
+		return error_message unless nl::is_printable(args[1]);
 		c_rt_lib::hash_set_value(ref args[0], args[1], args[2]);
 	} elsif (key eq 'c_rt_lib::next_iter') {
 		ret_val = c_rt_lib::next_iter(args[0]);
@@ -1208,8 +1210,8 @@ def handle_c_rt_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref a
 		ret_val = c_rt_lib::is_array(args[0]);
 	} elsif (key eq 'c_rt_lib::is_hash') {
 		ret_val = c_rt_lib::is_hash(args[0]);
-	} elsif (key eq 'c_rt_lib::is_sim') {
-		ret_val = c_rt_lib::is_sim(args[0]);
+	} elsif (key eq 'c_rt_lib::is_printable') {
+		ret_val = c_rt_lib::is_printable(args[0]);
 	} elsif (key eq 'c_rt_lib::is_variant') {
 		ret_val = c_rt_lib::is_variant(args[0]);
 	} else {
@@ -1229,17 +1231,17 @@ def handle_c_std_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref 
 	} elsif (key eq 'c_std_lib::is_hash') {
 		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_hash(args[0]);
-	} elsif (key eq 'c_std_lib::is_sim') {
+	} elsif (key eq 'c_std_lib::is_printable') {
 		return error_message unless array::len(args) == 1;
-		ret_val = c_rt_lib::is_sim(args[0]);
+		ret_val = c_rt_lib::is_printable(args[0]);
 	} elsif (key eq 'c_std_lib::is_variant') {
 		return error_message unless array::len(args) == 1;
 		ret_val = c_rt_lib::is_variant(args[0]);
 	} elsif (key eq 'c_std_lib::string_replace') {
 		return error_message unless array::len(args) == 3;
-		return error_message unless nl::is_sim(args[0]);
-		return error_message unless nl::is_sim(args[1]);
-		return error_message unless nl::is_sim(args[2]);
+		return error_message unless nl::is_printable(args[0]);
+		return error_message unless nl::is_printable(args[1]);
+		return error_message unless nl::is_printable(args[2]);
 		ret_val = c_std_lib::string_replace(args[0], args[1], args[2]);
 	} elsif (key eq 'c_std_lib::set_profile_global') {
 		return error_message unless array::len(args) == 1;
@@ -1249,15 +1251,15 @@ def handle_c_std_lib_call(key : ptd::string(), ref ret_val : ptd::ptd_im(), ref 
 		ret_val = c_std_lib::get_profile_global();
 	} elsif (key eq 'c_std_lib::string_index') {
 		return error_message unless array::len(args) == 3;
-		return error_message unless nl::is_sim(args[0]);
-		return error_message unless nl::is_sim(args[1]);
-		return error_message unless nl::is_sim(args[2]) && string_utils::is_number(args[2]);
+		return error_message unless nl::is_printable(args[0]);
+		return error_message unless nl::is_printable(args[1]);
+		return error_message unless nl::is_printable(args[2]) && string_utils::is_number(args[2]);
 		ret_val = c_std_lib::string_index(args[0], args[1], args[2]);
 	} elsif (key eq 'c_std_lib::fast_substr') {
 		return error_message unless array::len(args) == 3;
 		return error_message unless nl::is_array(args[0]) && array::len(args[0]) == 1;
-		return error_message unless nl::is_sim(args[1]) && string_utils::is_number(args[1]);
-		return error_message unless nl::is_sim(args[2]) && string_utils::is_number(args[2]);
+		return error_message unless nl::is_printable(args[1]) && string_utils::is_number(args[1]);
+		return error_message unless nl::is_printable(args[2]) && string_utils::is_number(args[2]);
 		ret_val = c_std_lib::fast_substr(args[0], args[1], args[2]);
 	} else {
 		return error_message;
