@@ -442,7 +442,7 @@ def print_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::re
 
 def print_empty_hash(fields : ptd::arr(ptd::string())) : ptd::string() {
 	var result = imm_call('hash') . '({';
-	result .= escape_string(field) . ': undefined,' fora var field (fields);
+	result .= escape_string(field) . ': {},' fora var field (fields);
 	return result . '})';
 }
 
