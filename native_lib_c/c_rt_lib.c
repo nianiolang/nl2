@@ -1203,6 +1203,13 @@ bool c_rt_lib0is_string(ImmT ___nl__imm) {
 	return IS_STRING(d) || IS_FUNC(d);
 }
 
+bool c_rt_lib0is_printable(ImmT ___nl__imm) {
+	NlData *d =  (NlData *)___nl__imm;
+	if (IS_STRING(d) || IS_INT(d) || IS_FUNC(d))
+		return true;
+	return false;
+}
+
 bool c_rt_lib0is_variant(ImmT ___nl__imm) {
 	NlData *d =  (NlData *)___nl__imm;
 	if (IS_OV(d) || IS_OV_NONE(d))

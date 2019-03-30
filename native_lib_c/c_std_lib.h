@@ -39,6 +39,7 @@ bool c_std_lib0is_hash(ImmT imm);
 bool c_std_lib0is_sim(ImmT imm);
 bool c_std_lib0is_int(ImmT imm);
 bool c_std_lib0is_string(ImmT imm);
+bool c_std_lib0is_printable(ImmT imm);
 bool c_std_lib0is_variant(ImmT imm);
 ImmT c_std_lib0escape_characters(ImmT str);
 ImmT c_std_lib0exec(ImmT func, ImmT *arr);

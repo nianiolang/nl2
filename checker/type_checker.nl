@@ -1214,6 +1214,12 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::tct_im(), name => ''},
 			]
 		});
+	hash::set_value(ref f, 'c_std_lib::is_printable', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'c_std_lib::is_int', {
 			r => tct::bool(),
 			a => [
@@ -1306,6 +1312,12 @@ def get_special_functions() : @tc_types::special_functions {
 			]
 		});
 	hash::set_value(ref f, 'c_rt_lib::is_sim', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::tct_im(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::is_printable', {
 			r => tct::bool(),
 			a => [
 				{mod => :none, type => tct::tct_im(), name => ''},
