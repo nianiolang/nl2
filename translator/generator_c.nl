@@ -412,7 +412,7 @@ def get_const_singleton(ref state : @generator_c::state_t, sim : ptd::string()) 
 }
 
 def get_func_ptr_header(func : @nlasm::function_t, mod_name : ptd::string()) : ptd::string() {
-	return get_type_name(func->ret_type) . ' ' . get_function_name(func, mod_name) . '0ptr(int _num, ImmT *_tab)';
+	return im_t() . ' ' . get_function_name(func, mod_name) . '0ptr(int _num, ImmT *_tab)';
 }
 
 def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined_types : ptd::hash(@tct::meta_type)) {
@@ -485,20 +485,32 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 			rep var arg_id (number) {
 				var type = get_type_to_c(func->args_type[arg_id]->type, '');
 				var value = get_value_from_im(func->args_type[arg_id]->register->type, '(_tab[' . arg_id . '])');
-				print(ref state, type . ' *var' . arg_id . ' = &' . value . ';' . string::lf());
+				if (func->args_type[arg_id]->register->type is :im) {
+					println(ref state, type . ' *var' . arg_id . ' = &' . value . ';');
+				} else {
+					println(ref state, type . ' var' . arg_id . ' = ' . value . ';');
+				}
 			}
-			print(ref state, 'return ' . fun_name . '(');
+			print(ref state, get_type_to_c(func->ret_type, '') . ' res = ' . fun_name . '(');
 			rep var arg_id (number) {
 				print(ref state, ', ') if (arg_id > 0);
-				var ref_mark;
+				var ref_mark = '';
 				match (func->args_type[arg_id]->by) case :ref {
-					ref_mark = '';
+					ref_mark = '&' unless func->args_type[arg_id]->register->type is :im;
 				} case :val {
-					ref_mark = '*';
+					ref_mark = '*' if func->args_type[arg_id]->register->type is :im;
 				}
 				print (ref state, ref_mark . 'var' . arg_id);
 			}
 			println(ref state, ');');
+			rep var arg_id (number) {
+				if (!func->args_type[arg_id]->register->type is :im) {
+					var value = '&_tab[' . arg_id . ']';
+					var im_arg = get_im_from_value(func->args_type[arg_id]->register->type, 'var' . arg_id);
+					println(ref state, get_fun_lib('move', [value, im_arg]) . ';');
+				}
+			}
+			println(ref state, 'return ' . get_im_from_value(func->ret_reg_type, 'res') . ';');
 			println(ref state, '}');
 		}
 		if (is_singleton_use_function(func)) {
@@ -1158,21 +1170,25 @@ def print_move_to_string(ref state : @generator_c::state_t, src : @nlasm::reg_t,
 }
 
 def get_im_from_reg(ref state : @generator_c::state_t, reg : @nlasm::reg_t) : ptd::string() {
-	match (reg->type) case :im {
-		return get_reg_value(ref state, reg);
+	return get_im_from_value(reg->type, get_reg_value(ref state, reg));
+}
+
+def get_im_from_value(type : @nlasm::reg_type, value : ptd::string()) : ptd::string() {
+	match (type) case :im {
+		return value;
 	} case :int {
-		return get_fun_lib('int_new', [get_reg_value(ref state, reg)]);
+		return get_fun_lib('int_new', [value]);
 	} case :bool {
-		return get_fun_lib('bool_to_nl_native', [get_reg_value(ref state, reg)]);
+		return get_fun_lib('bool_to_nl_native', [value]);
 	} case :string {
-		return get_reg_value(ref state, reg);
-	} case :rec(var type) {
+		return value;
+	} case :rec(var innter) {
 		die;
-	} case :arr(var type) {
+	} case :arr(var innter) {
 		die;
-	} case :variant(var type) {
+	} case :variant(var innter) {
 		die;
-	} case :hash(var type) {
+	} case :hash(var innter) {
 		die;
 	}
 }
@@ -1943,9 +1959,16 @@ def get_variant_make_fun_def(variant_type_name : ptd::string(), mod_name : ptd::
 
 def takes_own_arg(function : @nlasm::function_t) : ptd::bool() {
 	fora var arg (function->args_type) {
-		return true unless arg->register->type is :im;
+		return true if is_own(arg->register->type);
 	}
 	return false;
+}
+
+def is_own(type : @nlasm::reg_type) : ptd::bool() {
+	return false if type is :im;
+	return false if type is :int;
+	return false if type is :bool;
+	return true;
 }
 
 def get_access_op(reg : @nlasm::reg_t) : ptd::string() {
