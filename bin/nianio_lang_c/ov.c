@@ -19,7 +19,8 @@ ImmT ov_priv0__const__sing(int __nr);
 ImmT  ov0mk0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "ov0mk");
 ImmT  *var0 = &(_tab[0]);
-return ov0mk(*var0);
+ImmT  res = ov0mk(*var0);
+return res;
 }
 ImmT  ov0mk(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -45,7 +46,8 @@ ImmT  ov0mk_val0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "ov0mk_val");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return ov0mk_val(*var0, *var1);
+ImmT  res = ov0mk_val(*var0, *var1);
+return res;
 }
 ImmT  ov0mk_val(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -75,7 +77,8 @@ return NULL;
 ImmT  ov0has_value0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "ov0has_value");
 ImmT  *var0 = &(_tab[0]);
-return ov0has_value(*var0);
+ImmT  res = ov0has_value(*var0);
+return res;
 }
 ImmT  ov0has_value(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -100,7 +103,8 @@ return NULL;
 ImmT  ov0get_element0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "ov0get_element");
 ImmT  *var0 = &(_tab[0]);
-return ov0get_element(*var0);
+ImmT  res = ov0get_element(*var0);
+return res;
 }
 ImmT  ov0get_element(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -125,7 +129,8 @@ return NULL;
 ImmT  ov0get_value0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "ov0get_value");
 ImmT  *var0 = &(_tab[0]);
-return ov0get_value(*var0);
+ImmT  res = ov0get_value(*var0);
+return res;
 }
 ImmT  ov0get_value(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -147,11 +152,12 @@ return NULL;
 
 }
 
-bool  ov0is0ptr(int _num, ImmT *_tab){
+ImmT  ov0is0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "ov0is");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return ov0is(*var0, *var1);
+bool  res = ov0is(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  ov0is(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -182,7 +188,8 @@ ImmT  ov0as0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "ov0as");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return ov0as(*var0, *var1);
+ImmT  res = ov0as(*var0, *var1);
+return res;
 }
 ImmT  ov0as(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);

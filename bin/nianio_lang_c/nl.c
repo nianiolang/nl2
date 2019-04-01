@@ -17,10 +17,11 @@ ImmT nl_priv0__const__sing(int __nr);
 
 
 
-bool  nl0is_array0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_array0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_array");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_array(*var0);
+bool  res = nl0is_array(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_array(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -53,10 +54,11 @@ return false;
 
 }
 
-bool  nl0is_hash0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_hash0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_hash");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_hash(*var0);
+bool  res = nl0is_hash(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_hash(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -89,10 +91,11 @@ return false;
 
 }
 
-bool  nl0is_int0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_int0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_int");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_int(*var0);
+bool  res = nl0is_int(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_int(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -125,10 +128,11 @@ return false;
 
 }
 
-bool  nl0is_string0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_string0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_string");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_string(*var0);
+bool  res = nl0is_string(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_string(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -161,10 +165,11 @@ return false;
 
 }
 
-bool  nl0is_printable0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_printable0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_printable");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_printable(*var0);
+bool  res = nl0is_printable(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_printable(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -197,10 +202,11 @@ return false;
 
 }
 
-bool  nl0is_variant0ptr(int _num, ImmT *_tab){
+ImmT  nl0is_variant0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0is_variant");
 ImmT  *var0 = &(_tab[0]);
-return nl0is_variant(*var0);
+bool  res = nl0is_variant(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  nl0is_variant(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -236,7 +242,8 @@ return false;
 ImmT  nl0print0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0print");
 ImmT  *var0 = &(_tab[0]);
-return nl0print(*var0);
+ImmT  res = nl0print(*var0);
+return res;
 }
 ImmT  nl0print(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -254,7 +261,8 @@ return NULL;
 ImmT  nl0debug_die0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nl0debug_die");
 ImmT  *var0 = &(_tab[0]);
-return nl0debug_die(*var0);
+ImmT  res = nl0debug_die(*var0);
+return res;
 }
 ImmT  nl0debug_die(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

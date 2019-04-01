@@ -28,4 +28,4 @@ ImmT  reference_generator0deref_type0ptr(int _num, ImmT *_tab);
 ImmT  reference_generator0ref_type();
 ImmT  reference_generator0ref_type0ptr(int _num, ImmT *_tab);
 reference_generator0refs0type reference_generator0generate(ImmT  ___nl__im__0);
-reference_generator0refs0type reference_generator0generate0ptr(int _num, ImmT *_tab);
+ImmT  reference_generator0generate0ptr(int _num, ImmT *_tab);

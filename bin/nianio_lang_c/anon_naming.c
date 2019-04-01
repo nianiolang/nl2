@@ -21,7 +21,8 @@ ImmT anon_naming_priv0__const__sing(int __nr);
 ImmT  anon_naming0get_anon_name_loop0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "anon_naming0get_anon_name_loop");
 tct0meta_type0type *var0 = &(_tab[0]);
-return anon_naming0get_anon_name_loop(*var0);
+ImmT  res = anon_naming0get_anon_name_loop(*var0);
+return res;
 }
 ImmT  anon_naming0get_anon_name_loop(tct0meta_type0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1261,7 +1262,8 @@ return NULL;
 ImmT  anon_naming0get_anon_name0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "anon_naming0get_anon_name");
 tct0meta_type0type *var0 = &(_tab[0]);
-return anon_naming0get_anon_name(*var0);
+ImmT  res = anon_naming0get_anon_name(*var0);
+return res;
 }
 ImmT  anon_naming0get_anon_name(tct0meta_type0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1290,7 +1292,8 @@ return NULL;
 ImmT  anon_naming0func_ref_to_struct_name0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "anon_naming0func_ref_to_struct_name");
 ImmT  *var0 = &(_tab[0]);
-return anon_naming0func_ref_to_struct_name(*var0);
+ImmT  res = anon_naming0func_ref_to_struct_name(*var0);
+return res;
 }
 ImmT  anon_naming0func_ref_to_struct_name(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

@@ -20,7 +20,8 @@ ImmT func_priv0__const__sing(int __nr);
 
 ImmT  func0func_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "func0func_t");
-return func0func_t();
+ImmT  res = func0func_t();
+return res;
 }
 ImmT func0func_t(){
 func_priv0__const__init();
@@ -70,7 +71,8 @@ ImmT  func0exec0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "func0exec");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return func0exec(*var0, *var1);
+ImmT  res = func0exec(*var0, *var1);
+return res;
 }
 ImmT  func0exec(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -101,7 +103,8 @@ ImmT  func0exec_ref0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "func0exec_ref");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return func0exec_ref(*var0, var1);
+ImmT  res = func0exec_ref(*var0, var1);
+return res;
 }
 ImmT  func0exec_ref(ImmT  ___nl__im__0,ImmT * ___ref___im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -128,7 +131,8 @@ c_rt_lib0func_num_args(_num, 3, "func0exec_with_ref_arg");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return func0exec_with_ref_arg(*var0, *var1, var2);
+ImmT  res = func0exec_with_ref_arg(*var0, *var1, var2);
+return res;
 }
 ImmT  func0exec_with_ref_arg(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT * ___ref___im__2) {
 c_rt_lib0arg_val(___nl__im__0);

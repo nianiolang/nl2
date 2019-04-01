@@ -17,17 +17,18 @@ ImmT own_priv0__const__sing(int __nr);
 
 
 
-ptd0meta_type0type own0arr0ptr(int _num, ImmT *_tab){
+ImmT  own0arr0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "own0arr");
 ptd0meta_type0type *var0 = &(_tab[0]);
-return own0arr(*var0);
+ptd0meta_type0type res = own0arr(*var0);
+return res;
 }
 ptd0meta_type0type own0arr(ptd0meta_type0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 own_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
 #line 4
-c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1129), ___nl__im__0));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1133), ___nl__im__0));
 #line 4
 c_rt_lib0clear(&___nl__im__0);
 #line 4
@@ -36,17 +37,18 @@ return NULL;
 
 }
 
-ptd0meta_type0type own0rec0ptr(int _num, ImmT *_tab){
+ImmT  own0rec0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "own0rec");
 ImmT  *var0 = &(_tab[0]);
-return own0rec(*var0);
+ptd0meta_type0type res = own0rec(*var0);
+return res;
 }
 ptd0meta_type0type own0rec(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 own_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
 #line 8
-c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1130), ___nl__im__0));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1134), ___nl__im__0));
 #line 8
 c_rt_lib0clear(&___nl__im__0);
 #line 8
@@ -55,17 +57,18 @@ return NULL;
 
 }
 
-ptd0meta_type0type own0hash0ptr(int _num, ImmT *_tab){
+ImmT  own0hash0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "own0hash");
 ptd0meta_type0type *var0 = &(_tab[0]);
-return own0hash(*var0);
+ptd0meta_type0type res = own0hash(*var0);
+return res;
 }
 ptd0meta_type0type own0hash(ptd0meta_type0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 own_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
 #line 12
-c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1131), ___nl__im__0));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(1135), ___nl__im__0));
 #line 12
 c_rt_lib0clear(&___nl__im__0);
 #line 12
@@ -74,10 +77,11 @@ return NULL;
 
 }
 
-ptd0meta_type0type own0var0ptr(int _num, ImmT *_tab){
+ImmT  own0var0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "own0var");
 ImmT  *var0 = &(_tab[0]);
-return own0var(*var0);
+ptd0meta_type0type res = own0var(*var0);
+return res;
 }
 ptd0meta_type0type own0var(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -109,7 +113,7 @@ c_rt_lib0move(&___nl__im__2, c_rt_lib0get_key_iter(___nl__im__5));
 #line 17
 c_rt_lib0move(&___nl__im__4, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__2));
 #line 19
-___nl__bool__7 = c_rt_lib0priv_is(___nl__im__4, ___get_global_string_const(1132));
+___nl__bool__7 = c_rt_lib0priv_is(___nl__im__4, ___get_global_string_const(1136));
 #line 19
 ___nl__bool__7 = !___nl__bool__7;
 #line 19
@@ -150,7 +154,7 @@ c_rt_lib0move(&___nl__im__10, c_rt_lib0func_new(ptd0meta_type0ptr, ___get_global
 #line 26
 c_rt_lib0move(&___nl__im__10, c_rt_lib0ov_mk_arg(___get_global_string_const(39), ___nl__im__10));
 #line 26
-c_rt_lib0move(&___nl__im__11, c_rt_lib0ov_mk_arg(___get_global_string_const(1133), ___nl__im__1));
+c_rt_lib0move(&___nl__im__11, c_rt_lib0ov_mk_arg(___get_global_string_const(1137), ___nl__im__1));
 #line 26
 c_rt_lib0move(&___nl__im__9, ptd0ensure_only_static_do_not_touch_without_permission(___nl__im__10, ___nl__im__11));
 #line 26
@@ -180,7 +184,8 @@ return NULL;
 ImmT  own0to_im0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "own0to_im");
 ImmT  *var0 = &(_tab[0]);
-return own0to_im(*var0);
+ImmT  res = own0to_im(*var0);
+return res;
 }
 ImmT  own0to_im(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

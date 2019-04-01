@@ -34,7 +34,8 @@ post_processing_t0state_t0type *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
 post_processing_t0math_funs_t0type *var3 = &(_tab[3]);
-return const_evaluator0evaluate_const_in_modules(var0, *var1, var2, *var3);
+ImmT  res = const_evaluator0evaluate_const_in_modules(var0, *var1, var2, *var3);
+return res;
 }
 ImmT  const_evaluator0evaluate_const_in_modules(post_processing_t0state_t0type* ___ref___im__0,ImmT  ___nl__im__1,ImmT * ___ref___im__2,post_processing_t0math_funs_t0type ___nl__im__3) {
 c_rt_lib0arg_val(___nl__im__1);

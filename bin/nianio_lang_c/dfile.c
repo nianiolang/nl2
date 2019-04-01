@@ -48,7 +48,8 @@ ImmT  dfile0deep_eq0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile0deep_eq");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile0deep_eq(*var0, *var1);
+ImmT  res = dfile0deep_eq(*var0, *var1);
+return res;
 }
 ImmT  dfile0deep_eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1132,7 +1133,8 @@ ImmT  dfile0rs0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile0rs");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile0rs(*var0, *var1);
+ImmT  res = dfile0rs(*var0, *var1);
+return res;
 }
 ImmT  dfile0rs(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1229,7 +1231,8 @@ return NULL;
 ImmT  dfile0ssave0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile0ssave");
 ImmT  *var0 = &(_tab[0]);
-return dfile0ssave(*var0);
+ImmT  res = dfile0ssave(*var0);
+return res;
 }
 ImmT  dfile0ssave(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1275,7 +1278,8 @@ return NULL;
 ImmT  dfile0debug0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile0debug");
 ImmT  *var0 = &(_tab[0]);
-return dfile0debug(*var0);
+ImmT  res = dfile0debug(*var0);
+return res;
 }
 ImmT  dfile0debug(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1321,7 +1325,8 @@ return NULL;
 ImmT  dfile0ssave_net_format0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile0ssave_net_format");
 ImmT  *var0 = &(_tab[0]);
-return dfile0ssave_net_format(*var0);
+ImmT  res = dfile0ssave_net_format(*var0);
+return res;
 }
 ImmT  dfile0ssave_net_format(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3115,7 +3120,8 @@ return false;
 
 ImmT  dfile0state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "dfile0state_t");
-return dfile0state_t();
+ImmT  res = dfile0state_t();
+return res;
 }
 ImmT dfile0state_t(){
 dfile_priv0__const__init();
@@ -4951,7 +4957,8 @@ return NULL;
 ImmT  dfile0sload0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile0sload");
 ImmT  *var0 = &(_tab[0]);
-return dfile0sload(*var0);
+ImmT  res = dfile0sload(*var0);
+return res;
 }
 ImmT  dfile0sload(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5000,7 +5007,8 @@ ImmT  dfile0sload_with_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile0sload_with_type");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile0sload_with_type(*var0, *var1);
+ImmT  res = dfile0sload_with_type(*var0, *var1);
+return res;
 }
 ImmT  dfile0sload_with_type(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5054,7 +5062,8 @@ ImmT  dfile0sload_with_type_only_dynamic0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile0sload_with_type_only_dynamic");
 ptd0meta_type0type *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile0sload_with_type_only_dynamic(*var0, *var1);
+ImmT  res = dfile0sload_with_type_only_dynamic(*var0, *var1);
+return res;
 }
 ImmT  dfile0sload_with_type_only_dynamic(ptd0meta_type0type ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5107,7 +5116,8 @@ return NULL;
 ImmT  dfile0try_sload0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile0try_sload");
 ImmT  *var0 = &(_tab[0]);
-return dfile0try_sload(*var0);
+ImmT  res = dfile0try_sload(*var0);
+return res;
 }
 ImmT  dfile0try_sload(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5132,7 +5142,8 @@ ImmT  dfile0try_sload_with_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile0try_sload_with_type");
 ptd0meta_type0type *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile0try_sload_with_type(*var0, *var1);
+ImmT  res = dfile0try_sload_with_type(*var0, *var1);
+return res;
 }
 ImmT  dfile0try_sload_with_type(ptd0meta_type0type ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5347,7 +5358,8 @@ return NULL;
 
 ImmT  dfile0state_out0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "dfile0state_out");
-return dfile0state_out();
+ImmT  res = dfile0state_out();
+return res;
 }
 ImmT dfile0state_out(){
 dfile_priv0__const__init();

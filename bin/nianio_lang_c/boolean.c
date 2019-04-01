@@ -18,7 +18,8 @@ ImmT boolean_priv0__const__sing(int __nr);
 ImmT  boolean0to_nl0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "boolean0to_nl");
 ImmT  *var0 = &(_tab[0]);
-return boolean0to_nl(*var0);
+ImmT  res = boolean0to_nl(*var0);
+return res;
 }
 ImmT  boolean0to_nl(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -55,7 +56,8 @@ return NULL;
 ImmT  boolean0check_true0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "boolean0check_true");
 ImmT  *var0 = &(_tab[0]);
-return boolean0check_true(*var0);
+ImmT  res = boolean0check_true(*var0);
+return res;
 }
 ImmT  boolean0check_true(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

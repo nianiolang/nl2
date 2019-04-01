@@ -116,4 +116,4 @@ ImmT  compiler0input_type0ptr(int _num, ImmT *_tab);
 ImmT  compiler0file_t();
 ImmT  compiler0file_t0ptr(int _num, ImmT *_tab);
 INT  compiler0compile(ImmT  ___nl__im__0);
-INT  compiler0compile0ptr(int _num, ImmT *_tab);
+ImmT  compiler0compile0ptr(int _num, ImmT *_tab);

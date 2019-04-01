@@ -20,6 +20,16 @@ ImmT  array_priv0exec(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2);
 ImmT  array_priv0part_sort(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3);
 
 
+ImmT  array0subarray0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 3, "array0subarray");
+ImmT  *var0 = &(_tab[0]);
+INT  var1 = getIntFromImm((_tab[1]));
+INT  var2 = getIntFromImm((_tab[2]));
+ImmT  res = array0subarray(*var0, var1, var2);
+c_rt_lib0move(&_tab[1], c_rt_lib0int_new(var1));
+c_rt_lib0move(&_tab[2], c_rt_lib0int_new(var2));
+return res;
+}
 ImmT  array0subarray(ImmT  ___nl__im__0,INT  ___nl__int__1,INT  ___nl__int__2) {
 c_rt_lib0arg_val(___nl__im__0);
 array_priv0__const__init();
@@ -51,7 +61,8 @@ return NULL;
 ImmT  array0reverse0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0reverse");
 ImmT  *var0 = &(_tab[0]);
-return array0reverse(var0);
+ImmT  res = array0reverse(var0);
+return res;
 }
 ImmT  array0reverse(ImmT * ___ref___im__0) {
 array_priv0__const__init();
@@ -136,7 +147,8 @@ ImmT  array0join0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0join");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0join(*var0, *var1);
+ImmT  res = array0join(*var0, *var1);
+return res;
 }
 ImmT  array0join(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -255,6 +267,14 @@ return NULL;
 
 }
 
+ImmT  array0remove0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "array0remove");
+ImmT  *var0 = &(_tab[0]);
+INT  var1 = getIntFromImm((_tab[1]));
+ImmT  res = array0remove(var0, var1);
+c_rt_lib0move(&_tab[1], c_rt_lib0int_new(var1));
+return res;
+}
 ImmT  array0remove(ImmT * ___ref___im__0,INT  ___nl__int__1) {
 array_priv0__const__init();
 ImmT  ___nl__im__2 = NULL;
@@ -327,6 +347,15 @@ return NULL;
 
 }
 
+ImmT  array0insert0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 3, "array0insert");
+ImmT  *var0 = &(_tab[0]);
+INT  var1 = getIntFromImm((_tab[1]));
+ImmT  *var2 = &(_tab[2]);
+ImmT  res = array0insert(var0, var1, *var2);
+c_rt_lib0move(&_tab[1], c_rt_lib0int_new(var1));
+return res;
+}
 ImmT  array0insert(ImmT * ___ref___im__0,INT  ___nl__int__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__2);
 array_priv0__const__init();
@@ -423,7 +452,8 @@ ImmT  array0push0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0push");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0push(var0, *var1);
+ImmT  res = array0push(var0, *var1);
+return res;
 }
 ImmT  array0push(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -441,7 +471,8 @@ ImmT  array0add0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0add");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0add(*var0, *var1);
+ImmT  res = array0add(*var0, *var1);
+return res;
 }
 ImmT  array0add(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -474,7 +505,8 @@ ImmT  array0unshift0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0unshift");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0unshift(var0, *var1);
+ImmT  res = array0unshift(var0, *var1);
+return res;
 }
 ImmT  array0unshift(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -499,7 +531,8 @@ return NULL;
 ImmT  array0shift0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0shift");
 ImmT  *var0 = &(_tab[0]);
-return array0shift(var0);
+ImmT  res = array0shift(var0);
+return res;
 }
 ImmT  array0shift(ImmT * ___ref___im__0) {
 array_priv0__const__init();
@@ -569,7 +602,8 @@ return NULL;
 ImmT  array0pop0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0pop");
 ImmT  *var0 = &(_tab[0]);
-return array0pop(var0);
+ImmT  res = array0pop(var0);
+return res;
 }
 ImmT  array0pop(ImmT * ___ref___im__0) {
 array_priv0__const__init();
@@ -584,7 +618,8 @@ ImmT  array0append0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0append");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0append(var0, *var1);
+ImmT  res = array0append(var0, *var1);
+return res;
 }
 ImmT  array0append(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -651,7 +686,8 @@ ImmT  array0join_arr0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0join_arr");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0join_arr(*var0, *var1);
+ImmT  res = array0join_arr(*var0, *var1);
+return res;
 }
 ImmT  array0join_arr(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -680,10 +716,11 @@ return NULL;
 
 }
 
-INT  array0len0ptr(int _num, ImmT *_tab){
+ImmT  array0len0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0len");
 ImmT  *var0 = &(_tab[0]);
-return array0len(*var0);
+INT  res = array0len(*var0);
+return c_rt_lib0int_new(res);
 }
 INT  array0len(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -708,7 +745,8 @@ return 0;
 ImmT  array0is_empty0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0is_empty");
 ImmT  *var0 = &(_tab[0]);
-return array0is_empty(*var0);
+ImmT  res = array0is_empty(*var0);
+return res;
 }
 ImmT  array0is_empty(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -756,7 +794,8 @@ ImmT  array0cmp0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0cmp");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0cmp(*var0, *var1);
+ImmT  res = array0cmp(*var0, *var1);
+return res;
 }
 ImmT  array0cmp(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -808,7 +847,8 @@ return NULL;
 ImmT  array0sort0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "array0sort");
 ImmT  *var0 = &(_tab[0]);
-return array0sort(var0);
+ImmT  res = array0sort(var0);
+return res;
 }
 ImmT  array0sort(ImmT * ___ref___im__0) {
 array_priv0__const__init();
@@ -830,7 +870,8 @@ ImmT  array0sort_comparator0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0sort_comparator");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0sort_comparator(var0, *var1);
+ImmT  res = array0sort_comparator(var0, *var1);
+return res;
 }
 ImmT  array0sort_comparator(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -845,11 +886,12 @@ return NULL;
 
 }
 
-bool  array0equal0ptr(int _num, ImmT *_tab){
+ImmT  array0equal0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "array0equal");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return array0equal(*var0, *var1);
+bool  res = array0equal(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  array0equal(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);

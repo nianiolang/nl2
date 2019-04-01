@@ -32,7 +32,8 @@ ImmT  string_compiler0compile0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_compiler0compile");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_compiler0compile(*var0, *var1);
+ImmT  res = string_compiler0compile(*var0, *var1);
+return res;
 }
 ImmT  string_compiler0compile(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -286,7 +287,8 @@ return NULL;
 
 ImmT  string_compiler0modules_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string_compiler0modules_t");
-return string_compiler0modules_t();
+ImmT  res = string_compiler0modules_t();
+return res;
 }
 ImmT string_compiler0modules_t(){
 string_compiler_priv0__const__init();
@@ -304,7 +306,7 @@ c_rt_lib0move(&___nl__im__3, ptd0string());
 #line 43
 c_rt_lib0move(&___nl__im__4, ptd0string());
 #line 43
-c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_string_const(1286), ___nl__im__3, ___get_global_string_const(211), ___nl__im__4));
+c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_string_const(1290), ___nl__im__3, ___get_global_string_const(211), ___nl__im__4));
 #line 43
 c_rt_lib0clear(&___nl__im__3);
 #line 43
@@ -329,7 +331,8 @@ return NULL;
 
 ImmT  string_compiler0type_check_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string_compiler0type_check_t");
-return string_compiler0type_check_t();
+ImmT  res = string_compiler0type_check_t();
+return res;
 }
 ImmT string_compiler0type_check_t(){
 string_compiler_priv0__const__init();
@@ -357,7 +360,7 @@ c_rt_lib0move(&___nl__im__5, ptd0arr(___nl__im__6));
 #line 47
 c_rt_lib0clear(&___nl__im__6);
 #line 47
-c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_string_const(1265), ___nl__im__3, ___get_global_string_const(1287), ___nl__im__5));
+c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_mk(2, ___get_global_string_const(1269), ___nl__im__3, ___get_global_string_const(1291), ___nl__im__5));
 #line 47
 c_rt_lib0clear(&___nl__im__3);
 #line 47
@@ -382,7 +385,8 @@ return NULL;
 
 ImmT  string_compiler0printed_struct_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string_compiler0printed_struct_t");
-return string_compiler0printed_struct_t();
+ImmT  res = string_compiler0printed_struct_t();
+return res;
 }
 ImmT string_compiler0printed_struct_t(){
 string_compiler_priv0__const__init();
@@ -413,7 +417,7 @@ c_rt_lib0move(&___nl__im__8, ptd0string());
 #line 53
 c_rt_lib0move(&___nl__im__9, ptd0string());
 #line 53
-c_rt_lib0move(&___nl__im__6, c_rt_lib0hash_mk(3, ___get_global_string_const(166), ___nl__im__7, ___get_global_string_const(1185), ___nl__im__8, ___get_global_string_const(1135), ___nl__im__9));
+c_rt_lib0move(&___nl__im__6, c_rt_lib0hash_mk(3, ___get_global_string_const(166), ___nl__im__7, ___get_global_string_const(1189), ___nl__im__8, ___get_global_string_const(1139), ___nl__im__9));
 #line 53
 c_rt_lib0clear(&___nl__im__7);
 #line 53
@@ -450,7 +454,8 @@ return NULL;
 
 ImmT  string_compiler0error_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string_compiler0error_t");
-return string_compiler0error_t();
+ImmT  res = string_compiler0error_t();
+return res;
 }
 ImmT string_compiler0error_t(){
 string_compiler_priv0__const__init();
@@ -469,7 +474,7 @@ c_rt_lib0move(&___nl__im__2, c_rt_lib0ov_mk_arg(___get_global_string_const(39), 
 #line 58
 c_rt_lib0move(&___nl__im__3, ptd0string());
 #line 58
-c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__2, ___get_global_string_const(568), ___nl__im__3));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__2, ___get_global_string_const(573), ___nl__im__3));
 #line 58
 c_rt_lib0clear(&___nl__im__2);
 #line 58
@@ -491,7 +496,8 @@ return NULL;
 ImmT  string_compiler0print_modules0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_compiler0print_modules");
 ImmT  *var0 = &(_tab[0]);
-return string_compiler0print_modules(*var0);
+ImmT  res = string_compiler0print_modules(*var0);
+return res;
 }
 ImmT  string_compiler0print_modules(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -549,7 +555,8 @@ return NULL;
 ImmT  string_compiler0parse_module0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_compiler0parse_module");
 string_compiler0modules_t0type *var0 = &(_tab[0]);
-return string_compiler0parse_module(*var0);
+ImmT  res = string_compiler0parse_module(*var0);
+return res;
 }
 ImmT  string_compiler0parse_module(string_compiler0modules_t0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -615,7 +622,7 @@ c_rt_lib0move(&___nl__im__3, c_rt_lib0get_key_iter(___nl__im__6));
 #line 75
 c_rt_lib0move(&___nl__im__5, c_rt_lib0hash_get_value(___nl__im__0, ___nl__im__3));
 #line 76
-c_rt_lib0move(&___nl__im__8, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_string_const(1286)));
+c_rt_lib0move(&___nl__im__8, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_string_const(1290)));
 #line 76
 c_rt_lib0move(&___nl__im__9, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_string_const(211)));
 #line 76
@@ -683,7 +690,7 @@ c_rt_lib0move(&___nl__im__26, c_rt_lib0array_get(___nl__im__19, ___nl__int__21))
 #line 79
 c_rt_lib0copy(&___nl__im__20, ___nl__im__26);
 #line 80
-c_rt_lib0move(&___nl__im__27, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__20, ___get_global_string_const(568), ___nl__im__3));
+c_rt_lib0move(&___nl__im__27, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__20, ___get_global_string_const(573), ___nl__im__3));
 #line 80
 c_rt_lib0delete(array0push(&___nl__im__1, ___nl__im__27));
 #line 80
@@ -728,7 +735,7 @@ c_rt_lib0move(&___nl__im__36, c_rt_lib0array_get(___nl__im__28, ___nl__int__31))
 #line 84
 c_rt_lib0copy(&___nl__im__30, ___nl__im__36);
 #line 85
-c_rt_lib0move(&___nl__im__37, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__30, ___get_global_string_const(568), ___nl__im__3));
+c_rt_lib0move(&___nl__im__37, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__30, ___get_global_string_const(573), ___nl__im__3));
 #line 85
 c_rt_lib0delete(array0push(&___nl__im__1, ___nl__im__37));
 #line 85
@@ -971,7 +978,8 @@ ImmT  string_compiler0check_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_compiler0check_type");
 string_compiler0type_check_t0type *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_compiler0check_type(*var0, *var1);
+ImmT  res = string_compiler0check_type(*var0, *var1);
+return res;
 }
 ImmT  string_compiler0check_type(string_compiler0type_check_t0type ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1062,7 +1070,7 @@ c_rt_lib0move(&___nl__im__11, c_rt_lib0hash_mk(0));
 #line 101
 c_rt_lib0move(&___nl__im__12, c_rt_lib0hash_mk(0));
 #line 102
-c_rt_lib0move(&___nl__im__13, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_string_const(1287)));
+c_rt_lib0move(&___nl__im__13, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_string_const(1291)));
 #line 102
 ___nl__int__15 = 0;
 #line 102
@@ -1116,7 +1124,7 @@ goto label_17;
 label_38:
 ;
 #line 106
-c_rt_lib0move(&___nl__im__26, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_string_const(1265)));
+c_rt_lib0move(&___nl__im__26, c_rt_lib0hash_get_value_dec(___nl__im__3, ___get_global_string_const(1269)));
 #line 106
 ___nl__int__28 = 0;
 #line 106
@@ -1199,7 +1207,7 @@ c_rt_lib0move(&___nl__im__49, hash0get_value(___nl__im__12, ___nl__im__50));
 #line 112
 c_rt_lib0clear(&___nl__im__50);
 #line 112
-c_rt_lib0move(&___nl__im__48, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__41, ___get_global_string_const(568), ___nl__im__49));
+c_rt_lib0move(&___nl__im__48, c_rt_lib0hash_mk(2, ___get_global_string_const(122), ___nl__im__41, ___get_global_string_const(573), ___nl__im__49));
 #line 112
 c_rt_lib0clear(&___nl__im__49);
 #line 112
@@ -1428,7 +1436,8 @@ return NULL;
 ImmT  string_compiler0compile_to_nlasm0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_compiler0compile_to_nlasm");
 ImmT  *var0 = &(_tab[0]);
-return string_compiler0compile_to_nlasm(*var0);
+ImmT  res = string_compiler0compile_to_nlasm(*var0);
+return res;
 }
 ImmT  string_compiler0compile_to_nlasm(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

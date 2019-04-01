@@ -21,7 +21,8 @@ ImmT  float0add0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "float0add");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return float0add(*var0, *var1);
+ImmT  res = float0add(*var0, *var1);
+return res;
 }
 ImmT  float0add(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -54,7 +55,8 @@ ImmT  float0mul0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "float0mul");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return float0mul(*var0, *var1);
+ImmT  res = float0mul(*var0, *var1);
+return res;
 }
 ImmT  float0mul(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -87,7 +89,8 @@ ImmT  float0sub0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "float0sub");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return float0sub(*var0, *var1);
+ImmT  res = float0sub(*var0, *var1);
+return res;
 }
 ImmT  float0sub(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -120,7 +123,8 @@ ImmT  float0div0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "float0div");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return float0div(*var0, *var1);
+ImmT  res = float0div(*var0, *var1);
+return res;
 }
 ImmT  float0div(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -153,7 +157,8 @@ ImmT  float0mod0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "float0mod");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return float0mod(*var0, *var1);
+ImmT  res = float0mod(*var0, *var1);
+return res;
 }
 ImmT  float0mod(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -185,7 +190,8 @@ return NULL;
 ImmT  float0round0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "float0round");
 ImmT  *var0 = &(_tab[0]);
-return float0round(*var0);
+ImmT  res = float0round(*var0);
+return res;
 }
 ImmT  float0round(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

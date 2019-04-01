@@ -18,7 +18,8 @@ ImmT nsystem_priv0__const__sing(int __nr);
 
 ImmT  nsystem0time_microsec0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "nsystem0time_microsec");
-return nsystem0time_microsec();
+ImmT  res = nsystem0time_microsec();
+return res;
 }
 ImmT  nsystem0time_microsec() {
 nsystem_priv0__const__init();
@@ -37,7 +38,8 @@ return NULL;
 
 ImmT  nsystem0get_pid0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "nsystem0get_pid");
-return nsystem0get_pid();
+ImmT  res = nsystem0get_pid();
+return res;
 }
 ImmT  nsystem0get_pid() {
 nsystem_priv0__const__init();
@@ -56,7 +58,8 @@ return NULL;
 
 ImmT  nsystem0time0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "nsystem0time");
-return nsystem0time();
+ImmT  res = nsystem0time();
+return res;
 }
 ImmT  nsystem0time() {
 nsystem_priv0__const__init();
@@ -76,7 +79,8 @@ return NULL;
 ImmT  nsystem0localtime0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "nsystem0localtime");
 ImmT  *var0 = &(_tab[0]);
-return nsystem0localtime(*var0);
+ImmT  res = nsystem0localtime(*var0);
+return res;
 }
 ImmT  nsystem0localtime(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

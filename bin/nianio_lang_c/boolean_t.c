@@ -18,7 +18,8 @@ ImmT boolean_t_priv0__const__sing(int __nr);
 
 ImmT  boolean_t0type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "boolean_t0type");
-return boolean_t0type();
+ImmT  res = boolean_t0type();
+return res;
 }
 ImmT boolean_t0type(){
 boolean_t_priv0__const__init();

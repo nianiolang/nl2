@@ -54,4 +54,5 @@ ImmT  nparser0try_value_t0ptr(int _num, ImmT *_tab);
 ImmT  nparser0try_cmd_t();
 ImmT  nparser0try_cmd_t0ptr(int _num, ImmT *_tab);
 ImmT  nparser0sparse(ImmT  ___nl__im__0,ImmT  ___nl__im__1,bool  ___nl__bool__2);
+ImmT  nparser0sparse0ptr(int _num, ImmT *_tab);
 ImmT  nparser0conv_to_im00state_t(nparser0state_t0type* ___ref___rec__0);

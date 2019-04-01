@@ -22,7 +22,8 @@ ImmT  csv_priv0end(ImmT * ___ref___im__0,ImmT * ___ref___im__1,ImmT  ___nl__im__
 ImmT  csv0save0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "csv0save");
 ImmT  *var0 = &(_tab[0]);
-return csv0save(*var0);
+ImmT  res = csv0save(*var0);
+return res;
 }
 ImmT  csv0save(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -446,7 +447,8 @@ return NULL;
 ImmT  csv0load0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "csv0load");
 ImmT  *var0 = &(_tab[0]);
-return csv0load(*var0);
+ImmT  res = csv0load(*var0);
+return res;
 }
 ImmT  csv0load(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

@@ -20,7 +20,8 @@ ImmT  hash0get_value0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0get_value");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return hash0get_value(*var0, *var1);
+ImmT  res = hash0get_value(*var0, *var1);
+return res;
 }
 ImmT  hash0get_value(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -47,11 +48,12 @@ return NULL;
 
 }
 
-bool  hash0has_key0ptr(int _num, ImmT *_tab){
+ImmT  hash0has_key0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0has_key");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return hash0has_key(*var0, *var1);
+bool  res = hash0has_key(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  hash0has_key(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -83,7 +85,8 @@ c_rt_lib0func_num_args(_num, 3, "hash0set_value");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return hash0set_value(var0, *var1, *var2);
+ImmT  res = hash0set_value(var0, *var1, *var2);
+return res;
 }
 ImmT  hash0set_value(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -104,7 +107,8 @@ ImmT  hash0delete0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0delete");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return hash0delete(var0, *var1);
+ImmT  res = hash0delete(var0, *var1);
+return res;
 }
 ImmT  hash0delete(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -118,10 +122,11 @@ return NULL;
 
 }
 
-INT  hash0size0ptr(int _num, ImmT *_tab){
+ImmT  hash0size0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0size");
 ImmT  *var0 = &(_tab[0]);
-return hash0size(*var0);
+INT  res = hash0size(*var0);
+return c_rt_lib0int_new(res);
 }
 INT  hash0size(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -146,7 +151,8 @@ return 0;
 ImmT  hash0keys0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0keys");
 ImmT  *var0 = &(_tab[0]);
-return hash0keys(*var0);
+ImmT  res = hash0keys(*var0);
+return res;
 }
 ImmT  hash0keys(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -213,7 +219,8 @@ return NULL;
 ImmT  hash0values0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "hash0values");
 ImmT  *var0 = &(_tab[0]);
-return hash0values(*var0);
+ImmT  res = hash0values(*var0);
+return res;
 }
 ImmT  hash0values(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -281,7 +288,8 @@ ImmT  hash0merge0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0merge");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return hash0merge(*var0, *var1);
+ImmT  res = hash0merge(*var0, *var1);
+return res;
 }
 ImmT  hash0merge(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -314,7 +322,8 @@ ImmT  hash0add_all0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "hash0add_all");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return hash0add_all(var0, *var1);
+ImmT  res = hash0add_all(var0, *var1);
+return res;
 }
 ImmT  hash0add_all(ImmT * ___ref___im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -366,7 +375,8 @@ ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
 ImmT  *var3 = &(_tab[3]);
-return hash0set2keys(var0, *var1, *var2, *var3);
+ImmT  res = hash0set2keys(var0, *var1, *var2, *var3);
+return res;
 }
 ImmT  hash0set2keys(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3) {
 c_rt_lib0arg_val(___nl__im__1);
@@ -428,7 +438,8 @@ c_rt_lib0func_num_args(_num, 3, "hash0has2keys");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return hash0has2keys(*var0, *var1, *var2);
+ImmT  res = hash0has2keys(*var0, *var1, *var2);
+return res;
 }
 ImmT  hash0has2keys(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -489,7 +500,8 @@ c_rt_lib0func_num_args(_num, 3, "hash0get2keys");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return hash0get2keys(*var0, *var1, *var2);
+ImmT  res = hash0get2keys(*var0, *var1, *var2);
+return res;
 }
 ImmT  hash0get2keys(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -533,7 +545,8 @@ ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
 ImmT  *var3 = &(_tab[3]);
 ImmT  *var4 = &(_tab[4]);
-return hash0set3keys(var0, *var1, *var2, *var3, *var4);
+ImmT  res = hash0set3keys(var0, *var1, *var2, *var3, *var4);
+return res;
 }
 ImmT  hash0set3keys(ImmT * ___ref___im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3,ImmT  ___nl__im__4) {
 c_rt_lib0arg_val(___nl__im__1);

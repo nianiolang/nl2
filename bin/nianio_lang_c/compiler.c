@@ -245,7 +245,8 @@ return NULL;
 
 ImmT  compiler0parse_check_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0parse_check_t");
-return compiler0parse_check_t();
+ImmT  res = compiler0parse_check_t();
+return res;
 }
 ImmT compiler0parse_check_t(){
 compiler_priv0__const__init();
@@ -302,7 +303,8 @@ return NULL;
 
 ImmT  compiler0errors_hash_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0errors_hash_t");
-return compiler0errors_hash_t();
+ImmT  res = compiler0errors_hash_t();
+return res;
 }
 ImmT compiler0errors_hash_t(){
 compiler_priv0__const__init();
@@ -337,7 +339,8 @@ return NULL;
 
 ImmT  compiler0errors_group_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0errors_group_t");
-return compiler0errors_group_t();
+ImmT  res = compiler0errors_group_t();
+return res;
 }
 ImmT compiler0errors_group_t(){
 compiler_priv0__const__init();
@@ -400,7 +403,8 @@ return NULL;
 
 ImmT  compiler0language_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0language_t");
-return compiler0language_t();
+ImmT  res = compiler0language_t();
+return res;
 }
 ImmT compiler0language_t(){
 compiler_priv0__const__init();
@@ -468,7 +472,8 @@ return NULL;
 
 ImmT  compiler0destination_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0destination_t");
-return compiler0destination_t();
+ImmT  res = compiler0destination_t();
+return res;
 }
 ImmT compiler0destination_t(){
 compiler_priv0__const__init();
@@ -546,7 +551,8 @@ return NULL;
 
 ImmT  compiler0module_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0module_t");
-return compiler0module_t();
+ImmT  res = compiler0module_t();
+return res;
 }
 ImmT compiler0module_t(){
 compiler_priv0__const__init();
@@ -591,7 +597,8 @@ return NULL;
 
 ImmT  compiler0deref_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0deref_t");
-return compiler0deref_t();
+ImmT  res = compiler0deref_t();
+return res;
 }
 ImmT compiler0deref_t(){
 compiler_priv0__const__init();
@@ -629,7 +636,8 @@ return NULL;
 
 ImmT  compiler0try_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0try_t");
-return compiler0try_t();
+ImmT  res = compiler0try_t();
+return res;
 }
 ImmT compiler0try_t(){
 compiler_priv0__const__init();
@@ -667,7 +675,8 @@ return NULL;
 
 ImmT  compiler0input_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0input_type");
-return compiler0input_type();
+ImmT  res = compiler0input_type();
+return res;
 }
 ImmT compiler0input_type(){
 compiler_priv0__const__init();
@@ -824,7 +833,8 @@ return NULL;
 
 ImmT  compiler0file_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler0file_t");
-return compiler0file_t();
+ImmT  res = compiler0file_t();
+return res;
 }
 ImmT compiler0file_t(){
 compiler_priv0__const__init();
@@ -860,10 +870,11 @@ return NULL;
 
 }
 
-INT  compiler0compile0ptr(int _num, ImmT *_tab){
+ImmT  compiler0compile0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "compiler0compile");
 ImmT  *var0 = &(_tab[0]);
-return compiler0compile(*var0);
+INT  res = compiler0compile(*var0);
+return c_rt_lib0int_new(res);
 }
 INT  compiler0compile(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

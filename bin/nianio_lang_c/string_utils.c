@@ -28,7 +28,8 @@ ImmT  string_utils_priv0max(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  string_utils0is_int0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_int");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_int(*var0);
+ImmT  res = string_utils0is_int(*var0);
+return res;
 }
 ImmT  string_utils0is_int(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -102,7 +103,8 @@ return NULL;
 ImmT  string_utils0is_whitespace0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_whitespace");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_whitespace(*var0);
+ImmT  res = string_utils0is_whitespace(*var0);
+return res;
 }
 ImmT  string_utils0is_whitespace(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -187,7 +189,8 @@ return NULL;
 ImmT  string_utils0is_alpha0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_alpha");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_alpha(*var0);
+ImmT  res = string_utils0is_alpha(*var0);
+return res;
 }
 ImmT  string_utils0is_alpha(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -297,7 +300,8 @@ return NULL;
 ImmT  string_utils0get_integer0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0get_integer");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0get_integer(*var0);
+ImmT  res = string_utils0get_integer(*var0);
+return res;
 }
 ImmT  string_utils0get_integer(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -580,10 +584,11 @@ return NULL;
 
 }
 
-bool  string_utils0is_integer0ptr(int _num, ImmT *_tab){
+ImmT  string_utils0is_integer0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_integer");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_integer(*var0);
+bool  res = string_utils0is_integer(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string_utils0is_integer(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -746,10 +751,11 @@ return false;
 
 }
 
-bool  string_utils0is_integer_possibly_leading_zeros0ptr(int _num, ImmT *_tab){
+ImmT  string_utils0is_integer_possibly_leading_zeros0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_integer_possibly_leading_zeros");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_integer_possibly_leading_zeros(*var0);
+bool  res = string_utils0is_integer_possibly_leading_zeros(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string_utils0is_integer_possibly_leading_zeros(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -931,10 +937,11 @@ return false;
 
 }
 
-bool  string_utils0is_float0ptr(int _num, ImmT *_tab){
+ImmT  string_utils0is_float0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_float");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_float(*var0);
+bool  res = string_utils0is_float(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string_utils0is_float(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1304,10 +1311,11 @@ return false;
 
 }
 
-bool  string_utils0is_number0ptr(int _num, ImmT *_tab){
+ImmT  string_utils0is_number0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0is_number");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0is_number(*var0);
+bool  res = string_utils0is_number(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string_utils0is_number(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1343,7 +1351,8 @@ return false;
 ImmT  string_utils0get_number0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0get_number");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0get_number(*var0);
+ImmT  res = string_utils0get_number(*var0);
+return res;
 }
 ImmT  string_utils0get_number(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3402,7 +3411,8 @@ return NULL;
 ImmT  string_utils0eval_number0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0eval_number");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0eval_number(*var0);
+ImmT  res = string_utils0eval_number(*var0);
+return res;
 }
 ImmT  string_utils0eval_number(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3483,7 +3493,7 @@ c_rt_lib0move(&___nl__im__6, c_rt_lib0array_get(___nl__im__3, ___nl__int__7));
 #line 188
 //clear ___nl__int__7;
 #line 188
-c_rt_lib0move(&___nl__im__8,___get_global_string_const(1012));
+c_rt_lib0move(&___nl__im__8,___get_global_string_const(1016));
 #line 188
 ___nl__bool__5 = c_rt_lib0ne(___nl__im__6, ___nl__im__8);
 #line 188
@@ -3816,7 +3826,8 @@ ImmT  string_utils0get_date0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_utils0get_date");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_utils0get_date(*var0, *var1);
+ImmT  res = string_utils0get_date(*var0, *var1);
+return res;
 }
 ImmT  string_utils0get_date(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3993,7 +4004,7 @@ c_rt_lib0move(&___nl__im__30, c_rt_lib0int_new(___nl__int__21));
 #line 221
 c_rt_lib0move(&___nl__im__31, c_rt_lib0int_new(___nl__int__24));
 #line 221
-c_rt_lib0move(&___nl__im__28, c_rt_lib0hash_mk(3, ___get_global_string_const(1288), ___nl__im__29, ___get_global_string_const(1289), ___nl__im__30, ___get_global_string_const(1290), ___nl__im__31));
+c_rt_lib0move(&___nl__im__28, c_rt_lib0hash_mk(3, ___get_global_string_const(1292), ___nl__im__29, ___get_global_string_const(1293), ___nl__im__30, ___get_global_string_const(1294), ___nl__im__31));
 #line 221
 c_rt_lib0clear(&___nl__im__29);
 #line 221
@@ -4027,7 +4038,8 @@ c_rt_lib0func_num_args(_num, 3, "string_utils0change");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return string_utils0change(*var0, *var1, *var2);
+ImmT  res = string_utils0change(*var0, *var1, *var2);
+return res;
 }
 ImmT  string_utils0change(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -4135,7 +4147,8 @@ return NULL;
 ImmT  string_utils0erase_tail_whitespace0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0erase_tail_whitespace");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0erase_tail_whitespace(*var0);
+ImmT  res = string_utils0erase_tail_whitespace(*var0);
+return res;
 }
 ImmT  string_utils0erase_tail_whitespace(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -4275,7 +4288,8 @@ return NULL;
 ImmT  string_utils0erase_tail_zeroes0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0erase_tail_zeroes");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0erase_tail_zeroes(*var0);
+ImmT  res = string_utils0erase_tail_zeroes(*var0);
+return res;
 }
 ImmT  string_utils0erase_tail_zeroes(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -4408,7 +4422,8 @@ return NULL;
 ImmT  string_utils0erase_leading_zeroes0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0erase_leading_zeroes");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0erase_leading_zeroes(*var0);
+ImmT  res = string_utils0erase_leading_zeroes(*var0);
+return res;
 }
 ImmT  string_utils0erase_leading_zeroes(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -4548,7 +4563,8 @@ return NULL;
 ImmT  string_utils0char2hex0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0char2hex");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0char2hex(*var0);
+ImmT  res = string_utils0char2hex(*var0);
+return res;
 }
 ImmT  string_utils0char2hex(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -4584,33 +4600,33 @@ c_rt_lib0move(&___nl__im__2,___get_global_string_const(20));
 #line 264
 c_rt_lib0move(&___nl__im__3,___get_global_string_const(40));
 #line 264
-c_rt_lib0move(&___nl__im__4,___get_global_string_const(1291));
+c_rt_lib0move(&___nl__im__4,___get_global_string_const(1295));
 #line 264
-c_rt_lib0move(&___nl__im__5,___get_global_string_const(1292));
+c_rt_lib0move(&___nl__im__5,___get_global_string_const(1296));
 #line 264
-c_rt_lib0move(&___nl__im__6,___get_global_string_const(1293));
+c_rt_lib0move(&___nl__im__6,___get_global_string_const(1297));
 #line 264
-c_rt_lib0move(&___nl__im__7,___get_global_string_const(1294));
+c_rt_lib0move(&___nl__im__7,___get_global_string_const(1298));
 #line 264
-c_rt_lib0move(&___nl__im__8,___get_global_string_const(1295));
+c_rt_lib0move(&___nl__im__8,___get_global_string_const(1299));
 #line 264
-c_rt_lib0move(&___nl__im__9,___get_global_string_const(1296));
+c_rt_lib0move(&___nl__im__9,___get_global_string_const(1300));
 #line 264
-c_rt_lib0move(&___nl__im__10,___get_global_string_const(1297));
+c_rt_lib0move(&___nl__im__10,___get_global_string_const(1301));
 #line 264
-c_rt_lib0move(&___nl__im__11,___get_global_string_const(1298));
+c_rt_lib0move(&___nl__im__11,___get_global_string_const(1302));
 #line 264
-c_rt_lib0move(&___nl__im__12,___get_global_string_const(1299));
+c_rt_lib0move(&___nl__im__12,___get_global_string_const(1303));
 #line 264
-c_rt_lib0move(&___nl__im__13,___get_global_string_const(1300));
+c_rt_lib0move(&___nl__im__13,___get_global_string_const(1304));
 #line 264
 c_rt_lib0move(&___nl__im__14,___get_global_string_const(65));
 #line 264
-c_rt_lib0move(&___nl__im__15,___get_global_string_const(1301));
+c_rt_lib0move(&___nl__im__15,___get_global_string_const(1305));
 #line 264
-c_rt_lib0move(&___nl__im__16,___get_global_string_const(1302));
+c_rt_lib0move(&___nl__im__16,___get_global_string_const(1306));
 #line 264
-c_rt_lib0move(&___nl__im__17,___get_global_string_const(1303));
+c_rt_lib0move(&___nl__im__17,___get_global_string_const(1307));
 #line 264
 c_rt_lib0move(&___nl__im__1, c_rt_lib0array_mk(16, ___nl__im__2, ___nl__im__3, ___nl__im__4, ___nl__im__5, ___nl__im__6, ___nl__im__7, ___nl__im__8, ___nl__im__9, ___nl__im__10, ___nl__im__11, ___nl__im__12, ___nl__im__13, ___nl__im__14, ___nl__im__15, ___nl__im__16, ___nl__im__17));
 #line 264
@@ -4701,7 +4717,8 @@ ImmT  string_utils0hex2char0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_utils0hex2char");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_utils0hex2char(*var0, *var1);
+ImmT  res = string_utils0hex2char(*var0, *var1);
+return res;
 }
 ImmT  string_utils0hex2char(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5177,7 +5194,8 @@ return NULL;
 ImmT  string_utils0escape2hex310ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0escape2hex31");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0escape2hex31(*var0);
+ImmT  res = string_utils0escape2hex31(*var0);
+return res;
 }
 ImmT  string_utils0escape2hex31(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5203,6 +5221,14 @@ return NULL;
 
 }
 
+ImmT  string_utils0float2str0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "string_utils0float2str");
+ImmT  *var0 = &(_tab[0]);
+INT  var1 = getIntFromImm((_tab[1]));
+ImmT  res = string_utils0float2str(*var0, var1);
+c_rt_lib0move(&_tab[1], c_rt_lib0int_new(var1));
+return res;
+}
 ImmT  string_utils0float2str(ImmT  ___nl__im__0,INT  ___nl__int__1) {
 c_rt_lib0arg_val(___nl__im__0);
 string_utils_priv0__const__init();
@@ -5462,7 +5488,8 @@ ImmT  string_utils0int2str_leading_digits0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_utils0int2str_leading_digits");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_utils0int2str_leading_digits(*var0, *var1);
+ImmT  res = string_utils0int2str_leading_digits(*var0, *var1);
+return res;
 }
 ImmT  string_utils0int2str_leading_digits(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5479,7 +5506,7 @@ ImmT  ___nl__im__9 = NULL;
 INT  ___nl__int__10 = 0;
 ImmT  ___nl__im__11 = NULL;
 #line 321
-c_rt_lib0move(&___nl__im__3,___get_global_string_const(1304));
+c_rt_lib0move(&___nl__im__3,___get_global_string_const(1308));
 #line 321
 c_rt_lib0move(&___nl__im__2, c_rt_lib0concat_new(___nl__im__3, ___nl__im__0));
 #line 321
@@ -5597,7 +5624,8 @@ ImmT  string_utils0int2str0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_utils0int2str");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_utils0int2str(*var0, *var1);
+ImmT  res = string_utils0int2str(*var0, *var1);
+return res;
 }
 ImmT  string_utils0int2str(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5611,7 +5639,7 @@ INT  ___nl__int__6 = 0;
 INT  ___nl__int__7 = 0;
 ImmT  ___nl__im__8 = NULL;
 #line 330
-c_rt_lib0move(&___nl__im__3,___get_global_string_const(1304));
+c_rt_lib0move(&___nl__im__3,___get_global_string_const(1308));
 #line 330
 c_rt_lib0move(&___nl__im__2, c_rt_lib0concat_new(___nl__im__3, ___nl__im__0));
 #line 330
@@ -5650,7 +5678,8 @@ ImmT  string_utils0starts_with0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string_utils0starts_with");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string_utils0starts_with(*var0, *var1);
+ImmT  res = string_utils0starts_with(*var0, *var1);
+return res;
 }
 ImmT  string_utils0starts_with(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5729,7 +5758,8 @@ return NULL;
 ImmT  string_utils0normalize_newlines0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0normalize_newlines");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0normalize_newlines(*var0);
+ImmT  res = string_utils0normalize_newlines(*var0);
+return res;
 }
 ImmT  string_utils0normalize_newlines(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -5818,7 +5848,8 @@ return NULL;
 ImmT  string_utils0float2str_fixed0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string_utils0float2str_fixed");
 ImmT  *var0 = &(_tab[0]);
-return string_utils0float2str_fixed(*var0);
+ImmT  res = string_utils0float2str_fixed(*var0);
+return res;
 }
 ImmT  string_utils0float2str_fixed(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

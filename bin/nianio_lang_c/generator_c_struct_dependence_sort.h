@@ -38,6 +38,6 @@ ImmT  generator_c_struct_dependence_sort0sorted_element0ptr(int _num, ImmT *_tab
 ImmT  generator_c_struct_dependence_sort0decl_def_type();
 ImmT  generator_c_struct_dependence_sort0decl_def_type0ptr(int _num, ImmT *_tab);
 bool  generator_c_struct_dependence_sort0is_divisible(tct0meta_type0type ___nl__im__0);
-bool  generator_c_struct_dependence_sort0is_divisible0ptr(int _num, ImmT *_tab);
+ImmT  generator_c_struct_dependence_sort0is_divisible0ptr(int _num, ImmT *_tab);
 generator_c_struct_dependence_sort0result_t0type generator_c_struct_dependence_sort0sort(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
-generator_c_struct_dependence_sort0result_t0type generator_c_struct_dependence_sort0sort0ptr(int _num, ImmT *_tab);
+ImmT  generator_c_struct_dependence_sort0sort0ptr(int _num, ImmT *_tab);

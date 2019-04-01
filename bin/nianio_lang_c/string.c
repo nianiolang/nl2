@@ -20,7 +20,8 @@ ImmT string_priv0__const__sing(int __nr);
 
 ImmT  string0lf0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string0lf");
-return string0lf();
+ImmT  res = string0lf();
+return res;
 }
 ImmT string0lf(){
 string_priv0__const__init();
@@ -48,7 +49,8 @@ return NULL;
 
 ImmT  string0tab0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string0tab");
-return string0tab();
+ImmT  res = string0tab();
+return res;
 }
 ImmT string0tab(){
 string_priv0__const__init();
@@ -72,7 +74,8 @@ return NULL;
 
 ImmT  string0r0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string0r");
-return string0r();
+ImmT  res = string0r();
+return res;
 }
 ImmT string0r(){
 string_priv0__const__init();
@@ -96,7 +99,8 @@ return NULL;
 
 ImmT  string0f0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string0f");
-return string0f();
+ImmT  res = string0f();
+return res;
 }
 ImmT string0f(){
 string_priv0__const__init();
@@ -124,7 +128,8 @@ return NULL;
 
 ImmT  string0non_breaking_space0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "string0non_breaking_space");
-return string0non_breaking_space();
+ImmT  res = string0non_breaking_space();
+return res;
 }
 ImmT string0non_breaking_space(){
 string_priv0__const__init();
@@ -169,7 +174,8 @@ ImmT  string0char_times0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0char_times");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0char_times(*var0, *var1);
+ImmT  res = string0char_times(*var0, *var1);
+return res;
 }
 ImmT  string0char_times(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -231,7 +237,8 @@ ImmT  string0split0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0split");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0split(*var0, *var1);
+ImmT  res = string0split(*var0, *var1);
+return res;
 }
 ImmT  string0split(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -450,7 +457,8 @@ c_rt_lib0func_num_args(_num, 3, "string0split_limit");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return string0split_limit(*var0, *var1, *var2);
+ImmT  res = string0split_limit(*var0, *var1, *var2);
+return res;
 }
 ImmT  string0split_limit(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -616,7 +624,8 @@ return NULL;
 ImmT  string0to_array0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0to_array");
 ImmT  *var0 = &(_tab[0]);
-return string0to_array(*var0);
+ImmT  res = string0to_array(*var0);
+return res;
 }
 ImmT  string0to_array(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -643,10 +652,11 @@ return NULL;
 
 }
 
-INT  string0length0ptr(int _num, ImmT *_tab){
+ImmT  string0length0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0length");
 ImmT  *var0 = &(_tab[0]);
-return string0length(*var0);
+INT  res = string0length(*var0);
+return c_rt_lib0int_new(res);
 }
 INT  string0length(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -679,7 +689,8 @@ ImmT  string0get_char_code0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0get_char_code");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0get_char_code(*var0, *var1);
+ImmT  res = string0get_char_code(*var0, *var1);
+return res;
 }
 ImmT  string0get_char_code(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -706,6 +717,16 @@ return NULL;
 
 }
 
+ImmT  string0substr0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 3, "string0substr");
+ImmT  *var0 = &(_tab[0]);
+INT  var1 = getIntFromImm((_tab[1]));
+INT  var2 = getIntFromImm((_tab[2]));
+ImmT  res = string0substr(*var0, var1, var2);
+c_rt_lib0move(&_tab[1], c_rt_lib0int_new(var1));
+c_rt_lib0move(&_tab[2], c_rt_lib0int_new(var2));
+return res;
+}
 ImmT  string0substr(ImmT  ___nl__im__0,INT  ___nl__int__1,INT  ___nl__int__2) {
 c_rt_lib0arg_val(___nl__im__0);
 string_priv0__const__init();
@@ -748,7 +769,8 @@ ImmT  string0substr20ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0substr2");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0substr2(*var0, *var1);
+ImmT  res = string0substr2(*var0, *var1);
+return res;
 }
 ImmT  string0substr2(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -800,7 +822,8 @@ return NULL;
 ImmT  string0lc0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0lc");
 ImmT  *var0 = &(_tab[0]);
-return string0lc(*var0);
+ImmT  res = string0lc(*var0);
+return res;
 }
 ImmT  string0lc(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -963,7 +986,8 @@ return NULL;
 ImmT  string0uc0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0uc");
 ImmT  *var0 = &(_tab[0]);
-return string0uc(*var0);
+ImmT  res = string0uc(*var0);
+return res;
 }
 ImmT  string0uc(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1127,7 +1151,8 @@ ImmT  string0index20ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0index2");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0index2(*var0, *var1);
+ImmT  res = string0index2(*var0, *var1);
+return res;
 }
 ImmT  string0index2(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1169,7 +1194,8 @@ c_rt_lib0func_num_args(_num, 3, "string0index");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return string0index(*var0, *var1, *var2);
+ImmT  res = string0index(*var0, *var1, *var2);
+return res;
 }
 ImmT  string0index(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1205,7 +1231,8 @@ ImmT  string0contain_lc0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0contain_lc");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0contain_lc(*var0, *var1);
+ImmT  res = string0contain_lc(*var0, *var1);
+return res;
 }
 ImmT  string0contain_lc(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1266,7 +1293,8 @@ c_rt_lib0func_num_args(_num, 3, "string0replace");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return string0replace(*var0, *var1, *var2);
+ImmT  res = string0replace(*var0, *var1, *var2);
+return res;
 }
 ImmT  string0replace(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1303,7 +1331,8 @@ c_rt_lib0func_num_args(_num, 3, "string0replace_arr");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
 ImmT  *var2 = &(_tab[2]);
-return string0replace_arr(*var0, *var1, *var2);
+ImmT  res = string0replace_arr(*var0, *var1, *var2);
+return res;
 }
 ImmT  string0replace_arr(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1418,10 +1447,11 @@ return NULL;
 
 }
 
-INT  string0ord0ptr(int _num, ImmT *_tab){
+ImmT  string0ord0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0ord");
 ImmT  *var0 = &(_tab[0]);
-return string0ord(*var0);
+INT  res = string0ord(*var0);
+return c_rt_lib0int_new(res);
 }
 INT  string0ord(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1450,10 +1480,11 @@ return 0;
 
 }
 
-bool  string0is_digit0ptr(int _num, ImmT *_tab){
+ImmT  string0is_digit0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0is_digit");
 ImmT  *var0 = &(_tab[0]);
-return string0is_digit(*var0);
+bool  res = string0is_digit(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string0is_digit(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1506,10 +1537,11 @@ return false;
 
 }
 
-bool  string0is_hex_digit0ptr(int _num, ImmT *_tab){
+ImmT  string0is_hex_digit0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0is_hex_digit");
 ImmT  *var0 = &(_tab[0]);
-return string0is_hex_digit(*var0);
+bool  res = string0is_hex_digit(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string0is_hex_digit(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1640,10 +1672,11 @@ return false;
 
 }
 
-bool  string0is_letter0ptr(int _num, ImmT *_tab){
+ImmT  string0is_letter0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0is_letter");
 ImmT  *var0 = &(_tab[0]);
-return string0is_letter(*var0);
+bool  res = string0is_letter(*var0);
+return c_rt_lib0bool_to_nl_native(res);
 }
 bool  string0is_letter(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1738,7 +1771,8 @@ return false;
 ImmT  string0encode_utf160ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0encode_utf16");
 ImmT  *var0 = &(_tab[0]);
-return string0encode_utf16(*var0);
+ImmT  res = string0encode_utf16(*var0);
+return res;
 }
 ImmT  string0encode_utf16(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1764,7 +1798,8 @@ ImmT  string0decode_utf160ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0decode_utf16");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0decode_utf16(*var0, *var1);
+ImmT  res = string0decode_utf16(*var0, *var1);
+return res;
 }
 ImmT  string0decode_utf16(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1794,7 +1829,8 @@ return NULL;
 ImmT  string0is_empty0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "string0is_empty");
 ImmT  *var0 = &(_tab[0]);
-return string0is_empty(*var0);
+ImmT  res = string0is_empty(*var0);
+return res;
 }
 ImmT  string0is_empty(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1838,6 +1874,13 @@ return NULL;
 
 }
 
+ImmT  string0chr0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 1, "string0chr");
+INT  var0 = getIntFromImm((_tab[0]));
+ImmT  res = string0chr(var0);
+c_rt_lib0move(&_tab[0], c_rt_lib0int_new(var0));
+return res;
+}
 ImmT  string0chr(INT  ___nl__int__0) {
 string_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
@@ -1866,7 +1909,8 @@ ImmT  string0lt0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0lt");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0lt(*var0, *var1);
+ImmT  res = string0lt(*var0, *var1);
+return res;
 }
 ImmT  string0lt(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1924,7 +1968,8 @@ ImmT  string0gt0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0gt");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0gt(*var0, *var1);
+ImmT  res = string0gt(*var0, *var1);
+return res;
 }
 ImmT  string0gt(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1982,7 +2027,8 @@ ImmT  string0compare0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0compare");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0compare(*var0, *var1);
+ImmT  res = string0compare(*var0, *var1);
+return res;
 }
 ImmT  string0compare(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -2020,7 +2066,8 @@ ImmT  string0le0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0le");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0le(*var0, *var1);
+ImmT  res = string0le(*var0, *var1);
+return res;
 }
 ImmT  string0le(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -2078,7 +2125,8 @@ ImmT  string0ge0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "string0ge");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return string0ge(*var0, *var1);
+ImmT  res = string0ge(*var0, *var1);
+return res;
 }
 ImmT  string0ge(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);

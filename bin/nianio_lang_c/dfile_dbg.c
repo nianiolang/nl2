@@ -45,7 +45,8 @@ ImmT  dfile_dbg0deep_eq0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile_dbg0deep_eq");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile_dbg0deep_eq(*var0, *var1);
+ImmT  res = dfile_dbg0deep_eq(*var0, *var1);
+return res;
 }
 ImmT  dfile_dbg0deep_eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -93,7 +94,8 @@ ImmT  dfile_dbg0rs0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile_dbg0rs");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return dfile_dbg0rs(*var0, *var1);
+ImmT  res = dfile_dbg0rs(*var0, *var1);
+return res;
 }
 ImmT  dfile_dbg0rs(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -190,7 +192,8 @@ return NULL;
 ImmT  dfile_dbg0ssave0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile_dbg0ssave");
 ImmT  *var0 = &(_tab[0]);
-return dfile_dbg0ssave(*var0);
+ImmT  res = dfile_dbg0ssave(*var0);
+return res;
 }
 ImmT  dfile_dbg0ssave(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -236,7 +239,8 @@ return NULL;
 ImmT  dfile_dbg0debug0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile_dbg0debug");
 ImmT  *var0 = &(_tab[0]);
-return dfile_dbg0debug(*var0);
+ImmT  res = dfile_dbg0debug(*var0);
+return res;
 }
 ImmT  dfile_dbg0debug(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -282,7 +286,8 @@ return NULL;
 ImmT  dfile_dbg0ssave_net_format0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile_dbg0ssave_net_format");
 ImmT  *var0 = &(_tab[0]);
-return dfile_dbg0ssave_net_format(*var0);
+ImmT  res = dfile_dbg0ssave_net_format(*var0);
+return res;
 }
 ImmT  dfile_dbg0ssave_net_format(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -1578,7 +1583,8 @@ return false;
 
 ImmT  dfile_dbg0state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "dfile_dbg0state_t");
-return dfile_dbg0state_t();
+ImmT  res = dfile_dbg0state_t();
+return res;
 }
 ImmT dfile_dbg0state_t(){
 dfile_dbg_priv0__const__init();
@@ -3410,7 +3416,8 @@ return NULL;
 ImmT  dfile_dbg0sload0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile_dbg0sload");
 ImmT  *var0 = &(_tab[0]);
-return dfile_dbg0sload(*var0);
+ImmT  res = dfile_dbg0sload(*var0);
+return res;
 }
 ImmT  dfile_dbg0sload(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3459,7 +3466,8 @@ ImmT  dfile_dbg0sload_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile_dbg0sload_type");
 ImmT  *var0 = &(_tab[0]);
 ptd0meta_type0type *var1 = &(_tab[1]);
-return dfile_dbg0sload_type(*var0, *var1);
+ImmT  res = dfile_dbg0sload_type(*var0, *var1);
+return res;
 }
 ImmT  dfile_dbg0sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3512,7 +3520,8 @@ return NULL;
 ImmT  dfile_dbg0try_sload0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "dfile_dbg0try_sload");
 ImmT  *var0 = &(_tab[0]);
-return dfile_dbg0try_sload(*var0);
+ImmT  res = dfile_dbg0try_sload(*var0);
+return res;
 }
 ImmT  dfile_dbg0try_sload(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3537,7 +3546,8 @@ ImmT  dfile_dbg0try_sload_type0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "dfile_dbg0try_sload_type");
 ImmT  *var0 = &(_tab[0]);
 ptd0meta_type0type *var1 = &(_tab[1]);
-return dfile_dbg0try_sload_type(*var0, *var1);
+ImmT  res = dfile_dbg0try_sload_type(*var0, *var1);
+return res;
 }
 ImmT  dfile_dbg0try_sload_type(ImmT  ___nl__im__0,ptd0meta_type0type ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -3759,7 +3769,8 @@ return NULL;
 
 ImmT  dfile_dbg0state_out0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "dfile_dbg0state_out");
-return dfile_dbg0state_out();
+ImmT  res = dfile_dbg0state_out();
+return res;
 }
 ImmT dfile_dbg0state_out(){
 dfile_dbg_priv0__const__init();

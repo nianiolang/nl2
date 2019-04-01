@@ -24,4 +24,4 @@ ImmT  own_to_im_converter0get_function_name0ptr(int _num, ImmT *_tab);
 ImmT  own_to_im_converter0get_required_arg_type(tct0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
 ImmT  own_to_im_converter0get_required_arg_type0ptr(int _num, ImmT *_tab);
 own_to_im_converter0res_t0type own_to_im_converter0get_function(tct0meta_type0type ___nl__im__0,ImmT  ___nl__im__1);
-own_to_im_converter0res_t0type own_to_im_converter0get_function0ptr(int _num, ImmT *_tab);
+ImmT  own_to_im_converter0get_function0ptr(int _num, ImmT *_tab);

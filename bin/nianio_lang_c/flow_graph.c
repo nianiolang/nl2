@@ -32,7 +32,8 @@ flow_graph0state_t0type flow_graph_priv0mk_blocks(ImmT  ___nl__im__0,ImmT  ___nl
 
 ImmT  flow_graph0block_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "flow_graph0block_t");
-return flow_graph0block_t();
+ImmT  res = flow_graph0block_t();
+return res;
 }
 ImmT flow_graph0block_t(){
 flow_graph_priv0__const__init();
@@ -143,7 +144,8 @@ return NULL;
 
 ImmT  flow_graph0reg_use_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "flow_graph0reg_use_t");
-return flow_graph0reg_use_t();
+ImmT  res = flow_graph0reg_use_t();
+return res;
 }
 ImmT flow_graph0reg_use_t(){
 flow_graph_priv0__const__init();
@@ -208,7 +210,8 @@ return NULL;
 
 ImmT  flow_graph0state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "flow_graph0state_t");
-return flow_graph0state_t();
+ImmT  res = flow_graph0state_t();
+return res;
 }
 ImmT flow_graph0state_t(){
 flow_graph_priv0__const__init();
@@ -258,7 +261,8 @@ return NULL;
 
 ImmT  flow_graph0blocks_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "flow_graph0blocks_t");
-return flow_graph0blocks_t();
+ImmT  res = flow_graph0blocks_t();
+return res;
 }
 ImmT flow_graph0blocks_t(){
 flow_graph_priv0__const__init();
@@ -290,7 +294,8 @@ ImmT  flow_graph0make_blocks0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 2, "flow_graph0make_blocks");
 ImmT  *var0 = &(_tab[0]);
 ImmT  *var1 = &(_tab[1]);
-return flow_graph0make_blocks(*var0, *var1);
+ImmT  res = flow_graph0make_blocks(*var0, *var1);
+return res;
 }
 ImmT  flow_graph0make_blocks(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -621,7 +626,8 @@ return NULL;
 ImmT  flow_graph0combine_blocks0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "flow_graph0combine_blocks");
 flow_graph0blocks_t0type *var0 = &(_tab[0]);
-return flow_graph0combine_blocks(*var0);
+ImmT  res = flow_graph0combine_blocks(*var0);
+return res;
 }
 ImmT  flow_graph0combine_blocks(flow_graph0blocks_t0type ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);

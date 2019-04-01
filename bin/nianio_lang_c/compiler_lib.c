@@ -19,7 +19,8 @@ ImmT compiler_lib_priv0__const__sing(int __nr);
 
 ImmT  compiler_lib0error_type_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0error_type_t");
-return compiler_lib0error_type_t();
+ImmT  res = compiler_lib0error_type_t();
+return res;
 }
 ImmT compiler_lib0error_type_t(){
 compiler_lib_priv0__const__init();
@@ -57,7 +58,8 @@ return NULL;
 
 ImmT  compiler_lib0error_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0error_t");
-return compiler_lib0error_t();
+ImmT  res = compiler_lib0error_t();
+return res;
 }
 ImmT compiler_lib0error_t(){
 compiler_lib_priv0__const__init();
@@ -112,7 +114,8 @@ return NULL;
 
 ImmT  compiler_lib0errors_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "compiler_lib0errors_t");
-return compiler_lib0errors_t();
+ImmT  res = compiler_lib0errors_t();
+return res;
 }
 ImmT compiler_lib0errors_t(){
 compiler_lib_priv0__const__init();

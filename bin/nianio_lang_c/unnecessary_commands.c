@@ -31,7 +31,8 @@ ImmT  unnecessary_commands_priv0build_block_state(unnecessary_commands0state_t0t
 
 ImmT  unnecessary_commands0state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "unnecessary_commands0state_t");
-return unnecessary_commands0state_t();
+ImmT  res = unnecessary_commands0state_t();
+return res;
 }
 ImmT unnecessary_commands0state_t(){
 unnecessary_commands_priv0__const__init();
@@ -42,7 +43,7 @@ unnecessary_commands_priv0__const__init();
 ImmT  ___nl__im__0 = NULL;
 ImmT  ___nl__im__1 = NULL;
 #line 13
-c_rt_lib0move(&___nl__im__1, c_rt_lib0func_new(unnecessary_commands0block_state_t0ptr, ___get_global_string_const(1487), ___get_global_string_const(1488)));
+c_rt_lib0move(&___nl__im__1, c_rt_lib0func_new(unnecessary_commands0block_state_t0ptr, ___get_global_string_const(1491), ___get_global_string_const(1492)));
 #line 13
 c_rt_lib0move(&___nl__im__1, c_rt_lib0ov_mk_arg(___get_global_string_const(39), ___nl__im__1));
 #line 13
@@ -61,7 +62,8 @@ return NULL;
 
 ImmT  unnecessary_commands0block_state_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "unnecessary_commands0block_state_t");
-return unnecessary_commands0block_state_t();
+ImmT  res = unnecessary_commands0block_state_t();
+return res;
 }
 ImmT unnecessary_commands0block_state_t(){
 unnecessary_commands_priv0__const__init();
@@ -94,7 +96,8 @@ return NULL;
 
 ImmT  unnecessary_commands0graph_t0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "unnecessary_commands0graph_t");
-return unnecessary_commands0graph_t();
+ImmT  res = unnecessary_commands0graph_t();
+return res;
 }
 ImmT unnecessary_commands0graph_t(){
 unnecessary_commands_priv0__const__init();
@@ -128,7 +131,8 @@ return NULL;
 ImmT  unnecessary_commands0delete_unnecessary_commands0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "unnecessary_commands0delete_unnecessary_commands");
 nlasm0function_t0type *var0 = &(_tab[0]);
-return unnecessary_commands0delete_unnecessary_commands(var0);
+ImmT  res = unnecessary_commands0delete_unnecessary_commands(var0);
+return res;
 }
 ImmT  unnecessary_commands0delete_unnecessary_commands(nlasm0function_t0type* ___ref___im__0) {
 unnecessary_commands_priv0__const__init();

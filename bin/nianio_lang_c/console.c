@@ -21,7 +21,8 @@ ImmT console_priv0__const__sing(int __nr);
 ImmT  console0println0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "console0println");
 ImmT  *var0 = &(_tab[0]);
-return console0println(*var0);
+ImmT  res = console0println(*var0);
+return res;
 }
 ImmT  console0println(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -48,7 +49,8 @@ return NULL;
 ImmT  console0print0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "console0print");
 ImmT  *var0 = &(_tab[0]);
-return console0print(*var0);
+ImmT  res = console0print(*var0);
+return res;
 }
 ImmT  console0print(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
@@ -64,7 +66,8 @@ return NULL;
 
 ImmT  console0readln0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "console0readln");
-return console0readln();
+ImmT  res = console0readln();
+return res;
 }
 ImmT  console0readln() {
 console_priv0__const__init();
@@ -77,9 +80,10 @@ return NULL;
 
 }
 
-INT  console0read_int0ptr(int _num, ImmT *_tab){
+ImmT  console0read_int0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "console0read_int");
-return console0read_int();
+INT  res = console0read_int();
+return c_rt_lib0int_new(res);
 }
 INT  console0read_int() {
 console_priv0__const__init();
@@ -94,7 +98,8 @@ return 0;
 
 ImmT  console0read_char0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 0, "console0read_char");
-return console0read_char();
+ImmT  res = console0read_char();
+return res;
 }
 ImmT  console0read_char() {
 console_priv0__const__init();

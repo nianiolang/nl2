@@ -19,6 +19,6 @@
 #include "own_to_im_converter.h"
 #include "nparser.h"
 tc_types0return_t0type type_checker0check(ImmT  ___nl__im__0,ImmT  ___nl__im__1);
-tc_types0return_t0type type_checker0check0ptr(int _num, ImmT *_tab);
+ImmT  type_checker0check0ptr(int _num, ImmT *_tab);
 tc_types0return_t0type type_checker0check_modules(ImmT * ___ref___im__0,ImmT  ___nl__im__1);
-tc_types0return_t0type type_checker0check_modules0ptr(int _num, ImmT *_tab);
+ImmT  type_checker0check_modules0ptr(int _num, ImmT *_tab);
