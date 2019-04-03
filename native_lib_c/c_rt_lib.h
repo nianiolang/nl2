@@ -228,9 +228,15 @@ ImmT c_rt_lib0gen_imm(ImmT imm);
 char *c_rt_lib0get_die_additional_info();
 char *c_rt_lib0get_logs_dir();
 
-//TODO temporary float
 ImmT c_rt_lib0str_float_add(ImmT lhs, ImmT rhs);
 ImmT c_rt_lib0str_float_mul(ImmT lhs, ImmT rhs);
 ImmT c_rt_lib0str_float_sub(ImmT lhs, ImmT rhs);
 ImmT c_rt_lib0str_float_div(ImmT lhs, ImmT rhs);
 ImmT c_rt_lib0str_float_mod(ImmT lhs, ImmT rhs);
+bool c_rt_lib0str_float_eq(ImmT ___nl__lhs, ImmT ___nl__rhs);
+bool c_rt_lib0str_float_ne(ImmT ___nl__lhs, ImmT ___nl__rhs);
+bool c_rt_lib0str_float_lt(ImmT ___nl__lhs, ImmT ___nl__rhs);
+bool c_rt_lib0str_float_gt(ImmT ___nl__lhs, ImmT ___nl__rhs);
+bool c_rt_lib0str_float_leq(ImmT ___nl__lhs, ImmT ___nl__rhs);
+bool c_rt_lib0str_float_geq(ImmT ___nl__lhs, ImmT ___nl__rhs);
+

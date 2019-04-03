@@ -1346,6 +1346,48 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::int(), name => ''},
 			]
 		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_eq', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_ne', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_lt', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_gt', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_leq', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_rt_lib::str_float_geq', {
+			r => tct::bool(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'c_olympic_io::print', {
 			r => tct::void(),
 			a => [

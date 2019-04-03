@@ -1637,3 +1637,27 @@ ImmT c_rt_lib0str_float_mod(ImmT ___nl__lhs, ImmT ___nl__rhs) {
 	return c_rt_lib0string_new(res_str);
 }
 
+bool c_rt_lib0str_float_eq(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) == getFloatFromImm(___nl__rhs);
+}
+
+bool c_rt_lib0str_float_ne(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) != getFloatFromImm(___nl__rhs);
+}
+
+bool c_rt_lib0str_float_lt(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) < getFloatFromImm(___nl__rhs);
+}
+
+bool c_rt_lib0str_float_gt(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) > getFloatFromImm(___nl__rhs);
+}
+
+bool c_rt_lib0str_float_leq(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) <= getFloatFromImm(___nl__rhs);
+}
+
+bool c_rt_lib0str_float_geq(ImmT ___nl__lhs, ImmT ___nl__rhs) {
+	return getFloatFromImm(___nl__lhs) >= getFloatFromImm(___nl__rhs);
+}
+
