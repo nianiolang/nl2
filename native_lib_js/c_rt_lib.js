@@ -717,6 +717,30 @@ var instadb;
 		return _namespace.imm_str(lhs.as_float() / rhs.as_float());
 	}
 
+	_namespace.c_rt_lib.str_float_eq = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() == rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_ne = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() != rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_gt = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() > rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_lt = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() < rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_geq = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() >= rhs.as_float());
+	}
+
+	_namespace.c_rt_lib.str_float_leq = function(lhs, rhs) {
+		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() <= rhs.as_float());
+	}
+
 	_namespace.c_rt_lib.str_float_mod = function(lhs, rhs) {
 		return _namespace.imm_str(lhs.as_float() % rhs.as_float());
 	}
