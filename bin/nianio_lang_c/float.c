@@ -187,6 +187,150 @@ return NULL;
 
 }
 
+ImmT  float0eq0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0eq");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0eq(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0eq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 30
+___nl__bool__2 = c_rt_lib0str_float_eq(___nl__im__0, ___nl__im__1);
+#line 30
+c_rt_lib0clear(&___nl__im__0);
+#line 30
+c_rt_lib0clear(&___nl__im__1);
+#line 30
+return ___nl__bool__2;
+return false;
+
+}
+
+ImmT  float0ne0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0ne");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0ne(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0ne(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 34
+___nl__bool__2 = c_rt_lib0str_float_ne(___nl__im__0, ___nl__im__1);
+#line 34
+c_rt_lib0clear(&___nl__im__0);
+#line 34
+c_rt_lib0clear(&___nl__im__1);
+#line 34
+return ___nl__bool__2;
+return false;
+
+}
+
+ImmT  float0gt0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0gt");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0gt(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0gt(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 38
+___nl__bool__2 = c_rt_lib0str_float_gt(___nl__im__0, ___nl__im__1);
+#line 38
+c_rt_lib0clear(&___nl__im__0);
+#line 38
+c_rt_lib0clear(&___nl__im__1);
+#line 38
+return ___nl__bool__2;
+return false;
+
+}
+
+ImmT  float0lt0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0lt");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0lt(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0lt(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 42
+___nl__bool__2 = c_rt_lib0str_float_lt(___nl__im__0, ___nl__im__1);
+#line 42
+c_rt_lib0clear(&___nl__im__0);
+#line 42
+c_rt_lib0clear(&___nl__im__1);
+#line 42
+return ___nl__bool__2;
+return false;
+
+}
+
+ImmT  float0geq0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0geq");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0geq(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0geq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 46
+___nl__bool__2 = c_rt_lib0str_float_geq(___nl__im__0, ___nl__im__1);
+#line 46
+c_rt_lib0clear(&___nl__im__0);
+#line 46
+c_rt_lib0clear(&___nl__im__1);
+#line 46
+return ___nl__bool__2;
+return false;
+
+}
+
+ImmT  float0leq0ptr(int _num, ImmT *_tab){
+c_rt_lib0func_num_args(_num, 2, "float0leq");
+ImmT  *var0 = &(_tab[0]);
+ImmT  *var1 = &(_tab[1]);
+bool  res = float0leq(*var0, *var1);
+return c_rt_lib0bool_to_nl_native(res);
+}
+bool  float0leq(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
+c_rt_lib0arg_val(___nl__im__0);
+c_rt_lib0arg_val(___nl__im__1);
+float_priv0__const__init();
+bool  ___nl__bool__2 = false;
+#line 50
+___nl__bool__2 = c_rt_lib0str_float_leq(___nl__im__0, ___nl__im__1);
+#line 50
+c_rt_lib0clear(&___nl__im__0);
+#line 50
+c_rt_lib0clear(&___nl__im__1);
+#line 50
+return ___nl__bool__2;
+return false;
+
+}
+
 ImmT  float0round0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "float0round");
 ImmT  *var0 = &(_tab[0]);
@@ -199,19 +343,19 @@ float_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
 ImmT  ___nl__im__2 = NULL;
 ImmT  ___nl__im__3 = NULL;
-#line 30
+#line 54
 c_rt_lib0move(&___nl__im__2, ptd0string());
-#line 30
+#line 54
 c_rt_lib0move(&___nl__im__3, c_rt_lib0float_round(___nl__im__0));
-#line 30
+#line 54
 c_rt_lib0move(&___nl__im__1, ptd0ensure(___nl__im__2, ___nl__im__3));
-#line 30
+#line 54
 c_rt_lib0clear(&___nl__im__2);
-#line 30
+#line 54
 c_rt_lib0clear(&___nl__im__3);
-#line 30
+#line 54
 c_rt_lib0clear(&___nl__im__0);
-#line 30
+#line 54
 return ___nl__im__1;
 return NULL;
 
