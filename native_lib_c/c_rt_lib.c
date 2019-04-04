@@ -1240,6 +1240,7 @@ ImmT c_rt_lib0get_true(){
 }
 
 bool c_rt_lib0check_true_native(ImmT ___nl__arg) {
+	if(!IS_OV_NONE(___nl__arg)) nl_die_internal("argument is not empty variant in boolean check");
 	if(___nl__arg == _true) return true;
 	if(___nl__arg == _false) return false;
 	if (compare_string_with_cstr(((NlOv*)___nl__arg)->name, "TRUE") == 0) {
