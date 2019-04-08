@@ -114,45 +114,45 @@ def array::equal(arr1, arr2) {
 }
 
 def sort(ref arr, comp) {
-	part_sort(ref arr, 0, array::len(arr) - 1, comp);
+	var len = array::len(arr);
+	for (var interval_size = 2; interval_size < 2*len; interval_size *= 2) {
+		for (var begin = 0; begin < len; begin += interval_size) {
+			var end = begin + interval_size - 1;
+			end = len - 1 if (end > len - 1);
+			continue if end - begin <= 0;
+			if (end - begin == 1) {
+				continue if exec(comp, arr[begin], arr[end]);
+				var tmp = arr[begin];
+				arr[begin] = arr[end];
+				arr[end] = tmp;
+				continue;
+			}
+			var mid = begin + ((interval_size - 1) / 2);
+			continue if (mid > len - 1);
+			var tmp = [];
+			var left = begin;
+			var right = mid + 1;
+			while (left <= mid || right <= end) {
+				if (left > mid) {
+					array::push(ref tmp, arr[right]);
+					++right;
+				} elsif (right > end) {
+					array::push(ref tmp, arr[left]);
+					++left;
+				} elsif (exec(comp, arr[left], arr[right])) {
+					array::push(ref tmp, arr[left]);
+					++left;
+				} else {
+					array::push(ref tmp, arr[right]);
+					++right;
+				}
+			}
+			arr[begin + i] = tmp[i] rep var i (end - begin + 1);
+		}
+	}
 }
 
 def exec(comp, a, b) {
 	var r = [a, b];
 	return c_std_lib::exec(comp, ref r);
 }
-
-def part_sort(ref arr, begin, end, comp) {
-	return if end - begin <= 0;
-	if (end - begin == 1) {
-		return if exec(comp, arr[begin], arr[end]);
-		var tmp = arr[begin];
-		arr[begin] = arr[end];
-		arr[end] = tmp;
-		return;
-	}
-	var mid = begin + (end - begin + 1 - (end - begin + 1) % 2) / 2;
-	part_sort(ref arr, begin, mid, comp);
-	part_sort(ref arr, mid + 1, end, comp);
-	var tmp = [];
-	var left = begin;
-	var right = mid + 1;
-	while (left <= mid || right <= end) {
-		if (left > mid) {
-			array::push(ref tmp, arr[right]);
-			++right;
-		} elsif (right > end) {
-			array::push(ref tmp, arr[left]);
-			++left;
-		} elsif (exec(comp, arr[left], arr[right])) {
-			array::push(ref tmp, arr[left]);
-			++left;
-		} else {
-			array::push(ref tmp, arr[right]);
-			++right;
-		}
-	}
-	arr[begin + i] = tmp[i] rep var i (end - begin + 1);
-}
-
-
