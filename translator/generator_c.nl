@@ -860,8 +860,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 			generate_imm(ref state, const->val);
 			print(ref state, ')');
 		} case :bool {
-			print(ref state, get_reg_value(ref state, const->dest) . ' = ');
-			generate_imm(ref state, const->val);			
+			print(ref state, get_reg_value(ref state, const->dest) . ' = ' . (const->val ? 'true' : 'false'));
 		} case :rec(var type) {
 			die;
 		} case :arr(var type) {
@@ -933,45 +932,31 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 					get_reg(ref state, set->val)
 				]));
 	} case :ov_mk(var mk) {
-		if (mk->src is :emp && (mk->label eq 'TRUE')) {
-			if (mk->dest->type is :im) {
-				print(ref state, get_assign(ref state, mk->dest,
-					get_fun_lib('ov_mk_none', [get_const_string(ref state, 'TRUE')])));
-			} elsif (mk->dest->type is :bool) {
-				print(ref state, get_assign(ref state, mk->dest, 'true'));
+		if (mk->dest->type is :im) {
+			var r;
+			match (mk->src) case :arg(var a) {
+				r = get_fun_lib('ov_mk_arg', [get_const_string(ref state, mk->label), get_reg(ref state, a)]);
+			} case :emp {
+				r = get_fun_lib('ov_mk_none', [get_const_string(ref state, mk->label)]);
 			}
-		} elsif (mk->src is :emp && (mk->label eq 'FALSE')) {
-			if (mk->dest->type is :im) {
-				print(ref state, get_assign(ref state, mk->dest,
-					get_fun_lib('ov_mk_none', [get_const_string(ref state, 'FALSE')])));
-			} elsif (mk->dest->type is :bool) {
-				print(ref state, get_assign(ref state, mk->dest, 'false'));
+			print(ref state, get_assign(ref state, mk->dest, r));
+		} elsif (mk->dest->type is :variant) {
+			var type_name = get_type_name(mk->dest->type as :variant);
+			var anon = is_anon(mk->dest->type as :variant);
+			var val;
+			var size;
+			match (mk->src) case :arg(var a) {
+				val = get_reg_ref(ref state, a);
+				size = 'sizeof(' . get_type_name(mk->inner_type) . ')';
+			} case :emp {
+				val = 'NULL';
+				size = '0';
 			}
+			print(ref state, get_variant_make_fun_name(type_name, state->mod_name, anon) . '(' .
+				get_reg_ref(ref state, mk->dest) . ', ' . mk->label_no . ', ' .
+				val . ', ' . size .  ')');
 		} else {
-			if (mk->dest->type is :im) {
-				var r;
-				match (mk->src) case :arg(var a) {
-					r = get_fun_lib('ov_mk_arg', [get_const_string(ref state, mk->label), get_reg(ref state, a)]);
-				} case :emp {
-					r = get_fun_lib('ov_mk_none', [get_const_string(ref state, mk->label)]);
-				}
-				print(ref state, get_assign(ref state, mk->dest, r));
-			} elsif (mk->dest->type is :variant) {
-				var type_name = get_type_name(mk->dest->type as :variant);
-				var anon = is_anon(mk->dest->type as :variant);
-				var val;
-				var size;
-				match (mk->src) case :arg(var a) {
-					val = get_reg_ref(ref state, a);
-					size = 'sizeof(' . get_type_name(mk->inner_type) . ')';
-				} case :emp {
-					val = 'NULL';
-					size = '0';
-				}
-				print(ref state, get_variant_make_fun_name(type_name, state->mod_name, anon) . '(' .
-					get_reg_ref(ref state, mk->dest) . ', ' . mk->label_no . ', ' .
-					val . ', ' . size .  ')');
-			}
+			die;
 		}
 	} case :prt_lbl(var l) {
 		print(ref state, 'label_' . l . ':' . string::lf() . ';' . string::lf());

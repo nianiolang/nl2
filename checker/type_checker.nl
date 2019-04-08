@@ -801,6 +801,8 @@ def check_val(val : @nast::value_t, ref modules : @tc_types::modules_t, ref vars
 		ret->type = tct::var(ret_variants);
 	} case :const(var as_const) {
 		ret->type = tct::int();
+	} case :bool(var as_bool) {
+		ret->type = tct::bool();
 	} case :arr_decl(var arr_decl) {
 		if (array::len(arr_decl) == 0) {
 			ret->type = tct::arr(tct::empty());
@@ -2392,6 +2394,8 @@ def fill_value_types(ref value : @nast::value_t, vars : @tc_types::vars_t, modul
 		value->value = :variant(variant);
 	} case :const(var as_const) {
 		value->type = :tct_int;
+	} case :bool(var as_bool) {
+		value->type = :tct_bool;
 	} case :arr_decl(var arr_decl) {
 		var value_type = unwrap_ref(value->type, ref modules, ref errors);
 		rep var i (array::len(arr_decl)) {

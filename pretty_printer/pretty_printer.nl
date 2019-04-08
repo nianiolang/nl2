@@ -297,6 +297,8 @@ def print_val(val : @nast::value_t) : @wprinter::pretty_t {
 			arr[array::len(arr) - 1] = arr[array::len(arr) - 1] . '''';
 		}
 		return wprinter::build_str_arr(arr, str_arr->last);
+	} case :bool(var bool) {
+		return wprinter::build_sim(bool ? 'true' : 'false');
 	} case :hash_key(var hash_key) {
 		hash_key = '''' . hash_key . '''' unless is_proper_hash_key(hash_key);
 		return wprinter::build_sim(hash_key);

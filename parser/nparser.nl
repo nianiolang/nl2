@@ -450,9 +450,9 @@ def parse_expr_rec(ref state : @nparser::state_t, prec : ptd::int()) : @nparser:
 		expr = :unary_op({op => op, val => value});
 	} elsif (ntokenizer::is_type(ref state->state, :keyword)) {
 		if (try_eat(ref state, 'true')) {
-			expr = :variant({name => 'TRUE', var => get_value_nop(ref state)});
+			expr = :bool(true);
 		} elsif (try_eat(ref state, 'false')) {
-			expr = :variant({name => 'FALSE', var => get_value_nop(ref state)});
+			expr = :bool(false);
 		} else {
 			var err : ptd::string() = 'use keyword in wrong context:' . string::lf() . ntokenizer::info(ref state->state);
 			add_error(ref state, err);

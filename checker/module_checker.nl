@@ -569,6 +569,7 @@ def check_val(val : @nast::value_t, ref state : @module_checker::state_t) : ptd:
 		check_val(variant->var, ref state);
 	} case :const(var as_const) {
 	} case :string(var str) {
+	} case :bool(var bool) {
 	} case :nop {
 	} case :hash_key(var hash_key) {
 	} case :arr_decl(var arr_decl) {

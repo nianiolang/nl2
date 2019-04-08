@@ -297,6 +297,8 @@ def print_val(val : @nast::value_t, destination : @nlasm::reg_t, ref state : @tr
 		load_const(const, destination, ref state);
 	} case :string(var str) {
 		load_const(make_string(str, ref state), destination, ref state);
+	} case :bool(var bool) {
+		load_const(bool, destination, ref state);
 	} case :ternary_op(var op) {
 		print_ternary_op(op, destination, ref state);
 	} case :hash_key(var key) {
@@ -1582,6 +1584,8 @@ def print_val_init(val : @nast::value_t, destination : @nlasm::reg_t, ref state 
 		load_const(const, destination, ref state);
 	} case :string(var str) {
 		die;
+	} case :bool(var bool) {
+		load_const(bool, destination, ref state);
 	} case :ternary_op(var op) {
 		die;
 	} case :hash_key(var key) {

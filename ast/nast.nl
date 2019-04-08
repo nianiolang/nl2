@@ -179,6 +179,7 @@ def nast::value_only_t() {
 				arr => ptd::arr(ptd::string()),
 				last => ptd::var({end => ptd::none(), new_line => ptd::none()})
 			}),
+		bool => ptd::bool(),
 		arr_decl => ptd::arr(@nast::value_t),
 		hash_decl => @nast::hash_decl_t,
 		var => ptd::string(),

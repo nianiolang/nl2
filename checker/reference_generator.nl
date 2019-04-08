@@ -252,6 +252,7 @@ def process_value(ref ret : @reference_generator::refs, module : @reference_gene
 		process_value(ref ret, module, v->var);
 	} case :const(var c) {
 	} case :string(var s) {
+	} case :bool(var b) {
 	} case :arr_decl(var arr_decl) {
 		fora var el (arr_decl) {
 			process_value(ref ret, module, el);
