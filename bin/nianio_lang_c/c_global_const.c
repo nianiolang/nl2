@@ -764,9 +764,9 @@ c_rt_lib0string_new_to_memory(".__dyn_",___global_string_const__ + ___global_con
 c_rt_lib0string_new_to_memory(" = function(arr) {",___global_string_const__ + ___global_const_offset * 745);
 c_rt_lib0string_new_to_memory("var arg",___global_string_const__ + ___global_const_offset * 746);
 c_rt_lib0string_new_to_memory("new ",___global_string_const__ + ___global_const_offset * 747);
-c_rt_lib0string_new_to_memory("arr.value.get_index_int(",___global_string_const__ + ___global_const_offset * 748);
+c_rt_lib0string_new_to_memory("arr.value.get_index(",___global_string_const__ + ___global_const_offset * 748);
 c_rt_lib0string_new_to_memory("));",___global_string_const__ + ___global_const_offset * 749);
-c_rt_lib0string_new_to_memory("arr.value = arr.value.set_index_int(",___global_string_const__ + ___global_const_offset * 750);
+c_rt_lib0string_new_to_memory("arr.value = arr.value.set_index(",___global_string_const__ + ___global_const_offset * 750);
 c_rt_lib0string_new_to_memory(", arg",___global_string_const__ + ___global_const_offset * 751);
 c_rt_lib0string_new_to_memory(".value);",___global_string_const__ + ___global_const_offset * 752);
 c_rt_lib0string_new_to_memory("var ret = ",___global_string_const__ + ___global_const_offset * 753);
