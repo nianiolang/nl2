@@ -139,10 +139,10 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 			call .= 'arg' . i;
 			ret .= 'var arg' . i . ' = ';
 			match (arg->by) case :ref {
-				ret .= 'new ' . imm_call('ref') . '(' . 'arr.value.get_index_int(' . i . '));';
-				after .= 'arr.value = arr.value.set_index_int(' . i . ', arg' . i . '.value);' . string::lf();
+				ret .= 'new ' . imm_call('ref') . '(' . 'arr.value.get_index(' . i . '));';
+				after .= 'arr.value = arr.value.set_index(' . i . ', arg' . i . '.value);' . string::lf();
 			} case :val {
-				ret .= 'arr.value.get_index_int('. i . ');';
+				ret .= 'arr.value.get_index('. i . ');';
 			}
 			ret .= string::lf();
 			++i;
