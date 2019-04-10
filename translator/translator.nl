@@ -1033,6 +1033,10 @@ def print_bin_op_operator_command(destination : @nlasm::reg_t, arg_1 : @nlasm::r
 			expected_dest_type = :bool;
 		}
 	}
+	if (operator eq '<' || operator eq '<=' || operator eq '>' || operator eq '>=' ||
+			operator eq '==' || operator eq '!=') {
+		expected_dest_type = :bool;
+	}
 	if (!nlasm::eq_reg_type(arg_1->type, expected_type)) {
 		real_arg_1 = new_register(ref state, expected_type);
 		move(real_arg_1, arg_1, ref state);
