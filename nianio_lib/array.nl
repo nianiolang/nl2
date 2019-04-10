@@ -147,7 +147,7 @@ def sort(ref arr, comp) {
 					++right;
 				}
 			}
-			arr[begin + i] = tmp[i] rep var i (end - begin + 1);
+			arr[begin + i] = tmp[i] rep var i (array::len(tmp));
 		}
 	}
 }

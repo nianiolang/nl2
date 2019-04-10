@@ -43,7 +43,7 @@ var instadb;
 	}
 
 	_namespace.c_std_lib.hash_has_key = function(hash, key) {
-		return _namespace.c_rt_lib.native_to_nl(hash.has_key(key));
+		return hash.has_key(key);
 	}
 
 	_namespace.c_std_lib.hash_set_value = function(/*ref*/hash, key, value) {
@@ -108,27 +108,27 @@ var instadb;
 	}
 
 	_namespace.c_std_lib.is_array = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'array');
+		return imm.get_imm_type() == 'array';
 	}
 
 	_namespace.c_std_lib.is_hash = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'hash');
+		return imm.get_imm_type() == 'hash';
 	}
 
 	_namespace.c_std_lib.is_int = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int');
+		return imm.get_imm_type() == 'int';
 	}
 
 	_namespace.c_std_lib.is_string = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'string');
+		return imm.get_imm_type() == 'string';
 	}
 
 	_namespace.c_std_lib.is_printable = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'int' || imm.get_imm_type() == 'string');
+		return imm.get_imm_type() == 'int' || imm.get_imm_type() == 'string';
 	}
 
 	_namespace.c_std_lib.is_variant = function(imm) {
-		return _namespace.c_rt_lib.native_to_nl(imm.get_imm_type() == 'ov');
+		return imm.get_imm_type() == 'ov';
 	}
 
 	_namespace.c_std_lib.exec = function(func, /*ref*/arr) {
@@ -137,7 +137,7 @@ var instadb;
 	}
 
 	_namespace.c_std_lib.int_to_string = function(imm) {
-		return _namespace.imm_str(imm.as_int());
+		return _namespace.imm_str(imm);
 	}
 
 	_namespace.c_std_lib.try_string_to_int = function(imm) {

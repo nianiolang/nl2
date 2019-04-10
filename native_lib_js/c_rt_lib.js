@@ -200,30 +200,18 @@ var instadb;
 		}
 	}
 
-	arr_priv.prototype.set_index_int = function(idx, value) {
+	arr_priv.prototype.get_index = function(idx) {
+		this.update_value();
+		this.check_index(idx);
+		return this.value[idx];
+	}
+
+	arr_priv.prototype.set_index = function(idx, value) {
 		this.update_value();
 		var ret = this.new_array();
 		this.check_index(idx);
 		ret[idx] = value;
 		return _namespace.imm_arr(ret);
-	}
-
-	arr_priv.prototype.get_index = function(i) {
-		this.update_value();
-		var idx = i.as_int();
-		this.check_index(idx);
-		return this.value[idx];
-	}
-
-	arr_priv.prototype.set_index = function(ind, value) {
-		var idx = ind.as_int();
-		return this.set_index_int(idx, value);
-	}
-
-	arr_priv.prototype.get_index_int = function(i) {
-		this.update_value();
-		this.check_index(i);
-		return this.value[i];
 	}
 
 	arr_priv.prototype.len = function() {
@@ -246,7 +234,7 @@ var instadb;
 
 	arr_priv.prototype.subarray = function(begin, length) {
 		this.update_value();
-		return new arr_priv(this.value.slice(begin.as_int(), begin.as_int() + length.as_int()));
+		return new arr_priv(this.value.slice(begin, begin + length));
 	}
 
 	arr_priv.prototype.pop = function() {
@@ -308,11 +296,11 @@ var instadb;
 	}
 
 	ov_priv.prototype.ov_has_value_nl = function() {
-		return _namespace.c_rt_lib.native_to_nl(this.ov_has_value());
+		return this.ov_has_value();
 	}
 	
 	ov_priv.prototype.ov_is_nl = function(label) {
-		return _namespace.c_rt_lib.native_to_nl(this.ov_is(label));
+		return this.ov_is(label);
 	}
 
 	ov_priv.prototype.get_imm_type = function() {
@@ -517,7 +505,7 @@ var instadb;
 
 	priv_hash.prototype.hash_size = function() {
 		this.update_hash();
-		return _namespace.imm_int(hash_len(this.value));
+		return hash_len(this.value);
 	}
 
 	priv_hash.prototype.get_debug_body = function() {
@@ -538,7 +526,7 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.array_len = function(arr) {
-		return _namespace.imm_int(arr.len());
+		return arr.len();
 	}
 
 	_namespace.check_null = function(el) {
@@ -579,13 +567,12 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.get_key_iter = function(iter) {
-		return iter.get_value_byte_str('keys').get_index(iter.get_value_byte_str('position'));
+		return iter.get_value_byte_str('keys').get_index(iter.get_value_byte_str('position').as_int());
 	}
 
 	_namespace.c_rt_lib.is_end_hash = function(iter) {
-		return _namespace.c_rt_lib.native_to_nl(
-				iter.get_value_byte_str('position').as_int() >= 
-				iter.get_value_byte_str('keys').len());
+		return iter.get_value_byte_str('position').as_int() >= 
+				iter.get_value_byte_str('keys').len();
 	}
 
 	_namespace.c_rt_lib.next_iter = function(iter) {
@@ -602,7 +589,7 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.ov_has_value = function(ov) {
-		return ov.ov_has_value_nl();
+		return _namespace.c_rt_lib.native_to_nl(ov.ov_has_value_nl());
 	}
 
 	_namespace.c_rt_lib.ov_get_value = function(ov) {
@@ -682,11 +669,11 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.eq = function(l, r) {
-		return _namespace.c_rt_lib.native_to_nl(l.as_byte_string() == r.as_byte_string());
+		return l.as_byte_string() == r.as_byte_string();
 	}
 
 	_namespace.c_rt_lib.ne = function(l, r) {
-		return _namespace.c_rt_lib.native_to_nl(l.as_byte_string() != r.as_byte_string());
+		return l.as_byte_string() != r.as_byte_string();
 	}
 
 	_namespace.c_rt_lib.float_round = function(imm_s) {
@@ -718,27 +705,27 @@ var instadb;
 	}
 
 	_namespace.c_rt_lib.str_float_eq = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() == rhs.as_float());
+		return lhs.as_float() == rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_ne = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() != rhs.as_float());
+		return lhs.as_float() != rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_gt = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() > rhs.as_float());
+		return lhs.as_float() > rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_lt = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() < rhs.as_float());
+		return lhs.as_float() < rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_geq = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() >= rhs.as_float());
+		return lhs.as_float() >= rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_leq = function(lhs, rhs) {
-		return _namespace.c_rt_lib.native_to_nl(lhs.as_float() <= rhs.as_float());
+		return lhs.as_float() <= rhs.as_float();
 	}
 
 	_namespace.c_rt_lib.str_float_mod = function(lhs, rhs) {

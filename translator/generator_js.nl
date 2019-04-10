@@ -171,15 +171,15 @@ def print_function(function : @nlasm::function_t, module_name : ptd::string(), r
 	result .= ') {' . string::lf();
 	rep var i (array::len(function->args_type)) {
 		match (function->args_type[i]->by) case :val {
-			result .= 'var ___nl__' . i . ' = ___arg__' . i . ';';
+			result .= 'var ' . print_register(function->registers[i]) . ' = ___arg__' . i . ';';
 		} case :ref {
-			result .= 'var ___nl__' . i . ' = ___arg__' . i . '.value;';
+			result .= 'var ' . print_register(function->registers[i]) . ' = ___arg__' . i . '.value;';
 		}
-		result .= get_namespace_name() . '.check_null(___nl__' . i . ');';
+		result .= get_namespace_name() . '.check_null(' . print_register(function->registers[i]) . ');';
 	}
 	result .= string::lf();
 	for(var i = array::len(function->args_type); i < array::len(function->registers); ++i) {
-		result .= 'var ___nl__' . i . ' = null;' . string::lf();
+		result .= 'var ' . print_register(function->registers[i]) . ' = null;' . string::lf();
 	}
 	result .= 'var label = null; while (1) { switch (label) { default: ' . string::lf();
 	var call_counter = 0;
@@ -216,9 +216,25 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :die(var die_i) {
 		result = get_namespace_name() . '.nl_die();';
 	} case :move(var move) {
-		result = print_register_to_assign(move->dest) . print_register(move->src) . ';';
+		result = print_move(move->dest, move->src, ref call_counter);
 	} case :load_const(var const) {
-		result = print_register_to_assign(const->dest) . print_const_value_aggr(const->val, ref consts) . ';';
+		match (const->dest->type) case :im {
+			result = print_register_to_assign(const->dest) . print_const_value_aggr(const->val, ref consts) . ';';
+		} case :int {
+			result = print_register_to_assign(const->dest) . const->val . ';';
+		} case :string {
+			result = print_register_to_assign(const->dest) . print_const_value_aggr(const->val, ref consts) . ';';
+		} case :bool {
+			result = print_register_to_assign(const->dest) . (const->val ? 'true' : 'false') . ';';
+		} case :rec(var type) {
+			die;
+		} case :arr(var type) {
+			die;
+		} case :variant(var type) {
+			die;
+		} case :hash(var type) {
+			die;
+		}
 	} case :get_frm_idx(var get_frm_idx) {
 		result = print_register_to_assign(get_frm_idx->dest) . print_register(get_frm_idx->src) . '.get_index(' . 
 			print_register(get_frm_idx->idx) . ');';
@@ -242,7 +258,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :prt_lbl(var prt_lbl) {
 		result = 'case ' . prt_lbl . ':';
 	} case :if_goto(var if_goto) {
-		result = 'if (' . print_int_call_sim('c_rt_lib', 'check_true_native', [if_goto->src]) . ') {' . print_goto(if_goto->dest) . 
+		result = 'if (' . print_register(if_goto->src) . ') {' . print_goto(if_goto->dest) . 
 			'}';
 	} case :goto(var goto) {
 		result = print_goto(goto);
@@ -290,6 +306,66 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	return '//line ' . command->debug->nast_debug->begin->line . string::lf() . result . string::lf();
 }
 
+def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
+	return '' if nlasm::is_empty(dest);
+	if (src->access_type is :reference && dest->access_type is :reference) {
+		return print_register_to_assign(dest) . print_register(src) . ';';
+	}
+	match (dest->type) case :im {
+		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src), ref call_counter);
+	} case :int {
+		if(src->type is :im) {
+			return print_register_to_assign(dest) . print_register(src) . '.as_int();';
+		} else {
+			return print_register_to_assign(dest) .  print_register(src);
+		}
+	} case :string {
+		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src), ref call_counter);
+	} case :bool {
+		if(src->type is :im) {
+			return print_register_to_assign(dest) . print_internal_call('c_rt_lib', 'check_true_native', [:reg(src)], ref call_counter) . ';';
+		} else {
+			return print_register_to_assign(dest) . print_register(src);
+		}
+	} case :rec(var type) {
+		if(src->type is :rec) {
+			return print_register_to_assign(dest) . print_register(src);
+		} else {
+			die;
+		}
+	} case :arr(var type) {
+		if(src->type is :arr) {
+			return print_register_to_assign(dest) . print_register(src);
+		} else {
+			die;
+		}
+	} case :variant(var type) {
+		die;
+	} case :hash(var type) {
+		die;
+	}
+}
+
+def get_im_from_value(type : @nlasm::reg_type, value : ptd::string(), ref call_counter : ptd::int()) : ptd::string() {
+	match (type) case :im {
+		return value;
+	} case :int {
+		return imm_call('int') . '(' . value . ')';
+	} case :bool {
+		return print_internal_call('c_rt_lib', 'native_to_nl', [:str(value)], ref call_counter) . ';';
+	} case :string {
+		return value;
+	} case :rec(var innter) {
+		die;
+	} case :arr(var innter) {
+		die;
+	} case :variant(var innter) {
+		die;
+	} case :hash(var innter) {
+		die;
+	}
+}
+
 def print_arr(arr : ptd::arr(@nlasm::reg_t)) : ptd::string() {
 	var result = imm_call('arr') . '([';
 	result .= print_register(reg) . ',' fora var reg (arr);
@@ -304,18 +380,18 @@ def print_bin_op(bin_op : @nlasm::bin_op, ref call_counter : ptd::int()) : ptd::
 	var result = print_register_to_assign(bin_op->dest);
 	if (bin_op->op eq '>=' || bin_op->op eq '<=' || bin_op->op eq '<' || bin_op->op eq '>' || bin_op->op eq '==' || 
 		bin_op->op eq '!=') {
-		var left = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->left]);
-		var right = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->right]);
-		return result . print_internal_call('c_rt_lib', 'native_to_nl', [:str(left . bin_op->op . right)], ref call_counter) . ';';
+		var left = print_register(bin_op->left);
+		var right = print_register(bin_op->right);
+		return result . left . bin_op->op . right . ';';
 	} elsif (bin_op->op eq 'eq' || bin_op->op eq 'ne') {
 		return result . print_int_call_sim('c_rt_lib', bin_op->op, [bin_op->left, bin_op->right]);
 	} elsif (bin_op->op eq '.') {
 		return result . print_internal_call('c_rt_lib', 'concat', [
 			:str(print_register(bin_op->left)), :str(print_register(bin_op->right))], ref call_counter) . ';';
 	} else {
-		var left = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->left]);
-		var right = print_int_call_sim('c_rt_lib', 'imm_to_int', [bin_op->right]);
-		return result . imm_call('int') . '(' . left . bin_op->op . right . ');';
+		var left = print_register(bin_op->left);
+		var right = print_register(bin_op->right);
+		return result . 'Math.floor(' . left . bin_op->op . right . ');';
 	}
 }
 
@@ -408,28 +484,18 @@ def print_const_value(value) {
 		return print_const_arr(value);
 	} elsif (nl::is_hash(value)) {
 		return print_const_hash(value);
-	} elsif (nl::is_variant(value)) {
-		if (is_true(value)) {
+	} elsif (nl::is_bool(value)) {
+		if (value) {
 			return print_int_call_sim('c_rt_lib', 'get_true', []);
-		} elsif (is_false(value)) {
-			return print_int_call_sim('c_rt_lib', 'get_false', []);
 		} else {
-			return print_const_ov(value);
+			return print_int_call_sim('c_rt_lib', 'get_false', []);
 		}
+	} elsif (nl::is_variant(value)) {
+		return print_const_ov(value);
 	} else {
 		die;
 	}
 }
-
-#TODO REMOVE
-def is_true(value) {
-	return ((value is :TRUE) && !ov::has_value(value));
-}
-
-def is_false(value) {
-	return ((value is :FALSE) && !ov::has_value(value));
-}
-#TODO REMOVE
 
 def print_goto(goto : ptd::int()) : ptd::string() {
 	return 'label = ' . goto . '; continue;';
@@ -458,8 +524,36 @@ def print_ov_mk(ov_mk : @nlasm::ov_mk_t, ref consts, ref call_counter : ptd::int
 }
 
 def print_register(register : @nlasm::reg_t) : ptd::string() {
-	return '___nl__' . register->reg_no;
+	return '___nl__' . reg_suffix(register);
 }
+
+def reg_suffix(reg : @nlasm::reg_t) : ptd::string() {
+	var ret;
+	match (reg->type) case :im {
+		ret = 'im';
+	} case :int {
+		ret = 'int';
+	} case :bool {
+		ret = 'bool';
+	} case :string {
+		ret = 'string';
+	} case :rec(var type) {
+		ret = 'rec';
+	} case :arr(var type) {
+		ret = 'arr';
+	} case :variant(var type) {
+		ret = 'var';
+	} case :hash(var type) {
+		ret = 'hash';
+	}
+	match (reg->access_type) case :value {
+	} case :reference {
+		ret .= '_ptr';
+	}
+	ret .= '__' . reg->reg_no;
+	return ret;
+}
+
 
 def print_register_to_assign(register : @nlasm::reg_t) : ptd::string() {
 	return '' if nlasm::is_empty(register);
@@ -471,7 +565,7 @@ def print_return(return_i : @nlasm::return, fun_args : @nlasm::args_type) : ptd:
 	var no = 0;
 	fora var arg (fun_args) {
 		match (arg->by) case :ref {
-			result .= '___arg__' . no . '.value = ' . '___nl__' . no . ';';
+			result .= '___arg__' . no . '.value = ' . print_register(arg->register) . ';';
 		} case :val {
 		}
 		++no;
@@ -486,9 +580,8 @@ def print_return(return_i : @nlasm::return, fun_args : @nlasm::args_type) : ptd:
 def print_una_op(una_op : @nlasm::una_op_t) : ptd::string() {
 	var result = print_register_to_assign(una_op->dest);
 	if (una_op->op eq '!') {
-		return result . print_int_call_sim('c_rt_lib', 'bool_not', [una_op->src]);
+		return result . '!' . print_register(una_op->src);
 	} else {
-		return result . imm_call('int') . '(' . una_op->op . 
-			print_int_call_sim('c_rt_lib', 'imm_to_int', [una_op->src]) . ');';
+		return result . '-' . print_register(una_op->src);
 	}
 }
