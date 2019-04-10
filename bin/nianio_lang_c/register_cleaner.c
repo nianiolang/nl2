@@ -1409,9 +1409,9 @@ c_rt_lib0move(&___nl__im__66, c_rt_lib0hash_get_value(___nl__im__1, ___nl__im__6
 #line 74
 c_rt_lib0clear(&___nl__im__67);
 #line 75
-c_rt_lib0move(&___nl__im__72, c_rt_lib0hash_get_value_dec(___nl__im__63, ___get_global_string_const(765)));
+c_rt_lib0move(&___nl__im__72, c_rt_lib0hash_get_value_dec(___nl__im__63, ___get_global_string_const(764)));
 #line 75
-c_rt_lib0move(&___nl__im__65, c_rt_lib0hash_mk(2, ___get_global_string_const(222), ___nl__im__66, ___get_global_string_const(765), ___nl__im__72));
+c_rt_lib0move(&___nl__im__65, c_rt_lib0hash_mk(2, ___get_global_string_const(222), ___nl__im__66, ___get_global_string_const(764), ___nl__im__72));
 #line 75
 c_rt_lib0clear(&___nl__im__66);
 #line 75
