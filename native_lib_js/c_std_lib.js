@@ -10,7 +10,7 @@ var instadb;
 	_namespace.c_std_lib.fast_substr = function(sarr, start, length) {
 		if (sarr.len() != 1)
 			nl_die();
-		return _namespace.c_std_lib.string_sub(sarr.get_index_int(0), start, length);
+		return _namespace.c_std_lib.string_sub(sarr.get_index(0), start, length);
 	}
 
 	_namespace.c_std_lib.array_sub = function(array, begin, length) {
