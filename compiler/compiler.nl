@@ -350,6 +350,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			additional_imports => {},
 			defined_types => {},
 		};
+	var retrying = false;
 	loop {
 		errors->type_errors = {};
 		errors->type_warnings = {};
@@ -384,7 +385,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			}
 		}
 		old_files = nianio_files;
-		if (changes == 0) {
+		if (changes == 0 && !retrying) {
 			c_fe_lib::sleep(1);
 			continue;
 		}
@@ -444,7 +445,18 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			var msg = 'Can not save ' . hash::size(to_save) . ' files. ';
 			c_fe_lib::print(string::lf() . 'ERROR: ' . msg);
 		} else {
-			c_fe_lib::exec_cmd(opt_cli->mode as :idex) if opt_cli->mode is :idex;
+			 if (opt_cli->mode is :idex) {
+				if (c_fe_lib::try_exec_cmd(opt_cli->mode as :idex) == 0) {
+					retrying = false;
+				} else {
+					die if retrying;
+					c_fe_lib::print(string::lf() . '''' . opt_cli->mode as :idex . ''' failed. Retrying...' .
+						string::lf());
+					retrying = true;
+					to_parse = get_files_to_parse(opt_cli);
+					continue;
+				}
+			}
 			c_fe_lib::print(string::lf() . 'OK: compile, check types and save changes without errors');
 		}
 		c_fe_lib::print('############################################################');

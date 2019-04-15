@@ -22,3 +22,4 @@ ImmT c_fe_lib0time();
 ImmT c_fe_lib0localtime(ImmT arg);
 ImmT c_fe_lib0sleep(ImmT sec);
 ImmT c_fe_lib0exec_cmd(ImmT cmdI);
+ImmT c_fe_lib0try_exec_cmd(ImmT cmdI);

@@ -232,10 +232,16 @@ ImmT c_fe_lib0sleep(ImmT ___nl__sec){
 	sleep(getIntFromImm(___nl__sec));
 	return NULL;
 }
+
 ImmT c_fe_lib0exec_cmd(ImmT ___nl__cmdI) {
+	ImmT ret = c_fe_lib0try_exec_cmd(___nl__cmdI);
+	if(getIntFromImm(ret) != 0) nl_die();
+	return NULL;
+}
+
+ImmT c_fe_lib0try_exec_cmd(ImmT ___nl__cmdI) {
 	NlString *cmd = toStringIfSim(___nl__cmdI);
 	int ret = system(cmd->s);
 	c_rt_lib0clear((ImmT*)&cmd);
-	if(ret != 0) nl_die();
-	return NULL;
+	return c_rt_lib0int_new(ret);
 }
