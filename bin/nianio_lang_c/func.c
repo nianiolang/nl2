@@ -40,7 +40,7 @@ c_rt_lib0move(&___nl__im__4, ptd0string());
 #line 14
 c_rt_lib0move(&___nl__im__5, ptd0string());
 #line 14
-c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_string_const(150), ___nl__im__4, ___get_global_string_const(166), ___nl__im__5));
+c_rt_lib0move(&___nl__im__3, c_rt_lib0hash_mk(2, ___get_global_string_const(152), ___nl__im__4, ___get_global_string_const(168), ___nl__im__5));
 #line 14
 c_rt_lib0clear(&___nl__im__4);
 #line 14
