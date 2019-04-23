@@ -1445,7 +1445,8 @@ def check_special_function(ret_type : @tc_types::type, fun_val : @nast::fun_val_
 		@tc_types::type), ref modules : @tc_types::modules_t, ref vars : @tc_types::vars_t, ref errors : 
 	@tc_types::errors_t, known_types : ptd::hash(@tct::meta_type)) : @tc_types::type {
 	var name = get_function_name(fun_val->module, fun_val->name);
-	if (name eq 'ptd::ensure' || name eq 'ptd::ensure_only_static_do_not_touch_without_permission') {
+	if (name eq 'ptd::ensure' || name eq 'ptd::ensure_only_static_do_not_touch_without_permission' ||
+			name eq 'ptd::ensure_with_cast') {
 		match (ptd_parser::try_value_to_ptd(fun_val->args[0]->val)) case :err(var err) {
 			add_error(ref errors, err);
 			ret_type->type = tct::tct_im();
