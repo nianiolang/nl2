@@ -905,11 +905,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		} else {
 			die;
 		}
-		if (len->dest->type is :int) {
-			print(ref state, get_reg(ref state, len->dest) . ' = ' . right);
-		} elsif (len->dest->type is :im) {
-			print(ref state, get_assign(ref state, len->dest, get_lib_fun('int_new') . '(' . right . ')'));
-		}
+		print(ref state, get_reg(ref state, len->dest) . ' = ' . right);
 	} case :get_val(var get) {
 		var r;
 		match (get->src->access_type) case :value {

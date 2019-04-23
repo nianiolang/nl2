@@ -269,7 +269,12 @@ def print_fun_val(fun_val : @nast::fun_val_t, destination : @nlasm::reg_t, type 
 	if (fun_val->module eq 'own_array' && fun_val->name eq 'len') {
 		print(ref state, :array_len({dest => destination, src => args[0] as :ref}));
 	} elsif (fun_val->module eq 'array' && fun_val->name eq 'len') {
-		print(ref state, :array_len({dest => destination, src => args[0] as :val}));
+		var return_reg_type = :int;
+		var cast_needed = !nlasm::eq_reg_type(return_reg_type, destination->type);
+		var tmp_destination = destination;
+		tmp_destination = new_register(ref state, return_reg_type) if cast_needed;
+		print(ref state, :array_len({dest => tmp_destination, src => args[0] as :val}));
+		move(destination, tmp_destination, ref state) if cast_needed;
 	} elsif (!type is :tct_void && !nlasm::is_empty(destination)) {
 		var return_reg_type = var_type_to_reg_type(type, state->logic->defined_types);
 		var cast_needed = !nlasm::eq_reg_type(return_reg_type, destination->type);
