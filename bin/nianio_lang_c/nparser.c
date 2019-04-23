@@ -2693,7 +2693,7 @@ label_26:
 #line 261
 c_rt_lib0move(&___nl__im__8, c_rt_lib0priv_as(___nl__im__10, ___get_global_string_const(78)));
 #line 262
-c_rt_lib0move(&___nl__im__11, c_rt_lib0hash_mk(2, ___get_global_string_const(577), ___nl__im__6, ___get_global_string_const(225), ___nl__im__8));
+c_rt_lib0move(&___nl__im__11, c_rt_lib0hash_mk(2, ___get_global_string_const(576), ___nl__im__6, ___get_global_string_const(225), ___nl__im__8));
 #line 262
 c_rt_lib0delete(array0push(&___nl__im__1, ___nl__im__11));
 #line 262
@@ -3724,7 +3724,7 @@ c_rt_lib0clear(&___nl__im__48);
 #line 349
 nparser_priv0eat(___ref___rec__0, ___nl__im__6);
 #line 350
-c_rt_lib0move(&___nl__im__50,___get_global_string_const(578));
+c_rt_lib0move(&___nl__im__50,___get_global_string_const(577));
 #line 350
 ___nl__bool__49 = c_rt_lib0eq(___nl__im__8, ___nl__im__50);
 #line 350
@@ -5875,7 +5875,7 @@ c_rt_lib0clear(&___nl__im__7);
 #line 521
 c_rt_lib0move(&___nl__im__9, c_rt_lib0hash_get_value_dec(___nl__im__5, ___get_global_string_const(560)));
 #line 521
-c_rt_lib0move(&___nl__im__10,___get_global_string_const(578));
+c_rt_lib0move(&___nl__im__10,___get_global_string_const(577));
 #line 521
 ___nl__bool__8 = c_rt_lib0eq(___nl__im__9, ___nl__im__10);
 #line 521
@@ -8263,7 +8263,7 @@ c_rt_lib0move(&___nl__im__73, nparser_priv0parse_var_decl_sim(___ref___rec__0));
 #line 675
 c_rt_lib0copy(&___nl__im__74, ___nl__im__73);
 #line 675
-c_rt_lib0hash_set_value_dec(&___nl__im__70, ___get_global_string_const(577), ___nl__im__74);
+c_rt_lib0hash_set_value_dec(&___nl__im__70, ___get_global_string_const(576), ___nl__im__74);
 #line 675
 c_rt_lib0clear(&___nl__im__73);
 #line 675
@@ -11977,7 +11977,7 @@ c_rt_lib0move(&___nl__im__251, nparser_priv0parse_var_decl_sim(___ref___rec__0))
 #line 792
 c_rt_lib0copy(&___nl__im__252, ___nl__im__251);
 #line 792
-c_rt_lib0hash_set_value_dec(&___nl__im__225, ___get_global_string_const(577), ___nl__im__252);
+c_rt_lib0hash_set_value_dec(&___nl__im__225, ___get_global_string_const(576), ___nl__im__252);
 #line 792
 c_rt_lib0clear(&___nl__im__251);
 #line 792
