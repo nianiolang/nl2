@@ -271,12 +271,7 @@ ImmT c_rt_lib0func_new(ImmT (*f)(int, ImmT*), ImmT ___nl__module, ImmT ___nl__na
 }
 
 void sPrintFloat(char* tab, double f){
-	int i;
-	sprintf(tab, "%.10f", f);
-	for(i=0; tab[i] != '\0'; ++i);
-	for(--i; tab[i] == '0'; --i);
-	if(tab[i] == '.') --i;
-	tab[i+1] = '\0';
+	sprintf(tab, "%.15g", f);
 }
 
 int compare_bytes(const void* left, int size_left, const void* right, int size_right){
