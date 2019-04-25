@@ -65,7 +65,7 @@ tester_nl_js:
 	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile
 
 test_nl_js:
-	d8 test_js/test_all.js ${CACHETEST}/*.js native_lib_js/*.js
+	cat native_lib_js/*.js ${CACHETEST}/*.js test_js/test_all.js | js
 
 vim_ide:
 	perl ide2.pl < ide.txt

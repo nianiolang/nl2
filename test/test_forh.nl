@@ -31,18 +31,17 @@ def test_forh::test() {
 	var arr = [];
 	exec2(ref arr);
 	var hash = {arr => arr, inne => ''};
-	rep var i (100000) {
-		var i_str = ptd::int_to_string(i);
+	rep var i (100) {
 		exec(ref hash{'arr'}, i);
 	}
-	hash{'arr'}[i] += i rep var i (100000);
+	hash{'arr'}[i] += i rep var i (100);
 	var long = {};
-	rep var i (20000) {
+	rep var i (100) {
 		var i_str = ptd::int_to_string(i);
 		long{i_str} = true;
 		nassert::a(long{i_str}, true);
 	}
-	rep var i (20000) {
+	rep var i (100) {
 		var i_str = ptd::int_to_string(i);
 		hash::delete(ref long, i_str);
 	}

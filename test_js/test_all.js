@@ -5,7 +5,7 @@
 
 
 function test_all_main() {
-	instadb.test_all0test();
+	instadb.test_nl.test();
 }
 
 test_all_main();

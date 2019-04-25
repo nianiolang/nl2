@@ -1289,7 +1289,8 @@ def get_value_of_lvalue(left : @nast::value_t, get_value : ptd::bool(), ref stat
 			var index = calc_val(value->index, ref state);
 			array::push(ref temp_structures, new_reference_register(ref state, new_reg_type));
 			array::push(ref lvalue_values, :use_hash_index({src_reg => temp_structures[i], dest_reg => temp_structures[i + 1], index => index}));
-			use_hash_index(temp_structures[i + 1], temp_structures[i], index, !get_value, ref state);
+			var create_if_not_exist = !get_value && i == array::len(ret) - 1;
+			use_hash_index(temp_structures[i + 1], temp_structures[i], index, create_if_not_exist, ref state);
 		}
 	}
 	array::push(ref lvalue_values, :value(temp_structures[array::len(temp_structures) - 1]));

@@ -44,7 +44,7 @@ def get_function_name(function : @nlasm::function_t, module_name : ptd::string()
 	}
 }
 
-def get_function_call_name(function : @nlasm::function_t, module_name : ptd::string()) {
+def get_function_call_name(function : @nlasm::function_t, module_name : ptd::string()) : ptd::string() {
 	var cmodule = ''; match (function->access) case :pub {
 		cmodule = module_name;
 	} case :priv {
@@ -53,7 +53,7 @@ def get_function_call_name(function : @nlasm::function_t, module_name : ptd::str
 	return get_function_call_name_raw(function->name, cmodule);
 }
 
-def get_function_call_name_raw(function_name : ptd::string(), module_name : ptd::string()) {
+def get_function_call_name_raw(function_name : ptd::string(), module_name : ptd::string()) : ptd::string() {
 	if (module_name eq '') {
 		return '__priv_' . function_name;
 	} else {
@@ -129,7 +129,7 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 	}
 
 	ret .= string::lf();
-	match (function->access) case :pub {
+	if (function->access is :pub && !takes_own_arg(function)) {
 		ret .= get_namespace_name() . '.' . module_name . '.__dyn_' . function->name . ' = function(arr) {' . string::lf();
 		var i = 0;
 		var call = '';
@@ -138,21 +138,22 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 			call .= ', ' unless i == 0;
 			call .= 'arg' . i;
 			ret .= 'var arg' . i . ' = ';
+			var arg_val = get_value_from_im(arg->register->type, 'arr.value.get_index(' . i . ')');
 			match (arg->by) case :ref {
-				ret .= 'new ' . imm_call('ref') . '(' . 'arr.value.get_index(' . i . '));';
-				after .= 'arr.value = arr.value.set_index(' . i . ', arg' . i . '.value);' . string::lf();
+				ret .= 'new ' . imm_call('ref') . '(' . arg_val . ');';
+				var after_val = get_im_from_value(arg->register->type, 'arg' . i . '.value');
+				after .= 'arr.value = arr.value.set_index(' . i . ', ' . after_val . ');' . string::lf();
 			} case :val {
 				ret .= 'arr.value.get_index('. i . ');';
 			}
 			ret .= string::lf();
 			++i;
 		}
-		ret .= 'var ret = ' . get_function_call_name(function, module_name) . '(' . call . ')' . string::lf();
+		ret .= 'var ret = ' . get_im_from_value(function->ret_reg_type,
+			get_function_call_name(function, module_name) . '(' . call . ')') . string::lf();
 		ret .= after;
 		ret .= 'return ret;' . string::lf();
 		ret .= '}'  . string::lf();
-	} case :priv {
-		ret .= string::lf();
 	}
 	return ret;
 }
@@ -280,16 +281,26 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = print_internal_call('c_rt_lib', 'set_ref_arr', [:ref(release_index->old_owner),
 			:reg(release_index->index), :reg(release_index->current_owner)], ref call_counter) . ';';
 	} case :use_hash_index(var use_hash_index) {
-		result = print_register_to_assign(use_hash_index->new_owner) . print_internal_call('c_rt_lib', 'hash_get_value',
-			[:reg(use_hash_index->old_owner), :reg(use_hash_index->index)],
-			ref call_counter) . ';';
+		if (!use_hash_index->create_if_not_exist) {
+			result = print_register_to_assign(use_hash_index->new_owner) .
+				print_internal_call('c_rt_lib', 'hash_get_value',
+				[:reg(use_hash_index->old_owner), :reg(use_hash_index->index)],
+				ref call_counter) . ';';
+		}
 	} case :release_hash_index(var release_hash_index) {
 		result = print_internal_call('c_rt_lib', 'hash_set_value', [:ref(release_hash_index->old_owner),
 			:reg(release_hash_index->index), :reg(release_hash_index->current_owner)], ref call_counter) . ';';
 	} case :use_variant(var use_variant) {
-		die; #TODO
+		result = print_register_to_assign(use_variant->new_owner) . print_internal_call('c_rt_lib', 'ov_as', 
+			[:reg(use_variant->old_owner), :str(print_str_imm(use_variant->label, ref consts))], ref call_counter) . ';';
 	} case :release_variant(var release_variant) {
-		die; #TODO
+		var as_ov_mk = {
+			dest => release_variant->old_owner,
+			src => :arg(release_variant->current_owner),
+			label => release_variant->label,
+			label_no => -1, inner_type => :tct_im,
+		};
+		result = print_ov_mk(as_ov_mk, ref consts, ref call_counter);
 	} case :hash_init_iter(var init_iter) {
 		return print_register_to_assign(init_iter->iter) .
 				print_internal_call('c_rt_lib', 'init_iter', [:reg(init_iter->hash)], ref call_counter) . ';';
@@ -312,7 +323,7 @@ def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd
 		return print_register_to_assign(dest) . print_register(src) . ';';
 	}
 	match (dest->type) case :im {
-		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src), ref call_counter);
+		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src));
 	} case :int {
 		if(src->type is :im) {
 			return print_register_to_assign(dest) . print_register(src) . '.as_int();';
@@ -320,7 +331,7 @@ def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd
 			return print_register_to_assign(dest) .  print_register(src);
 		}
 	} case :string {
-		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src), ref call_counter);
+		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src));
 	} case :bool {
 		if(src->type is :im) {
 			return print_register_to_assign(dest) . print_internal_call('c_rt_lib', 'check_true_native', [:reg(src)], ref call_counter) . ';';
@@ -346,13 +357,13 @@ def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd
 	}
 }
 
-def get_im_from_value(type : @nlasm::reg_type, value : ptd::string(), ref call_counter : ptd::int()) : ptd::string() {
+def get_im_from_value(type : @nlasm::reg_type, value : ptd::string()) : ptd::string() {
 	match (type) case :im {
 		return value;
 	} case :int {
 		return imm_call('int') . '(' . value . ')';
 	} case :bool {
-		return print_internal_call('c_rt_lib', 'native_to_nl', [:str(value)], ref call_counter) . ';';
+		return get_namespace_name() . '.c_rt_lib.native_to_nl(' . value . ')';
 	} case :string {
 		return value;
 	} case :rec(var innter) {
@@ -362,6 +373,26 @@ def get_im_from_value(type : @nlasm::reg_type, value : ptd::string(), ref call_c
 	} case :variant(var innter) {
 		die;
 	} case :hash(var innter) {
+		die;
+	}
+}
+
+def get_value_from_im(type : @nlasm::reg_type, im : ptd::string()) : ptd::string() {
+	match (type) case :im {
+		return im;
+	} case :int {
+		return im . '.as_int()';
+	} case :bool {
+		return get_namespace_name() . '.c_rt_lib.check_true_native(' . im . ')';
+	} case :string {
+		return im;
+	} case :rec(var rec_type) {
+		die;
+	} case :arr(var arr_type) {
+		die;
+	} case :variant(var var_type) {
+		die;
+	} case :hash(var hash_type) {
 		die;
 	}
 }
@@ -585,3 +616,19 @@ def print_una_op(una_op : @nlasm::una_op_t) : ptd::string() {
 		return result . '-' . print_register(una_op->src);
 	}
 }
+
+def takes_own_arg(function : @nlasm::function_t) : ptd::bool() {
+	fora var arg (function->args_type) {
+		return true if is_own(arg->register->type);
+	}
+	return false;
+}
+
+def is_own(type : @nlasm::reg_type) : ptd::bool() {
+	return false if type is :im;
+	return false if type is :int;
+	return false if type is :bool;
+	return true;
+}
+
+

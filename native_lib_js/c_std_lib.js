@@ -145,4 +145,8 @@ var instadb;
 			return instadb.imm_ov_js_str('err', instadb.imm_str('Invalid number'));
 		return instadb.imm_ov_js_str('ok', instadb.imm_int(imm.as_js_str()));
 	}
+
+	_namespace.c_std_lib.print = function(imm) {
+		console.log(imm.as_js_str());
+	}
 })(instadb = instadb || {});

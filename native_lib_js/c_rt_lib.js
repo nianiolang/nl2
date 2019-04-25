@@ -8,7 +8,7 @@ var instadb;
 	_namespace.c_rt_lib = {};
 
 	(function() {
-		  var formatter = {
+		var formatter = {
 			header: function(x, config) {
 				if (typeof config !== 'undefined' && typeof config.imm_disallow !== 'undefined') {
 					return null;
@@ -53,8 +53,10 @@ var instadb;
 				list.push(object);
 				return list;
 			}
-		  };
-		  window.devtoolsFormatters = [formatter];
+		};
+		if (typeof window != 'undefined') {
+			window.devtoolsFormatters = [formatter];
+		}
 	  })();
 
 	_namespace.imm_ref = function(x) {
@@ -352,9 +354,8 @@ var instadb;
 
 	
 	_namespace.imm_int = function(v) {
-		n = parseInt(v);
-		if (isNaN(n)) _namespace.nl_die();
-		return new _namespace.imm_int_p(n);
+		if (isNaN(parseInt(v))) _namespace.nl_die();
+		return new _namespace.imm_int_p(parseInt(v));
 	}
 
 	_namespace.imm_int_p = function(v) {
