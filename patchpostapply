@@ -5,6 +5,6 @@ if [ $rc != 0 ]; then
 	exit $rc
 fi
 ./build_compiler.sh
-./test_compiler.sh
 ./test_nls.sh
+make test
 make clean

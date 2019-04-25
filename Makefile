@@ -4,7 +4,7 @@ some: compiler tester
 
 compiler: compiler_nl compiler_gcc
 
-test: tester_nl_c tester_nl_js test_nl_c test_nl_js
+test: old compiler tester_nl_c tester_nl_js test_nl_c test_nl_js
 
 OBJDIR=obj
 OUT=mk_cache.exe
