@@ -352,7 +352,9 @@ var instadb;
 
 	
 	_namespace.imm_int = function(v) {
-		return new _namespace.imm_int_p(parseInt(v));
+		n = parseInt(v);
+		if (isNaN(n)) _namespace.nl_die();
+		return new _namespace.imm_int_p(n);
 	}
 
 	_namespace.imm_int_p = function(v) {
