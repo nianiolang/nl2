@@ -1,10 +1,10 @@
-all: clean old compiler tester
+all: clean old compiler test
 
 some: compiler tester
 
 compiler: compiler_nl compiler_gcc
 
-tester: tester_nl tester_gcc tester_run
+test: tester_nl_c tester_nl_js test_nl_c test_nl_js
 
 OBJDIR=obj
 OUT=mk_cache.exe
@@ -52,19 +52,19 @@ compiler_nl:
 compiler_gcc:
 	gcc ${CFLAGS} -o mk_cache.exe mk_cache.c ${CACHEDIR}/*.c ${NATIVE}/*.c -I${CACHEDIR} -I${NATIVE} ${LINKS}
 
-tester_nl:
+tester_nl_c:
 	./${OUT} nianio_lib test --deref --strict --o ${CACHETEST} --c --O2 --profile
-
-tester_gcc:
 	gcc ${CFLAGS} -o test_all test_all.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
 
-tester_run:
+test_nl_c:
+	@echo 'TEST C'
 	./test_all
 
 tester_nl_js:
 	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile
 
 test_nl_js:
+	@echo 'TEST JS'
 	cat native_lib_js/*.js ${CACHETEST}/*.js test_js/test_all.js | js
 
 vim_ide:
