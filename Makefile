@@ -1,4 +1,4 @@
-all: clean old compiler test
+all: clean old compiler
 
 some: compiler tester
 
