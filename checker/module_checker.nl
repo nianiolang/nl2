@@ -605,7 +605,7 @@ def check_val(val : @nast::value_t, ref state : @module_checker::state_t) : ptd:
 				check_val(fun_val_arg->val, ref state);
 			} case :ref {
 				check_lvalue(fun_val_arg->val, ref state);
-				if (fun_val_arg->val->value is :var) {
+				if (fun_val_arg->val->value is :var && hash::has_key(state->vars, fun_val_arg->val->value as :var)) {
 					state->vars{fun_val_arg->val->value as :var}->initialized = true;
 				}
 			}
