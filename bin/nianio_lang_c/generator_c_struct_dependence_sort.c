@@ -3661,7 +3661,7 @@ label_64:
 #line 378
 c_rt_lib0move(&___nl__im__33, c_rt_lib0hash_get_value_dec(___nl__im__18, ___get_global_string_const(206)));
 #line 378
-___nl__bool__24 = c_rt_lib0priv_is(___nl__im__33, ___get_global_string_const(562));
+___nl__bool__24 = c_rt_lib0priv_is(___nl__im__33, ___get_global_string_const(563));
 #line 378
 c_rt_lib0clear(&___nl__im__33);
 #line 378
@@ -3673,7 +3673,7 @@ c_rt_lib0move(&___nl__im__35, c_rt_lib0hash_get_value_dec(___nl__im__18, ___get_
 #line 379
 c_rt_lib0move(&___nl__im__36, c_rt_lib0hash_get_value_dec(___nl__im__18, ___get_global_string_const(206)));
 #line 379
-c_rt_lib0move(&___nl__im__34, c_rt_lib0priv_as(___nl__im__36, ___get_global_string_const(562)));
+c_rt_lib0move(&___nl__im__34, c_rt_lib0priv_as(___nl__im__36, ___get_global_string_const(563)));
 #line 379
 c_rt_lib0clear(&___nl__im__35);
 #line 379
