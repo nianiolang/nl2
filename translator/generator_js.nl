@@ -208,10 +208,10 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :bin_op(var bin_op) {
 		result = print_bin_op(bin_op, ref call_counter);
 	} case :ov_is(var ov_is) {
-		result = print_ov_is(ov_is->dest, ov_is->src, ov_is->type, ov_is->label_no, ref call_counter, ref consts);
+		result = print_ov_is(ov_is->dest, ov_is->src, ov_is->label, ov_is->label_no, ref call_counter, ref consts);
 	} case :ov_as(var ov_as) {
 		result = print_register_value_to_assign(ov_as->dest) . print_internal_call('c_rt_lib', 'ov_as', 
-			[:reg(ov_as->src), :str(print_str_imm(ov_as->type, ref consts))], ref call_counter) . ';';
+			[:reg(ov_as->src), :str(print_str_imm(ov_as->label, ref consts))], ref call_counter) . ';';
 	} case :return(var return_i) {
 		result = print_return(return_i, fun_args);
 	} case :die(var die_i) {

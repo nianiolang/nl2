@@ -495,9 +495,9 @@ def step(ref state : @interpreter::state_t) : ptd::void() {
 			state->top->vars[bin_op->dest->reg_no] = result unless nlasm::is_empty(bin_op->dest);
 		}
 	} case :ov_is(var ov_is) {
-		state->top->vars[ov_is->dest->reg_no] = ov::is(state->top->vars[ov_is->src->reg_no], ov_is->type) unless nlasm::is_empty(ov_is->dest);
+		state->top->vars[ov_is->dest->reg_no] = ov::is(state->top->vars[ov_is->src->reg_no], ov_is->label) unless nlasm::is_empty(ov_is->dest);
 	} case :ov_as(var ov_as) {
-		state->top->vars[ov_as->dest->reg_no] = ov::as(state->top->vars[ov_as->src->reg_no], ov_as->type) unless nlasm::is_empty(ov_as->dest);
+		state->top->vars[ov_as->dest->reg_no] = ov::as(state->top->vars[ov_as->src->reg_no], ov_as->label) unless nlasm::is_empty(ov_as->dest);
 	} case :return(var return_i) {
 		handle_return(return_i, ref state);
 	} case :die(var die_i) {
@@ -640,12 +640,12 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 		return false unless nl::is_printable(right);
 	} case :ov_is(var ov_is) {
 		return false unless nl::is_variant(state->top->vars[ov_is->src->reg_no]);
-		return false unless nl::is_printable(ov_is->type);
+		return false unless nl::is_printable(ov_is->label);
 	} case :ov_as(var ov_as) {
 		var arg = state->top->vars[ov_as->src->reg_no];
 		return false unless nl::is_variant(arg);
-		return false unless nl::is_printable(ov_as->type);
-		return false unless ov::is(arg, ov_as->type);
+		return false unless nl::is_printable(ov_as->label);
+		return false unless ov::is(arg, ov_as->label);
 	} case :return(var return_i) {
 	} case :die(var die_i) {
 	} case :move(var move) {

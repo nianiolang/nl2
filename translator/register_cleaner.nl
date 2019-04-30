@@ -114,14 +114,14 @@ def recalculate_registers(cmds : @nlasm::cmds_t, map : ptd::hash(@nlasm::reg_t))
 			new_cmd = :ov_is({
 				dest => map{ptd::int_to_string(op->dest->reg_no)},
 				src => map{ptd::int_to_string(op->src->reg_no)},
-				type => op->type,
+				label => op->label,
 				label_no => op->label_no,
 			});
 		} case :ov_as(var op) {
 			new_cmd = :ov_as({
 				dest => map{ptd::int_to_string(op->dest->reg_no)},
 				src => map{ptd::int_to_string(op->src->reg_no)},
-				type => op->type,
+				label => op->label,
 				label_no => op->label_no,
 			});
 		} case :return(var ret) {

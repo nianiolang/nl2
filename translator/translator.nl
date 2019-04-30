@@ -448,7 +448,7 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 				if (!nlasm::eq_reg_type(destination->type, expected_dest_type)) {
 					current_destination = new_register(ref state, expected_dest_type);
 				}
-				print(ref state, :ov_as({dest => current_destination, src => temporary, type => right_val, label_no => label_no}));
+				print(ref state, :ov_as({dest => current_destination, src => temporary, label => right_val, label_no => label_no}));
 				if (!nlasm::eq_reg_type(destination->type, expected_dest_type)) {
 					move(destination, current_destination, ref state);
 				}
@@ -460,7 +460,7 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 		var temporary = dest_val(bin_op->left, ref state);
 		var right_val = bin_op->right->value as :hash_key;
 		var label_no = get_label_number(ref state, bin_op->left->type, right_val);
-		print(ref state, :ov_is({dest => destination, src => temporary, type => right_val, label_no => label_no}));
+		print(ref state, :ov_is({dest => destination, src => temporary, label => right_val, label_no => label_no}));
 	} elsif (bin_op->op eq '+=' || bin_op->op eq '-=' || bin_op->op eq '/=' || bin_op->op eq '*=' || bin_op->op eq '.=') {
 		var right = calc_val(bin_op->right, ref state);
 		var lvalue = get_value_of_lvalue(bin_op->left, true, ref state);
@@ -522,7 +522,7 @@ def print_try_ensure(try_ensure : @nast::try_ensure_t, is_try : ptd::bool(), ref
 		arg = calc_val(expr, ref state);
 	}
 	var ok_label = get_sim_label(ref state);
-	print(ref state, :ov_is({dest => ov_is_register, src => arg, type => 'ok', label_no => -1}));
+	print(ref state, :ov_is({dest => ov_is_register, src => arg, label => 'ok', label_no => -1}));
 	print_if_goto(ok_label, ov_is_register, ref state);
 	if (is_try) {
 		print_safe_return(:val(arg), ref state);
@@ -534,7 +534,7 @@ def print_try_ensure(try_ensure : @nast::try_ensure_t, is_try : ptd::bool(), ref
 	match (try_ensure) case :decl(var decl) {
 		var var_reg = get_var_register(decl->name, ref state);
 		var as_dest = get_cast(var_reg, state->logic->variables{decl->name}->type, ref state);
-		print(ref state, :ov_as({dest => as_dest, src => arg, type => 'ok', label_no => -1}));
+		print(ref state, :ov_as({dest => as_dest, src => arg, label => 'ok', label_no => -1}));
 		if (!nlasm::eq_reg(as_dest, var_reg)) {
 			move(var_reg, as_dest, ref state);
 		}
@@ -542,7 +542,7 @@ def print_try_ensure(try_ensure : @nast::try_ensure_t, is_try : ptd::bool(), ref
 		var lvalue = get_value_of_lvalue(lval->left, false, ref state);
 		var dest = lvalue[array::len(lvalue) - 1] as :value;
 		var real_dest = get_cast(dest, :im, ref state);
-		print(ref state, :ov_as({dest => real_dest, src => arg, type => 'ok', label_no => -1}));
+		print(ref state, :ov_as({dest => real_dest, src => arg, label => 'ok', label_no => -1}));
 		if (!nlasm::eq_reg(dest, real_dest)) {
 			move(dest, real_dest, ref state);
 		}
@@ -936,7 +936,7 @@ def print_match(as_match : @nast::match_t, ref state : @translator::state_t) {
 	fora var case_el (as_match->branch_list) {
 		start_new_instruction(case_el->debug, ref state);
 		var label_no = get_label_number(ref state, as_match->val->type, case_el->variant->name);
-		print(ref state, :ov_is({dest => ov_is_register, src => arg, type => case_el->variant->name, label_no => label_no}));
+		print(ref state, :ov_is({dest => ov_is_register, src => arg, label => case_el->variant->name, label_no => label_no}));
 		var label = get_sim_label(ref state);
 		print_if_goto(label, ov_is_register, ref state);
 		array::push(ref case_labels, label);
@@ -955,7 +955,7 @@ def print_match(as_match : @nast::match_t, ref state : @translator::state_t) {
 				var cast_needed = !tct::is_own_type(as_match->val->type, state->logic->defined_types);
 				var tmp_destination = var_reg;
 				tmp_destination = new_register(ref state, :im) if cast_needed;
-				print(ref state, :ov_as({dest => tmp_destination, src => arg, type => case_el->variant->name, label_no => -1}));
+				print(ref state, :ov_as({dest => tmp_destination, src => arg, label => case_el->variant->name, label_no => -1}));
 				move(var_reg, tmp_destination, ref state) if cast_needed;
 			} case :ref {
 				var_reg = print_var_decl(variant_value->declaration, ref state, :reference);
@@ -1278,7 +1278,7 @@ def get_value_of_lvalue(left : @nast::value_t, get_value : ptd::bool(), ref stat
 		} case :as(var as_label) {
 			array::push(ref temp_structures, new_register(ref state, :im));
 			array::push(ref lvalue_values, :as({value => temp_structures[i], label => as_label}));
-			print(ref state, :ov_as({dest => temp_structures[i + 1], src => temp_structures[i], type => as_label, label_no => -1}));
+			print(ref state, :ov_as({dest => temp_structures[i + 1], src => temp_structures[i], label => as_label, label_no => -1}));
 		} case :use_variant(var value ){
 			var new_reg_type = var_type_to_reg_type(value->dest_type, state->logic->defined_types);
 			array::push(ref temp_structures, new_reference_register(ref state, new_reg_type));

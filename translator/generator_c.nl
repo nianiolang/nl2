@@ -809,7 +809,7 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		print_bin_op(ref state, bin_op);
 	} case :ov_is(var ov_is) {
 		if (ov_is->src->type is :im) {
-			var r = get_fun_lib('priv_is', [get_reg(ref state, ov_is->src), get_const_string(ref state, ov_is->type)]);
+			var r = get_fun_lib('priv_is', [get_reg(ref state, ov_is->src), get_const_string(ref state, ov_is->label)]);
 			print(ref state, get_assign(ref state, ov_is->dest, r));
 		} elsif (ov_is->src->type is :variant) {
 			print(ref state, get_reg_value(ref state, ov_is->dest) . ' = (' .
@@ -820,11 +820,11 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 	} case :ov_as(var ov_as) {
 		if (ov_as->src->type is :im) {
 			var r = get_fun_lib('priv_as',
-				[get_reg_value(ref state, ov_as->src), get_const_string(ref state, ov_as->type)]);
+				[get_reg_value(ref state, ov_as->src), get_const_string(ref state, ov_as->label)]);
 			print(ref state, get_assign(ref state, ov_as->dest, r));
 		} elsif (ov_as->src->type is :variant) {
 			var access_op = get_access_op(ov_as->src);
-			var right = '*('.  get_reg(ref state, ov_as->src) . access_op . 'value.' . get_case_name(ov_as->type) . ')';
+			var right = '*('.  get_reg(ref state, ov_as->src) . access_op . 'value.' . get_case_name(ov_as->label) . ')';
 			if (ov_as->dest->type is :im) {
 				var left = get_reg_ref(ref state, ov_as->dest);
 				print(ref state, get_fun_lib('copy', [left, right]));
