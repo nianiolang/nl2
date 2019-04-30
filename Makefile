@@ -84,7 +84,7 @@ main_exe: main.nl
 	gcc ${CFLAGS} -o main main_c.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
 
 main_js: main.nl
-	./${OUT} nianio_lib main.nl --deref --strict --o ${CACHEJS} --js --O2 --profile
+	./${OUT} nianio_lib main.nl --deref --strict --o ${CACHETEST} --js --O2 --profile --namespace instadb
 
 nls:
 	./$(OUT) nls/ --strict --c --o nls/cache_nl/

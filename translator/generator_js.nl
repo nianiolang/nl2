@@ -176,7 +176,7 @@ def print_function(function : @nlasm::function_t, module_name : ptd::string(), r
 		} case :ref {
 			result .= 'var ' . print_register(function->registers[i]) . ' = ___arg__' . i . '.value;';
 		}
-		result .= get_namespace_name() . '.check_null(' . print_register(function->registers[i]) . ');';
+		result .= get_namespace_name() . '.check_null(' . print_register_value(function->registers[i]) . ');';
 	}
 	result .= string::lf();
 	for(var i = array::len(function->args_type); i < array::len(function->registers); ++i) {
@@ -192,25 +192,25 @@ def print_function(function : @nlasm::function_t, module_name : ptd::string(), r
 def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref call_counter : ptd::int(), ref consts) {
 	var result = '';
 	match (command->cmd) case :arr_decl(var arr_decl) {
-		result = print_register_to_assign(arr_decl->dest) . print_arr(arr_decl->src) . ';';
+		result = print_register_value_to_assign(arr_decl->dest) . print_arr(arr_decl->src, arr_decl->dest->type) . ';';
 	} case :hash_decl(var hash_decl) {
-		result = print_register_to_assign(hash_decl->dest) . print_hash(hash_decl->src) . ';';
+		result = print_register_value_to_assign(hash_decl->dest) . print_hash(hash_decl->src, hash_decl->dest->type) . ';';
 	} case :empty_hash_decl(var hash_decl) {
-		result = print_register_to_assign(hash_decl->dest) . print_empty_hash(hash_decl->fields) . ';';
+		result = print_register_value_to_assign(hash_decl->dest) .
+			print_empty_hash(hash_decl->fields, hash_decl->dest->type) . ';';
 	} case :call(var call) {
 		result = print_call(call->mod, call->fun_name, call->args, call->dest, ref call_counter);
 	} case :func(var func) {
-		result = print_register_to_assign(func->dest) . print_const_hash({module => func->module, name => func->name}) . 
-			';';
+		result = print_register_value_to_assign(func->dest) .
+			print_const_hash({module => func->module, name => func->name}) . ';';
 	} case :una_op(var una_op) {
 		result = print_una_op(una_op);
 	} case :bin_op(var bin_op) {
 		result = print_bin_op(bin_op, ref call_counter);
 	} case :ov_is(var ov_is) {
-		result = print_register_to_assign(ov_is->dest) . print_internal_call('c_rt_lib', 'ov_is', 
-			[:reg(ov_is->src), :str(print_str_imm(ov_is->type, ref consts))], ref call_counter) . ';';
+		result = print_ov_is(ov_is->dest, ov_is->src, ov_is->type, ov_is->label_no, ref call_counter, ref consts);
 	} case :ov_as(var ov_as) {
-		result = print_register_to_assign(ov_as->dest) . print_internal_call('c_rt_lib', 'ov_as', 
+		result = print_register_value_to_assign(ov_as->dest) . print_internal_call('c_rt_lib', 'ov_as', 
 			[:reg(ov_as->src), :str(print_str_imm(ov_as->type, ref consts))], ref call_counter) . ';';
 	} case :return(var return_i) {
 		result = print_return(return_i, fun_args);
@@ -219,47 +219,32 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :move(var move) {
 		result = print_move(move->dest, move->src, ref call_counter);
 	} case :load_const(var const) {
-		match (const->dest->type) case :im {
-			result = print_register_to_assign(const->dest) . print_const_value_aggr(const->val, ref consts) . ';';
-		} case :int {
-			result = print_register_to_assign(const->dest) . const->val . ';';
-		} case :string {
-			result = print_register_to_assign(const->dest) . print_const_value_aggr(const->val, ref consts) . ';';
-		} case :bool {
-			result = print_register_to_assign(const->dest) . (const->val ? 'true' : 'false') . ';';
-		} case :rec(var type) {
-			die;
-		} case :arr(var type) {
-			die;
-		} case :variant(var type) {
-			die;
-		} case :hash(var type) {
-			die;
-		}
+		result = print_load_const(const->dest, const->val, ref consts);
 	} case :get_frm_idx(var get_frm_idx) {
-		result = print_register_to_assign(get_frm_idx->dest) . print_register(get_frm_idx->src) . '.get_index(' . 
-			print_register(get_frm_idx->idx) . ');';
+		result = print_register_value_to_assign(get_frm_idx->dest) .
+			print_register_value(get_frm_idx->src) . '.get_index(' . print_register_value(get_frm_idx->idx) . ');';
 	} case :set_at_idx(var set_at_idx) {
 		result = print_internal_call('c_rt_lib', 'set_ref_arr', [:ref(set_at_idx->src),
-			:str(print_register(set_at_idx->idx)), :str(print_register(set_at_idx->val))], ref call_counter) . ';';
+			:str(print_register_value(set_at_idx->idx)),
+			:str(print_register_value(set_at_idx->val))], ref call_counter) . ';';
 	} case :array_push(var push) {
-		result = print_internal_call('c_rt_lib', 'array_push',
-			[:ref(push->dest), :reg(push->val)], ref call_counter) .  ';';
+		result = print_array_push(push->dest, push->val, ref call_counter);
 	} case :array_len(var array_len) {
-		result = print_register_to_assign(array_len->dest) . print_internal_call('c_rt_lib', 'array_len',
-			[:str(print_register(array_len->src))], ref call_counter) . ';';
+		result = print_array_len(array_len->dest, array_len->src, ref call_counter);
 	} case :get_val(var get_val) {
-		result = print_register_to_assign(get_val->dest) . print_internal_call('c_rt_lib', 'hash_get_value',
-			[:str(print_register(get_val->src)), :str(print_str_imm(get_val->key, ref consts))], ref call_counter) . ';';
+		result = print_register_value_to_assign(get_val->dest) . print_internal_call('c_rt_lib', 'hash_get_value',
+			[:str(print_register_value(get_val->src)), :str(print_str_imm(get_val->key, ref consts))],
+			ref call_counter) . ';';
 	} case :set_val(var set_val) {
 		result = print_internal_call('c_rt_lib', 'hash_set_value', [:ref(set_val->src),
-			:str(print_str_imm(set_val->key, ref consts)), :str(print_register(set_val->val))], ref call_counter) . ';';
+			:str(print_str_imm(set_val->key, ref consts)), :str(print_register_value(set_val->val))],
+			ref call_counter) . ';';
 	} case :ov_mk(var ov_mk) {
 		result = print_ov_mk(ov_mk, ref consts, ref call_counter);
 	} case :prt_lbl(var prt_lbl) {
 		result = 'case ' . prt_lbl . ':';
 	} case :if_goto(var if_goto) {
-		result = 'if (' . print_register(if_goto->src) . ') {' . print_goto(if_goto->dest) . 
+		result = 'if (' . print_register_value(if_goto->src) . ') {' . print_goto(if_goto->dest) . 
 			'}';
 	} case :goto(var goto) {
 		result = print_goto(goto);
@@ -267,52 +252,33 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = print_register_to_assign(reg) . 'null;';
 	} case :var_decl(var decl) {
 	} case :use_field(var use_field) {
-		result = print_register_to_assign(use_field->new_owner) . print_internal_call('c_rt_lib', 'hash_get_value',
-			[:reg(use_field->old_owner), :str(print_str_imm(use_field->field_name, ref consts))],
-			ref call_counter) . ';';
+		result = print_register_to_assign(use_field->new_owner) .
+			print_register_value(use_field->old_owner) . '.' . use_field->field_name . ';';
 	} case :release_field(var release_field) {
-		result = print_internal_call('c_rt_lib', 'hash_set_value', [:ref(release_field->old_owner),
-			:str(print_str_imm(release_field->field_name, ref consts)), :reg(release_field->current_owner)],
-			ref call_counter) . ';';
+		result = print_register_to_assign(release_field->current_owner) . ' null;';
 	} case :use_index(var use_index) {
-		result = print_register_to_assign(use_index->new_owner) . print_register(use_index->old_owner) . '.get_index(' . 
-			print_register(use_index->index) . ');';
+		result = print_use_index(use_index);
 	} case :release_index(var release_index) {
-		result = print_internal_call('c_rt_lib', 'set_ref_arr', [:ref(release_index->old_owner),
-			:reg(release_index->index), :reg(release_index->current_owner)], ref call_counter) . ';';
+		result = print_register_to_assign(release_index->current_owner) . ' null;';
 	} case :use_hash_index(var use_hash_index) {
-		if (!use_hash_index->create_if_not_exist) {
-			result = print_register_to_assign(use_hash_index->new_owner) .
-				print_internal_call('c_rt_lib', 'hash_get_value',
-				[:reg(use_hash_index->old_owner), :reg(use_hash_index->index)],
-				ref call_counter) . ';';
-		}
+		result = print_use_hash_index(use_hash_index);
 	} case :release_hash_index(var release_hash_index) {
-		result = print_internal_call('c_rt_lib', 'hash_set_value', [:ref(release_hash_index->old_owner),
-			:reg(release_hash_index->index), :reg(release_hash_index->current_owner)], ref call_counter) . ';';
+		result = print_register_to_assign(release_hash_index->current_owner) . ' null;';
 	} case :use_variant(var use_variant) {
-		result = print_register_to_assign(use_variant->new_owner) . print_internal_call('c_rt_lib', 'ov_as', 
-			[:reg(use_variant->old_owner), :str(print_str_imm(use_variant->label, ref consts))], ref call_counter) . ';';
+		result .= 'if (' . print_register_value(use_variant->old_owner) . '.ov_label != ' . use_variant->label_no . ')' .
+			 get_namespace_name() . '.nl_die();' . string::lf();
+		result .= print_register_to_assign(use_variant->new_owner) .
+			print_register_value(use_variant->old_owner) . '.ov_value;';
 	} case :release_variant(var release_variant) {
-		var as_ov_mk = {
-			dest => release_variant->old_owner,
-			src => :arg(release_variant->current_owner),
-			label => release_variant->label,
-			label_no => -1, inner_type => :tct_im,
-		};
-		result = print_ov_mk(as_ov_mk, ref consts, ref call_counter);
+		result = print_register_to_assign(release_variant->current_owner) . ' null;';
 	} case :hash_init_iter(var init_iter) {
-		return print_register_to_assign(init_iter->iter) .
-				print_internal_call('c_rt_lib', 'init_iter', [:reg(init_iter->hash)], ref call_counter) . ';';
+		result = print_hash_init_iter(init_iter, ref call_counter);
 	} case :hash_next_iter(var next_iter) {
-		return print_register_to_assign(next_iter->iter) .
-				print_internal_call('c_rt_lib', 'next_iter', [:reg(next_iter->iter)], ref call_counter) . ';';
+		result = print_hash_next_iter(next_iter, ref call_counter);
 	} case :hash_get_key_iter(var get_key_iter) {
-		return print_register_to_assign(get_key_iter->dest) .
-				print_internal_call('c_rt_lib', 'get_key_iter', [:reg(get_key_iter->iter)], ref call_counter) . ';';
+		result = print_hash_get_key_iter(get_key_iter, ref call_counter);
 	} case :hash_is_end(var is_end) {
-		return print_register_to_assign(is_end->dest) .
-				print_internal_call('c_rt_lib', 'is_end_hash', [:reg(is_end->iter)], ref call_counter) . ';';
+		result = print_hash_is_end(is_end, ref call_counter);
 	}
 	return '//line ' . command->debug->nast_debug->begin->line . string::lf() . result . string::lf();
 }
@@ -323,30 +289,30 @@ def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd
 		return print_register_to_assign(dest) . print_register(src) . ';';
 	}
 	match (dest->type) case :im {
-		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src));
+		return print_register_value_to_assign(dest) . get_im_from_value(src->type, print_register_value(src));
 	} case :int {
 		if(src->type is :im) {
-			return print_register_to_assign(dest) . print_register(src) . '.as_int();';
+			return print_register_value_to_assign(dest) . print_register_value(src) . '.as_int();';
 		} else {
-			return print_register_to_assign(dest) .  print_register(src);
+			return print_register_value_to_assign(dest) .  print_register_value(src);
 		}
 	} case :string {
-		return print_register_to_assign(dest) . get_im_from_value(src->type, print_register(src));
+		return print_register_value_to_assign(dest) . get_im_from_value(src->type, print_register_value(src));
 	} case :bool {
 		if(src->type is :im) {
-			return print_register_to_assign(dest) . print_internal_call('c_rt_lib', 'check_true_native', [:reg(src)], ref call_counter) . ';';
+			return print_register_value_to_assign(dest) . print_internal_call('c_rt_lib', 'check_true_native', [:reg(src)], ref call_counter) . ';';
 		} else {
-			return print_register_to_assign(dest) . print_register(src);
+			return print_register_value_to_assign(dest) . print_register_value(src);
 		}
 	} case :rec(var type) {
 		if(src->type is :rec) {
-			return print_register_to_assign(dest) . print_register(src);
+			return print_register_value_to_assign(dest) . print_register_value(src);
 		} else {
 			die;
 		}
 	} case :arr(var type) {
 		if(src->type is :arr) {
-			return print_register_to_assign(dest) . print_register(src);
+			return print_register_value_to_assign(dest) . print_register_value(src);
 		} else {
 			die;
 		}
@@ -357,50 +323,133 @@ def print_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd
 	}
 }
 
-def get_im_from_value(type : @nlasm::reg_type, value : ptd::string()) : ptd::string() {
-	match (type) case :im {
-		return value;
-	} case :int {
-		return imm_call('int') . '(' . value . ')';
-	} case :bool {
-		return get_namespace_name() . '.c_rt_lib.native_to_nl(' . value . ')';
-	} case :string {
-		return value;
-	} case :rec(var innter) {
-		die;
-	} case :arr(var innter) {
-		die;
-	} case :variant(var innter) {
-		die;
-	} case :hash(var innter) {
+def print_load_const(dest : @nlasm::reg_t, val : ptd::ptd_im(), ref consts) : ptd::string() {
+		match (dest->type) case :im {
+			return print_register_value_to_assign(dest) . print_const_value_aggr(val, ref consts) . ';';
+		} case :int {
+			return print_register_value_to_assign(dest) . val . ';';
+		} case :string {
+			return print_register_value_to_assign(dest) . print_const_value_aggr(val, ref consts) . ';';
+		} case :bool {
+			return print_register_value_to_assign(dest) . (val ? 'true' : 'false') . ';';
+		} case :rec(var type) {
+			die;
+		} case :arr(var type) {
+			die;
+		} case :variant(var type) {
+			die;
+		} case :hash(var type) {
+			die;
+		}
+}
+
+def print_array_push(dest : @nlasm::reg_t, val : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (dest->type is :im) {
+		return print_internal_call('c_rt_lib', 'array_push',
+			[:ref(dest), :reg(val)], ref call_counter) .  ';';
+	} elsif (dest->type is :arr) {
+		return print_register_value(dest) . '.push(' . print_register_reference(val) . ');';
+	} else {
 		die;
 	}
 }
 
-def get_value_from_im(type : @nlasm::reg_type, im : ptd::string()) : ptd::string() {
-	match (type) case :im {
-		return im;
-	} case :int {
-		return im . '.as_int()';
-	} case :bool {
-		return get_namespace_name() . '.c_rt_lib.check_true_native(' . im . ')';
-	} case :string {
-		return im;
-	} case :rec(var rec_type) {
-		die;
-	} case :arr(var arr_type) {
-		die;
-	} case :variant(var var_type) {
-		die;
-	} case :hash(var hash_type) {
+def print_array_len(dest : @nlasm::reg_t, arr : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (arr->type is :im) {
+		return print_register_value_to_assign(dest) . print_internal_call('c_rt_lib', 'array_len',
+			[:str(print_register_value(arr))], ref call_counter) . ';';
+	} elsif (arr->type is :arr) {
+		return print_register_value_to_assign(dest) . print_register_value(arr) . '.length;';
+	} else {
 		die;
 	}
 }
 
-def print_arr(arr : ptd::arr(@nlasm::reg_t)) : ptd::string() {
-	var result = imm_call('arr') . '([';
-	result .= print_register(reg) . ',' fora var reg (arr);
-	return result . '])';
+def print_use_index(use_index : @nlasm::use_index_t) : ptd::string() {
+	if (use_index->old_owner->type is :arr) {
+		return print_register_to_assign(use_index->new_owner) . print_register_value(use_index->old_owner) . '[' . 
+			print_register_value(use_index->index) . '];';
+	} elsif (use_index->old_owner->type is :im) {
+		return print_register_to_assign(use_index->new_owner) . print_register_value(use_index->old_owner) .
+			'.get_index(' .  print_register_value(use_index->index) . ');';
+	} else {
+		die;
+	}
+}
+
+def print_use_hash_index(use_hash_index : @nlasm::use_hash_index_t) : ptd::string() {
+		var result = '';
+		var index_str = print_register_value(use_hash_index->index) . '.as_js_str()';
+		if (use_hash_index->create_if_not_exist) {
+			result .= print_register_value(use_hash_index->old_owner) . '[' . index_str . '] = ' .
+				'{"value": {}};' . string::lf();
+		}
+		result .= print_register_to_assign(use_hash_index->new_owner) .
+			print_register_value(use_hash_index->old_owner) . '[' . index_str . '];';
+		return result;
+}
+
+def print_hash_init_iter(init_iter : @nlasm::hash_iter_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (init_iter->hash->type is :im) {
+		return print_register_value_to_assign(init_iter->iter) .
+				print_internal_call('c_rt_lib', 'init_iter', [:reg(init_iter->hash)], ref call_counter) . ';';
+	} elsif (init_iter->hash->type is :hash) {
+		return print_register_value_to_assign(init_iter->iter) . '0';
+	} else {
+		die;
+	}
+}
+
+def print_hash_next_iter(next_iter : @nlasm::hash_iter_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (next_iter->hash->type is :im) {
+		return print_register_to_assign(next_iter->iter) .
+				print_internal_call('c_rt_lib', 'next_iter', [:reg(next_iter->iter)], ref call_counter) . ';';
+	} elsif (next_iter->hash->type is :hash) {
+		return print_register_value(next_iter->iter) . '++';
+	} else {
+		die;
+	}
+}
+
+def print_hash_get_key_iter(get_key_iter : @nlasm::hash_dest_iter_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (get_key_iter->hash->type is :im) {
+		return print_register_to_assign(get_key_iter->dest) .
+				print_internal_call('c_rt_lib', 'get_key_iter', [:reg(get_key_iter->iter)], ref call_counter) . ';';
+	} elsif (get_key_iter->hash->type is :hash) {
+		var hash = print_register_value(get_key_iter->hash);
+		return print_register_value_to_assign(get_key_iter->dest) .
+			imm_call('str') . '(Object.keys(' . hash . ')[' . print_register_value(get_key_iter->iter) . ']);';
+	} else {
+		die;
+	}
+}
+
+def print_hash_is_end(is_end : @nlasm::hash_dest_iter_t, ref call_counter : ptd::int()) : ptd::string() {
+	if (is_end->hash->type is :im) {
+		return print_register_to_assign(is_end->dest) .
+				print_internal_call('c_rt_lib', 'is_end_hash', [:reg(is_end->iter)], ref call_counter) . ';';
+	} elsif (is_end->hash->type is :hash) {
+		return print_register_value_to_assign(is_end->dest) .
+			print_register_value(is_end->iter) . '>=Object.keys(' . print_register_value(is_end->hash) . ').length;';
+	} else {
+		die;
+	}
+}
+
+def print_arr(arr : ptd::arr(@nlasm::reg_t), arr_reg_type : @nlasm::reg_type) : ptd::string() {
+	var result = '';
+	if (arr_reg_type is :im) {
+		result .= imm_call('arr') . '([';
+		result .= print_register_value(reg) . ',' fora var reg (arr);
+		result .= '])';
+	} elsif (arr_reg_type is :arr) {
+		result .= '[';
+		result .= print_register_reference(reg) . ',' fora var reg (arr);
+		result .= ']';
+	} else {
+		die;
+	}
+	return result;
 }
 
 def imm_call(name : ptd::string()) {
@@ -408,20 +457,20 @@ def imm_call(name : ptd::string()) {
 }
 
 def print_bin_op(bin_op : @nlasm::bin_op, ref call_counter : ptd::int()) : ptd::string() {
-	var result = print_register_to_assign(bin_op->dest);
+	var result = print_register_value_to_assign(bin_op->dest);
 	if (bin_op->op eq '>=' || bin_op->op eq '<=' || bin_op->op eq '<' || bin_op->op eq '>' || bin_op->op eq '==' || 
 		bin_op->op eq '!=') {
-		var left = print_register(bin_op->left);
-		var right = print_register(bin_op->right);
+		var left = print_register_value(bin_op->left);
+		var right = print_register_value(bin_op->right);
 		return result . left . bin_op->op . right . ';';
 	} elsif (bin_op->op eq 'eq' || bin_op->op eq 'ne') {
 		return result . print_int_call_sim('c_rt_lib', bin_op->op, [bin_op->left, bin_op->right]);
 	} elsif (bin_op->op eq '.') {
 		return result . print_internal_call('c_rt_lib', 'concat', [
-			:str(print_register(bin_op->left)), :str(print_register(bin_op->right))], ref call_counter) . ';';
+			:str(print_register_value(bin_op->left)), :str(print_register_value(bin_op->right))], ref call_counter) . ';';
 	} else {
-		var left = print_register(bin_op->left);
-		var right = print_register(bin_op->right);
+		var left = print_register_value(bin_op->left);
+		var right = print_register_value(bin_op->right);
 		return result . 'Math.floor(' . left . bin_op->op . right . ');';
 	}
 }
@@ -429,7 +478,7 @@ def print_bin_op(bin_op : @nlasm::bin_op, ref call_counter : ptd::int()) : ptd::
 def print_call(cmodule : ptd::string(), cname : ptd::string(),
 		cargs : ptd::arr(ptd::var({ref => @nlasm::reg_t, val => @nlasm::reg_t})),
 		dest : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
-	var result = print_register_to_assign(dest) . get_function_call_name_raw(cname, cmodule) . '(';
+	var result = print_register_value_to_assign(dest) . get_function_call_name_raw(cname, cmodule) . '(';
 	var i = 0;
 	var pre = '';
 	var after = '';
@@ -439,19 +488,53 @@ def print_call(cmodule : ptd::string(), cname : ptd::string(),
 		match (arg) case :ref(var reg) {
 			process_ref_reg(ref pre, ref result, ref after, reg, i, call_counter);
 		} case :val(var reg) {
-			result .= print_register(reg);
+			result .= print_register_value(reg);
 		}
 	}
 	++call_counter;
 	return pre . result . ');' . after;
 }
 
+def print_ov_mk(ov_mk : @nlasm::ov_mk_t, ref consts, ref call_counter : ptd::int()) : ptd::string() {
+	var result = print_register_value_to_assign(ov_mk->dest);
+	if (ov_mk->dest->type is :im) {
+		match (ov_mk->src) case :arg(var arg) {
+			return result . print_internal_call('c_rt_lib', 'ov_mk_arg',
+				[:str(print_const_value_aggr(ov_mk->label, ref consts)), :reg(arg)], ref call_counter) . ';';
+		} case :emp {
+			return result . print_const_value_aggr(ov::mk(ov_mk->label), ref consts);
+		}
+	} elsif (ov_mk->dest->type is :variant) {
+		result .= '{"ov_label": ' . ov_mk->label_no;
+		match (ov_mk->src) case :arg(var arg) {
+			result .= ', "ov_value": ' . print_register_reference(arg);
+		} case :emp {
+		}
+		result .= '}';
+		return result;
+	} else {
+		die;
+	}
+}
+
+def print_ov_is(dest : @nlasm::reg_t, src : @nlasm::reg_t, label : ptd::string(), label_no : ptd::int(),
+		ref call_counter : ptd::int(), ref consts) : ptd::string() {
+	if (src->type is :im) {
+		return print_register_value_to_assign(dest) . print_internal_call('c_rt_lib', 'ov_is', 
+			[:reg(src), :str(print_str_imm(label, ref consts))], ref call_counter) . ';';
+	} elsif (src->type is :variant) {
+		return print_register_value_to_assign(dest) . print_register_value(src) . '.ov_label == ' . label_no;
+	} else {
+		die;
+	}
+}
+
 def process_ref_reg(ref pre : ptd::string(), ref result : ptd::string(), ref after : ptd::string(), reg : @nlasm::reg_t,
 		i : ptd::int(), call_counter : ptd::int()) {
 	var reg_name = 'call_' . call_counter . '_' . i;
-	pre .= 'var ' . reg_name . ' = new ' . imm_call('ref') . '(' . print_register(reg) . ');';
+	pre .= 'var ' . reg_name . ' = new ' . imm_call('ref') . '(' . print_register_value(reg) . ');';
 	result .= reg_name;
-	after .= print_register_to_assign(reg) . reg_name . '.value;'; 
+	after .= print_register_value_to_assign(reg) . reg_name . '.value;'; 
 	after .= reg_name . ' = null;';
 }
 
@@ -468,7 +551,7 @@ def print_internal_call(module_name : ptd::string(), fun_name : ptd::string(),
 		match (arg) case :ref(var reg) {
 			process_ref_reg(ref pre, ref result, ref after, reg, i, call_counter);
 		} case :reg(var reg) {
-			result .= print_register(reg);
+			result .= print_register_value(reg);
 		} case :str(var str) {
 			result .= str;
 		}
@@ -480,7 +563,7 @@ def print_internal_call(module_name : ptd::string(), fun_name : ptd::string(),
 def print_int_call_sim(mod_name : ptd::string(), fun_name : ptd::string(), args : ptd::arr(@nlasm::reg_t)) {
 	var regs = [];
 	fora var reg (args) {
-		regs []= print_register(reg);
+		regs []= print_register_value(reg);
 	}
 	return get_namespace_name() . '.' . mod_name . '.' . fun_name . '(' . array::join(', ', regs) . ')';
 }
@@ -532,30 +615,63 @@ def print_goto(goto : ptd::int()) : ptd::string() {
 	return 'label = ' . goto . '; continue;';
 }
 
-def print_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_t}))) : ptd::string() {
-	var result = imm_call('hash') . '({';
-	result .= escape_string(map->key) . ':' . print_register(map->val) . ',' fora var map (harr);
-	return result . '})';
-}
-
-def print_empty_hash(fields : ptd::arr(ptd::string())) : ptd::string() {
-	var result = imm_call('hash') . '({';
-	result .= escape_string(field) . ': {},' fora var field (fields);
-	return result . '})';
-}
-
-def print_ov_mk(ov_mk : @nlasm::ov_mk_t, ref consts, ref call_counter : ptd::int()) : ptd::string() {
-	var result = print_register_to_assign(ov_mk->dest);
-	match (ov_mk->src) case :arg(var arg) {
-		return result . print_internal_call('c_rt_lib', 'ov_mk_arg',
-			[:str(print_const_value_aggr(ov_mk->label, ref consts)), :reg(arg)], ref call_counter) . ';';
-	} case :emp {
-		return result . print_const_value_aggr(ov::mk(ov_mk->label), ref consts);
+def print_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_t})), hash_reg_type : @nlasm::reg_type)
+		: ptd::string() {
+	var result = '';
+	if (hash_reg_type is :im) {
+		result .= imm_call('hash') . '({';
+	} elsif (hash_reg_type is :hash) {
+		result .= '{';
+	} else {
+		die;
 	}
+	result .= escape_string(map->key) . ':' . print_register_value(map->val) . ',' fora var map (harr);
+	if (hash_reg_type is :im) {
+		result .= '})';
+	} elsif (hash_reg_type is :hash) {
+		result .= '}';
+	} else {
+		die;
+	}
+	return result;
+}
+
+def print_empty_hash(fields : ptd::arr(ptd::string()), hash_reg_type : @nlasm::reg_type) : ptd::string() {
+	var result = '';
+	if (hash_reg_type is :im) {
+		result .= imm_call('hash') . '({';
+		result .= escape_string(field) . ': {},' fora var field (fields);
+		result .= '})';
+	} elsif (hash_reg_type is :rec) {
+		result .= '{';
+		result .= escape_string(field) . ': {"value": {}},' fora var field (fields);
+		result .= '}';
+	} else {
+		die;
+	}
+	return result;
 }
 
 def print_register(register : @nlasm::reg_t) : ptd::string() {
 	return '___nl__' . reg_suffix(register);
+}
+
+def print_register_value(register : @nlasm::reg_t) : ptd::string() {
+	var register_str = print_register(register);
+	match (register->access_type) case :value {
+	} case :reference {
+		register_str .= '.value';
+	}
+	return register_str;
+}
+
+def print_register_reference(register : @nlasm::reg_t) : ptd::string() {
+	var register_str = print_register(register);
+	match (register->access_type) case :value {
+		register_str = '{"value": ' . register_str . '}';
+	} case :reference {
+	}
+	return register_str;
 }
 
 def reg_suffix(reg : @nlasm::reg_t) : ptd::string() {
@@ -591,29 +707,74 @@ def print_register_to_assign(register : @nlasm::reg_t) : ptd::string() {
 	return print_register(register) . ' = ';
 }
 
+def print_register_value_to_assign(register : @nlasm::reg_t) : ptd::string() {
+	return '' if nlasm::is_empty(register);
+	return print_register_value(register) . ' = ';
+}
+
 def print_return(return_i : @nlasm::return, fun_args : @nlasm::args_type) : ptd::string() {
 	var result = '';
 	var no = 0;
 	fora var arg (fun_args) {
 		match (arg->by) case :ref {
-			result .= '___arg__' . no . '.value = ' . print_register(arg->register) . ';';
+			result .= '___arg__' . no . '.value = ' . print_register_value(arg->register) . ';';
 		} case :val {
 		}
 		++no;
 	}
 	match (return_i) case :val(var val) {
-		return result . string::lf() . 'return ' . print_register(val) . ';';
+		return result . string::lf() . 'return ' . print_register_value(val) . ';';
 	} case :emp {
 		return result . string::lf() . 'return null;';
 	}
 }
 
 def print_una_op(una_op : @nlasm::una_op_t) : ptd::string() {
-	var result = print_register_to_assign(una_op->dest);
+	var result = print_register_value_to_assign(una_op->dest);
 	if (una_op->op eq '!') {
-		return result . '!' . print_register(una_op->src);
+		return result . '!' . print_register_value(una_op->src);
 	} else {
-		return result . '-' . print_register(una_op->src);
+		return result . '-' . print_register_value(una_op->src);
+	}
+}
+
+def get_im_from_value(type : @nlasm::reg_type, value : ptd::string()) : ptd::string() {
+	match (type) case :im {
+		return value;
+	} case :int {
+		return imm_call('int') . '(' . value . ')';
+	} case :bool {
+		return get_namespace_name() . '.c_rt_lib.native_to_nl(' . value . ')';
+	} case :string {
+		return value;
+	} case :rec(var innter) {
+		die;
+	} case :arr(var innter) {
+		die;
+	} case :variant(var innter) {
+		die;
+	} case :hash(var innter) {
+		die;
+	}
+}
+
+def get_value_from_im(type : @nlasm::reg_type, im : ptd::string()) : ptd::string() {
+	match (type) case :im {
+		return im;
+	} case :int {
+		return im . '.as_int()';
+	} case :bool {
+		return get_namespace_name() . '.c_rt_lib.check_true_native(' . im . ')';
+	} case :string {
+		return im;
+	} case :rec(var rec_type) {
+		die;
+	} case :arr(var arr_type) {
+		die;
+	} case :variant(var var_type) {
+		die;
+	} case :hash(var hash_type) {
+		die;
 	}
 }
 
