@@ -108,7 +108,11 @@ def print_function_or_singleton(function : @nlasm::function_t, module_name : ptd
 	if (is_singleton_use_function(function)) {
 		var fun_name = get_function_name(function, module_name);
 		var sin_fun = function;
-		sin_fun->name = '__singleton_function_' . function->name;
+		if (sin_fun->access is :priv) {
+			sin_fun->name = '__singleton_function_' . function->name;
+		} else {
+			sin_fun->name = '__singleton_priv_function_' . function->name;
+		}
 		sin_fun->access = :priv;
 		var var_name = '__singleton_value_' . get_function_name(sin_fun, module_name);
 		ret = print_function(sin_fun, module_name, ref consts);
