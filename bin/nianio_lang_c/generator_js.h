@@ -11,6 +11,7 @@
 #include "ov.h"
 #include "nlasm.h"
 #include "ptd.h"
+#include "hash.h"
 typedef ImmT  generator_js0state_t0type;
 
 ImmT  generator_js0state_t();
