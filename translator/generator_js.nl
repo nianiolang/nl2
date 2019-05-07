@@ -9,12 +9,14 @@ use string;
 use ov;
 use nlasm;
 use ptd;
+use hash;
 
 def generator_js::state_t() {
 	return ptd::rec({
 		js => ptd::string(),
 		consts => ptd::rec({
 			arr => ptd::arr(ptd::ptd_im()),
+			hash => ptd::hash(ptd::int()),
 			name => ptd::string(),
 		}),
 		module_name => ptd::string(),
@@ -28,7 +30,7 @@ def get_namespace_name() {
 def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string()) : ptd::string() {
 	var state = {
 		js => '',
-		consts => {arr => [], name => '__const_'},
+		consts => {arr => [], hash => {}, name => '__const_'},
 		module_name => nlasm->module_name,
 	};
 
@@ -62,8 +64,21 @@ def print_consts(ref state : @generator_js::state_t) {
 }
 
 def get_const_value_aggr(const_val, ref state : @generator_js::state_t) : ptd::string() {
-	array::push(ref state->consts->arr, const_val);
-	return state->consts->name . '[' . (array::len(state->consts->arr) - 1) . ']';
+	var index;
+	if (nl::is_string(const_val)) {
+		var const_str = ptd::ensure(ptd::string(), const_val);
+ 		if (hash::has_key(state->consts->hash, const_str)) {
+			index = state->consts->hash{const_str};
+		} else {
+			state->consts->arr []= const_val;
+			index = array::len(state->consts->arr) - 1;
+			state->consts->hash{const_str} = index;
+		}
+	} else {
+		state->consts->arr []= const_val;
+		index = array::len(state->consts->arr) - 1;
+	}
+	return state->consts->name . '[' . index . ']';
 }
 
 def get_function_name(function : @nlasm::function_t, module_name : ptd::string()) {
