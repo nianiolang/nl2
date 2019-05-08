@@ -14,7 +14,15 @@
 #include "hash.h"
 typedef ImmT  generator_js0state_t0type;
 
+typedef ImmT  generator_js0sourcemap_opt0type;
+
+typedef ImmT  generator_js0sourcemap_entry_t0type;
+
 ImmT  generator_js0state_t();
 ImmT  generator_js0state_t0ptr(int _num, ImmT *_tab);
-ImmT  generator_js0generate(nlasm0result_t0type ___nl__im__0,ImmT  ___nl__im__1);
+ImmT  generator_js0sourcemap_opt();
+ImmT  generator_js0sourcemap_opt0ptr(int _num, ImmT *_tab);
+ImmT  generator_js0sourcemap_entry_t();
+ImmT  generator_js0sourcemap_entry_t0ptr(int _num, ImmT *_tab);
+ImmT  generator_js0generate(nlasm0result_t0type ___nl__im__0,ImmT  ___nl__im__1,generator_js0sourcemap_opt0type ___nl__im__2);
 ImmT  generator_js0generate0ptr(int _num, ImmT *_tab);

@@ -236,6 +236,7 @@ ImmT c_fe_lib0sleep(ImmT ___nl__sec){
 ImmT c_fe_lib0exec_cmd(ImmT ___nl__cmdI) {
 	ImmT ret = c_fe_lib0try_exec_cmd(___nl__cmdI);
 	if(getIntFromImm(ret) != 0) nl_die();
+	c_rt_lib0clear(&ret);
 	return NULL;
 }
 

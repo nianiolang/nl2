@@ -61,7 +61,7 @@ INT  ___nl__int__30 = 0;
 INT  ___nl__int__31 = 0;
 ImmT  ___nl__im__32 = NULL;
 #line 10
-c_rt_lib0move(&___nl__im__1,___get_global_string_const(281));
+c_rt_lib0move(&___nl__im__1,___get_global_string_const(290));
 #line 11
 c_rt_lib0move(&___nl__im__2, string0tab());
 #line 12
@@ -475,7 +475,7 @@ bool  ___nl__bool__52 = false;
 INT  ___nl__int__53 = 0;
 ImmT  ___nl__im__54 = NULL;
 #line 44
-c_rt_lib0move(&___nl__im__1,___get_global_string_const(281));
+c_rt_lib0move(&___nl__im__1,___get_global_string_const(290));
 #line 45
 c_rt_lib0move(&___nl__im__2, string0tab());
 #line 46

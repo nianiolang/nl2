@@ -78,6 +78,8 @@ typedef ImmT  compiler0file_t0type;
 
 typedef ImmT  compiler0errors_hash_t0type;
 
+typedef ImmT  compiler0js_opts0type;
+
 typedef ImmT  compiler0destination_t0type;
 
 typedef ImmT  compiler0module_t0type;
@@ -103,6 +105,8 @@ ImmT  compiler0errors_group_t();
 ImmT  compiler0errors_group_t0ptr(int _num, ImmT *_tab);
 ImmT  compiler0language_t();
 ImmT  compiler0language_t0ptr(int _num, ImmT *_tab);
+ImmT  compiler0js_opts();
+ImmT  compiler0js_opts0ptr(int _num, ImmT *_tab);
 ImmT  compiler0destination_t();
 ImmT  compiler0destination_t0ptr(int _num, ImmT *_tab);
 ImmT  compiler0module_t();
