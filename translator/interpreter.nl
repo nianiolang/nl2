@@ -118,7 +118,8 @@ def build_state(labels : ptd::hash(@interpreter::module_labels_t), functions : p
 				commands => [],
 				name => '',
 				defines_type => :no,
-				variables => []
+				variables => [],
+				line => -1,
 			}, #defines_type and variables fields not used
 			labels => labels,
 			functions => functions,

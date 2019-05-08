@@ -39,6 +39,7 @@ def nlasm::function_t() {
 			name => ptd::string(),
 			defines_type => ptd::var({no => ptd::none(), yes => @tct::meta_type}),
 			variables => ptd::arr(@nlasm::var_decl_t),
+			line => ptd::int(),
 		});
 }
 

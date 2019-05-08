@@ -20,6 +20,22 @@ def generator_js::state_t() {
 			name => ptd::string(),
 		}),
 		module_name => ptd::string(),
+		sourcemap => ptd::arr(@generator_js::sourcemap_entry_t),
+		js_lines => ptd::int(),
+	});
+}
+
+def generator_js::sourcemap_opt() {
+	return ptd::var({
+		yes => ptd::string(),
+		no => ptd::none(),
+	});
+}
+
+def generator_js::sourcemap_entry_t() {
+	return ptd::rec({
+		line_js => ptd::int(),
+		line_nl => ptd::int(),
 	});
 }
 
@@ -27,11 +43,14 @@ def get_namespace_name() {
 	return '_namespace';
 }
 
-def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string()) : ptd::string() {
+def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt)
+		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	var state = {
 		js => '',
 		consts => {arr => [], hash => {}, name => '__const_'},
 		module_name => nlasm->module_name,
+		sourcemap => [],
+		js_lines => 0,
 	};
 
 	print_module_prolog(namespace, ref state);
@@ -39,9 +58,12 @@ def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string()) 
 		print_function_or_singleton(function, ref state);
 	}
 	print_consts(ref state);
-	print_module_epilog(namespace, ref state);
+	print_module_epilog(namespace, sourcemap, ref state);
 
-	return state->js;
+	return {
+		js => state->js,
+		sourcemap => (sourcemap is :yes) ? generate_sourcemap(state->sourcemap, state->module_name) : '',
+	};
 }
 
 def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::state_t) {
@@ -50,8 +72,13 @@ def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::st
 	println(get_namespace_name() . '.' . state->module_name . ' = {};', ref state);
 }
 
-def print_module_epilog(namespace : ptd::string(), ref state : @generator_js::state_t) {
+def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt,
+		ref state : @generator_js::state_t) {
 	println('})(' . namespace . ' = ' . ' ' . namespace . ' || {}); ', ref state);
+	match (sourcemap) case :yes(var filename) {
+		println('//# sourceMappingURL=' . filename, ref state);
+	} case :no {
+	}
 }
 
 def print_consts(ref state : @generator_js::state_t) {
@@ -224,6 +251,7 @@ def print_function(function : @nlasm::function_t, ref state : @generator_js::sta
 	println(get_function_header(function, state->module_name) . ' {', ref state);
 	print_function_registers(function, ref state);
 	println('var label = null;', ref state);
+	state->sourcemap []= {line_js => state->js_lines + 1, line_nl => function->line};
 	println('while (1) { switch (label) {', ref state);
 	println('default:', ref state);
 	var call_counter = 0;
@@ -340,6 +368,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :release_hash_index(var release_hash_index) {
 		result = get_register_to_assign(release_hash_index->current_owner) . ' null;';
 	} case :use_variant(var use_variant) {
+		state->sourcemap []= {line_js => state->js_lines + 1, line_nl => command->debug->nast_debug->begin->line};
 		println('if (' . get_register_value(use_variant->old_owner) . '.ov_label != ' . use_variant->label_no . ')' .
 			 get_namespace_name() . '.nl_die();', ref state);
 		result .= get_register_to_assign(use_variant->new_owner) .
@@ -355,6 +384,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :hash_is_end(var is_end) {
 		result = get_hash_is_end(is_end, ref call_counter);
 	}
+	state->sourcemap []= {line_js => state->js_lines + 1, line_nl => command->debug->nast_debug->begin->line};
 	println(result, ref state);
 }
 
@@ -874,4 +904,75 @@ def print(s : ptd::string(), ref state : @generator_js::state_t) {
 
 def println(s : ptd::string(), ref state : @generator_js::state_t) {
 	print(s . string::lf(), ref state);
+	state->js_lines++;
+}
+
+def generate_sourcemap(sourcemap : ptd::arr(@generator_js::sourcemap_entry_t), module_name : ptd::string()) : ptd::string() {
+	var mappings = generate_sourcemap_mappings(sourcemap);
+	return ')]}''
+		'{
+		'    "version": 3,
+		'    "file": "' . module_name . '.js",
+		'    "sources": ["' . module_name . '.nl"],
+		'    "names": [],
+		'    "mappings": "' . mappings . '"
+		'}';
+}
+
+def generate_sourcemap_mappings(sourcemap : ptd::arr(@generator_js::sourcemap_entry_t)) : ptd::string(){
+	var result = '';
+	var i = 1;
+	var last_line = 1;
+	fora var entry (sourcemap) {
+		while (i < entry->line_js) {
+			result .= ';';
+			i++;
+		}
+		result .= 'AA' . number_to_base64_vlq(entry->line_nl - last_line) . 'A';
+		last_line = entry->line_nl;
+	}
+	return result;
+}
+
+def number_to_base64_vlq(number : ptd::int()) {
+	var vlq = '';
+	vlq .= get_base64_vlq_digit(ref number, true);
+	while (number > 0) {
+		vlq .= get_base64_vlq_digit(ref number, false);
+	}
+	return vlq;
+}
+
+# Bits of the first base64 digit: |continuation|value0|value1|value2|value3| sign |
+# Bits of non-first base64 digit: |continuation|value0|value1|value2|value3|value4|
+def get_base64_vlq_digit(ref number : ptd::int(), first_digit : ptd::bool()) : ptd::string() {
+	var digit_bitmap = 0;
+
+	# Set sign bit if necessary
+	if (first_digit && number < 0) {
+		digit_bitmap += 1;
+		number = -number;
+	}
+
+	# Set value bits and calculate remaining part
+	if (first_digit) {
+		digit_bitmap += 2 * (number % 16);
+		number /= 16;
+	} else {
+		digit_bitmap += number % 32;
+		number /= 32;
+	}
+
+	# Set continuation bit if necessary
+	if (number > 0) {
+		digit_bitmap += 32;
+	}
+
+	return base64_table()[digit_bitmap];
+}
+
+def base64_table() : ptd::arr(ptd::string()) {
+	return ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+		'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+		'0','1','2','3','4','5','6','7','8','9','+','/'];
 }

@@ -61,7 +61,7 @@ test_nl_c:
 	./test_all
 
 tester_nl_js:
-	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile
+	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile --sourcemap
 
 test_nl_js:
 	@echo 'TEST JS'
@@ -84,7 +84,7 @@ main_exe: main.nl
 	gcc ${CFLAGS} -o main main_c.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
 
 main_js: main.nl
-	./${OUT} nianio_lib main.nl --deref --strict --o ${CACHETEST} --js --O2 --profile --namespace instadb
+	./${OUT} nianio_lib main.nl --deref --strict --o ${CACHETEST} --js --O2 --profile --namespace instadb --sourcemap
 
 nls:
 	./$(OUT) nls/ --strict --c --o nls/cache_nl/

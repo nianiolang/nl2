@@ -72,11 +72,18 @@ def compiler::language_t() {
 	return ptd::var({
 			nla => ptd::none(),
 			c => ptd::none(),
-			js => ptd::rec({namespace => ptd::string()}),
+			js => @compiler::js_opts,
 			nl => ptd::none(),
 			ast => ptd::none(),
 			call_graph => ptd::none(),
 		});
+}
+
+def compiler::js_opts() {
+	return ptd::rec({
+		namespace => ptd::string(),
+		sourcemap => ptd::bool(),
+	});
 }
 
 def compiler::destination_t() {
@@ -85,7 +92,12 @@ def compiler::destination_t() {
 			c => ptd::rec({c => ptd::string(), h => ptd::string()}),
 			nl => ptd::string(),
 			ast => ptd::string(),
-			js => ptd::string(),
+			js => ptd::rec({
+				js => ptd::string(),
+				map_dir => ptd::string(),
+				map_dir_js => ptd::string(),
+				map => ptd::string(),
+				nl => ptd::string()}),
 			none => ptd::none(),
 			call_graph => ptd::none(),
 		});
@@ -220,7 +232,14 @@ def mk_path_module(file : ptd::rec({dir => ptd::string(), file => ptd::string()}
 	} case :c {
 		return {src => src, dst => :c({c => dst . '.c', h => dst . '.h'})};
 	} case :js(var params) {
-		return {src => src, dst => :js(dst . '.js')};
+		var map_dir = input->cache_path . 'maps/';
+		var map_dir_js = 'maps/' . module . '.js.map';
+		var map = map_dir . module . '.js.map';
+		var nl = map_dir . module . '.nl';
+		return {
+			src => src,
+			dst => :js({js => dst . '.js', map_dir => map_dir, map_dir_js => map_dir_js, map => map, nl => nl})
+		};
 	} case :nl {
 		var len = string::length(file->dir);
 		var dir = get_dir(src);
@@ -699,8 +718,8 @@ def process_deref(deref : @tc_types::deref_types) : @reference_generator::refs {
 	return ret;
 }
 
-def try_save_file(file : ptd::string(), path : ptd::string(), ref error) {
-	match (c_fe_lib::string_to_file(path, file)) case :ok(var ok) {
+def try_save_file(content : ptd::string(), path : ptd::string(), ref error) {
+	match (c_fe_lib::string_to_file(path, content)) case :ok(var ok) {
 	} case :err(var as_error) {
 		c_fe_lib::print('ERROR: ' . as_error);
 		error = true;
@@ -738,10 +757,19 @@ def generate_modules_to_files(modules : ptd::hash(@nlasm::result_t), nianio_file
 	} case :js(var params) {
 		forh var module, var nlasm (modules) {
 			var error = false;
-			var ret = generator_js::generate(nlasm, params->namespace);
-			var path = nianio_files{module}->dst as :js;
+			var sourcemap = :no;
+			var paths = nianio_files{module}->dst as :js;
+			if (params->sourcemap) {
+				sourcemap = :yes(paths->map_dir_js);
+			}
+			var ret = generator_js::generate(nlasm, params->namespace, sourcemap);
 			c_fe_lib::print('saving file: ' . module);
-			try_save_file(ret, path, ref error);
+			try_save_file(ret->js, paths->js, ref error);
+			if (params->sourcemap) {
+				c_fe_lib::mk_path(paths->map_dir);
+				try_save_file(ret->sourcemap, paths->map, ref error);
+				c_fe_lib::exec_cmd('cp ''' . nianio_files{module}->src . ''' ''' . paths->nl . '''');
+			}
 			hash::set_value(ref error_modules, module, '') if (error);
 		}
 	} case :nl {
@@ -819,7 +847,7 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 				ret->language = :c;
 			} elsif (opt eq 'js') {
 				if (!ret->language is :js) {
-					ret->language = :js({namespace => 'nl'});
+					ret->language = :js(get_default_js_opts());
 				}
 			} elsif (opt eq 'call_graph') {
 				ret->language = :call_graph;
@@ -863,7 +891,21 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 			} elsif (opt eq 'namespace') {
 				++i;
 				die unless (i < array::len(args));
-				ret->language = :js({namespace => args[i]});
+				if (ret->language is :js) {
+					var as_js = ret->language as :js;
+					as_js->namespace = args[i];
+					ret->language = :js(as_js);
+				} else {
+					ret->language = :js(get_default_js_opts());
+				}
+			} elsif (opt eq 'sourcemap') {
+				if (ret->language is :js) {
+					var as_js = ret->language as :js;
+					as_js->sourcemap = true;
+					ret->language = :js(as_js);
+				} else {
+					ret->language = :js(get_default_js_opts());
+				}
 			} else {
 				c_fe_lib::print('unknown compiler option: ' . el);
 			}
@@ -878,5 +920,12 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 	}
 	ret->deref = :yes(ret->cache_path . get_default_deref_file()) if ret->deref is :yes;
 	return ret;
+}
+
+def get_default_js_opts() : @compiler::js_opts {
+	return {
+		namespace => 'nl',
+		sourcemap => false,
+	};
 }
 

@@ -93,7 +93,8 @@ def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct:
 					commands => [],
 					name => function->name,
 					defines_type => function->defines_type,
-					variables => []
+					variables => [],
+					line => -1,
 				},
 				loop_label => {
 					break => { label => -1, logic => logic, used => false},
@@ -120,6 +121,7 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	}
 	state->result->ret_type = function->ret_type->tct_type;
 	state->result->ret_reg_type = var_type_to_reg_type(function->ret_type->tct_type, state->logic->defined_types);
+	state->result->line = function->line;
 	print_cmd(function->cmd, ref state);
 	var default_return = {
 		debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end},
