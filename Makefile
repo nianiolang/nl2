@@ -58,7 +58,7 @@ tester_nl_c:
 
 test_nl_c:
 	@echo 'TEST C'
-	./test_all
+	MALLOC_CHECK_=2 ./test_all
 
 tester_nl_js:
 	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile --sourcemap
