@@ -111,11 +111,11 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	fora var fun_arg (function->args) {
 		match (fun_arg->mod) case :none {
 			var rim = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type, state->logic->defined_types), :value);
-			var arg_type_rim = {by => :val, register => rim, type => fun_arg->tct_type};
+			var arg_type_rim = {by => :val, register => rim, type => fun_arg->tct_type, name => fun_arg->name};
 			array::push(ref state->result->args_type, arg_type_rim);
 		} case :ref {
 			var rref = new_declaration(fun_arg->name, ref state, var_type_to_reg_type(fun_arg->tct_type, state->logic->defined_types), :value);
-			var arg_type_rref = {by => :ref, register => rref, type => fun_arg->tct_type};			
+			var arg_type_rref = {by => :ref, register => rref, type => fun_arg->tct_type, name => fun_arg->name};
 			array::push(ref state->result->args_type, arg_type_rref);
 		}
 	}
@@ -207,7 +207,7 @@ def print_var_decl(var_decl : @nast::variable_declaration_t, ref state : @transl
 		access_type : @nlasm::reg_access_type_t) : @nlasm::reg_t {
 	var reg_type = var_type_to_reg_type(var_decl->tct_type, state->logic->defined_types);
 	var reg = new_declaration(var_decl->name, ref state, reg_type, access_type);
-	array::push(ref state->result->variables, {type => var_decl->tct_type, register => reg});
+	array::push(ref state->result->variables, {type => var_decl->tct_type, register => reg, name => var_decl->name});
 	match (var_decl->value) case :none {
 	} case :value(var value) {
 		if (tct::is_own_type(value->type, state->logic->defined_types)) {

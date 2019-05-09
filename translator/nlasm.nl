@@ -24,6 +24,7 @@ def nlasm::arg_type_t() {
 			by => ptd::var({val => ptd::none(), ref => ptd::none()}),
 			register => @nlasm::reg_t,
 			type => @tct::meta_type,
+			name => ptd::string(),
 		});
 }
 
@@ -124,7 +125,8 @@ def nlasm::order_t() {
 def nlasm::var_decl_t() {
 	return ptd::rec({
 		type => @tct::meta_type,
-		register => @nlasm::reg_t
+		register => @nlasm::reg_t,
+		name => ptd::string(),
 	});
 }
 

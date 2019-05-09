@@ -20,15 +20,23 @@ def generator_js::state_t() {
 			name => ptd::string(),
 		}),
 		module_name => ptd::string(),
-		sourcemap => ptd::arr(@generator_js::sourcemap_entry_t),
+		sourcemap => @generator_js::sourcemap_t,
 		js_lines => ptd::int(),
 	});
 }
 
-def generator_js::sourcemap_opt() {
+def generator_js::sourcemap_opt_t() {
 	return ptd::var({
 		yes => ptd::string(),
 		no => ptd::none(),
+	});
+}
+
+def generator_js::sourcemap_t() {
+	return ptd::rec({
+		names => ptd::arr(ptd::string()),
+		names_hash => ptd::hash(ptd::int()),
+		entries => ptd::arr(@generator_js::sourcemap_entry_t),
 	});
 }
 
@@ -36,6 +44,14 @@ def generator_js::sourcemap_entry_t() {
 	return ptd::rec({
 		line_js => ptd::int(),
 		line_nl => ptd::int(),
+		symbol => ptd::var({
+			yes => ptd::rec({
+				begin => ptd::int(),
+				end => ptd::int(),
+				name_idx => ptd::int(),
+			}),
+			no => ptd::none(),
+		}),
 	});
 }
 
@@ -43,13 +59,13 @@ def get_namespace_name() {
 	return '_namespace';
 }
 
-def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt)
+def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t)
 		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	var state = {
 		js => '',
 		consts => {arr => [], hash => {}, name => '__const_'},
 		module_name => nlasm->module_name,
-		sourcemap => [],
+		sourcemap => {names => [], names_hash => {}, entries => []},
 		js_lines => 0,
 	};
 
@@ -72,7 +88,7 @@ def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::st
 	println(get_namespace_name() . '.' . state->module_name . ' = {};', ref state);
 }
 
-def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt,
+def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t,
 		ref state : @generator_js::state_t) {
 	println('})(' . namespace . ' = ' . ' ' . namespace . ' || {}); ', ref state);
 	match (sourcemap) case :yes(var filename) {
@@ -248,10 +264,11 @@ def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @gener
 
 def print_function(function : @nlasm::function_t, ref state : @generator_js::state_t) {
 	println('', ref state);
+	print_sourcemap_line_marker(function->line, ref state);
 	println(get_function_header(function, state->module_name) . ' {', ref state);
 	print_function_registers(function, ref state);
 	println('var label = null;', ref state);
-	state->sourcemap []= {line_js => state->js_lines + 1, line_nl => function->line};
+	print_sourcemap_line_marker(function->line, ref state);
 	println('while (1) { switch (label) {', ref state);
 	println('default:', ref state);
 	var call_counter = 0;
@@ -277,16 +294,35 @@ def get_function_header(function : @nlasm::function_t, module_name : ptd::string
 }
 
 def print_function_registers(function : @nlasm::function_t, ref state : @generator_js::state_t) { 
+	var reg_decl = 'var ';
 	rep var i (array::len(function->args_type)) {
+		var reg_name = get_register(function->registers[i]);
+
+		var js_name_begin = string::length(reg_decl);
+		var js_name_end = js_name_begin + string::length(reg_name);
+		print_sourcemap_line_marker_with_symbol(function->line, js_name_begin, js_name_end,
+			function->args_type[i]->name, ref state);
+
 		match (function->args_type[i]->by) case :val {
-			println('var ' . get_register(function->registers[i]) . ' = ___arg__' . i . ';', ref state);
+			println(reg_decl. reg_name . ' = ___arg__' . i . ';', ref state);
 		} case :ref {
-			println('var ' . get_register(function->registers[i]) . ' = ___arg__' . i . '.value;', ref state);
+			println(reg_decl. reg_name . ' = ___arg__' . i . '.value;', ref state);
 		}
 		println(get_namespace_name() . '.check_null(' . get_register_value(function->registers[i]) . ');', ref state);
 	}
+	var j = 0;
 	for(var i = array::len(function->args_type); i < array::len(function->registers); ++i) {
-		println('var ' . get_register(function->registers[i]) . ' = null;', ref state);
+		var reg_name = get_register(function->registers[i]);
+
+		if (j < array::len(function->variables) &&
+				nlasm::eq_reg(function->registers[i], function->variables[j]->register)) {
+			var js_name_begin = string::length(reg_decl);
+			var js_name_end = js_name_begin + string::length(reg_name);
+			print_sourcemap_line_marker_with_symbol(function->line, js_name_begin, js_name_end,
+				function->variables[j]->name, ref state);
+			j++;
+		}
+		println(reg_decl . reg_name. ' = null;', ref state);
 	}
 }
 
@@ -368,7 +404,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :release_hash_index(var release_hash_index) {
 		result = get_register_to_assign(release_hash_index->current_owner) . ' null;';
 	} case :use_variant(var use_variant) {
-		state->sourcemap []= {line_js => state->js_lines + 1, line_nl => command->debug->nast_debug->begin->line};
+		print_sourcemap_line_marker(command->debug->nast_debug->begin->line, ref state);
 		println('if (' . get_register_value(use_variant->old_owner) . '.ov_label != ' . use_variant->label_no . ')' .
 			 get_namespace_name() . '.nl_die();', ref state);
 		result .= get_register_to_assign(use_variant->new_owner) .
@@ -384,7 +420,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	} case :hash_is_end(var is_end) {
 		result = get_hash_is_end(is_end, ref call_counter);
 	}
-	state->sourcemap []= {line_js => state->js_lines + 1, line_nl => command->debug->nast_debug->begin->line};
+	print_sourcemap_line_marker(command->debug->nast_debug->begin->line, ref state);
 	println(result, ref state);
 }
 
@@ -907,14 +943,45 @@ def println(s : ptd::string(), ref state : @generator_js::state_t) {
 	state->js_lines++;
 }
 
-def generate_sourcemap(sourcemap : ptd::arr(@generator_js::sourcemap_entry_t), module_name : ptd::string()) : ptd::string() {
-	var mappings = generate_sourcemap_mappings(sourcemap);
-	return ')]}''
-		'{
+def print_sourcemap_line_marker(line : ptd::int(), ref state: @generator_js::state_t) {
+	state->sourcemap->entries []= {line_js => state->js_lines + 1, line_nl => line, symbol => :no};
+}
+
+def print_sourcemap_line_marker_with_symbol(line : ptd::int(), begin : ptd::int(), end : ptd::int(),
+		name : ptd::string(), ref state: @generator_js::state_t) {
+	var name_idx;
+	if (hash::has_key(state->sourcemap->names_hash, name)) {
+		name_idx = state->sourcemap->names_hash{name};
+	} else {
+		state->sourcemap->names []= name;
+		name_idx = array::len(state->sourcemap->names) - 1;
+		state->sourcemap->names_hash{name} = name_idx;
+	}
+	state->sourcemap->entries []= {
+		line_js => state->js_lines + 1,
+		line_nl => line,
+		symbol => :yes({
+			begin => begin,
+			end => end,
+			name_idx => name_idx,
+		}),
+	};
+}
+
+def generate_sourcemap(sourcemap : @generator_js::sourcemap_t, module_name : ptd::string()) : ptd::string() {
+	var mappings = generate_sourcemap_mappings(sourcemap->entries);
+	var names = '';
+	rep var i (array::len(sourcemap->names)) {
+		if (i != 0) {
+			names .= ',';
+		}
+		names .= '"' . sourcemap->names[i] . '"';
+	}
+	return '{
 		'    "version": 3,
 		'    "file": "' . module_name . '.js",
 		'    "sources": ["' . module_name . '.nl"],
-		'    "names": [],
+		'    "names": [' . names . '],
 		'    "mappings": "' . mappings . '"
 		'}';
 }
@@ -923,15 +990,42 @@ def generate_sourcemap_mappings(sourcemap : ptd::arr(@generator_js::sourcemap_en
 	var result = '';
 	var i = 1;
 	var last_line = 1;
+	var last_name_idx = 0;
 	fora var entry (sourcemap) {
 		while (i < entry->line_js) {
 			result .= ';';
 			i++;
 		}
-		result .= 'AA' . number_to_base64_vlq(entry->line_nl - last_line) . 'A';
+		var line_nl_rel = entry->line_nl - last_line;
+		match (entry->symbol) case :no {
+			result .= mapping_to_base64_vlq(0, line_nl_rel, 0);
+		} case :yes(var symbol) {
+			var name_idx_rel = symbol->name_idx - last_name_idx;
+			var begin = mapping_with_name_to_base64_vlq(symbol->begin, line_nl_rel, 0, name_idx_rel);
+			var end = mapping_to_base64_vlq(symbol->end - symbol->begin, 0, 0);
+			result .= begin . ',' . end;
+			last_name_idx = symbol->name_idx;
+		}
 		last_line = entry->line_nl;
 	}
 	return result;
+}
+
+def mapping_to_base64_vlq(col_js : ptd::int(), line_nl : ptd::int(), col_nl : ptd::int()) : ptd::string() {
+	return numbers_to_base64_vlq([col_js, 0, line_nl, col_nl]);
+}
+
+def mapping_with_name_to_base64_vlq(col_js : ptd::int(), line_nl : ptd::int(), col_nl : ptd::int(), name_idx : ptd::int())
+		: ptd::string() {
+	return numbers_to_base64_vlq([col_js, 0, line_nl, col_nl, name_idx]);
+}
+
+def numbers_to_base64_vlq(numbers : ptd::arr(ptd::int())) : ptd::string() {
+	var vlq = '';
+	fora var number (numbers) {
+		vlq .= number_to_base64_vlq(number);
+	}
+	return vlq;
 }
 
 def number_to_base64_vlq(number : ptd::int()) {
