@@ -891,21 +891,23 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 			} elsif (opt eq 'namespace') {
 				++i;
 				die unless (i < array::len(args));
+				var as_js;
 				if (ret->language is :js) {
-					var as_js = ret->language as :js;
-					as_js->namespace = args[i];
-					ret->language = :js(as_js);
+					as_js = ret->language as :js;
 				} else {
-					ret->language = :js(get_default_js_opts());
+					as_js = get_default_js_opts();
 				}
+				as_js->namespace = args[i];
+				ret->language = :js(as_js);
 			} elsif (opt eq 'sourcemap') {
+				var as_js;
 				if (ret->language is :js) {
-					var as_js = ret->language as :js;
-					as_js->sourcemap = true;
-					ret->language = :js(as_js);
+					as_js = ret->language as :js;
 				} else {
-					ret->language = :js(get_default_js_opts());
+					as_js = get_default_js_opts();
 				}
+				as_js->sourcemap = true;
+				ret->language = :js(as_js);
 			} else {
 				c_fe_lib::print('unknown compiler option: ' . el);
 			}
