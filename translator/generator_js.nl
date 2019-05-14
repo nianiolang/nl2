@@ -56,14 +56,14 @@ def generator_js::sourcemap_entry_t() {
 }
 
 def get_namespace_name() {
-	return '_namespace';
+	return 'n';
 }
 
 def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t)
 		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	var state = {
 		js => '',
-		consts => {arr => [], hash => {}, name => '__const_'},
+		consts => {arr => [], hash => {}, name => 'c'},
 		module_name => nlasm->module_name,
 		sourcemap => {names => [], names_hash => {}, entries => []},
 		js_lines => 0,
@@ -85,12 +85,12 @@ def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), 
 def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::state_t) {
 	println('var ' . namespace . ';', ref state);
 	println('(function(' . get_namespace_name() . ' , undefined) {', ref state);
-	println(get_namespace_name() . '.' . state->module_name . ' = {};', ref state);
+	println(get_namespace_name() . '.' . state->module_name . '={};', ref state);
 }
 
 def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t,
 		ref state : @generator_js::state_t) {
-	println('})(' . namespace . ' = ' . ' ' . namespace . ' || {}); ', ref state);
+	println('})(' . namespace . '=' . namespace . ' || {}); ', ref state);
 	match (sourcemap) case :yes(var filename) {
 		println('//# sourceMappingURL=' . filename, ref state);
 	} case :no {
@@ -98,7 +98,7 @@ def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::so
 }
 
 def print_consts(ref state : @generator_js::state_t) {
-	println('var ' . state->consts->name . ' = [];', ref state);
+	println('var ' . state->consts->name . '=[];', ref state);
 	var no = 0;
 	fora var el (state->consts->arr) {
 		print(state->consts->name . '[' . no . '] = ' . get_const_value(el) . ';', ref state);
@@ -128,7 +128,7 @@ def get_function_name(function : @nlasm::function_t, module_name : ptd::string()
 	match (function->access) case :pub {
 		return module_name . '.' . function->name;
 	} case :priv {
-		return '__priv_' . function->name;
+		return '_prv_' . function->name;
 	}
 }
 
@@ -143,7 +143,7 @@ def get_function_call_name(function : @nlasm::function_t, module_name : ptd::str
 
 def get_function_call_name_raw(function_name : ptd::string(), module_name : ptd::string()) : ptd::string() {
 	if (module_name eq '') {
-		return '__priv_' . function_name;
+		return '_prv_' . function_name;
 	} else {
 		return get_namespace_name() . '.' . module_name . '.' . function_name;
 	}
@@ -207,22 +207,22 @@ def print_singleton(function : @nlasm::function_t, ref state : @generator_js::st
 	var fun_name = get_function_name(function, state->module_name);
 	var sin_fun = function;
 	if (sin_fun->access is :priv) {
-		sin_fun->name = '__singleton_function_' . function->name;
+		sin_fun->name = '_singleton_fun_' . function->name;
 	} else {
-		sin_fun->name = '__singleton_priv_function_' . function->name;
+		sin_fun->name = '_singleton_prv_fun_' . function->name;
 	}
 	sin_fun->access = :priv;
-	var var_name = '__singleton_value_' . get_function_name(sin_fun, state->module_name);
+	var var_name = '_singleton_val_' . get_function_name(sin_fun, state->module_name);
 
 	print_function(sin_fun, ref state);
 	println('var ' . var_name . ';', ref state);
 	match (function->access) case :pub {
-		println(get_namespace_name() . '.' . fun_name . ' = function() {', ref state);
+		println(get_namespace_name() . '.' . fun_name . '=function() {', ref state);
 	} case :priv {
 		println('function ' . fun_name . '() {', ref state);
 	}
-	println('if (' . var_name . ' === undefined) {', ref state);
-	println(var_name . ' = ' . get_function_call_name(sin_fun, state->module_name) . '();', ref state);
+	println('if (' . var_name . '===undefined) {', ref state);
+	println(var_name . '=' . get_function_call_name(sin_fun, state->module_name) . '();', ref state);
 	println('}', ref state);
 	println('return ' . var_name . ';', ref state);
 	println('}', ref state);
@@ -243,14 +243,14 @@ def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @gener
 			after_call []= 'arr.value = arr.value.set_index(' . i . ', ' . ref_val . ');'; 
 		} case :val {
 		}
-		before_call []= 'var arg' . i . ' = ' . arg_val . ';';
+		before_call []= 'var arg' . i . '=' . arg_val . ';';
 		++i;
 	}
 	var fun_name = state->module_name . '.__dyn_' . function->name;
 	var call = get_function_call_name(function, state->module_name) . '(' . call_args . ')';
 
 	println('', ref state);
-	println(get_namespace_name() . '.' .  fun_name . ' = function(arr) {', ref state);
+	println(get_namespace_name() . '.' .  fun_name . '=function(arr) {', ref state);
 	fora var line (before_call) {
 		println(line, ref state);
 	}
@@ -267,7 +267,7 @@ def print_function(function : @nlasm::function_t, ref state : @generator_js::sta
 	print_sourcemap_line_marker(function->line, ref state);
 	println(get_function_header(function, state->module_name) . ' {', ref state);
 	print_function_registers(function, ref state);
-	println('var label = null;', ref state);
+	println('var label=null;', ref state);
 	print_sourcemap_line_marker(function->line, ref state);
 	println('while (1) { switch (label) {', ref state);
 	println('default:', ref state);
@@ -281,7 +281,7 @@ def print_function(function : @nlasm::function_t, ref state : @generator_js::sta
 def get_function_header(function : @nlasm::function_t, module_name : ptd::string()) : ptd::string() {
 	var function_header;
 	match (function->access) case :pub {
-		function_header = get_namespace_name() . '.' . get_function_name(function, module_name) . ' = function(';
+		function_header = get_namespace_name() . '.' . get_function_name(function, module_name) . '=function(';
 	} case :priv {
 		function_header = 'function ' . get_function_name(function, module_name) . '(';
 	}
@@ -304,9 +304,9 @@ def print_function_registers(function : @nlasm::function_t, ref state : @generat
 			function->args_type[i]->name, ref state);
 
 		match (function->args_type[i]->by) case :val {
-			println(reg_decl. reg_name . ' = ___arg__' . i . ';', ref state);
+			println(reg_decl. reg_name . '=___arg__' . i . ';', ref state);
 		} case :ref {
-			println(reg_decl. reg_name . ' = ___arg__' . i . '.value;', ref state);
+			println(reg_decl. reg_name . '=___arg__' . i . '.value;', ref state);
 		}
 		println(get_namespace_name() . '.check_null(' . get_register_value(function->registers[i]) . ');', ref state);
 	}
@@ -322,7 +322,7 @@ def print_function_registers(function : @nlasm::function_t, ref state : @generat
 				function->variables[j]->name, ref state);
 			j++;
 		}
-		println(reg_decl . reg_name. ' = null;', ref state);
+		println(reg_decl . reg_name. '=null;', ref state);
 	}
 }
 
@@ -394,15 +394,15 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = get_register_to_assign(use_field->new_owner) .
 			get_register_value(use_field->old_owner) . '.' . use_field->field_name . ';';
 	} case :release_field(var release_field) {
-		result = get_register_to_assign(release_field->current_owner) . ' null;';
+		result = get_register_to_assign(release_field->current_owner) . 'null;';
 	} case :use_index(var use_index) {
 		result = get_use_index(use_index);
 	} case :release_index(var release_index) {
-		result = get_register_to_assign(release_index->current_owner) . ' null;';
+		result = get_register_to_assign(release_index->current_owner) . 'null;';
 	} case :use_hash_index(var use_hash_index) {
 		result = get_use_hash_index(use_hash_index);
 	} case :release_hash_index(var release_hash_index) {
-		result = get_register_to_assign(release_hash_index->current_owner) . ' null;';
+		result = get_register_to_assign(release_hash_index->current_owner) . 'null;';
 	} case :use_variant(var use_variant) {
 		print_sourcemap_line_marker(command->debug->nast_debug->begin->line, ref state);
 		println('if (' . get_register_value(use_variant->old_owner) . '.ov_label != ' . use_variant->label_no . ')' .
@@ -410,7 +410,7 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result .= get_register_to_assign(use_variant->new_owner) .
 			get_register_value(use_variant->old_owner) . '.ov_value;';
 	} case :release_variant(var release_variant) {
-		result = get_register_to_assign(release_variant->current_owner) . ' null;';
+		result = get_register_to_assign(release_variant->current_owner) . 'null;';
 	} case :hash_init_iter(var init_iter) {
 		result = get_hash_init_iter(init_iter, ref call_counter);
 	} case :hash_next_iter(var next_iter) {
@@ -524,7 +524,7 @@ def get_use_hash_index(use_hash_index : @nlasm::use_hash_index_t) : ptd::string(
 		result .= get_register_to_assign(use_hash_index->new_owner) .
 			get_register_value(use_hash_index->old_owner) . '[' . index_str . ']';
 		if (use_hash_index->create_if_not_exist) {
-			result .=  ' = {"value": {}}';
+			result .=  '={"value": {}}';
 		}
 		result .= ';';
 		return result;
@@ -674,10 +674,10 @@ def get_ov_is(dest : @nlasm::reg_t, src : @nlasm::reg_t, label : ptd::string(), 
 def process_ref_reg(ref pre : ptd::string(), ref result : ptd::string(), ref after : ptd::string(), reg : @nlasm::reg_t,
 		i : ptd::int(), call_counter : ptd::int()) {
 	var reg_name = 'call_' . call_counter . '_' . i;
-	pre .= 'var ' . reg_name . ' = new ' . imm_call('ref') . '(' . get_register_value(reg) . ');';
+	pre .= 'var ' . reg_name . '=new ' . imm_call('ref') . '(' . get_register_value(reg) . ');';
 	result .= reg_name;
 	after .= get_register_value_to_assign(reg) . reg_name . '.value;'; 
-	after .= reg_name . ' = null;';
+	after .= reg_name . '=null;';
 }
 
 def get_internal_call(module_name : ptd::string(), fun_name : ptd::string(),
@@ -727,7 +727,7 @@ def get_const_ov(variant) : ptd::string() {
 		return imm_call('ov_js_str') . '(' . escape_string(ov::get_element(variant)) . ', ' . 
 			get_const_value(ov::get_value(variant)) . ')';
 	} else {
-		return imm_call('ov_js_str') . '(' . escape_string(ov::get_element(variant)) . ', null)';
+		return imm_call('ov_js_str') . '(' . escape_string(ov::get_element(variant)) . ',null)';
 	}
 }
 
@@ -795,7 +795,7 @@ def get_empty_hash(fields : ptd::arr(ptd::string()), hash_reg_type : @nlasm::reg
 }
 
 def get_register(register : @nlasm::reg_t) : ptd::string() {
-	return '___nl__' . reg_suffix(register);
+	return reg_suffix(register);
 }
 
 def get_register_value(register : @nlasm::reg_t) : ptd::string() {
@@ -839,19 +839,19 @@ def reg_suffix(reg : @nlasm::reg_t) : ptd::string() {
 	} case :reference {
 		ret .= '_ptr';
 	}
-	ret .= '__' . reg->reg_no;
+	ret .= ptd::int_to_string(reg->reg_no);
 	return ret;
 }
 
 
 def get_register_to_assign(register : @nlasm::reg_t) : ptd::string() {
 	return '' if nlasm::is_empty(register);
-	return get_register(register) . ' = ';
+	return get_register(register) . '=';
 }
 
 def get_register_value_to_assign(register : @nlasm::reg_t) : ptd::string() {
 	return '' if nlasm::is_empty(register);
-	return get_register_value(register) . ' = ';
+	return get_register_value(register) . '=';
 }
 
 def get_return(return_i : @nlasm::return, fun_args : @nlasm::args_type) : ptd::string() {
