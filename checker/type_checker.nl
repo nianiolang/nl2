@@ -991,6 +991,12 @@ def get_special_functions() : @tc_types::special_functions {
 			r => tct::tct_im(),
 			a => [{mod => :none, type => tct::tct_im(), name => ''}, {mod => :none, type => tct::tct_im(), name => ''}]
 		});
+	hash::set_value(ref f, 'ptd::int_to_string', {
+			r => tct::string(),
+			a => [
+				{mod => :none, type => tct::int(), name => ''},
+			]
+		});
 	hash::set_value(ref f, 'array::push', {
 			r => tct::void(),
 			a => [
