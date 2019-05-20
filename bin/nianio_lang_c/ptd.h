@@ -71,7 +71,7 @@ ImmT  ptd0reconstruct_nl_with_args(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  _
 ImmT  ptd0reconstruct_nl_with_args0ptr(int _num, ImmT *_tab);
 ImmT  ptd0ptd_reconstruct_nl_with_args(ImmT  ___nl__im__0,ImmT  ___nl__im__1,ImmT  ___nl__im__2,ImmT  ___nl__im__3,ImmT  ___nl__im__4);
 ImmT  ptd0ptd_reconstruct_nl_with_args0ptr(int _num, ImmT *_tab);
-ImmT  ptd0int_to_string(ImmT  ___nl__im__0);
+ImmT  ptd0int_to_string(INT  ___nl__int__0);
 ImmT  ptd0int_to_string0ptr(int _num, ImmT *_tab);
 INT  ptd0string_to_int(ImmT  ___nl__im__0);
 ImmT  ptd0string_to_int0ptr(int _num, ImmT *_tab);

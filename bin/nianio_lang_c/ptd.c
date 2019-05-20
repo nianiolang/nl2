@@ -7878,23 +7878,18 @@ return NULL;
 
 ImmT  ptd0int_to_string0ptr(int _num, ImmT *_tab){
 c_rt_lib0func_num_args(_num, 1, "ptd0int_to_string");
-ImmT  *var0 = &(_tab[0]);
-ImmT  res = ptd0int_to_string(*var0);
+INT  var0 = getIntFromImm((_tab[0]));
+ImmT  res = ptd0int_to_string(var0);
+c_rt_lib0move(&_tab[0], c_rt_lib0int_new(var0));
 return res;
 }
-ImmT  ptd0int_to_string(ImmT  ___nl__im__0) {
-c_rt_lib0arg_val(___nl__im__0);
+ImmT  ptd0int_to_string(INT  ___nl__int__0) {
 ptd_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
-INT  ___nl__int__2 = 0;
 #line 410
-___nl__int__2 = getIntFromImm(___nl__im__0);
+c_rt_lib0move(&___nl__im__1, c_std_lib0int_to_string(___nl__int__0));
 #line 410
-c_rt_lib0move(&___nl__im__1, c_std_lib0int_to_string(___nl__int__2));
-#line 410
-//clear ___nl__int__2;
-#line 410
-c_rt_lib0clear(&___nl__im__0);
+//clear ___nl__int__0;
 #line 410
 return ___nl__im__1;
 return NULL;

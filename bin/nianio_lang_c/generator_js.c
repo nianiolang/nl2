@@ -11450,7 +11450,6 @@ ImmT  ___nl__im__16 = NULL;
 ImmT  ___nl__im__17 = NULL;
 INT  ___nl__int__18 = 0;
 ImmT  ___nl__im__19 = NULL;
-ImmT  ___nl__im__20 = NULL;
 #line 821
 c_rt_lib0move(&___nl__im__2, c_rt_lib0hash_get_value_dec(___nl__im__0, ___get_global_string_const(215)));
 #line 821
@@ -11608,13 +11607,9 @@ ___nl__int__18 = getIntFromImm(___nl__im__19);
 #line 842
 c_rt_lib0clear(&___nl__im__19);
 #line 842
-c_rt_lib0move(&___nl__im__20, c_rt_lib0int_new(___nl__int__18));
-#line 842
-c_rt_lib0move(&___nl__im__17, ptd0int_to_string(___nl__im__20));
+c_rt_lib0move(&___nl__im__17, ptd0int_to_string(___nl__int__18));
 #line 842
 //clear ___nl__int__18;
-#line 842
-c_rt_lib0clear(&___nl__im__20);
 #line 842
 c_rt_lib0move(&___nl__im__1, c_rt_lib0concat_add(___nl__im__1, ___nl__im__17));
 #line 842
