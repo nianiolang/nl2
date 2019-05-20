@@ -17,6 +17,7 @@ rm -f $instadb_dir/nl/*
 cp cache_nl/* $instadb_dir/nl/
 cp native_lib_c/* $instadb_dir/nl/
 cp mk_cache.c $instadb_dir/nl/
+cp patchlist $instadb_dir/nl/
 
 cp native_lib_c/c_rt_lib.* $instadb_dir/c_compiler_lib/
 cp native_lib_c/c_std_lib.* $instadb_dir/c_compiler_lib/
