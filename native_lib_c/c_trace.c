@@ -125,8 +125,12 @@ void gdb_save_stacktrace(const char *text_in, const char *text_out){
 			}
 			if(startsWith("___nl__int__", name)) {
 				fprintf(fout, "	p%d %s=%lld", param, name, (INT)ptr);
+			} else if(startsWith("___ref___int__", name)) {
+				fprintf(fout, "	ref p%d %s=%lld", param, name, *((INT*)ptr));
 			} else if(startsWith("___nl__bool__", name)) {
-				fprintf(fout, "	p%d %s=%p", param, name, ptr);
+				fprintf(fout, "	p%d %s=%d", param, name, (bool)ptr);
+			} else if(startsWith("___ref___bool__", name)) {
+				fprintf(fout, "	ref p%d %s=%d", param, name, *((bool*)ptr));
 			} else if(startsWith("___nl__", name) && ptr != NULL){
 				ImmT saved = dfile_dbg0ssave(ptr);
 				NlString* p = toStringIfSim(saved);
