@@ -153,7 +153,7 @@ def process_return(ref ret : @reference_generator::refs, module : @reference_gen
 }
 
 def process_block(ref ret : @reference_generator::refs, module : @reference_generator::module, block : @nast::block_t) {
-	fora var cmd (block) {
+	fora var cmd (block->cmds) {
 		process_cmd(ref ret, module, cmd);
 	}
 }

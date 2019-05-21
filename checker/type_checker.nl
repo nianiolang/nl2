@@ -484,16 +484,16 @@ def check_cmd(ref cmd : @nast::cmd_t, ref modules : @tc_types::modules_t, ref b_
 		}
 		set_end_function(ref vars);
 	} case :block(var block) {
-		rep var i (array::len(block)) {
-			forh var var_name, var var_ (check_cmd(ref block[i], ref modules, ref vars, ref errors, known_types)) {
+		rep var i (array::len(block->cmds)) {
+			forh var var_name, var var_ (check_cmd(ref block->cmds[i], ref modules, ref vars, ref errors, known_types)) {
 				add_var_to_vars(var_, var_name, ref vars);
 			}
 		}
-		rep var i (array::len(block)) {
-			if (block[i]->cmd is :var_decl) {
-				var var_decl = block[i]->cmd as :var_decl;
+		rep var i (array::len(block->cmds)) {
+			if (block->cmds[i]->cmd is :var_decl) {
+				var var_decl = block->cmds[i]->cmd as :var_decl;
 				var_decl->tct_type = vars{var_decl->name}->type;
-				block[i]->cmd = :var_decl(var_decl);
+				block->cmds[i]->cmd = :var_decl(var_decl);
 			}
 		}
 		cmd->cmd = :block(block);
@@ -2228,8 +2228,8 @@ def fill_value_types_in_cmd(ref cmd : @nast::cmd_t, b_vars : @tc_types::vars_t, 
 		fill_value_types(ref as_return, vars, modules, ref errors, known_types, ref anon_own_conv, curr_module_name);
 		cmd->cmd = :return(as_return);
 	} case :block(var block) {
-		rep var i (array::len(block)) {
-			forh var var_name, var var_ (fill_value_types_in_cmd(ref block[i], vars, modules, ref errors, known_types, ref anon_own_conv, curr_module_name)) {
+		rep var i (array::len(block->cmds)) {
+			forh var var_name, var var_ (fill_value_types_in_cmd(ref block->cmds[i], vars, modules, ref errors, known_types, ref anon_own_conv, curr_module_name)) {
 				add_var_to_vars(var_, var_name, ref vars);
 			}
 		}

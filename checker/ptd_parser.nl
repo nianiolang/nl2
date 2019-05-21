@@ -11,7 +11,7 @@ use nast;
 use ptd;
 
 def ptd_parser::fun_def_to_ptd(ast : @nast::cmd_t) : ptd::var({ok => @tct::meta_type, err => ptd::string()}) {
-	var cmd = ast->cmd as :block;
+	var cmd = ast->cmd as :block->cmds;
 	return :err('type function should have only a return command') unless array::len(cmd) == 1 && cmd[0]->cmd is :return;
 	return ptd_parser::try_value_to_ptd(cmd[0]->cmd as :return);
 }

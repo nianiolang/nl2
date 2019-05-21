@@ -61,7 +61,7 @@ def translator::lvalue_values_t() {
 def translator::last_debug_char(debug : @nast::debug_t) : @nast::debug_t {
 	var begin : @nast::place_t = {line => debug->end->line, position => debug->end->position - 1};
 	var end : @nast::place_t = {line => debug->end->line, position => debug->end->position};
-	return {begin => begin, end => end};
+	return {begin => begin, end => end, comment => debug->comment};
 }
 
 def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct::meta_type)) : @nlasm::result_t {
@@ -124,7 +124,7 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	state->result->line = function->line;
 	print_cmd(function->cmd, ref state);
 	var default_return = {
-		debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end},
+		debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end, comment => []},
 		value => :nop,
 		type => :tct_empty
 	};
@@ -579,7 +579,7 @@ def print_cmd(cmd : @nast::cmd_t, ref state : @translator::state_t) {
 		var val_type = var_type_to_reg_type(value->type, state->logic->defined_types);
 		print_val(value, {type => val_type, reg_no => -1, access_type => :value}, ref state);
 	} case :block(var block) {
-		print_cmd_array(block, ref state);
+		print_cmd_array(block->cmds, ref state);
 	} case :return(var as_return) {
 		print_return(as_return, ref state);
 	} case :match(var as_match) {

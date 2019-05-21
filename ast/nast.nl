@@ -93,6 +93,7 @@ def nast::fun_def_t() {
 			access => ptd::var({priv => ptd::none(), pub => ptd::none()}),
 			args => ptd::arr(@nast::fun_def_arg_t),
 			defines_type => ptd::var({no => ptd::none(), yes => @tct::meta_type}),
+			comment => ptd::arr(ptd::string()),
 		});
 }
 
@@ -110,7 +111,8 @@ def nast::module_t() {
 			name => ptd::string(),
 			stamp => ptd::string(),
 			import => ptd::arr(ptd::rec({name => ptd::string(), line => ptd::int()})),
-			fun_def => ptd::arr(@nast::fun_def_t)
+			fun_def => ptd::arr(@nast::fun_def_t),
+			ending_comment => ptd::arr(ptd::string()),
 		});
 }
 
@@ -274,11 +276,11 @@ def nast::place_t() {
 }
 
 def nast::debug_t() {
-	return ptd::rec({begin => @nast::place_t, end => @nast::place_t});
+	return ptd::rec({begin => @nast::place_t, end => @nast::place_t, comment => ptd::arr(ptd::string())});
 }
 
 def nast::empty_debug() : @nast::debug_t {
-	return {begin => {line => 1, position => -1}, end => {line => 1, position => -1}};
+	return {begin => {line => 1, position => -1}, end => {line => 1, position => -1}, comment => []};
 }
 
 def nast::cast_to_value(value : @nast::value_only_t) : @nast::value_t {
@@ -320,7 +322,10 @@ def nast::die_t() {
 }
 
 def nast::block_t() {
-	return ptd::arr(@nast::cmd_t);
+	return ptd::rec({
+		cmds => ptd::arr(@nast::cmd_t),
+		ending_comment => ptd::arr(ptd::string()),
+	});
 }
 
 def nast::if_mod_t() {

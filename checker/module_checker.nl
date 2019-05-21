@@ -506,7 +506,7 @@ def check_cmd(cmd : @nast::cmd_t, ref state : @module_checker::state_t) {
 		state->return->was = true;
 	} case :block(var block) {
 		var prev = save_block(ref state);
-		fora var cmd_s (block) {
+		fora var cmd_s (block->cmds) {
 			check_cmd(cmd_s, ref state);
 		}
 		load_block(ref state, prev);

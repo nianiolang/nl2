@@ -52,7 +52,8 @@ def nparser::sparse(s : ptd::string(), module_name : ptd::string(), parse_types 
 			ln_pos => 1,
 			place => {line => 1, position => 0},
 			place_ws => {line => 1, position => 0},
-			last_comment => '',
+			last_comment => [],
+			next_comment => [],
 		},
 		module_name => module_name,
 		parse_types => parse_types
@@ -80,8 +81,8 @@ def try_eat(ref state : @nparser::state_t, token : ptd::string()) : ptd::bool() 
 }
 
 def parse_module(ref state : @nparser::state_t, name : ptd::string()) : @nast::module_t {
-	var mod : @nast::module_t = {name => name, import => [], fun_def => [], stamp => ''};
-	mod->stamp = ntokenizer::get_last_comment(ref state->state);
+	var mod : @nast::module_t = {name => name, import => [], fun_def => [], stamp => '', ending_comment => []};
+	mod->stamp = array::join(string::lf(), ntokenizer::pop_last_comment(ref state->state));
 	while (try_eat(ref state, 'use')) {
 		var line : ptd::int() = ntokenizer::get_line(ref state->state);
 		if (ntokenizer::is_type(ref state->state, :word)) {
@@ -103,6 +104,7 @@ def parse_module(ref state : @nparser::state_t, name : ptd::string()) : @nast::m
 		}
 	}
 	add_error(ref state, 'expected function definition') unless ntokenizer::is_type(ref state->state, :end);
+	mod->ending_comment = ntokenizer::get_next_comment(ref state->state);
 	return mod;
 }
 
@@ -143,6 +145,7 @@ def parse_fun_def(ref state : @nparser::state_t, module_name : ptd::string()) : 
 			cmd => {debug => get_debug_from_begin(ref state), cmd => :nop},
 			access => :priv,
 			defines_type => :no,
+			comment => [],
 		};
 	eat(ref state, 'def');
 	try ret->name = eat_text(ref state);
@@ -159,6 +162,7 @@ def parse_fun_def(ref state : @nparser::state_t, module_name : ptd::string()) : 
 		try var tmp = parse_type(ref state);
 		ret->ret_type->type = :type(tmp);
 	}
+	ret->comment = ntokenizer::pop_last_comment(ref state->state);
 	try ret->cmd = parse_block(ref state);
 	match (ptd_parser::fun_def_to_ptd(ret->cmd)) case :err(var err) {
 		#here we either have an error (will be checked again in the type checker, so no worries)
@@ -246,7 +250,7 @@ def parse_hash_key(ref state : @nparser::state_t) : @nast::value_t {
 		ret = :hash_key(ntokenizer::eat_type(ref state->state, :string));
 	}
 	return {
-		debug => {begin => begin_place, end => ntokenizer::get_place(ref state->state)},
+		debug => {begin => begin_place, end => ntokenizer::get_place(ref state->state), comment => []},
 		value => ret,
 		type => :tct_im,
 	};
@@ -293,11 +297,12 @@ def parse_type(ref state : @nparser::state_t) : @nparser::try_value_t {
 			debug => {
 				begin => begin,
 				end => ntokenizer::get_place(ref state->state),
+				comment => [],
 			},
 			value => :unary_op({
 				op => '@',
 				val => {
-					debug => {begin => fun_label_begin, end => fun_label_end},
+					debug => {begin => fun_label_begin, end => fun_label_end, comment => []},
 					value => fun_label,
 					type => :tct_im,
 				},
@@ -309,7 +314,7 @@ def parse_type(ref state : @nparser::state_t) : @nparser::try_value_t {
 		try var ret = parse_label(ref state);
 		 if (ret is :fun_val) {
 			return :ok({
-				debug => {begin => begin, end => ntokenizer::get_place(ref state->state)},
+				debug => {begin => begin, end => ntokenizer::get_place(ref state->state), comment => []},
 				value => ret,
 				type => :tct_im,
 			});
@@ -317,7 +322,7 @@ def parse_type(ref state : @nparser::state_t) : @nparser::try_value_t {
 	}
 	add_error(ref state, 'wrong format of type, expected ''@'' or function call');
 	return :ok({
-		debug => {begin => begin, end => ntokenizer::get_place(ref state->state)},
+		debug => {begin => begin, end => ntokenizer::get_place(ref state->state), comment => []},
 		value => :nop,
 		type => :tct_im,
 	});
@@ -380,7 +385,7 @@ def parse_expr_rec_left(ref state : @nparser::state_t, left : @nast::value_t, pr
 			return :ok(left);
 		}
 		left = {
-			debug => {begin => new_begin, end => ntokenizer::get_place(ref state->state)},
+			debug => {begin => new_begin, end => ntokenizer::get_place(ref state->state), comment => []},
 			value => new_left,
 			type => :tct_im,
 		};
@@ -439,6 +444,7 @@ def parse_expr_rec(ref state : @nparser::state_t, prec : ptd::int()) : @nparser:
 				debug => {
 					begin => fun_label_begin,
 					end => fun_label_end,
+					comment => [],
 				},
 				value => fun_label,
 				type => :tct_im,
@@ -464,7 +470,7 @@ def parse_expr_rec(ref state : @nparser::state_t, prec : ptd::int()) : @nparser:
 		return :err(err);
 	}
 	var left = {
-		debug => {begin => begin, end => ntokenizer::get_place(ref state->state)}, 
+		debug => {begin => begin, end => ntokenizer::get_place(ref state->state), comment => []}, 
 		value => expr,
 		type => :tct_im,
 	};
@@ -476,6 +482,7 @@ def get_value_nop(ref state : @nparser::state_t) : @nast::value_t {
 		debug => {
 			begin => ntokenizer::get_place(ref state->state),
 			end => ntokenizer::get_place(ref state->state),
+			comment => [],
 		},
 		value => :nop,
 		type => :tct_im,
@@ -598,15 +605,16 @@ def parse_cond(ref state : @nparser::state_t) : ptd::var({ok => @nast::value_t, 
 def parse_block(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 	var begin_place : @nast::place_t = ntokenizer::get_place(ref state->state);
 	eat(ref state, '{');
-	var ret : ptd::arr(@nast::cmd_t) = [];
+	var cmds : ptd::arr(@nast::cmd_t) = [];
 	while (!try_eat(ref state, '}')) {
 		continue if try_eat(ref state, ';');
 		try var tmp = parse_cmd(ref state);
-		array::push(ref ret, tmp);
+		array::push(ref cmds, tmp);
 	}
 	var end_place : @nast::place_t = ntokenizer::get_place_ws(ref state->state);
-	var debug : @nast::debug_t = {begin => begin_place, end => end_place};
-	return :ok({debug => debug, cmd => :block(ret)});
+	var debug : @nast::debug_t = {begin => begin_place, end => end_place, comment => []};
+	var ending_comment = ntokenizer::pop_last_comment(ref state->state);
+	return :ok({debug => debug, cmd => :block({cmds => cmds, ending_comment => ending_comment})});
 }
 
 def parse_try_ensure(ref state : @nparser::state_t) : ptd::var({ok => @nast::try_ensure_t, err => ptd::string()}) {
@@ -624,15 +632,21 @@ def parse_try_ensure(ref state : @nparser::state_t) : ptd::var({ok => @nast::try
 }
 
 def get_debug_from_begin(ref state : @nparser::state_t) : @nast::debug_t {
-	return {begin => ntokenizer::get_place(ref state->state), end => ntokenizer::get_place(ref state->state)};
+	return {
+		begin => ntokenizer::get_place(ref state->state),
+		end => ntokenizer::get_place(ref state->state),
+		comment => ntokenizer::pop_last_comment(ref state->state),
+	};
 }
 
 def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 	var begin_place : @nast::place_t = ntokenizer::get_place(ref state->state);
 	var ret;
+	var comment;
 	if (try_eat(ref state, 'if')) {
 		var tmp = {};
 		try tmp->cond = parse_cond(ref state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->if = parse_block(ref state);
 		var elseif = [];
 		tmp->elsif = [];
@@ -641,7 +655,11 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 			var begin_place2 : @nast::place_t = ntokenizer::get_place(ref state->state);
 			try tmp2->cond = parse_cond(ref state);
 			var end_place2 : @nast::place_t = ntokenizer::get_place_ws(ref state->state);
-			tmp2->debug = {begin => begin_place2, end => end_place2};
+			tmp2->debug = {
+				begin => begin_place2,
+				end => end_place2,
+				comment => ntokenizer::pop_last_comment(ref state->state),
+			};
 			try tmp2->cmd = parse_block(ref state);
 			array::push(ref elseif, tmp2);
 		}
@@ -657,6 +675,7 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 		tmp->short = false;
 		tmp->iter = parse_var_decl_sim(ref state);
 		try tmp->array = parse_cond(ref state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->cmd = parse_block(ref state);
 		ret = :fora(tmp);
 	} elsif (try_eat(ref state, 'rep')) {
@@ -664,9 +683,11 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 		tmp->short = false;
 		tmp->iter = parse_var_decl_sim(ref state);
 		try tmp->count = parse_cond(ref state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->cmd = parse_block(ref state);
 		ret = :rep(tmp);
 	} elsif (try_eat(ref state, 'loop')) {
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try var tmp = parse_block(ref state);
 		ret = :loop(tmp);
 	} elsif (try_eat(ref state, 'forh')) {
@@ -682,12 +703,14 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 			tmp->val_mod = :ref;
 		}
 		try tmp->hash = parse_cond(ref state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->cmd = parse_block(ref state);
 		ret = :forh(tmp);
 	} elsif (try_eat(ref state, 'while')) {
 		var tmp = {};
 		tmp->short = false;
 		try tmp->cond = parse_cond(ref state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->cmd = parse_block(ref state);
 		ret = :while(tmp);
 	} elsif (try_eat(ref state, 'for')) {
@@ -709,14 +732,18 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 		tmp->iter = get_value_nop(ref state);
 		try tmp->iter = parse_expr(ref state) if (!ntokenizer::next_is(ref state->state, ')'));
 		eat(ref state, ')');
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try tmp->cmd = parse_block(ref state);
 		ret = :for(tmp);
 	} elsif (ntokenizer::next_is(ref state->state, '{')) {
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		try var tmp = parse_block(ref state);
 		ret = tmp->cmd;
 	} elsif (try_eat(ref state, 'break')) {
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		ret = :break;
 	} elsif (try_eat(ref state, 'continue')) {
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		ret = :continue;
 	} elsif (try_eat(ref state, 'return')) {
 		var tok = ntokenizer::get_token(ref state->state);
@@ -733,15 +760,17 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 			try var tmp = parse_expr(ref state);
 			ret = :return(tmp);
 		}
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	} elsif (try_eat(ref state, 'match')) {
 		eat(ref state, '(');
 		try var tmp = parse_expr(ref state);
 		var ret2 = {val => tmp, branch_list => []};
 		eat(ref state, ')');
 		var begin_case = ntokenizer::get_place(ref state->state);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 		while (try_eat(ref state, 'case')) {
 			var elem = {variant => parse_variant_decl(ref state)};
-			elem->debug = {begin => begin_case, end => ntokenizer::get_place_ws(ref state->state)};
+			elem->debug = {begin => begin_case, end => ntokenizer::get_place_ws(ref state->state), comment => []};
 			try elem->cmd = parse_block(ref state);
 			array::push(ref ret2->branch_list, elem);
 			begin_case = ntokenizer::get_place(ref state->state);
@@ -753,25 +782,34 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 			try args = parse_expr_list(ref state);
 		}
 		ret = :die(args);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	} elsif (ntokenizer::next_is(ref state->state, 'var')) {
 		try var tmp = parse_var_decl(ref state);
 		ret = :var_decl(tmp);
 		eat(ref state, ';');
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	} elsif (ntokenizer::next_is(ref state->state, 'try')) {
 		eat(ref state, 'try');
 		try var tmp = parse_try_ensure(ref state);
 		ret = :try(tmp);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	} elsif (ntokenizer::next_is(ref state->state, 'ensure')) {
 		eat(ref state, 'ensure');
 		try var tmp = parse_try_ensure(ref state);
 		ret = :ensure(tmp);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	} else {
 		try var expr = parse_expr(ref state);
 		ret = :value(expr);
+		comment = ntokenizer::pop_last_comment(ref state->state);
 	}
 	if (ret is :break || ret is :continue || ret is :value || ret is :return || ret is :die || ret is :ensure || ret is 
 		:try) {
-		var cmd_debug : @nast::debug_t = {begin => begin_place, end => ntokenizer::get_place_ws(ref state->state)};
+		var cmd_debug : @nast::debug_t = {
+			begin => begin_place,
+			end => ntokenizer::get_place_ws(ref state->state),
+			comment => [],
+			};
 		var el = {cmd => {debug => cmd_debug, cmd => ret}};
 		if (try_eat(ref state, 'fora')) {
 			el->short = true;
@@ -816,7 +854,7 @@ def parse_cmd(ref state : @nparser::state_t) : @nparser::try_cmd_t {
 		eat(ref state, ';');
 	}
 	var end_place : @nast::place_t = ntokenizer::get_place_ws(ref state->state);
-	var debug : @nast::debug_t = {begin => begin_place, end => end_place};
+	var debug : @nast::debug_t = {begin => begin_place, end => end_place, comment => comment};
 	return :ok({cmd => ret, debug => debug});
 }
 

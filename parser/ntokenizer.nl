@@ -76,7 +76,8 @@ def ntokenizer::state_t() {
 			ln_pos => ptd::int(),
 			place => ptd::rec({line => ptd::int(), position => ptd::int()}),
 			place_ws => ptd::rec({line => ptd::int(), position => ptd::int()}),
-			last_comment => ptd::string(),
+			last_comment => ptd::arr(ptd::string()),
+			next_comment => ptd::arr(ptd::string()),
 		});
 }
 
@@ -96,10 +97,18 @@ def ntokenizer::token_t() {
 
 def ntokenizer::init(ref state : @ntokenizer::state_t) : ptd::void() {
 	get_next_token(ref state);
+	state->last_comment = state->next_comment;
+	state->next_comment = [];
 }
 
-def ntokenizer::get_last_comment(ref state : @ntokenizer::state_t) : ptd::string() {
-	return state->last_comment;
+def ntokenizer::pop_last_comment(ref state : @ntokenizer::state_t) : ptd::arr(ptd::string()) {
+	var last_comment = state->last_comment;
+	state->last_comment = [];
+	return last_comment;
+}
+
+def ntokenizer::get_next_comment(ref state : @ntokenizer::state_t) : ptd::arr(ptd::string()) {
+	return state->next_comment;
 }
 
 def get_char(ref state : @ntokenizer::state_t) : ptd::string() {
@@ -112,35 +121,30 @@ def get_next_char(ref state : @ntokenizer::state_t) : ptd::string() {
 }
 
 def eat_ws(ref state : @ntokenizer::state_t) {
-	state->last_comment = '';
-	var is_comment_block = true;
+	array::append(ref state->last_comment, state->next_comment);
+	state->next_comment = [];
 	loop {
 		return if (state->pos == state->len);
-		var cchar = get_char(ref state);
-		var char = string::ord(cchar);
-		if (char == 9 || char == 13 || char == 32) {
+		var char = get_char(ref state);
+		if (char eq string::tab() || char eq string::r() || char eq ' ') {
 			state->pos++;
-			is_comment_block = false;
-		} elsif (char == 10) {
+		} elsif (char eq string::lf()) {
 			state->pos++;
 			state->ln_pos = state->pos;
 			state->ln_nr++;
-			is_comment_block = false;
-		} elsif (char == 35) {
-			if (is_comment_block) {
-				state->last_comment .= cchar;
-			}
+		} elsif (char eq '#') {
+			var comment_line = '';
+			comment_line .= char;
 			++state->pos;
 			loop {
 				return if (state->pos == state->len);
 				var c = get_char(ref state);
 				state->pos++;
-				if (is_comment_block) {
-					state->last_comment .= c;
-				}
-				break if string::ord(c) == 10;
+				break if c eq string::lf();
+				comment_line .= c;
 			}
 			state->ln_nr++;
+			state->next_comment []= comment_line;
 		} else {
 			return;
 		}

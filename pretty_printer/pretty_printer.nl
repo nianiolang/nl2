@@ -31,7 +31,7 @@ def pretty_printer::print_module_to_struct(mod : @nast::module_t) : @pretty_prin
 		print_fun_def_head(ref state, function, mod->name);
 		var head = state->out;
 		state->out = '';
-		fora var c (function->cmd->cmd as :block) {
+		fora var c (function->cmd->cmd as :block->cmds) {
 			state_print(ref state, string::lf() . pind(1));
 			print_cmd(ref state, c, 1);
 		}
@@ -62,10 +62,12 @@ def pretty_printer::print_module_to_str(mod : @nast::module_t) : ptd::string() {
 		print_fun_def(ref state, function, mod->name);
 		state_print(ref state, string::lf() . string::lf());
 	}
+	print_comment(ref state, mod->ending_comment, 0, 0);
 	return state->out;
 }
 
 def print_fun_def(ref state : @wprinter::state_t, function : @nast::fun_def_t, module : ptd::string()) : ptd::void() {
+	print_comment(ref state, function->comment, 0, 0);
 	print_fun_def_head(ref state, function, module);
 	print_st(ref state, function->cmd, 0);
 }
@@ -533,6 +535,7 @@ def flush_sim_statement(ref state : @wprinter::state_t, st : @wprinter::pretty_t
 }
 
 def print_cmd(ref state : @wprinter::state_t, cmd : @nast::cmd_t, ind : ptd::int()) : ptd::void() {
+	print_comment(ref state, cmd->debug->comment, ind, ind);
 	match (cmd->cmd) case :if(var as_if) {
 		print_loop(ref state, 'if', as_if->if, [], as_if->cond, ind);
 		fora var elseif (as_if->elsif) {
@@ -566,11 +569,16 @@ def print_cmd(ref state : @wprinter::state_t, cmd : @nast::cmd_t, ind : ptd::int
 		print_cmd(ref state, as_for->cmd, ind);
 	} case :block(var block) {
 		state_print(ref state, '{');
-		fora var c (block) {
+		fora var c (block->cmds) {
 			state_print(ref state, string::lf() . pind(ind + 1));
 			print_cmd(ref state, c, ind + 1);
 		}
-		state_print(ref state, string::lf() . pind(ind) . '}');
+		state_print(ref state, string::lf() . pind(ind));
+		if (!array::is_empty(block->ending_comment)) {
+			state_print(ref state, pind(1));
+			print_comment(ref state, block->ending_comment, ind + 1, ind);
+		}
+		state_print(ref state, '}');
 	} case :nop {
 		state_print(ref state, ';');
 	} case :match(var as_match) {
@@ -614,6 +622,20 @@ def print_cmd(ref state : @wprinter::state_t, cmd : @nast::cmd_t, ind : ptd::int
 		flush_sim_statement(ref state, print_die(as_die), ind);
 	} case :var_decl(var var_decl) {
 		flush_sim_statement(ref state, print_var_decl(var_decl), ind);
+	}
+}
+
+def print_comment(ref state : @wprinter::state_t, comments : ptd::arr(ptd::string()),
+		ind_comment : ptd::int(), ind_after : ptd::int()) {
+	if (!array::is_empty(comments)) {
+		rep var i (array::len(comments)) {
+			state_print(ref state, comments[i]);
+			state_print(ref state, string::lf());
+			if (i + 1 < array::len(comments)) {
+				state_print(ref state, pind(ind_comment));
+			}
+		}
+		state_print(ref state, pind(ind_after));
 	}
 }
 
