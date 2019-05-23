@@ -15,6 +15,7 @@ use nl;
 use tct;
 use generator_c_struct_dependence_sort;
 use anon_naming;
+use own_to_im_converter;
 
 def get_bin_ops() : ptd::hash(ptd::string()) {
 	return singleton::sigleton_do_not_use_without_approval(gen_bin_ops());
@@ -587,7 +588,7 @@ def print_function_block(ref state : @generator_c::state_t, func : @nlasm::funct
 	println(ref state, get_fun_name('', '__const__init', state->mod_name) . '();');
 	
 	for(var i = array::len(func->args_type); i < array::len(func->registers); i++) {
-		print_declaration(ref state, func->registers[i]);
+		print_declaration(ref state, func->registers[i], defined_types);
 	}
 	fora var cmd (func->commands) {
 		match (cmd->annotation) case :none {
@@ -1017,7 +1018,8 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 	print(ref state, ';' . string::lf()) unless is_nop;
 }
 
-def print_declaration(ref state : @generator_c::state_t, reg : @nlasm::reg_t){
+def print_declaration(ref state : @generator_c::state_t, reg : @nlasm::reg_t,
+		defined_types : ptd::hash(@tct::meta_type)) {
 	var target_type_name;
 	var default_value;
 	match (reg->type) case :im {
@@ -1034,20 +1036,26 @@ def print_declaration(ref state : @generator_c::state_t, reg : @nlasm::reg_t){
 		default_value = 'NULL';
 	} case :rec(var type) {
 		target_type_name = get_type_name(type);
-		default_value = '{}';
+		default_value = '{
+			'.own_to_im = (own_to_im_function*)' . get_own_to_im_fun(state->mod_name, type, defined_types) . '
+			'}';
 	} case :arr(var type) {
 		target_type_name = get_type_name(type);
 		default_value = '{
+			'.own_to_im = (own_to_im_function*)' . get_own_to_im_fun(state->mod_name, type, defined_types) . ',
 			'.capacity = 0,
 			'.size = 0,
 			'.value = NULL
 			'}';
 	} case :variant(var type) {
 		target_type_name = get_type_name(type);
-		default_value = '{}';
+		default_value = '{
+			'.own_to_im = (own_to_im_function*)' . get_own_to_im_fun(state->mod_name, type, defined_types) . '
+			'}';
 	} case :hash(var type) {
 		target_type_name = get_type_name(type);
 		default_value = '{
+			'.own_to_im = (own_to_im_function*)' . get_own_to_im_fun(state->mod_name, type, defined_types) . ',
 			'.capacity = 0,
 			'.size = 0,
 			'.values = NULL,
@@ -1060,6 +1068,16 @@ def print_declaration(ref state : @generator_c::state_t, reg : @nlasm::reg_t){
 		default_value = 'NULL';
 	}
 	println(ref state, target_type_name . ' ' . get_reg(ref state, reg) . ' = ' . default_value .';');
+}
+
+def get_own_to_im_fun(mod : ptd::string(), type : @tct::meta_type, defined_types : ptd::hash(@tct::meta_type))
+		: ptd::string() {
+	var conv_fun = string::split('::', own_to_im_converter::get_function_name(type, defined_types));
+	if (array::len(conv_fun) == 1) {
+		return get_fun_name('', conv_fun[0], mod);
+	} else {
+		return get_fun_name(conv_fun[0], conv_fun[1], conv_fun[0]);
+	}
 }
 
 def print_move(ref state : @generator_c::state_t, src : @nlasm::reg_t, dest : @nlasm::reg_t) {
@@ -1480,6 +1498,7 @@ def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() 
 		return im_t();
 	} case :tct_own_arr(var arr_type) {
 		var ret = 'struct ' . name . ' {
+			'own_to_im_function *own_to_im;
 			'INT capacity;
 			'INT size;
 			'' . get_type_name(arr_type) . ' *value;
@@ -1489,6 +1508,7 @@ def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() 
 		return im_t();
 	} case :tct_own_hash(var hash_type) {
 		var ret = 'struct ' . name . ' {
+			'own_to_im_function *own_to_im;
 			'INT capacity;
 			'INT size;
 			'' . get_type_name(hash_type) . ' *values;
@@ -1499,6 +1519,7 @@ def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() 
 		return im_t();
 	} case :tct_own_rec(var records) {
 		var ret = 'struct ' . name . ' {' . string::lf();
+		ret .= 'own_to_im_function *own_to_im;' . string::lf();
 		forh var r_name, var r_type (records) {
 			ret .= get_type_name(r_type) . ' ' . get_field_name(r_name) . ';' . string::lf();
 		}
@@ -1518,6 +1539,7 @@ def get_type_to_c(type : @tct::meta_type, name : ptd::string()) : ptd::string() 
 		return im_t();
 	} case :tct_own_var(var var_values) {
 		var ret = 'struct ' . name . ' {
+			'own_to_im_function *own_to_im;
 			'' . int_t() . ' label;
 			'union {' . string::lf();
 		forh var var_name, var var_value (var_values) {

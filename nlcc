@@ -43,6 +43,6 @@ int main(int argc, char **argv) {
 	return ret_code;
 }" > "$CACHE_DIR/__nl_main.c"
 
-gcc -o $MODULE $CACHE_DIR/*.c $NLCC_DIR/native_lib_c/*.c -I$CACHE_DIR -I$NLCC_DIR/native_lib_c -lm
+gcc -o $MODULE $CACHE_DIR/*.c $NLCC_DIR/native_lib_c/*.c -I$CACHE_DIR -I$NLCC_DIR/native_lib_c -lm -g
 
 rm  -rf $CACHE_DIR

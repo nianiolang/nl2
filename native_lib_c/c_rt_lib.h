@@ -240,3 +240,5 @@ bool c_rt_lib0str_float_gt(ImmT ___nl__lhs, ImmT ___nl__rhs);
 bool c_rt_lib0str_float_leq(ImmT ___nl__lhs, ImmT ___nl__rhs);
 bool c_rt_lib0str_float_geq(ImmT ___nl__lhs, ImmT ___nl__rhs);
 
+//own virtual functions
+typedef ImmT own_to_im_function(void*);
