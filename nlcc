@@ -9,8 +9,13 @@ fi
 
 CACHE_DIR=$(mktemp -d)
 NLCC_DIR=$(dirname "$(realpath $0)")
-echo $NLCC_DIR
 MODULE=$(echo "${1%.nl}")
+
+if [ ! -f "$NLCC_DIR/mk_cache.exe" ]
+then
+	echo "Compiler executable not found. Before using build compiler with make"
+	exit 1
+fi
 
 $NLCC_DIR/mk_cache.exe $NLCC_DIR/nianio_lib $@ --c --o $CACHE_DIR
 
