@@ -3713,7 +3713,9 @@ ImmT  ___nl__im__12 = NULL;
 ImmT  ___nl__im__13 = NULL;
 ImmT  ___nl__im__14 = NULL;
 ImmT  ___nl__im__15 = NULL;
-generator_c0state_t0type ___nl__rec__16 = {};
+generator_c0state_t0type ___nl__rec__16 = {
+.own_to_im = (own_to_im_function*)generator_c0conv_to_im00state_t
+};
 ImmT * ___nl__im_ptr__17 = NULL;
 ImmT  ___nl__im__18 = NULL;
 ImmT  ___nl__im__19 = NULL;
@@ -5536,7 +5538,9 @@ bool  ___nl__bool__42 = false;
 ImmT  ___nl__im__43 = NULL;
 ImmT  ___nl__im__44 = NULL;
 ImmT  ___nl__im__45 = NULL;
-generator_c0state_t0type ___nl__rec__46 = {};
+generator_c0state_t0type ___nl__rec__46 = {
+.own_to_im = (own_to_im_function*)generator_c0conv_to_im00state_t
+};
 ImmT * ___nl__im_ptr__47 = NULL;
 ImmT  ___nl__im__48 = NULL;
 ImmT  ___nl__im__49 = NULL;

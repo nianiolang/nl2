@@ -43,6 +43,7 @@ typedef ImmT  compiler0deref_t0type;
 #ifndef ANON_TYPE_DECLanon_type00ownhashanon_type00bool
 #define ANON_TYPE_DECLanon_type00ownhashanon_type00bool
 typedef struct  {
+own_to_im_function *own_to_im;
 INT capacity;
 INT size;
 bool  *values;
@@ -57,6 +58,7 @@ void compiler0anon_type00ownhashanon_type00bool0free(anon_type00ownhashanon_type
 #ifndef ANON_TYPE_DECLanon_type00ownarranon_type00im
 #define ANON_TYPE_DECLanon_type00ownarranon_type00im
 typedef struct  {
+own_to_im_function *own_to_im;
 INT capacity;
 INT size;
 ImmT  *value;
@@ -91,6 +93,7 @@ typedef ImmT  compiler0errors_group_t0type;
 #ifndef ANON_TYPE_DEFanon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE
 #define ANON_TYPE_DEFanon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE
 struct anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE {
+own_to_im_function *own_to_im;
 generator_c0const_t0type int0field;
 generator_c0const_t0type string0field;
 generator_c0const_t0type singleton0field;

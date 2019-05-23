@@ -8,6 +8,7 @@
 #ifndef ANON_TYPE_DECLanon_type00ownarranon_type00im
 #define ANON_TYPE_DECLanon_type00ownarranon_type00im
 typedef struct  {
+own_to_im_function *own_to_im;
 INT capacity;
 INT size;
 ImmT  *value;
