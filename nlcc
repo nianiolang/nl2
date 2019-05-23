@@ -1,0 +1,35 @@
+#!/bin/bash
+set -eu
+
+if [ "$#" -lt 1 ]
+then
+	echo "Usage: $0 main_file.nl [dir1 dir2 ...]"
+	exit 1
+fi
+
+CACHE_DIR=$(mktemp -d)
+NLCC_DIR=$(dirname "$(realpath $0)")
+echo $NLCC_DIR
+MODULE=$(echo "${1%.nl}")
+
+$NLCC_DIR/mk_cache.exe $NLCC_DIR/nianio_lib $@ --c --o $CACHE_DIR
+
+echo "#include \"c_rt_lib.h\"
+#include \"${MODULE}.h\"
+int main(int argc, char **argv) {
+	c_rt_lib0init();
+	ImmT args = c_rt_lib0array_new();
+	for (int i = 0; i < argc; ++i) {
+		ImmT el = c_rt_lib0string_new(argv[i]);
+		c_rt_lib0array_push(&args, el);
+		c_rt_lib0clear(&el);
+	}
+	int ret_code = ${MODULE}0main(args);
+	c_rt_lib0clear(&args);
+	c_rt_lib0finish();
+	return ret_code;
+}" > "$CACHE_DIR/__nl_main.c"
+
+gcc -o $MODULE $CACHE_DIR/*.c $NLCC_DIR/native_lib_c/*.c -I$CACHE_DIR -I$NLCC_DIR/native_lib_c -lm
+
+rm  -rf $CACHE_DIR
