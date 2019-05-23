@@ -14,7 +14,8 @@ MODULE=$(echo "${1%.nl}")
 
 $NLCC_DIR/mk_cache.exe $NLCC_DIR/nianio_lib $@ --c --o $CACHE_DIR
 
-echo "#include \"c_rt_lib.h\"
+echo "#include <stdint.h>
+#include \"c_rt_lib.h\"
 #include \"${MODULE}.h\"
 int main(int argc, char **argv) {
 	c_rt_lib0init();
@@ -24,7 +25,14 @@ int main(int argc, char **argv) {
 		c_rt_lib0array_push(&args, el);
 		c_rt_lib0clear(&el);
 	}
-	int ret_code = ${MODULE}0main(args);
+	void* ret_value = (void*)${MODULE}0main(args);
+	int ret_code;
+	if ((intptr_t)ret_value < 256) {
+		ret_code = (intptr_t)ret_value;
+	} else {
+		ret_code = getIntFromImm((ImmT)ret_value);
+		c_rt_lib0clear((ImmT*)&ret_value);
+	}
 	c_rt_lib0clear(&args);
 	c_rt_lib0finish();
 	return ret_code;
