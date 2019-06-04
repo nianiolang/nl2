@@ -312,7 +312,7 @@ var instadb;
 	_namespace.imm_str = function(v) {
 		if (typeof v === "string") {
 		} else if (typeof v == "number") {
-			v = parseFloat(v.toFixed(15)).toString();
+			v = parseFloat(v.toFixed(14)).toString();
 		} else {
 			_namespace.nl_die();
 		}
@@ -326,7 +326,7 @@ var instadb;
 	function str_priv(v) {
 		if (typeof v === "string") {
 		} else if (typeof v == "number") {
-			v = parseFloat(v.toFixed(15)).toString();
+			v = parseFloat(v.toFixed(14)).toString();
 		} else {
 			_namespace.nl_die();
 		}
