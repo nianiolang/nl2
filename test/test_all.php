@@ -12,10 +12,10 @@ load_all_js('../cache_test/');
 ?>
 </head>
 <body>
-<pre>instadb.test_nl.test()</pre> result: <span id='result'>In progress</span>
+<pre>nl.test_nl.test()</pre> result: <span id='result'>In progress</span>
 <script>
 try {
-	instadb.test_nl.test();
+	nl.test_nl.test();
 } catch(e) {
 	document.getElementById('result').innerHTML = 'ERROR';
 	throw e;

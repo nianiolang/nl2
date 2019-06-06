@@ -2,9 +2,10 @@
  *  (c) Atinea Sp. z o. o.
  *  Stamp: AJF 2014-02-14
 */
+var nl_init;
 
-var instadb;
-(function(_namespace, undefined) {
+(function(_outer_namespace) {
+_outer_namespace.c_std_lib_init = function(_namespace, undefined) {
 	_namespace.c_std_lib = {};
 
 	_namespace.c_std_lib.fast_substr = function(sarr, start, length) {
@@ -142,11 +143,11 @@ var instadb;
 
 	_namespace.c_std_lib.try_string_to_int = function(imm) {
 		if (isNaN(parseInt(imm.as_js_str())))
-			return instadb.imm_ov_js_str('err', instadb.imm_str('Invalid number'));
-		return instadb.imm_ov_js_str('ok', instadb.imm_int(imm.as_js_str()));
+			return _namespace.imm_ov_js_str('err', _namespace.imm_str('Invalid number'));
+		return _namespace.imm_ov_js_str('ok', _namespace.imm_int(imm.as_js_str()));
 	}
 
 	_namespace.c_std_lib.print = function(imm) {
 		console.log(imm.as_js_str());
 	}
-})(instadb = instadb || {});
+}})(nl_init = nl_init || {});

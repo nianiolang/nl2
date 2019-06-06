@@ -2,9 +2,10 @@
  *  (c) Atinea Sp. z o. o.
  *  Stamp: AJF 2014-02-14
 */
+var nl_init;
 
-var instadb;
-(function(_namespace, undefined) {
+(function(_outer_namespace) {
+_outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 	_namespace.c_rt_lib = {};
 
 	(function() {
@@ -735,4 +736,4 @@ var instadb;
 		return _namespace.imm_str(lhs.as_float() % rhs.as_float());
 	}
 
-})(instadb = instadb || {});
+}})(nl_init=nl_init || {});

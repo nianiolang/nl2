@@ -86,6 +86,10 @@ def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::st
 	println('var ' . namespace . ';', ref state);
 	println('(function(' . get_namespace_name() . ' , undefined) {', ref state);
 	println(get_namespace_name() . '.' . state->module_name . '={};', ref state);
+	println('if (' . namespace . '.c_rt_lib === undefined) { nl_init.c_rt_lib_init(' .
+		namespace . '=' . namespace . ' || {}); }', ref state);
+	println('if (' . namespace . '.c_std_lib === undefined) { nl_init.c_std_lib_init(' .
+		namespace . '=' . namespace . ' || {}); }', ref state);
 }
 
 def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t,
