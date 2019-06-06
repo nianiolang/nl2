@@ -39,28 +39,28 @@ do
 	fi
 done
 
-rm -rf nls
-mkdir nls
+rm -rf cache_nls
+mkdir cache_nls
 for file in "${files_min[@]}"
 do
-	file_path=$(find . -name "$file" -not -path "./nls")
-	cp -v "$file_path" nls/
+	file_path=$(find . -name "$file" -not -path "./cache_nls")
+	cp -v "$file_path" cache_nls/
 done
-cp -r native_lib_c nls/
-cp -r nianio_lib nls/
+cp -r native_lib_c cache_nls/
+cp -r nianio_lib cache_nls/
 
 if [ $olympic_io = false ]
 then
-	rm nls/native_lib_c/c_olympic_io.*
-	rm nls/nianio_lib/console.nl
-	sed -i '/c_olympic_io BEGIN/,/c_olympic_io END/d' nls/optional_libraries.nl
-	sed -i '/use c_olympic_io;/d' nls/optional_libraries.nl
+	rm cache_nls/native_lib_c/c_olympic_io.*
+	rm cache_nls/nianio_lib/console.nl
+	sed -i '/c_olympic_io BEGIN/,/c_olympic_io END/d' cache_nls/optional_libraries.nl
+	sed -i '/use c_olympic_io;/d' cache_nls/optional_libraries.nl
 fi
 if [ $fe_lib = false ]
 then
-	sed -i '/c_fe_lib BEGIN/,/c_fe_lib END/d' nls/optional_libraries.nl
-	sed -i '/use c_fe_lib;/d' nls/optional_libraries.nl
+	sed -i '/c_fe_lib BEGIN/,/c_fe_lib END/d' cache_nls/optional_libraries.nl
+	sed -i '/use c_fe_lib;/d' cache_nls/optional_libraries.nl
 fi
 
-./bin/mk_cache.exe nls/ --strict --c --o nls/cache_nl/
-gcc -o nls/nls nls/nls_c.c nls/cache_nl/*.c nls/native_lib_c/*.c -Inls/cache_nl -Inls/native_lib_c -lm
+./bin/mk_cache.exe cache_nls/ --strict --c --o cache_nls/cache_nl/
+gcc -o nls.exe cache_nls/nls_c.c cache_nls/cache_nl/*.c cache_nls/native_lib_c/*.c -Icache_nls/cache_nl -Icache_nls/native_lib_c -lm

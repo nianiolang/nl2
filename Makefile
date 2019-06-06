@@ -53,24 +53,24 @@ compiler_gcc:
 	gcc ${CFLAGS} -o mk_cache.exe mk_cache.c ${CACHEDIR}/*.c ${NATIVE}/*.c -I${CACHEDIR} -I${NATIVE} ${LINKS}
 
 tester_nl_c:
-	./${OUT} nianio_lib test --deref --strict --o ${CACHETEST} --c --O2 --profile
-	gcc ${CFLAGS} -o test_all test_all.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
+	./${OUT} nianio_lib test/tests --deref --strict --o ${CACHETEST} --c --O2 --profile
+	gcc ${CFLAGS} -o test_all test/test_all.c ${CACHETEST}/*.c ${NATIVE}/*.c -I${CACHETEST} -I${NATIVE} ${LINKS}
 
 test_nl_c:
 	@echo 'TEST C'
 	MALLOC_CHECK_=2 ./test_all
 
 tester_nl_js:
-	./${OUT} nianio_lib test --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile --sourcemap
+	./${OUT} nianio_lib test/tests --strict --o ${CACHETEST} --js --O2 --namespace instadb --profile --sourcemap
 
 test_nl_js:
 	@echo 'TEST JS'
-	cat native_lib_js/*.js ${CACHETEST}/*.js test_js/test_all.js | js
+	cat native_lib_js/*.js ${CACHETEST}/*.js test/test_all.js | js
 
 vim_ide:
-	perl ide2.pl < ide.txt
-	perl ide2.pl < ide_js.txt
-	perl ide2.pl < ide_check.txt
+	perl ide.pl < ide.txt
+	perl ide.pl < ide_js.txt
+	perl ide.pl < ide_check.txt
 
 clean:
 	rm -rf *.o mk_cache */*.o
