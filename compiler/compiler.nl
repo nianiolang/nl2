@@ -899,7 +899,7 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 				}
 				as_js->namespace = args[i];
 				ret->language = :js(as_js);
-			} elsif (opt eq 'sourcemap') {
+			} elsif (opt eq 'debug') {
 				var as_js;
 				if (ret->language is :js) {
 					as_js = ret->language as :js;
