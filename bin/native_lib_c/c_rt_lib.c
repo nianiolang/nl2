@@ -15,9 +15,12 @@
 #include </usr/include/unistd.h>
 #include </usr/include/time.h>
 #include </usr/include/signal.h>
-#include <sys/prctl.h>
 #include <sys/time.h>
 #include <stdbool.h>
+
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif
 
 #include "c_rt_lib.h"
 #include "c_global_const.h"
@@ -1595,7 +1598,9 @@ void gdb_die(const char *msg){
 		exit(1);
 	} else {
 		close(token_pipe[0]);
+#ifdef __linux__
 		prctl(PR_SET_PTRACER, child_pid, 0, 0, 0);
+#endif
 		write(token_pipe[1], "t", 1);
 		close(token_pipe[1]);
 		waitpid(child_pid, 0, 0);
