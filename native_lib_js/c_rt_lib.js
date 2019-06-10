@@ -736,4 +736,67 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 		return _namespace.imm_str(lhs.as_float() % rhs.as_float());
 	}
 
+	_namespace.js_to_imm = function(obj) {
+		if (typeof obj === 'boolean') {
+			return _namespace.c_rt_lib.native_to_nl(obj);
+		} else if(typeof obj === 'number') {
+			return _namespace.imm_int(obj);
+		} else if(typeof obj === 'string') {
+			return _namespace.imm_str(obj);
+		} else if(typeof obj === 'object') {
+			if (obj.constructor === Array) {
+				var arr = [];
+				for (var i = 0; i < obj.length; i++) {
+					arr.push(_namespace.js_to_imm(obj[i]));
+				}
+				return _namespace.imm_arr(arr);
+			} else if (Object.keys(obj).length == 1 && 'name' in obj) {
+				return _namespace.c_rt_lib.ov_mk_none(obj.name);
+			} else if (Object.keys(obj).length == 2 && 'name' in obj && 'value' in obj) {
+				return _namespace.c_rt_lib.ov_mk_arg(_namespace.imm_str(obj.name), _namespace.js_to_imm(obj.value));
+			} else {
+				var keys = {};
+				for (var key in obj) {
+					keys[key] = _namespace.js_to_imm(obj[key]);
+				}
+				return _namespace.imm_hash(keys);
+			}
+		} else {
+			_namespace.nl_die();
+		}
+	}
+
+	_namespace.imm_to_js = function(imm) {
+		if (imm.get_imm_type() == 'array') {
+			var arr = [];
+			for (var i = 0; i < imm.value.length; i++) {
+				arr.push(_namespace.imm_to_js(imm.value[i]));
+			}
+			return arr;
+		} else if (imm.get_imm_type() == 'hash') {
+			var keys = {};
+			for (var key in imm.value) {
+				keys[key] = _namespace.imm_to_js(imm.value[key])
+			}
+			return keys;
+		} else if (imm.get_imm_type() == 'int') {
+			return imm.as_int();
+		} else if (imm.get_imm_type() == 'string') {
+			return imm.as_js_str();
+		} else if (imm.get_imm_type() == 'ov') {
+			if (imm.value == 'TRUE') {
+				return true;
+			} else if (imm.value == 'FALSE') {
+				return false;
+			} else {
+				return {
+					name: imm.name.as_js_str(),
+					value: _namespace.imm_to_js(imm.value)
+				};
+			}
+		} else {
+			_namespace.nl_die();
+		}
+	}
+
 }})(nl_init=nl_init || {});
