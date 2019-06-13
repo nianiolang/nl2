@@ -151,7 +151,8 @@ def compiler::module_functions_t() {
 			args => ptd::arr(ptd::rec({
 				type => @tct::meta_type,
 				mod => ptd::var({none => ptd::none(), ref => ptd::none()}),
-			}))
+			})),
+			defines_type => ptd::var({no => ptd::none(), yes => @tct::meta_type}),
 		})
 	);
 }
@@ -388,6 +389,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		};
 	var functions : @compiler::functions_t = {};
 	var called_from = {};
+	var defined_types = {};
 	loop {
 		errors->type_errors = {};
 		errors->type_warnings = {};
@@ -452,6 +454,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			hash::set_value(ref asts_all, module, ast);
 		}
 		var changed_signatures = {};
+		var changed_own_types = {};
 		forh var module, var old_ast (to_save) {
 			hash::set_value(ref to_save, module, asts{module});
 			    var old_functions = {};
@@ -460,21 +463,36 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 				    old_functions = functions{module};
 			    }
 			    forh var name, var function (old_functions) {
-				    if (hash::has_key(new_functions, name) && !dfile::deep_eq(function, new_functions{name})) {
-					    changed_signatures{module . '::' . name} = 1;
+				    if (hash::has_key(new_functions, name)) {
+						var new_function = new_functions{name};
+						if (!dfile::deep_eq(function->ret, new_function->ret) || 
+								!dfile::deep_eq(function->args, new_function->args)) {
+							changed_signatures{module . '::' . name} = 1;
+						}
+						if (own_type_changed(function->defines_type, new_function->defines_type, defined_types)) {
+							changed_own_types{module . '::' . name} = 1;
+						}
 				    }
 			    }
 			    functions{module} = new_functions;
 		}
+		if (hash::size(changed_own_types) != 0) {
+			affected_files = get_files_to_parse(opt_cli);
+			continue;
+		}
 		if (hash::size(changed_signatures) != 0) {
 			var all_files = get_files_to_parse(opt_cli);
 			forh var function, var none1 (changed_signatures) {
-				forh var module, var none2 (called_from{function}) {
-					affected_files{module} = all_files{module};
-					c_fe_lib::print('to recompile: ' . module);
+				if (hash::has_key(called_from, function)) {
+					forh var module, var none2 (called_from{function}) {
+						affected_files{module} = all_files{module};
+						c_fe_lib::print('to recompile: ' . module);
+					}
 				}
 			}
-			continue;
+			if (hash::size(affected_files) != 0) {
+				continue;
+			}
 		}
 		if (show_and_count_errors(errors, opt_cli, nianio_files) > 0) {
 			c_fe_lib::print('############################################################');
@@ -486,7 +504,8 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		if (!(opt_cli->language is :ast || opt_cli->language is :nl)) {
 			c_fe_lib::print('search constants...');
 			var new_to_save = {};
-			var modules = translate(to_save, asts_all, ref const_state);
+			defined_types = get_defined_types(asts_all);
+			var modules = translate(to_save, ref const_state, defined_types);
 			add_to_called_from(ref called_from, modules);
 			match (generate_modules_to_files(modules, nianio_files, opt_cli->cache_path,
 				    ref generator_state, opt_cli->language)) case :err(var err) {
@@ -580,7 +599,7 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 		profile::end('post processing');
 
 		profile::begin('translate to nlasm');
-		var modules = translate(asts, asts, ref const_state);
+		var modules = translate(asts, ref const_state, get_defined_types(asts));
 		profile::end('translate to nlasm');
 
 		if (hash::has_key(modules, 'main')) {
@@ -662,18 +681,9 @@ def show_and_count_errors(all_errors : @compiler::errors_group_t, opt_cli : @com
 	return num_errors;
 }
 
-def translate(asts_to_translate : ptd::hash(@nast::module_t), asts_all : ptd::hash(@nast::module_t),
-		ref post_proc : @post_processing_t::state_t) : ptd::hash(@nlasm::result_t) {
+def translate(asts_to_translate : ptd::hash(@nast::module_t), ref post_proc : @post_processing_t::state_t,
+		defined_types : ptd::hash(@tct::meta_type)) : ptd::hash(@nlasm::result_t) {
 	var nlasm = {};
-	var defined_types : ptd::hash(@tct::meta_type) = {};
-	forh var module, var ast (asts_all) {
-		fora var func (ast->fun_def) {
-			match (func->defines_type) case :no {
-			} case :yes(var type) {
-				defined_types{module . '::' . func->name} = type;
-			}
-		}
-	}
 	forh var module, var ast (asts_to_translate) {
 		var nla_asm = translator::translate(ast, defined_types);
 		hash::set_value(ref nlasm, module, nla_asm);
@@ -978,7 +988,7 @@ def get_functions(ast : @nast::module_t) : @compiler::module_functions_t {
 		fora var arg (function->args) {
 			args []= {type => arg->tct_type, mod => arg->mod};
 		}
-		result{function->name} = {ret => ret, args => args};
+		result{function->name} = {ret => ret, args => args, defines_type => function->defines_type};
 	}
 	return result;
 }
@@ -1002,5 +1012,40 @@ def add_cmd_to_called_from(ref called_from : ptd::hash(ptd::hash(ptd::int())), c
 			called_from{fun_name} = {};
 		}
 		called_from{fun_name}{module_name} = 1;
+	}
+}
+
+def get_defined_types(asts_all : ptd::hash(@nast::module_t)) : ptd::hash(@tct::meta_type) {
+	var defined_types : ptd::hash(@tct::meta_type) = {};
+	forh var module, var ast (asts_all) {
+		fora var func (ast->fun_def) {
+			match (func->defines_type) case :no {
+			} case :yes(var type) {
+				defined_types{module . '::' . func->name} = type;
+			}
+		}
+	}
+	return defined_types;
+}
+
+def own_type_changed(old_type : ptd::var({no => ptd::none(), yes => @tct::meta_type}),
+		new_type : ptd::var({no => ptd::none(), yes => @tct::meta_type}),
+		defined_types : ptd::hash(@tct::meta_type)) : ptd::bool() {
+	match (old_type) case :no {
+		match(new_type) case :no {
+			return false;
+		} case :yes(var new_tct_type) {
+			return tct::is_own_type(new_tct_type, defined_types);
+		}
+	} case :yes(var old_tct_type) {
+		match(new_type) case :no {
+			return tct::is_own_type(old_tct_type, defined_types);
+		} case :yes(var new_tct_type) {
+			if(dfile::deep_eq(old_tct_type, new_tct_type)) {
+				return false;
+			} else {
+				return tct::is_own_type(new_tct_type, defined_types) || tct::is_own_type(old_tct_type, defined_types);
+			}
+		}
 	}
 }
