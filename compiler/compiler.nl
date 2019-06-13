@@ -359,6 +359,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 	var asts_all = {};
 	var to_save = {};
 	var to_parse = {};
+	var affected_files : @compiler::module_t = {};
 	var errors : @compiler::errors_group_t = {
 			module_errors => {},
 			module_warnings => {},
@@ -392,6 +393,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		errors->type_warnings = {};
 		errors->loop_error = :ok;
 		var nianio_files = get_files_to_parse(opt_cli);
+		var changes = 0;
 		forh var module, var paths (nianio_files) {
 			var n_time = c_fe_lib::get_modif_time(paths->src);
 			continue if (n_time is :err);
@@ -402,9 +404,11 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			}
 			hash::set_value(ref cache_time, module, n_time);
 			hash::set_value(ref to_parse, module, paths);
+			changes++;
 		}
 		forh var module, var none (old_files) {
 			if (!hash::has_key(nianio_files, module)) {
+				changes++;
 				hash::delete(ref errors->module_errors, module);
 				hash::delete(ref errors->module_warnings, module);
 				hash::delete(ref asts, module);
@@ -417,8 +421,13 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 				}
 			}
 		}
+		forh var module, var paths (affected_files) {
+			to_parse{module} = paths;
+			changes++;
+		}
 		old_files = nianio_files;
-		if (hash::size(to_parse) == 0) {
+		affected_files = {};
+		if (changes == 0) {
 			c_fe_lib::sleep(1);
 			continue;
 		}
@@ -461,7 +470,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			var all_files = get_files_to_parse(opt_cli);
 			forh var function, var none1 (changed_signatures) {
 				forh var module, var none2 (called_from{function}) {
-					to_parse{module} = all_files{module};
+					affected_files{module} = all_files{module};
 					c_fe_lib::print('to recompile: ' . module);
 				}
 			}
