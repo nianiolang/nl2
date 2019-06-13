@@ -847,7 +847,7 @@ c_rt_lib0clear(&___nl__im__11);
 #line 70
 c_rt_lib0clear(&___nl__im__12);
 #line 71
-c_rt_lib0move(&___nl__im__14,___get_global_string_const(122));
+c_rt_lib0move(&___nl__im__14,___get_global_string_const(123));
 #line 71
 c_rt_lib0move(&___nl__im__13, string0index2(___nl__im__10, ___nl__im__14));
 #line 71
