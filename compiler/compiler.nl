@@ -140,6 +140,22 @@ def compiler::file_t() {
 	return ptd::var({ok => ptd::string(), err => ptd::string()});
 }
 
+def compiler::functions_t() {
+	return ptd::hash(@compiler::module_functions_t);
+}
+
+def compiler::module_functions_t() {
+	return ptd::hash(
+		ptd::rec({
+			ret => @tct::meta_type,
+			args => ptd::arr(ptd::rec({
+				type => @tct::meta_type,
+				mod => ptd::var({none => ptd::none(), ref => ptd::none()}),
+			}))
+		})
+	);
+}
+
 def compiler::compile(cmd_args : ptd::arr(ptd::string())) : ptd::int() {
 	var opt_cli = parse_command_line_args(cmd_args);
 	c_fe_lib::mk_path(opt_cli->cache_path);
@@ -369,13 +385,13 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			additional_imports => {},
 			defined_types => {},
 		};
-	var retrying = false;
+	var functions : @compiler::functions_t = {};
+	var called_from = {};
 	loop {
 		errors->type_errors = {};
 		errors->type_warnings = {};
 		errors->loop_error = :ok;
 		var nianio_files = get_files_to_parse(opt_cli);
-		var changes = 0;
 		forh var module, var paths (nianio_files) {
 			var n_time = c_fe_lib::get_modif_time(paths->src);
 			continue if (n_time is :err);
@@ -386,11 +402,9 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			}
 			hash::set_value(ref cache_time, module, n_time);
 			hash::set_value(ref to_parse, module, paths);
-			++changes;
 		}
 		forh var module, var none (old_files) {
 			if (!hash::has_key(nianio_files, module)) {
-				++changes;
 				hash::delete(ref errors->module_errors, module);
 				hash::delete(ref errors->module_warnings, module);
 				hash::delete(ref asts, module);
@@ -404,7 +418,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			}
 		}
 		old_files = nianio_files;
-		if (changes == 0 && !retrying) {
+		if (hash::size(to_parse) == 0) {
 			c_fe_lib::sleep(1);
 			continue;
 		}
@@ -428,7 +442,31 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		forh var module, var ast (asts) {
 			hash::set_value(ref asts_all, module, ast);
 		}
-
+		var changed_signatures = {};
+		forh var module, var old_ast (to_save) {
+			hash::set_value(ref to_save, module, asts{module});
+			    var old_functions = {};
+			    var new_functions = get_functions(asts{module});
+			    if (hash::has_key(functions, module)) {
+				    old_functions = functions{module};
+			    }
+			    forh var name, var function (old_functions) {
+				    if (hash::has_key(new_functions, name) && !dfile::deep_eq(function, new_functions{name})) {
+					    changed_signatures{module . '::' . name} = 1;
+				    }
+			    }
+			    functions{module} = new_functions;
+		}
+		if (hash::size(changed_signatures) != 0) {
+			var all_files = get_files_to_parse(opt_cli);
+			forh var function, var none1 (changed_signatures) {
+				forh var module, var none2 (called_from{function}) {
+					to_parse{module} = all_files{module};
+					c_fe_lib::print('to recompile: ' . module);
+				}
+			}
+			continue;
+		}
 		if (show_and_count_errors(errors, opt_cli, nianio_files) > 0) {
 			c_fe_lib::print('############################################################');
 			continue;
@@ -440,8 +478,9 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			c_fe_lib::print('search constants...');
 			var new_to_save = {};
 			var modules = translate(to_save, asts_all, ref const_state);
-			match (generate_modules_to_files(modules, nianio_files, opt_cli->cache_path, ref generator_state, opt_cli->
-					language)) case :err(var err) {
+			add_to_called_from(ref called_from, modules);
+			match (generate_modules_to_files(modules, nianio_files, opt_cli->cache_path,
+				    ref generator_state, opt_cli->language)) case :err(var err) {
 				forh var module, var none (err) {
 					hash::set_value(ref new_to_save, module, hash::get_value(asts, module));
 				}
@@ -465,16 +504,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			c_fe_lib::print(string::lf() . 'ERROR: ' . msg);
 		} else {
 			 if (opt_cli->mode is :idex) {
-				if (c_fe_lib::try_exec_cmd(opt_cli->mode as :idex) == 0) {
-					retrying = false;
-				} else {
-					die if retrying;
-					c_fe_lib::print(string::lf() . '''' . opt_cli->mode as :idex . ''' failed. Retrying...' .
-						string::lf());
-					retrying = true;
-					to_parse = get_files_to_parse(opt_cli);
-					continue;
-				}
+				c_fe_lib::exec_cmd(opt_cli->mode as :idex);
 			}
 			c_fe_lib::print(string::lf() . 'OK: compile, check types and save changes without errors');
 		}
@@ -931,3 +961,37 @@ def get_default_js_opts() : @compiler::js_opts {
 	};
 }
 
+def get_functions(ast : @nast::module_t) : @compiler::module_functions_t {
+	var result : @compiler::module_functions_t = {};
+	fora var function (ast->fun_def) {
+		var ret = function->ret_type->tct_type;
+		var args = [];
+		fora var arg (function->args) {
+			args []= {type => arg->tct_type, mod => arg->mod};
+		}
+		result{function->name} = {ret => ret, args => args};
+	}
+	return result;
+}
+
+def add_to_called_from(ref called_from : ptd::hash(ptd::hash(ptd::int())), modules : ptd::hash(@nlasm::result_t)) {
+	forh var module_name, var module (modules) {
+		fora var function (module->functions) {
+			fora var cmd (function->commands) {
+				add_cmd_to_called_from(ref called_from, cmd, module_name);
+			}
+		}
+	}
+}
+
+def add_cmd_to_called_from(ref called_from : ptd::hash(ptd::hash(ptd::int())), cmd : @nlasm::cmd_t,
+		module_name : ptd::string()) {
+	if (cmd->cmd is :call) {
+		var call = cmd->cmd as :call;
+		var fun_name = call->mod . '::' . call->fun_name;
+		if (!hash::has_key(called_from, fun_name)) {
+			called_from{fun_name} = {};
+		}
+		called_from{fun_name}{module_name} = 1;
+	}
+}
