@@ -636,24 +636,17 @@ return c_rt_lib0int_new(res);
 INT  string0length(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 string_priv0__const__init();
-ImmT  ___nl__im__1 = NULL;
-INT  ___nl__int__2 = 0;
+INT  ___nl__int__1 = 0;
 #line 73
-c_rt_lib0move(&___nl__im__1, c_std_lib0string_length(___nl__im__0));
-#line 73
-___nl__int__2 = getIntFromImm(___nl__im__1);
+___nl__int__1 = c_std_lib0string_length(___nl__im__0);
 #line 73
 c_rt_lib0clear(&___nl__im__0);
 #line 73
-c_rt_lib0clear(&___nl__im__1);
-#line 73
-return ___nl__int__2;
+return ___nl__int__1;
 #line 73
 c_rt_lib0clear(&___nl__im__0);
 #line 73
-c_rt_lib0clear(&___nl__im__1);
-#line 73
-//clear ___nl__int__2;
+//clear ___nl__int__1;
 #line 73
 return 0;
 return 0;
@@ -671,21 +664,33 @@ ImmT  string0get_char_code(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 string_priv0__const__init();
-ImmT  ___nl__im__2 = NULL;
+INT  ___nl__int__2 = 0;
+INT  ___nl__int__3 = 0;
+ImmT  ___nl__im__4 = NULL;
 #line 77
-c_rt_lib0move(&___nl__im__2, c_std_lib0string_get_char_code(___nl__im__0, ___nl__im__1));
+___nl__int__3 = getIntFromImm(___nl__im__1);
+#line 77
+___nl__int__2 = c_std_lib0string_get_char_code(___nl__im__0, ___nl__int__3);
+#line 77
+//clear ___nl__int__3;
+#line 77
+c_rt_lib0move(&___nl__im__4, c_rt_lib0int_new(___nl__int__2));
 #line 77
 c_rt_lib0clear(&___nl__im__0);
 #line 77
 c_rt_lib0clear(&___nl__im__1);
 #line 77
-return ___nl__im__2;
+//clear ___nl__int__2;
+#line 77
+return ___nl__im__4;
 #line 77
 c_rt_lib0clear(&___nl__im__0);
 #line 77
 c_rt_lib0clear(&___nl__im__1);
 #line 77
-c_rt_lib0clear(&___nl__im__2);
+//clear ___nl__int__2;
+#line 77
+c_rt_lib0clear(&___nl__im__4);
 #line 77
 return NULL;
 return NULL;
@@ -708,26 +713,16 @@ string_priv0__const__init();
 ImmT  ___nl__im__3 = NULL;
 ImmT  ___nl__im__4 = NULL;
 ImmT  ___nl__im__5 = NULL;
-ImmT  ___nl__im__6 = NULL;
-ImmT  ___nl__im__7 = NULL;
 #line 81
-c_rt_lib0move(&___nl__im__5, c_rt_lib0int_new(___nl__int__1));
+c_rt_lib0move(&___nl__im__4, c_std_lib0string_sub(___nl__im__0, ___nl__int__1, ___nl__int__2));
 #line 81
-c_rt_lib0move(&___nl__im__6, c_rt_lib0int_new(___nl__int__2));
+c_rt_lib0move(&___nl__im__5,___get_global_string_const(36));
 #line 81
-c_rt_lib0move(&___nl__im__4, c_std_lib0string_sub(___nl__im__0, ___nl__im__5, ___nl__im__6));
-#line 81
-c_rt_lib0clear(&___nl__im__5);
-#line 81
-c_rt_lib0clear(&___nl__im__6);
-#line 81
-c_rt_lib0move(&___nl__im__7,___get_global_string_const(36));
-#line 81
-c_rt_lib0move(&___nl__im__3, c_rt_lib0concat_new(___nl__im__4, ___nl__im__7));
+c_rt_lib0move(&___nl__im__3, c_rt_lib0concat_new(___nl__im__4, ___nl__im__5));
 #line 81
 c_rt_lib0clear(&___nl__im__4);
 #line 81
-c_rt_lib0clear(&___nl__im__7);
+c_rt_lib0clear(&___nl__im__5);
 #line 81
 c_rt_lib0clear(&___nl__im__0);
 #line 81
@@ -756,26 +751,26 @@ ImmT  ___nl__im__3 = NULL;
 INT  ___nl__int__4 = 0;
 INT  ___nl__int__5 = 0;
 INT  ___nl__int__6 = 0;
-ImmT  ___nl__im__7 = NULL;
+INT  ___nl__int__7 = 0;
 ImmT  ___nl__im__8 = NULL;
 #line 85
-___nl__int__5 = string0length(___nl__im__0);
+___nl__int__4 = getIntFromImm(___nl__im__1);
 #line 85
-___nl__int__6 = getIntFromImm(___nl__im__1);
+___nl__int__6 = string0length(___nl__im__0);
 #line 85
-___nl__int__4 = ___nl__int__5 - ___nl__int__6;
+___nl__int__7 = getIntFromImm(___nl__im__1);
 #line 85
-//clear ___nl__int__5;
+___nl__int__5 = ___nl__int__6 - ___nl__int__7;
 #line 85
 //clear ___nl__int__6;
 #line 85
-c_rt_lib0move(&___nl__im__7, c_rt_lib0int_new(___nl__int__4));
+//clear ___nl__int__7;
 #line 85
-c_rt_lib0move(&___nl__im__3, c_std_lib0string_sub(___nl__im__0, ___nl__im__1, ___nl__im__7));
+c_rt_lib0move(&___nl__im__3, c_std_lib0string_sub(___nl__im__0, ___nl__int__4, ___nl__int__5));
 #line 85
 //clear ___nl__int__4;
 #line 85
-c_rt_lib0clear(&___nl__im__7);
+//clear ___nl__int__5;
 #line 85
 c_rt_lib0move(&___nl__im__8,___get_global_string_const(36));
 #line 85
@@ -1099,31 +1094,33 @@ ImmT  string0index2(ImmT  ___nl__im__0,ImmT  ___nl__im__1) {
 c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 string_priv0__const__init();
-ImmT  ___nl__im__2 = NULL;
+INT  ___nl__int__2 = 0;
 INT  ___nl__int__3 = 0;
 ImmT  ___nl__im__4 = NULL;
 #line 113
 ___nl__int__3 = 0;
 #line 113
-c_rt_lib0move(&___nl__im__4, c_rt_lib0int_new(___nl__int__3));
-#line 113
-c_rt_lib0move(&___nl__im__2, c_std_lib0string_index(___nl__im__0, ___nl__im__1, ___nl__im__4));
+___nl__int__2 = c_std_lib0string_index(___nl__im__0, ___nl__im__1, ___nl__int__3);
 #line 113
 //clear ___nl__int__3;
 #line 113
+c_rt_lib0move(&___nl__im__4, c_rt_lib0int_new(___nl__int__2));
+#line 113
+c_rt_lib0clear(&___nl__im__0);
+#line 113
+c_rt_lib0clear(&___nl__im__1);
+#line 113
+//clear ___nl__int__2;
+#line 113
+return ___nl__im__4;
+#line 113
+c_rt_lib0clear(&___nl__im__0);
+#line 113
+c_rt_lib0clear(&___nl__im__1);
+#line 113
+//clear ___nl__int__2;
+#line 113
 c_rt_lib0clear(&___nl__im__4);
-#line 113
-c_rt_lib0clear(&___nl__im__0);
-#line 113
-c_rt_lib0clear(&___nl__im__1);
-#line 113
-return ___nl__im__2;
-#line 113
-c_rt_lib0clear(&___nl__im__0);
-#line 113
-c_rt_lib0clear(&___nl__im__1);
-#line 113
-c_rt_lib0clear(&___nl__im__2);
 #line 113
 return NULL;
 return NULL;
@@ -1143,9 +1140,17 @@ c_rt_lib0arg_val(___nl__im__0);
 c_rt_lib0arg_val(___nl__im__1);
 c_rt_lib0arg_val(___nl__im__2);
 string_priv0__const__init();
-ImmT  ___nl__im__3 = NULL;
+INT  ___nl__int__3 = 0;
+INT  ___nl__int__4 = 0;
+ImmT  ___nl__im__5 = NULL;
 #line 117
-c_rt_lib0move(&___nl__im__3, c_std_lib0string_index(___nl__im__0, ___nl__im__1, ___nl__im__2));
+___nl__int__4 = getIntFromImm(___nl__im__2);
+#line 117
+___nl__int__3 = c_std_lib0string_index(___nl__im__0, ___nl__im__1, ___nl__int__4);
+#line 117
+//clear ___nl__int__4;
+#line 117
+c_rt_lib0move(&___nl__im__5, c_rt_lib0int_new(___nl__int__3));
 #line 117
 c_rt_lib0clear(&___nl__im__0);
 #line 117
@@ -1153,7 +1158,9 @@ c_rt_lib0clear(&___nl__im__1);
 #line 117
 c_rt_lib0clear(&___nl__im__2);
 #line 117
-return ___nl__im__3;
+//clear ___nl__int__3;
+#line 117
+return ___nl__im__5;
 #line 117
 c_rt_lib0clear(&___nl__im__0);
 #line 117
@@ -1161,7 +1168,9 @@ c_rt_lib0clear(&___nl__im__1);
 #line 117
 c_rt_lib0clear(&___nl__im__2);
 #line 117
-c_rt_lib0clear(&___nl__im__3);
+//clear ___nl__int__3;
+#line 117
+c_rt_lib0clear(&___nl__im__5);
 #line 117
 return NULL;
 return NULL;
@@ -1382,24 +1391,17 @@ return c_rt_lib0int_new(res);
 INT  string0ord(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 string_priv0__const__init();
-ImmT  ___nl__im__1 = NULL;
-INT  ___nl__int__2 = 0;
+INT  ___nl__int__1 = 0;
 #line 139
-c_rt_lib0move(&___nl__im__1, c_std_lib0string_ord(___nl__im__0));
-#line 139
-___nl__int__2 = getIntFromImm(___nl__im__1);
+___nl__int__1 = c_std_lib0string_ord(___nl__im__0);
 #line 139
 c_rt_lib0clear(&___nl__im__0);
 #line 139
-c_rt_lib0clear(&___nl__im__1);
-#line 139
-return ___nl__int__2;
+return ___nl__int__1;
 #line 139
 c_rt_lib0clear(&___nl__im__0);
 #line 139
-c_rt_lib0clear(&___nl__im__1);
-#line 139
-//clear ___nl__int__2;
+//clear ___nl__int__1;
 #line 139
 return 0;
 return 0;
@@ -1745,13 +1747,8 @@ return res;
 ImmT  string0chr(INT  ___nl__int__0) {
 string_priv0__const__init();
 ImmT  ___nl__im__1 = NULL;
-ImmT  ___nl__im__2 = NULL;
 #line 170
-c_rt_lib0move(&___nl__im__2, c_rt_lib0int_new(___nl__int__0));
-#line 170
-c_rt_lib0move(&___nl__im__1, c_std_lib0string_chr(___nl__im__2));
-#line 170
-c_rt_lib0clear(&___nl__im__2);
+c_rt_lib0move(&___nl__im__1, c_std_lib0string_chr(___nl__int__0));
 #line 170
 //clear ___nl__int__0;
 #line 170

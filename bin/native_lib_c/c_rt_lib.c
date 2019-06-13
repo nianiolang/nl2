@@ -884,22 +884,22 @@ void c_rt_lib0string_new_to_memory(const char *ss, ImmT memory) {
 	memcpy(s->s, ss, sizeof(char) * s->capacity);
 }
 
-ImmT c_rt_lib0string_chr(ImmT ___nl__sI) {
-	const char c = (char) getIntFromImm(___nl__sI);
+ImmT c_rt_lib0string_chr(INT ___nl__int__sI) {
+	const char c = (char) ___nl__int__sI;
 	return c_rt_lib0string_new_from_bytes(&c, 1);
 }
 
-ImmT c_rt_lib0string_ord(ImmT ___nl__sI1) {
+INT c_rt_lib0string_ord(ImmT ___nl__sI1) {
 	NlString *sI = toStringIfSim(___nl__sI1);
 	if(sI->length == 0) nl_die();
-	ImmT ret = c_rt_lib0int_new(((unsigned char*)((NlString *)sI)->s)[0]);
+	INT ret = ((unsigned char*)((NlString *)sI)->s)[0];
 	dec_ref(sI);
 	return ret;
 }
 
-ImmT c_rt_lib0string_length(ImmT ___nl__sI1) {
+INT c_rt_lib0string_length(ImmT ___nl__sI1) {
 	NlString *sI = toStringIfSim(___nl__sI1);
-	ImmT ret = c_rt_lib0int_new(((NlString *)sI)->length);
+	INT ret = ((NlString *)sI)->length;
 	dec_ref(sI);
 	return ret;
 }

@@ -10,7 +10,7 @@
 ImmT c_std_lib0print(ImmT el);
 ImmT c_std_lib0set_profile_global(ImmT el);
 ImmT c_std_lib0get_profile_global();
-ImmT c_std_lib0fast_substr(ImmT text_arr, ImmT begin, ImmT len);
+ImmT c_std_lib0fast_substr(ImmT text_arr, INT begin, INT len);
 ImmT c_std_lib0array_sub(ImmT arr, INT begin, INT len);
 ImmT c_std_lib0array_push(ImmT *arr, ImmT el);
 INT c_std_lib0array_len(ImmT arr);
@@ -20,12 +20,12 @@ bool c_std_lib0hash_has_key(ImmT hash, ImmT key);
 ImmT c_std_lib0hash_set_value(ImmT *hash, ImmT key, ImmT value);
 ImmT c_std_lib0hash_delete(ImmT *hash, ImmT key);
 int c_std_lib0hash_size(ImmT hash);
-ImmT c_std_lib0string_chr(ImmT cc);
-ImmT c_std_lib0string_ord(ImmT c);
-ImmT c_std_lib0string_length(ImmT s);
-ImmT c_std_lib0string_index(ImmT s, ImmT substr, ImmT start);
-ImmT c_std_lib0string_sub(ImmT strg, ImmT start, ImmT length);
-ImmT c_std_lib0string_get_char_code(ImmT strI, ImmT position);
+ImmT c_std_lib0string_chr(INT cc);
+INT c_std_lib0string_ord(ImmT c);
+INT c_std_lib0string_length(ImmT s);
+INT c_std_lib0string_index(ImmT s, ImmT substr, INT start);
+ImmT c_std_lib0string_sub(ImmT strg, INT start, INT length);
+INT c_std_lib0string_get_char_code(ImmT strI, INT position);
 ImmT c_std_lib0string_replace(ImmT str, ImmT old, ImmT new_part);
 ImmT c_std_lib0string_escape2hex31(ImmT ___nl__str);
 

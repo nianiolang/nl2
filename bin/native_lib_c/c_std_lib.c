@@ -30,11 +30,11 @@ ImmT c_std_lib0get_profile_global() {
 	return ret;
 }
 
-ImmT c_std_lib0fast_substr(ImmT ___nl__0, ImmT ___nl__1, ImmT ___nl__2) {
+ImmT c_std_lib0fast_substr(ImmT ___nl__0, INT ___nl__int__1, INT ___nl__int__2) {
 	NlArray *arr = (NlArray*)___nl__0;
 	if(arr->size!=1) nl_die_arg(___nl__0);
 	ImmT strg = arr->arr[0];
-	return c_std_lib0string_sub(strg, ___nl__1, ___nl__2);
+	return c_std_lib0string_sub(strg, ___nl__int__1, ___nl__int__2);
 }
 
 ImmT c_std_lib0array_sub(ImmT ___nl__array, INT ___nl__begin, INT ___nl__length) {
@@ -90,15 +90,15 @@ int c_std_lib0hash_size(ImmT ___nl__hash) {
 	return c_rt_lib0hash_size(___nl__hash);
 }
 
-ImmT c_std_lib0string_chr(ImmT ___nl__cc) {
-	return c_rt_lib0string_chr(___nl__cc);
+ImmT c_std_lib0string_chr(INT ___nl__int__cc) {
+	return c_rt_lib0string_chr(___nl__int__cc);
 }
 
-ImmT c_std_lib0string_ord(ImmT ___nl__c) {
+INT c_std_lib0string_ord(ImmT ___nl__c) {
 	return c_rt_lib0string_ord(___nl__c);
 }
 
-ImmT c_std_lib0string_length(ImmT ___nl__s) {
+INT c_std_lib0string_length(ImmT ___nl__s) {
 	return c_rt_lib0string_length(___nl__s);
 }
 
@@ -171,29 +171,27 @@ int kmp_replace(char *str, int l_s, const char *old, int l_o, const char *_new, 
 	return l_d;
 }
 
-ImmT c_std_lib0string_index(ImmT ___nl__str, ImmT ___nl__substr, ImmT ___nl__start) {
+INT c_std_lib0string_index(ImmT ___nl__str, ImmT ___nl__substr, INT ___nl__int__start) {
 	NlString *oI = toStringIfSim(___nl__substr);
 	if(oI->length == 0){
 		nl_die();
-		ImmT tmp = NULL;
-		c_rt_lib0copy(&tmp, ___nl__start);
 		c_rt_lib0clear((void**)&oI);
-		return tmp;
+		return ___nl__int__start;;
 	}
 	NlString *sI = toStringIfSim(___nl__str);
-	int beg = getIntFromImm(___nl__start);
+	INT beg = ___nl__int__start;
 	if(beg<0) nl_die();
 	int ret = kmp_index(sI->s, sI->length, oI->s, oI->length, beg);
 	c_rt_lib0clear((void**)&sI);
 	c_rt_lib0clear((void**)&oI);
-	return c_rt_lib0int_new(ret);
+	return ret;
 }
 
-ImmT c_std_lib0string_sub(ImmT ___nl__strg, ImmT ___nl__start, ImmT ___nl__length) {
+ImmT c_std_lib0string_sub(ImmT ___nl__strg, INT ___nl__int__start, INT ___nl__int__length) {
 	char *_out;
-	int beg = getIntFromImm(___nl__start);
+	INT beg = ___nl__int__start;
 	if(beg<0) nl_die();
-	int len = getIntFromImm(___nl__length);
+	INT len = ___nl__int__length;
 	if(len<0) nl_die();
 	NlString *str = toStringIfSim(___nl__strg);
 	if(str->length >= beg+len){
@@ -214,11 +212,11 @@ ImmT c_std_lib0string_sub(ImmT ___nl__strg, ImmT ___nl__start, ImmT ___nl__lengt
 	return c_rt_lib0string_new_alloc(_out, len, len+1);
 }
 
-ImmT c_std_lib0string_get_char_code(ImmT ___nl__strI, ImmT ___nl__position) {
+INT c_std_lib0string_get_char_code(ImmT ___nl__strI, INT ___nl__int__position) {
 	NlString *str = toStringIfSim(___nl__strI);
-	INT pos = getIntFromImm(___nl__position);
+	INT pos = ___nl__int__position;
 	if(pos<0 || pos >= str->length) nl_die();
-	ImmT ret = c_rt_lib0int_new(((unsigned char*)(str)->s)[pos]);
+	INT ret = ((unsigned char*)(str)->s)[pos];
 	c_rt_lib0clear((void**)&str);
 	return ret;
 }
