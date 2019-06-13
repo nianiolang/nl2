@@ -60,23 +60,23 @@ _outer_namespace.c_std_lib_init = function(_namespace, undefined) {
 	}
 
 	_namespace.c_std_lib.string_chr = function(code) {
-		return _namespace.imm_str(String.fromCharCode(code.as_int()));
+		return _namespace.imm_str(String.fromCharCode(code));
 	}
 
 	_namespace.c_std_lib.string_ord = function(str) {
-		return _namespace.imm_int(str.as_byte_string().charCodeAt(0));
+		return str.as_byte_string().charCodeAt(0);
 	}
 
 	_namespace.c_std_lib.string_length = function(s) {
-		return _namespace.imm_int(s.as_byte_string().length);
+		return s.as_byte_string().length;
 	}
 
 	_namespace.c_std_lib.string_index = function(str, substr, start) {
-		return _namespace.imm_int(str.as_byte_string().indexOf(substr.as_byte_string(), start.as_int()));
+		return str.as_byte_string().indexOf(substr.as_byte_string(), start);
 	}
 
 	_namespace.c_std_lib.string_sub = function(str, start, length) {
-		return _namespace.imm_from_byte_string(str.as_byte_string().substring(start.as_int(), start.as_int() + length.as_int()));
+		return _namespace.imm_from_byte_string(str.as_byte_string().substring(start, start + length));
 	}
 
 	_namespace.c_std_lib.string_replace = function(str, old, new_part) {
@@ -104,8 +104,8 @@ _outer_namespace.c_std_lib_init = function(_namespace, undefined) {
 
 	_namespace.c_std_lib.string_compare = function(a, b) {
 		if (a.as_byte_string() != b.as_byte_string())
-			return _namespace.imm_int(a.as_byte_string() > b.as_byte_string() ? 1 : -1);
-		return _namespace.imm_int(0);
+			return a.as_byte_string() > b.as_byte_string() ? 1 : -1;
+		return 0;
 	}
 
 	_namespace.c_std_lib.is_array = function(imm) {
