@@ -7,7 +7,7 @@ use c_std_lib;
 use array;
 use ptd;
 
-def string::lf() {
+def string::lf() : ptd::string() {
 	return string::chr(10);
 }
 
@@ -19,11 +19,11 @@ def string::r() : ptd::string() {
 	return string::chr(13);
 }
 
-def string::f() {
+def string::f() : ptd::string() {
 	return string::chr(12);
 }
 
-def string::non_breaking_space() {
+def string::non_breaking_space() : ptd::arr(ptd::string()) {
 	return [string::chr(194), string::chr(160)];
 }
 
@@ -33,7 +33,7 @@ def string::char_times(char, time) : ptd::string() {
 	return ret;
 }
 
-def string::split(pattern, string) {
+def string::split(pattern, string) : ptd::arr(ptd::string()) {
 	var ret = [];
 	var beg = 0;
 	var lenPat = string::length(pattern);
@@ -53,7 +53,7 @@ def string::split(pattern, string) {
 	return ret;
 }
 
-def string::split_limit(pattern, string, limit) {
+def string::split_limit(pattern, string, limit) : ptd::arr(ptd::string()) {
 	var arr = string::split(pattern, string);
 	if (array::len(arr) > limit) {
 		var last = array::join(pattern, array::subarray(arr, limit - 1, array::len(arr) - limit + 1));
@@ -65,15 +65,15 @@ def string::split_limit(pattern, string, limit) {
 	}
 }
 
-def string::to_array(string) {
+def string::to_array(string) : ptd::arr(ptd::string()) {
 	return string::split('', string);
 }
 
-def string::length(s) {
+def string::length(s) : ptd::int() {
 	return c_std_lib::string_length(s);
 }
 
-def string::get_char_code(string, position) {
+def string::get_char_code(string, position) : ptd::int() {
 	return c_std_lib::string_get_char_code(string, position);
 }
 
@@ -85,7 +85,7 @@ def string::substr2(s, offset) : ptd::string() {
 	return c_std_lib::string_sub(s, offset, string::length(s) - offset) . '';
 }
 
-def string::lc(string) {
+def string::lc(string) : ptd::string() {
 	var arr = string::to_array(string);
 	rep var i (array::len(arr)) {
 		var n = string::ord(arr[i]);
@@ -97,7 +97,7 @@ def string::lc(string) {
 	return array::join('', arr);
 }
 
-def string::uc(string) {
+def string::uc(string) : ptd::string() {
 	var arr = string::to_array(string);
 	rep var i (array::len(arr)) {
 		var n = string::ord(arr[i]);
@@ -109,24 +109,24 @@ def string::uc(string) {
 	return array::join('', arr);
 }
 
-def string::index2(string, search) {
+def string::index2(string, search) : ptd::int() {
 	return c_std_lib::string_index(string, search, 0);
 }
 
-def string::index(string, search, position) {
+def string::index(string, search, position) : ptd::int() {
 	return c_std_lib::string_index(string, search, position);
 }
 
-def string::contain_lc(string, search) {
+def string::contain_lc(string, search) : ptd::bool() {
 	string = string::lc(string);
 	return string::index2(string, search) >= 0;
 }
 
-def string::replace(string, old, new) {
+def string::replace(string, old, new) { #TODO : ptd::string()
 	return c_std_lib::string_replace(string, old, new);
 }
 
-def string::replace_arr(string, search_arr, replace_arr) {
+def string::replace_arr(string, search_arr, replace_arr) { #TODO  : ptd::string()
 	var len = array::len(search_arr);
 	die unless len == array::len(replace_arr);
 	for(var i = 0; i < len; ++i) {
@@ -135,7 +135,7 @@ def string::replace_arr(string, search_arr, replace_arr) {
 	return string;
 }
 
-def string::ord(char) {
+def string::ord(char) : ptd::int() {
 	return c_std_lib::string_ord(char);
 }
 
@@ -162,30 +162,30 @@ def string::decode_utf16(str, le_en) {
 	return c_std_lib::string_decode_utf16(str, le_en);
 }
 
-def string::is_empty(string) {
+def string::is_empty(string) : ptd::bool() {
 	return string::length(string) == 0;
 }
 
-def string::chr(character) {
+def string::chr(character) : ptd::string() {
 	return c_std_lib::string_chr(character);
 }
 
-def string::lt(left, right) {
+def string::lt(left, right) : ptd::bool() {
 	return string::compare(left, right) < 0;
 }
 
-def string::gt(left, right) {
+def string::gt(left, right) : ptd::bool() {
 	return string::compare(left, right) > 0;
 }
 
-def string::compare(string_1, string_2) {
+def string::compare(string_1, string_2) : ptd::int() {
 	return c_std_lib::string_compare(string_1, string_2);
 }
 
-def string::le(string_1, string_2) {
+def string::le(string_1, string_2) : ptd::bool() {
 	return string::compare(string_1, string_2) <= 0;
 }
 
-def string::ge(string_1, string_2) {
+def string::ge(string_1, string_2) : ptd::bool() {
 	return string::compare(string_1, string_2) >= 0;
 }

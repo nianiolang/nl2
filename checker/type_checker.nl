@@ -1141,16 +1141,7 @@ def get_special_functions() : @tc_types::special_functions {
 			{mod => :none, type => tct::string(), name => ''},
 			]
 		});
-	hash::set_value(ref f, 'string::lf', {r => tct::string(), a => []});
-	hash::set_value(ref f, 'string::length', {r => tct::int(), a => [{mod => :none, type => tct::string(), name => ''}]});
-	hash::set_value(ref f, 'string::substr', {
-			r => tct::string(),
-			a => [
-				{mod => :none, type => tct::string(), name => ''},
-				{mod => :none, type => tct::int(), name => ''},
-				{mod => :none, type => tct::int(), name => ''}
-			]
-		});
+	# TODO REMOVE -->
 	hash::set_value(ref f, 'string::replace', {
 			r => tct::string(),
 			a => [
@@ -1159,22 +1150,7 @@ def get_special_functions() : @tc_types::special_functions {
 				{mod => :none, type => tct::string(), name => ''}
 			]
 		});
-	hash::set_value(ref f, 'string::chr', {r => tct::string(), a => [{mod => :none, type => tct::int(), name => ''}]});
-	hash::set_value(ref f, 'string::ord', {r => tct::int(), a => [{mod => :none, type => tct::string(), name => ''}]});
-	hash::set_value(ref f, 'string::is_letter', {r => tct::bool(), a => [{mod => :none, type => tct::string(), name => ''}]});
-	hash::set_value(ref f, 'string::is_digit', {r => tct::bool(), a => [{mod => :none, type => tct::string(), name => ''}]});
-	hash::set_value(ref f, 'string::split', {
-			r => tct::arr(tct::string()),
-			a => [{mod => :none, type => tct::string(), name => ''}, {mod => :none, type => tct::string(), name => ''}]
-		});
-	hash::set_value(ref f, 'string::to_array', {
-			r => tct::arr(tct::string()),
-			a => [{mod => :none, type => tct::string(), name => ''}]
-		});
-	hash::set_value(ref f, 'string::encode_utf16', {
-			r => tct::string(),
-			a => [{mod => :none, type => tct::tct_im(), name => ''}]
-		});
+	# TODO REMOVE <--
 	hash::set_value(ref f, 'c_std_lib::fast_substr', {
 			r => tct::string(),
 			a => [
@@ -1240,6 +1216,14 @@ def get_special_functions() : @tc_types::special_functions {
 			a => [
 				{mod => :none, type => tct::string(), name => ''},
 				{mod => :none, type => tct::int(), name => ''},
+			]
+		});
+	hash::set_value(ref f, 'c_std_lib::string_replace', {
+			r => tct::string(),
+			a => [
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
+				{mod => :none, type => tct::string(), name => ''},
 			]
 		});
 	hash::set_value(ref f, 'c_std_lib::string_compare', {
