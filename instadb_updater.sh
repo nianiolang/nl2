@@ -25,5 +25,6 @@ cp native_lib_c/c_trace.c $instadb_dir/c_compiler_lib/
 
 cp native_lib_js/* $instadb_dir/static/js/nl/
 cp nianio_lib/*.nl $instadb_dir/nianio_lib/
+rm $instadb_dir/nianio_lib/console.nl
 
 echo "OK"
