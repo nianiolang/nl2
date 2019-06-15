@@ -1149,16 +1149,6 @@ c_rt_lib0clear(&___nl__im__1);
 c_rt_lib0clear(&___nl__im__2);
 #line 126
 return ___nl__im__3;
-#line 126
-c_rt_lib0clear(&___nl__im__0);
-#line 126
-c_rt_lib0clear(&___nl__im__1);
-#line 126
-c_rt_lib0clear(&___nl__im__2);
-#line 126
-c_rt_lib0clear(&___nl__im__3);
-#line 126
-return NULL;
 return NULL;
 
 }
@@ -1256,20 +1246,6 @@ c_rt_lib0clear(&___nl__im__2);
 //clear ___nl__bool__8;
 #line 135
 return ___nl__im__0;
-#line 135
-c_rt_lib0clear(&___nl__im__0);
-#line 135
-c_rt_lib0clear(&___nl__im__1);
-#line 135
-c_rt_lib0clear(&___nl__im__2);
-#line 135
-//clear ___nl__int__3;
-#line 135
-//clear ___nl__int__7;
-#line 135
-//clear ___nl__bool__8;
-#line 135
-return NULL;
 return NULL;
 
 }
