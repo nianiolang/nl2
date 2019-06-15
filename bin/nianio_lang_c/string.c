@@ -1175,6 +1175,8 @@ bool  ___nl__bool__8 = false;
 ImmT  ___nl__im__9 = NULL;
 ImmT  ___nl__im__10 = NULL;
 INT  ___nl__int__11 = 0;
+ImmT  ___nl__im__12 = NULL;
+ImmT  ___nl__im__13 = NULL;
 #line 130
 ___nl__int__3 = c_rt_lib0array_len(___nl__im__1);
 #line 131
@@ -1235,6 +1237,14 @@ goto label_14;
 label_27:
 ;
 #line 135
+c_rt_lib0move(&___nl__im__13, ptd0string());
+#line 135
+c_rt_lib0move(&___nl__im__12, ptd0ensure(___nl__im__13, ___nl__im__0));
+#line 135
+c_rt_lib0clear(&___nl__im__13);
+#line 135
+c_rt_lib0clear(&___nl__im__0);
+#line 135
 c_rt_lib0clear(&___nl__im__1);
 #line 135
 c_rt_lib0clear(&___nl__im__2);
@@ -1245,7 +1255,7 @@ c_rt_lib0clear(&___nl__im__2);
 #line 135
 //clear ___nl__bool__8;
 #line 135
-return ___nl__im__0;
+return ___nl__im__12;
 return NULL;
 
 }
