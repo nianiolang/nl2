@@ -122,11 +122,11 @@ def string::contain_lc(string, search) : ptd::bool() {
 	return string::index2(string, search) >= 0;
 }
 
-def string::replace(string, old, new) { #TODO : ptd::string()
+def string::replace(string, old, new) : ptd::string() {
 	return c_std_lib::string_replace(string, old, new);
 }
 
-def string::replace_arr(string, search_arr, replace_arr) { #TODO  : ptd::string()
+def string::replace_arr(string : ptd::string(), search_arr, replace_arr) : ptd::string() {
 	var len = array::len(search_arr);
 	die unless len == array::len(replace_arr);
 	for(var i = 0; i < len; ++i) {

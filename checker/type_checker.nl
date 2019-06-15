@@ -1141,16 +1141,6 @@ def get_special_functions() : @tc_types::special_functions {
 			{mod => :none, type => tct::string(), name => ''},
 			]
 		});
-	# TODO REMOVE -->
-	hash::set_value(ref f, 'string::replace', {
-			r => tct::string(),
-			a => [
-				{mod => :none, type => tct::string(), name => ''},
-				{mod => :none, type => tct::string(), name => ''},
-				{mod => :none, type => tct::string(), name => ''}
-			]
-		});
-	# TODO REMOVE <--
 	hash::set_value(ref f, 'c_std_lib::fast_substr', {
 			r => tct::string(),
 			a => [
