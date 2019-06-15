@@ -318,22 +318,6 @@ def parse(ref state : @dfile::state_t, ref error : ptd::bool(), type : @ptd::met
 				return 'pos ' . state->pos . ': expected )';
 			}
 			return ov::mk_val(key, val);
-		} else {
-			if (type is :ptd_var) {
-				if (hash::has_key(type as :ptd_var, key)) {
-					match ((type as :ptd_var){key}) case :with_param(var param_type) {
-						error = true;
-						return 'expected variant value';
-					} case :no_param {
-					}
-				} else {
-					error = true;
-					return 'unexpected variant label ' . key;
-				}
-			} elsif (!type is :ptd_im) {
-				error = true;
-				return 'expected ' . dfile::ssave(type) . ', got '  . dfile::ssave(:ptd_hash);
-			}
 		}
 		eat_ws(ref state);
 		if (!match_s(ref state, ')')) {
