@@ -378,6 +378,7 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 	if (bin_op->op eq '=') {
 		var lvalue;
 		var dest;
+		var destination_empty = nlasm::is_empty(destination);
 		if (tct::is_own_type(bin_op->left->type, state->logic->defined_types)) {
 			lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
 			dest = lvalue[array::len(lvalue) - 1] as :value;
@@ -387,17 +388,13 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 			dest = lvalue[array::len(lvalue) - 1] as :value;
 			print_val(bin_op->right, dest, ref state);
 		} else {
-			var destination_empty = nlasm::is_empty(destination);
-			if (destination_empty) {
-				destination = {type => :im, reg_no => -1, access_type => :value};
-			}
 			var right = dest_val(bin_op->right, ref state);
 			lvalue = get_value_of_lvalue(bin_op->left, false, ref state);
 			dest = lvalue[array::len(lvalue) - 1] as :value;
 			move(dest, right, ref state);
-			if (!destination_empty) {
-				move(destination, dest, ref state);
-			}
+		}
+		if (!destination_empty) {
+			move(destination, dest, ref state);
 		}
 		set_value_of_lvalue(lvalue, false, ref state);
 	} elsif (bin_op->op eq '[]=') {

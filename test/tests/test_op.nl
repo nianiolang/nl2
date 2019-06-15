@@ -32,6 +32,13 @@ def test_op::test_one() {
 	g[0] .= '...';
 	nassert::a(g, ['cos ciekawego...']);
 	nassert::a(h, 'cos ciekawego');
+	var j = 2;
+	var k = 2;
+	var l = 2;
+	j = k = l = 3;
+	nassert::a(j, 3);
+	nassert::a(k, 3);
+	nassert::a(l, 3);
 	return 'OK';
 }
 
