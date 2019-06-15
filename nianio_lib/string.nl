@@ -126,13 +126,13 @@ def string::replace(string, old, new) : ptd::string() {
 	return c_std_lib::string_replace(string, old, new);
 }
 
-def string::replace_arr(string : ptd::string(), search_arr, replace_arr) : ptd::string() {
+def string::replace_arr(string, search_arr, replace_arr) : ptd::string() {
 	var len = array::len(search_arr);
 	die unless len == array::len(replace_arr);
 	for(var i = 0; i < len; ++i) {
 		string = string::replace(string, search_arr[i], replace_arr[i]);
 	}
-	return string;
+	return ptd::ensure(ptd::string(), string);
 }
 
 def string::ord(char) : ptd::int() {
