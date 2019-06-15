@@ -17942,21 +17942,21 @@ c_rt_lib0arg_val(___nl__im__0);
 ptd_system_priv0__const__init();
 ImmT  ___nl__im__3 = NULL;
 ImmT  ___nl__im__4 = NULL;
-ImmT  ___nl__im__5 = NULL;
+INT  ___nl__int__5 = 0;
 ImmT  ___nl__im__6 = NULL;
 bool  ___nl__bool__7 = false;
 INT  ___nl__int__8 = 0;
 INT  ___nl__int__9 = 0;
-INT  ___nl__int__10 = 0;
-INT  ___nl__int__11 = 0;
+ImmT  ___nl__im__10 = NULL;
+ImmT  ___nl__im__11 = NULL;
 INT  ___nl__int__12 = 0;
 INT  ___nl__int__13 = 0;
-INT  ___nl__int__14 = 0;
+ImmT  ___nl__im__14 = NULL;
 INT  ___nl__int__15 = 0;
 INT  ___nl__int__16 = 0;
 INT  ___nl__int__17 = 0;
 INT  ___nl__int__18 = 0;
-INT  ___nl__int__19 = 0;
+ImmT  ___nl__im__19 = NULL;
 ImmT  ___nl__im__20 = NULL;
 ImmT  ___nl__im__21 = NULL;
 ImmT  ___nl__im__22 = NULL;
@@ -17982,67 +17982,67 @@ ImmT  ___nl__im__41 = NULL;
 #line 748
 c_rt_lib0move(&___nl__im__6,___get_global_string_const(34));
 #line 748
-c_rt_lib0move(&___nl__im__5, string0index2(___nl__im__0, ___nl__im__6));
+___nl__int__5 = string0index2(___nl__im__0, ___nl__im__6);
 #line 748
 c_rt_lib0clear(&___nl__im__6);
 #line 749
 ___nl__int__8 = 0;
 #line 749
-___nl__int__9 = getIntFromImm(___nl__im__5);
-#line 749
-___nl__bool__7 = ___nl__int__9 >= ___nl__int__8;
+___nl__bool__7 = ___nl__int__5 >= ___nl__int__8;
 #line 749
 //clear ___nl__int__8;
-#line 749
-//clear ___nl__int__9;
 #line 749
 ___nl__bool__7 = !___nl__bool__7;
 #line 749
 if(___nl__bool__7){ goto label_33;}
 #line 750
-___nl__int__10 = 0;
+___nl__int__9 = 0;
 #line 750
-___nl__int__11 = getIntFromImm(___nl__im__5);
+c_rt_lib0move(&___nl__im__10, c_rt_lib0int_new(___nl__int__9));
 #line 750
-c_rt_lib0move(&___nl__im__3, string0substr(___nl__im__0, ___nl__int__10, ___nl__int__11));
+c_rt_lib0move(&___nl__im__11, c_rt_lib0int_new(___nl__int__5));
 #line 750
-//clear ___nl__int__10;
+c_rt_lib0move(&___nl__im__3, string0substr(___nl__im__0, ___nl__im__10, ___nl__im__11));
 #line 750
-//clear ___nl__int__11;
+//clear ___nl__int__9;
+#line 750
+c_rt_lib0clear(&___nl__im__10);
+#line 750
+c_rt_lib0clear(&___nl__im__11);
 #line 751
 ___nl__int__13 = 2;
 #line 751
-___nl__int__14 = getIntFromImm(___nl__im__5);
-#line 751
-___nl__int__12 = ___nl__int__14 + ___nl__int__13;
+___nl__int__12 = ___nl__int__5 + ___nl__int__13;
 #line 751
 //clear ___nl__int__13;
 #line 751
-//clear ___nl__int__14;
+c_rt_lib0move(&___nl__im__14, c_rt_lib0int_new(___nl__int__12));
 #line 751
 ___nl__int__17 = string0length(___nl__im__0);
 #line 751
-___nl__int__18 = getIntFromImm(___nl__im__5);
-#line 751
-___nl__int__16 = ___nl__int__17 - ___nl__int__18;
+___nl__int__16 = ___nl__int__17 - ___nl__int__5;
 #line 751
 //clear ___nl__int__17;
 #line 751
-//clear ___nl__int__18;
+___nl__int__18 = 2;
 #line 751
-___nl__int__19 = 2;
-#line 751
-___nl__int__15 = ___nl__int__16 - ___nl__int__19;
+___nl__int__15 = ___nl__int__16 - ___nl__int__18;
 #line 751
 //clear ___nl__int__16;
 #line 751
-//clear ___nl__int__19;
+//clear ___nl__int__18;
 #line 751
-c_rt_lib0move(&___nl__im__4, string0substr(___nl__im__0, ___nl__int__12, ___nl__int__15));
+c_rt_lib0move(&___nl__im__19, c_rt_lib0int_new(___nl__int__15));
+#line 751
+c_rt_lib0move(&___nl__im__4, string0substr(___nl__im__0, ___nl__im__14, ___nl__im__19));
 #line 751
 //clear ___nl__int__12;
 #line 751
+c_rt_lib0clear(&___nl__im__14);
+#line 751
 //clear ___nl__int__15;
+#line 751
+c_rt_lib0clear(&___nl__im__19);
 #line 752
 goto label_51;
 #line 752
@@ -18075,7 +18075,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 754
 c_rt_lib0clear(&___nl__im__4);
 #line 754
-c_rt_lib0clear(&___nl__im__5);
+//clear ___nl__int__5;
 #line 754
 //clear ___nl__bool__7;
 #line 754
@@ -18128,7 +18128,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 758
 c_rt_lib0clear(&___nl__im__4);
 #line 758
-c_rt_lib0clear(&___nl__im__5);
+//clear ___nl__int__5;
 #line 758
 //clear ___nl__bool__25;
 #line 758
@@ -18183,7 +18183,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 763
 c_rt_lib0clear(&___nl__im__4);
 #line 763
-c_rt_lib0clear(&___nl__im__5);
+//clear ___nl__int__5;
 #line 763
 c_rt_lib0clear(&___nl__im__32);
 #line 763
@@ -18212,7 +18212,7 @@ c_rt_lib0clear(&___nl__im__3);
 #line 765
 c_rt_lib0clear(&___nl__im__4);
 #line 765
-c_rt_lib0clear(&___nl__im__5);
+//clear ___nl__int__5;
 #line 765
 c_rt_lib0clear(&___nl__im__32);
 #line 765

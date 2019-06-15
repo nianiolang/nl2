@@ -21045,6 +21045,7 @@ ImmT  ___nl__im__25 = NULL;
 ImmT  ___nl__im__26 = NULL;
 ImmT  ___nl__im__27 = NULL;
 ImmT  ___nl__im__28 = NULL;
+ImmT  ___nl__im__29 = NULL;
 #line 1483
 c_rt_lib0move(&___nl__im__3,___get_global_string_const(36));
 #line 1483
@@ -21114,55 +21115,59 @@ c_rt_lib0clear(&___nl__im__15);
 #line 1490
 ___nl__int__17 = 0;
 #line 1490
-c_rt_lib0move(&___nl__im__16, string0chr(___nl__int__17));
+c_rt_lib0move(&___nl__im__18, c_rt_lib0int_new(___nl__int__17));
+#line 1490
+c_rt_lib0move(&___nl__im__16, string0chr(___nl__im__18));
 #line 1490
 //clear ___nl__int__17;
 #line 1490
-c_rt_lib0move(&___nl__im__18,___get_global_string_const(630));
+c_rt_lib0clear(&___nl__im__18);
 #line 1490
-c_rt_lib0move(&___nl__im__2, string0replace(___nl__im__2, ___nl__im__16, ___nl__im__18));
+c_rt_lib0move(&___nl__im__19,___get_global_string_const(630));
+#line 1490
+c_rt_lib0move(&___nl__im__2, string0replace(___nl__im__2, ___nl__im__16, ___nl__im__19));
 #line 1490
 c_rt_lib0clear(&___nl__im__16);
 #line 1490
-c_rt_lib0clear(&___nl__im__18);
+c_rt_lib0clear(&___nl__im__19);
 #line 1491
-c_rt_lib0move(&___nl__im__25,___get_global_string_const(631));
+c_rt_lib0move(&___nl__im__26,___get_global_string_const(631));
 #line 1491
-c_rt_lib0move(&___nl__im__24, generator_c_priv0get_lib_fun(___nl__im__25));
-#line 1491
-c_rt_lib0clear(&___nl__im__25);
-#line 1491
-c_rt_lib0move(&___nl__im__26,___get_global_string_const(627));
-#line 1491
-c_rt_lib0move(&___nl__im__23, c_rt_lib0concat_new(___nl__im__24, ___nl__im__26));
-#line 1491
-c_rt_lib0clear(&___nl__im__24);
+c_rt_lib0move(&___nl__im__25, generator_c_priv0get_lib_fun(___nl__im__26));
 #line 1491
 c_rt_lib0clear(&___nl__im__26);
 #line 1491
-c_rt_lib0move(&___nl__im__22, c_rt_lib0concat_new(___nl__im__23, ___nl__im__2));
+c_rt_lib0move(&___nl__im__27,___get_global_string_const(627));
 #line 1491
-c_rt_lib0clear(&___nl__im__23);
+c_rt_lib0move(&___nl__im__24, c_rt_lib0concat_new(___nl__im__25, ___nl__im__27));
 #line 1491
-c_rt_lib0move(&___nl__im__27,___get_global_string_const(632));
-#line 1491
-c_rt_lib0move(&___nl__im__21, c_rt_lib0concat_new(___nl__im__22, ___nl__im__27));
-#line 1491
-c_rt_lib0clear(&___nl__im__22);
+c_rt_lib0clear(&___nl__im__25);
 #line 1491
 c_rt_lib0clear(&___nl__im__27);
 #line 1491
-c_rt_lib0move(&___nl__im__20, c_rt_lib0concat_new(___nl__im__21, ___nl__im__1));
+c_rt_lib0move(&___nl__im__23, c_rt_lib0concat_new(___nl__im__24, ___nl__im__2));
+#line 1491
+c_rt_lib0clear(&___nl__im__24);
+#line 1491
+c_rt_lib0move(&___nl__im__28,___get_global_string_const(632));
+#line 1491
+c_rt_lib0move(&___nl__im__22, c_rt_lib0concat_new(___nl__im__23, ___nl__im__28));
+#line 1491
+c_rt_lib0clear(&___nl__im__23);
+#line 1491
+c_rt_lib0clear(&___nl__im__28);
+#line 1491
+c_rt_lib0move(&___nl__im__21, c_rt_lib0concat_new(___nl__im__22, ___nl__im__1));
+#line 1491
+c_rt_lib0clear(&___nl__im__22);
+#line 1491
+c_rt_lib0move(&___nl__im__29,___get_global_string_const(336));
+#line 1491
+c_rt_lib0move(&___nl__im__20, c_rt_lib0concat_new(___nl__im__21, ___nl__im__29));
 #line 1491
 c_rt_lib0clear(&___nl__im__21);
 #line 1491
-c_rt_lib0move(&___nl__im__28,___get_global_string_const(336));
-#line 1491
-c_rt_lib0move(&___nl__im__19, c_rt_lib0concat_new(___nl__im__20, ___nl__im__28));
-#line 1491
-c_rt_lib0clear(&___nl__im__20);
-#line 1491
-c_rt_lib0clear(&___nl__im__28);
+c_rt_lib0clear(&___nl__im__29);
 #line 1491
 c_rt_lib0clear(&___nl__im__0);
 #line 1491
@@ -21170,7 +21175,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 1491
 c_rt_lib0clear(&___nl__im__2);
 #line 1491
-return ___nl__im__19;
+return ___nl__im__20;
 return NULL;
 
 }
@@ -27003,31 +27008,36 @@ return NULL;
 ImmT  generator_c_priv0get_type_module_name(ImmT  ___nl__im__0) {
 c_rt_lib0arg_val(___nl__im__0);
 generator_c_priv0__const__init();
-ImmT  ___nl__im__1 = NULL;
+INT  ___nl__int__1 = 0;
 ImmT  ___nl__im__2 = NULL;
 ImmT  ___nl__im__3 = NULL;
 INT  ___nl__int__4 = 0;
-INT  ___nl__int__5 = 0;
+ImmT  ___nl__im__5 = NULL;
+ImmT  ___nl__im__6 = NULL;
 #line 1986
 c_rt_lib0move(&___nl__im__2,___get_global_string_const(34));
 #line 1986
-c_rt_lib0move(&___nl__im__1, string0index2(___nl__im__0, ___nl__im__2));
+___nl__int__1 = string0index2(___nl__im__0, ___nl__im__2);
 #line 1986
 c_rt_lib0clear(&___nl__im__2);
 #line 1987
 ___nl__int__4 = 0;
 #line 1987
-___nl__int__5 = getIntFromImm(___nl__im__1);
+c_rt_lib0move(&___nl__im__5, c_rt_lib0int_new(___nl__int__4));
 #line 1987
-c_rt_lib0move(&___nl__im__3, string0substr(___nl__im__0, ___nl__int__4, ___nl__int__5));
+c_rt_lib0move(&___nl__im__6, c_rt_lib0int_new(___nl__int__1));
+#line 1987
+c_rt_lib0move(&___nl__im__3, string0substr(___nl__im__0, ___nl__im__5, ___nl__im__6));
 #line 1987
 //clear ___nl__int__4;
 #line 1987
-//clear ___nl__int__5;
+c_rt_lib0clear(&___nl__im__5);
+#line 1987
+c_rt_lib0clear(&___nl__im__6);
 #line 1987
 c_rt_lib0clear(&___nl__im__0);
 #line 1987
-c_rt_lib0clear(&___nl__im__1);
+//clear ___nl__int__1;
 #line 1987
 return ___nl__im__3;
 return NULL;
