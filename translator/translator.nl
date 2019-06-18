@@ -1108,6 +1108,11 @@ def print_array_push(dest : @nlasm::reg_t, value : @nlasm::reg_t, ref state : @t
 	var real_value = value;
 	if (dest->type is :im) {
 		real_value = get_cast(value, :im, ref state);
+	} elsif (dest->type is :arr) {
+		var inner_type = unwrap_ref(dest->type as :arr, state->logic->defined_types) as :tct_own_arr;
+		if (inner_type is :tct_int || inner_type is :tct_bool || inner_type is :tct_string || inner_type is :tct_im) {
+			real_value = get_cast(value, var_type_to_reg_type(inner_type, state->logic->defined_types), ref state);
+		}
 	}
 	if (!value->type is :im && !value->type is :string)	{
 		state->logic->register_to_clear[value->reg_no] = false;
