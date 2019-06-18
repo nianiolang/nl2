@@ -35,7 +35,7 @@ return &(arr->value[index]);
 INT own_array0anon_type00ownarranon_type00im0len(anon_type00ownarranon_type00im *arr) {
 return arr->size;
 }
-void own_array0anon_type00ownarranon_type00im0clean(anon_type00ownarranon_type00im arr) {
+void own_array0anon_type00ownarranon_type00im0clear(anon_type00ownarranon_type00im arr) {
 if (arr.value == NULL) return;
 for (unsigned int i = 0; i < arr.size; i++) {
 	;
@@ -43,7 +43,7 @@ for (unsigned int i = 0; i < arr.size; i++) {
 free_mem(arr.value, sizeof(ImmT )*arr.capacity);
 }
 void own_array0anon_type00ownarranon_type00im0free(anon_type00ownarranon_type00im *arr) {
-own_array0anon_type00ownarranon_type00im0clean(*arr);
+own_array0anon_type00ownarranon_type00im0clear(*arr);
 free_mem(arr, sizeof(*arr));
 }
 

@@ -68,7 +68,7 @@ return &(arr->value[index]);
 INT compiler0anon_type00ownarranon_type00im0len(anon_type00ownarranon_type00im *arr) {
 return arr->size;
 }
-void compiler0anon_type00ownarranon_type00im0clean(anon_type00ownarranon_type00im arr) {
+void compiler0anon_type00ownarranon_type00im0clear(anon_type00ownarranon_type00im arr) {
 if (arr.value == NULL) return;
 for (unsigned int i = 0; i < arr.size; i++) {
 	c_rt_lib0delete(arr.value[i]);
@@ -76,17 +76,17 @@ for (unsigned int i = 0; i < arr.size; i++) {
 free_mem(arr.value, sizeof(ImmT )*arr.capacity);
 }
 void compiler0anon_type00ownarranon_type00im0free(anon_type00ownarranon_type00im *arr) {
-compiler0anon_type00ownarranon_type00im0clean(*arr);
+compiler0anon_type00ownarranon_type00im0clear(*arr);
 free_mem(arr, sizeof(*arr));
 }
-void compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE0clean(anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE rec) {
-generator_c0const_t0type0clean(rec.int0field);;
-generator_c0const_t0type0clean(rec.string0field);;
-generator_c0const_t0type0clean(rec.singleton0field);;
+void compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE0clear(anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE rec) {
+generator_c0const_t0type0clear(rec.int0field);;
+generator_c0const_t0type0clear(rec.string0field);;
+generator_c0const_t0type0clear(rec.singleton0field);;
 ;
 }
 void compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE0free(anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE *rec) {
-compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE0clean(*rec);
+compiler0anon_type00RBanon_type00refgenerator_c0const_t0type0int0anon_type00refgenerator_c0const_t0type0string0anon_type00refgenerator_c0const_t0type0singleton0anon_type00int0dynamic_nr0RE0clear(*rec);
 free_mem(rec, sizeof(*rec));
 }
 bool  *compiler0anon_type00ownhashanon_type00bool0get_ptr(anon_type00ownhashanon_type00bool *hash, ImmT key, bool create_if_not_exist) {
@@ -141,7 +141,7 @@ INT compiler0anon_type00ownhashanon_type00bool0next_iter(anon_type00ownhashanon_
 	if (iter == hash->capacity || hash->keys[iter] == NULL) return -1;
 	return iter;
 }
-void compiler0anon_type00ownhashanon_type00bool0clean(anon_type00ownhashanon_type00bool hash) {
+void compiler0anon_type00ownhashanon_type00bool0clear(anon_type00ownhashanon_type00bool hash) {
 for (unsigned int i = 0; i < hash.capacity; i++) {
 	if (hash.keys[i] != NULL) {
 		c_rt_lib0delete(hash.keys[i]);
@@ -152,7 +152,7 @@ free_mem(hash.values, sizeof(bool )*hash.capacity);
 free_mem(hash.keys, sizeof(ImmT)*hash.capacity);
 }
 void compiler0anon_type00ownhashanon_type00bool0free(anon_type00ownhashanon_type00bool *hash) {
-compiler0anon_type00ownhashanon_type00bool0clean(*hash);
+compiler0anon_type00ownhashanon_type00bool0clear(*hash);
 free_mem(hash, sizeof(*hash));
 }
 ImmT  compiler_priv0get_dir_cache_name();
@@ -4290,7 +4290,7 @@ ___nl__rec_ptr__34 = &(___nl__rec_ptr__32->int0field);
 #line 382
 ___nl__arr_ptr__35 = &(___nl__rec_ptr__34->arr0field);
 #line 382
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__35));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__35));
 (*___nl__arr_ptr__35).size = 0;
 (*___nl__arr_ptr__35).capacity = 0;
 (*___nl__arr_ptr__35).value = NULL;
@@ -4311,7 +4311,7 @@ ___nl__rec_ptr__37 = &(___nl__rec_ptr__32->string0field);
 #line 383
 ___nl__arr_ptr__38 = &(___nl__rec_ptr__37->arr0field);
 #line 383
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__38));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__38));
 (*___nl__arr_ptr__38).size = 0;
 (*___nl__arr_ptr__38).capacity = 0;
 (*___nl__arr_ptr__38).value = NULL;
@@ -4332,7 +4332,7 @@ ___nl__rec_ptr__40 = &(___nl__rec_ptr__32->singleton0field);
 #line 384
 ___nl__arr_ptr__41 = &(___nl__rec_ptr__40->arr0field);
 #line 384
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__41));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__41));
 (*___nl__arr_ptr__41).size = 0;
 (*___nl__arr_ptr__41).capacity = 0;
 (*___nl__arr_ptr__41).value = NULL;
@@ -4357,7 +4357,7 @@ ___nl__im_ptr__43 = NULL;
 #line 386
 ___nl__hash_ptr__44 = &(___nl__rec__17.additional_imports0field);
 #line 387
-compiler0anon_type00ownhashanon_type00bool0clean((*___nl__hash_ptr__44));
+compiler0anon_type00ownhashanon_type00bool0clear((*___nl__hash_ptr__44));
 (*___nl__hash_ptr__44).size = 0;
 (*___nl__hash_ptr__44).capacity = 0;
 (*___nl__hash_ptr__44).keys = NULL;
@@ -6197,7 +6197,7 @@ c_rt_lib0clear(&___nl__im__13);
 #line 393
 c_rt_lib0clear(&___nl__im__16);
 #line 393
-generator_c0state_t0type0clean(___nl__rec__17);;
+generator_c0state_t0type0clear(___nl__rec__17);;
 #line 393
 c_rt_lib0clear(&___nl__im__46);
 #line 393
@@ -6835,7 +6835,7 @@ ___nl__rec_ptr__63 = &(___nl__rec_ptr__61->int0field);
 #line 589
 ___nl__arr_ptr__64 = &(___nl__rec_ptr__63->arr0field);
 #line 589
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__64));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__64));
 (*___nl__arr_ptr__64).size = 0;
 (*___nl__arr_ptr__64).capacity = 0;
 (*___nl__arr_ptr__64).value = NULL;
@@ -6856,7 +6856,7 @@ ___nl__rec_ptr__66 = &(___nl__rec_ptr__61->string0field);
 #line 590
 ___nl__arr_ptr__67 = &(___nl__rec_ptr__66->arr0field);
 #line 590
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__67));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__67));
 (*___nl__arr_ptr__67).size = 0;
 (*___nl__arr_ptr__67).capacity = 0;
 (*___nl__arr_ptr__67).value = NULL;
@@ -6877,7 +6877,7 @@ ___nl__rec_ptr__69 = &(___nl__rec_ptr__61->singleton0field);
 #line 591
 ___nl__arr_ptr__70 = &(___nl__rec_ptr__69->arr0field);
 #line 591
-compiler0anon_type00ownarranon_type00im0clean((*___nl__arr_ptr__70));
+compiler0anon_type00ownarranon_type00im0clear((*___nl__arr_ptr__70));
 (*___nl__arr_ptr__70).size = 0;
 (*___nl__arr_ptr__70).capacity = 0;
 (*___nl__arr_ptr__70).value = NULL;
@@ -6902,7 +6902,7 @@ ___nl__im_ptr__72 = NULL;
 #line 593
 ___nl__hash_ptr__73 = &(___nl__rec__46.additional_imports0field);
 #line 594
-compiler0anon_type00ownhashanon_type00bool0clean((*___nl__hash_ptr__73));
+compiler0anon_type00ownhashanon_type00bool0clear((*___nl__hash_ptr__73));
 (*___nl__hash_ptr__73).size = 0;
 (*___nl__hash_ptr__73).capacity = 0;
 (*___nl__hash_ptr__73).keys = NULL;
@@ -7114,7 +7114,7 @@ c_rt_lib0clear(&___nl__im__22);
 #line 617
 //clear ___nl__bool__42;
 #line 617
-generator_c0state_t0type0clean(___nl__rec__46);;
+generator_c0state_t0type0clear(___nl__rec__46);;
 #line 617
 c_rt_lib0clear(&___nl__im__76);
 #line 617
@@ -7184,7 +7184,7 @@ label_365:
 #line 621
 //clear ___nl__bool__42;
 #line 621
-generator_c0state_t0type0clean(___nl__rec__46);;
+generator_c0state_t0type0clear(___nl__rec__46);;
 #line 621
 c_rt_lib0clear(&___nl__im__76);
 #line 621

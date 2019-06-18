@@ -17,7 +17,7 @@ ImmT  *value;
 void own_array0anon_type00ownarranon_type00im0push(anon_type00ownarranon_type00im *arr, ImmT  arg);
 ImmT  *own_array0anon_type00ownarranon_type00im0get_ptr(anon_type00ownarranon_type00im *arr, INT index);
 INT own_array0anon_type00ownarranon_type00im0len(anon_type00ownarranon_type00im *arr);
-void own_array0anon_type00ownarranon_type00im0clean(anon_type00ownarranon_type00im arr);
+void own_array0anon_type00ownarranon_type00im0clear(anon_type00ownarranon_type00im arr);
 void own_array0anon_type00ownarranon_type00im0free(anon_type00ownarranon_type00im *arr);
 
 INT  own_array0len(anon_type00ownarranon_type00im* ___ref___arr__0);
