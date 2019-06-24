@@ -38,7 +38,9 @@ def build_empty_state(reg_size : ptd::int()) : @unnecessary_commands::block_stat
 
 def has_side_effects(cmd_c : @nlasm::cmd_t) {
 	var cmd = cmd_c->cmd;
-	return (cmd is :call || cmd is :return || cmd is :die || cmd is :prt_lbl || cmd is :if_goto || cmd is :goto);
+	return !(cmd is :bin_op || cmd is :una_op || cmd is :ov_is || cmd is :ov_as || cmd is :move ||
+		cmd is :get_frm_idx || cmd is :set_at_idx || cmd is :array_push || cmd is :array_len ||
+		cmd is :get_val || cmd is :set_val || cmd is :ov_mk || cmd is :clear || cmd is :var_decl);
 }
 
 def build_blocks_states(blocks : @flow_graph::blocks_t, reg_size : ptd::int()) : @unnecessary_commands::state_t {
