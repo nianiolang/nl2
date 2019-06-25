@@ -108,7 +108,7 @@ def array::sort_comparator(ref variable, comp) {
 def array::equal(arr1, arr2) {
 	return false unless array::len(arr1) == array::len(arr2);
 	rep var i (array::len(arr1)) {
-		return false unless arr1[i] == arr2[i];
+		return false unless arr1[i] eq arr2[i];
 	}
 	return true;
 }
