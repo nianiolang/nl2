@@ -865,10 +865,8 @@ bool  ___nl__bool__9 = false;
 bool  ___nl__bool__10 = false;
 ImmT  ___nl__im__11 = NULL;
 ImmT  ___nl__im__12 = NULL;
-INT  ___nl__int__13 = 0;
-INT  ___nl__int__14 = 0;
-bool  ___nl__bool__15 = false;
-bool  ___nl__bool__16 = false;
+bool  ___nl__bool__13 = false;
+bool  ___nl__bool__14 = false;
 #line 109
 ___nl__int__3 = c_rt_lib0array_len(___nl__im__0);
 #line 109
@@ -916,33 +914,25 @@ label_20:
 #line 110
 ___nl__bool__9 = ___nl__int__7 >= ___nl__int__6;
 #line 110
-if(___nl__bool__9){ goto label_50;}
+if(___nl__bool__9){ goto label_46;}
 #line 111
 c_rt_lib0move(&___nl__im__11, c_rt_lib0array_get(___nl__im__0, ___nl__int__7));
 #line 111
 c_rt_lib0move(&___nl__im__12, c_rt_lib0array_get(___nl__im__1, ___nl__int__7));
 #line 111
-___nl__int__13 = getIntFromImm(___nl__im__11);
-#line 111
-___nl__int__14 = getIntFromImm(___nl__im__12);
-#line 111
-___nl__bool__10 = ___nl__int__13 == ___nl__int__14;
+___nl__bool__10 = c_rt_lib0eq(___nl__im__11, ___nl__im__12);
 #line 111
 c_rt_lib0clear(&___nl__im__11);
 #line 111
 c_rt_lib0clear(&___nl__im__12);
 #line 111
-//clear ___nl__int__13;
-#line 111
-//clear ___nl__int__14;
-#line 111
 ___nl__bool__10 = !___nl__bool__10;
 #line 111
 ___nl__bool__10 = !___nl__bool__10;
 #line 111
-if(___nl__bool__10){ goto label_45;}
+if(___nl__bool__10){ goto label_41;}
 #line 111
-___nl__bool__15 = false;
+___nl__bool__13 = false;
 #line 111
 c_rt_lib0clear(&___nl__im__0);
 #line 111
@@ -958,25 +948,25 @@ c_rt_lib0clear(&___nl__im__1);
 #line 111
 //clear ___nl__bool__10;
 #line 111
-return ___nl__bool__15;
+return ___nl__bool__13;
 #line 111
-goto label_45;
+goto label_41;
 #line 111
-label_45:
+label_41:
 ;
 #line 111
 //clear ___nl__bool__10;
 #line 111
-//clear ___nl__bool__15;
+//clear ___nl__bool__13;
 #line 112
 ___nl__int__7 = ___nl__int__7 + ___nl__int__8;
 #line 112
 goto label_20;
 #line 112
-label_50:
+label_46:
 ;
 #line 113
-___nl__bool__16 = true;
+___nl__bool__14 = true;
 #line 113
 c_rt_lib0clear(&___nl__im__0);
 #line 113
@@ -990,7 +980,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 113
 //clear ___nl__bool__9;
 #line 113
-return ___nl__bool__16;
+return ___nl__bool__14;
 #line 113
 c_rt_lib0clear(&___nl__im__0);
 #line 113
@@ -1004,7 +994,7 @@ c_rt_lib0clear(&___nl__im__1);
 #line 113
 //clear ___nl__bool__9;
 #line 113
-//clear ___nl__bool__16;
+//clear ___nl__bool__14;
 #line 113
 return false;
 return false;
