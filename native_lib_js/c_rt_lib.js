@@ -784,7 +784,11 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 		} else if (imm.get_imm_type() == 'string') {
 			return imm.as_js_str();
 		} else if (imm.get_imm_type() == 'ov') {
-			if (imm.value == 'TRUE') {
+			if(imm.value === null) {
+				return {
+					name: imm.name.as_js_str(),
+				};
+			} else if (imm.value == 'TRUE') {
 				return true;
 			} else if (imm.value == 'FALSE') {
 				return false;
