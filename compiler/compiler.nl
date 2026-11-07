@@ -83,6 +83,7 @@ def compiler::js_opts() {
 	return ptd::rec({
 		namespace => ptd::string(),
 		sourcemap => ptd::bool(),
+		coverage => ptd::bool(),
 	});
 }
 
@@ -811,7 +812,7 @@ def generate_modules_to_files(modules : ptd::hash(@nlasm::result_t), nianio_file
 			if (params->sourcemap) {
 				sourcemap = :yes(paths->map_dir_js);
 			}
-			var ret = generator_js::generate(nlasm, params->namespace, sourcemap);
+			var ret = generator_js::generate_with_coverage(nlasm, params->namespace, sourcemap, params->coverage);
 			c_fe_lib::print('saving file: ' . module);
 			try_save_file(ret->js, paths->js, ref error);
 			if (params->sourcemap) {
@@ -957,6 +958,15 @@ def parse_command_line_args(args : ptd::arr(ptd::string())) : @compiler::input_t
 				}
 				as_js->sourcemap = true;
 				ret->language = :js(as_js);
+			} elsif (opt eq 'coverage') {
+				var as_js;
+				if (ret->language is :js) {
+					as_js = ret->language as :js;
+				} else {
+					as_js = get_default_js_opts();
+				}
+				as_js->coverage = true;
+				ret->language = :js(as_js);
 			} else {
 				c_fe_lib::print('unknown compiler option: ' . el);
 			}
@@ -977,6 +987,7 @@ def get_default_js_opts() : @compiler::js_opts {
 	return {
 		namespace => 'nl',
 		sourcemap => false,
+		coverage => false,
 	};
 }
 

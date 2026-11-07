@@ -10,6 +10,7 @@ use ptd;
 use nast;
 use hash;
 use nlasm;
+use flow_graph;
 
 def translator::function_logic_t() {
 	return ptd::rec({
@@ -102,6 +103,8 @@ def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct:
 				}
 			};
 		print_fun_def(function, ref state);
+		state->result->commands = flow_graph::remove_unreachable_commands(
+			state->result->commands, state->result->args_type);
 		array::push(ref result->functions, state->result);
 	}
 	return result;
@@ -122,7 +125,9 @@ def print_fun_def(function : @nast::fun_def_t, ref state : @translator::state_t)
 	state->result->ret_type = function->ret_type->tct_type;
 	state->result->ret_reg_type = var_type_to_reg_type(function->ret_type->tct_type, state->logic->defined_types);
 	state->result->line = function->line;
+	var falls_through = command_falls_through(function->cmd);
 	print_cmd(function->cmd, ref state);
+	return unless falls_through;
 	var default_return = {
 		debug => {begin => function->cmd->debug->end, end => function->cmd->debug->end, comment => []},
 		value => :nop,
@@ -497,6 +502,122 @@ def print_bin_op(as_bin_op : @nast::value_t, destination : @nlasm::reg_t, ref st
 def print_cmd_array(arr : ptd::arr(@nast::cmd_t), ref state : @translator::state_t) {
 	fora var c (arr) {
 		print_cmd(c, ref state);
+		break unless command_falls_through(c);
+	}
+}
+
+def command_array_falls_through(commands : ptd::arr(@nast::cmd_t)) : ptd::bool() {
+	fora var command (commands) {
+		return false unless command_falls_through(command);
+	}
+	return true;
+}
+
+def command_has_loop_break(command : @nast::cmd_t) : ptd::bool() {
+	match (command->cmd) case :if(var as_if) {
+		return true if command_has_loop_break(as_if->if);
+		fora var else_if (as_if->elsif) {
+			return true if command_has_loop_break(else_if->cmd);
+		}
+		return command_has_loop_break(as_if->else);
+	} case :fora(var value) {
+		return false;
+	} case :loop(var value) {
+		return false;
+	} case :rep(var value) {
+		return false;
+	} case :forh(var value) {
+		return false;
+	} case :while(var value) {
+		return false;
+	} case :for(var value) {
+		return false;
+	} case :nop {
+		return false;
+	} case :value(var value) {
+		return false;
+	} case :block(var block) {
+		fora var nested (block->cmds) {
+			return true if command_has_loop_break(nested);
+			break unless command_falls_through(nested);
+		}
+		return false;
+	} case :return(var value) {
+		return false;
+	} case :match(var as_match) {
+		fora var branch (as_match->branch_list) {
+			return true if command_has_loop_break(branch->cmd);
+		}
+		return false;
+	} case :try(var value) {
+		return false;
+	} case :ensure(var value) {
+		return false;
+	} case :break {
+		return true;
+	} case :continue {
+		return false;
+	} case :die(var value) {
+		return false;
+	} case :var_decl(var value) {
+		return false;
+	} case :if_mod(var as_if_mod) {
+		return command_has_loop_break(as_if_mod->cmd);
+	} case :unless_mod(var as_unless_mod) {
+		return command_has_loop_break(as_unless_mod->cmd);
+	}
+}
+
+def command_falls_through(command : @nast::cmd_t) : ptd::bool() {
+	match (command->cmd) case :if(var as_if) {
+		return true if as_if->else->cmd is :nop;
+		return true if command_falls_through(as_if->if);
+		fora var else_if (as_if->elsif) {
+			return true if command_falls_through(else_if->cmd);
+		}
+		return command_falls_through(as_if->else);
+	} case :fora(var value) {
+		return true;
+	} case :loop(var body) {
+		return command_has_loop_break(body);
+	} case :rep(var value) {
+		return true;
+	} case :forh(var value) {
+		return true;
+	} case :while(var value) {
+		return true;
+	} case :for(var as_for) {
+		return true unless as_for->cond->value is :nop;
+		return command_has_loop_break(as_for->cmd);
+	} case :nop {
+		return true;
+	} case :value(var value) {
+		return true;
+	} case :block(var block) {
+		return command_array_falls_through(block->cmds);
+	} case :return(var value) {
+		return false;
+	} case :match(var as_match) {
+		fora var branch (as_match->branch_list) {
+			return true if command_falls_through(branch->cmd);
+		}
+		return false;
+	} case :try(var value) {
+		return true;
+	} case :ensure(var value) {
+		return true;
+	} case :break {
+		return false;
+	} case :continue {
+		return false;
+	} case :die(var value) {
+		return false;
+	} case :var_decl(var value) {
+		return true;
+	} case :if_mod(var value) {
+		return true;
+	} case :unless_mod(var value) {
+		return true;
 	}
 }
 

@@ -45,6 +45,15 @@ def flow_graph::make_blocks(commands : ptd::arr(@nlasm::cmd_t), args_types : ptd
 	return t_block;
 }
 
+def flow_graph::remove_unreachable_commands(commands : ptd::arr(@nlasm::cmd_t),
+		args_types : ptd::arr(@nlasm::arg_type_t)) : ptd::arr(@nlasm::cmd_t) {
+	var result : ptd::arr(@nlasm::cmd_t) = [];
+	fora var block (flow_graph::make_blocks(commands, args_types)) {
+		array::append(ref result, block->cmds);
+	}
+	return result;
+}
+
 def block_name_to_nr(blocks : @flow_graph::state_t) : ptd::arr(@flow_graph::block_t) {
 	var hash = {};
 	var tab = blocks->tab;

@@ -22,6 +22,8 @@ def generator_js::state_t() {
 		module_name => ptd::string(),
 		sourcemap => @generator_js::sourcemap_t,
 		js_lines => ptd::int(),
+		coverage => ptd::bool(),
+		coverage_command => ptd::int(),
 	});
 }
 
@@ -61,15 +63,24 @@ def get_namespace_name() {
 
 def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t)
 		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
+	return generator_js::generate_with_coverage(nlasm, namespace, sourcemap, false);
+}
+
+def generator_js::generate_with_coverage(nlasm : @nlasm::result_t, namespace : ptd::string(),
+		sourcemap : @generator_js::sourcemap_opt_t, coverage : ptd::bool())
+		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	var state = {
 		js => '',
 		consts => {arr => [], hash => {}, name => 'c'},
 		module_name => nlasm->module_name,
 		sourcemap => {names => [], names_hash => {}, entries => []},
 		js_lines => 0,
+		coverage => coverage,
+		coverage_command => 0,
 	};
 
 	print_module_prolog(namespace, ref state);
+	print_coverage_prolog(ref state);
 	fora var function (nlasm->functions) {
 		print_function_or_singleton(function, ref state);
 	}
@@ -80,6 +91,15 @@ def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), 
 		js => state->js,
 		sourcemap => (sourcemap is :yes) ? generate_sourcemap(state->sourcemap, state->module_name) : '',
 	};
+}
+
+def print_coverage_prolog(ref state : @generator_js::state_t) {
+	return unless state->coverage;
+	println(get_namespace_name() . '.__nlasm_coverage__=' . get_namespace_name() .
+		'.__nlasm_coverage__||{version:1,modules:{}};', ref state);
+	println('var ___nl__cov_module={module:' . escape_string(state->module_name) . ',functions:{}};', ref state);
+	println(get_namespace_name() . '.__nlasm_coverage__.modules[' . escape_string(state->module_name) .
+		']=___nl__cov_module;', ref state);
 }
 
 def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::state_t) {
@@ -267,19 +287,96 @@ def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @gener
 }
 
 def print_function(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+	print_function_coverage(function, ref state);
 	println('', ref state);
 	print_sourcemap_line_marker(function->line, ref state);
 	println(get_function_header(function, state->module_name) . ' {', ref state);
 	print_function_registers(function, ref state);
+	if (state->coverage) {
+		println('var ___nl__cov=___nl__cov_module.functions[' . escape_string(function->name) . '];', ref state);
+	}
 	println('var label=null;', ref state);
 	print_sourcemap_line_marker(function->line, ref state);
 	println('while (1) { switch (label) {', ref state);
 	println('default:', ref state);
 	var call_counter = 0;
+	state->coverage_command = 0;
 	fora var command (function->commands) {
 		print_command(command, function->args_type, ref call_counter, ref state);
 	}
 	println('}}}', ref state);
+}
+
+def print_function_coverage(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+	return unless state->coverage;
+	var commands = '[';
+	var branches = '{';
+	var metadata = '[';
+	var first_branch = true;
+	var command_no = 0;
+	fora var command (function->commands) {
+		commands .= ',' unless command_no == 0;
+		metadata .= ',' unless command_no == 0;
+		commands .= '0';
+		metadata .= '{"kind":' . escape_string(get_command_kind(command->cmd)) .
+			',"instruction":' . command->debug->instruction_nr .
+			',"begin":{"line":' . command->debug->nast_debug->begin->line .
+			',"position":' . command->debug->nast_debug->begin->position .
+			'},"end":{"line":' . command->debug->nast_debug->end->line .
+			',"position":' . command->debug->nast_debug->end->position . '}}';
+		if (command->cmd is :if_goto) {
+			branches .= ',' unless first_branch;
+			branches .= '"' . command_no . '":[0,0]';
+			first_branch = false;
+		}
+		++command_no;
+	}
+	commands .= ']';
+	branches .= '}';
+	metadata .= ']';
+	println('___nl__cov_module.functions[' . escape_string(function->name) . ']={commands:' . commands .
+		',branches:' . branches . ',meta:' . metadata . '};', ref state);
+}
+
+def get_command_kind(command : @nlasm::order_t) : ptd::string() {
+	match (command) case :arr_decl(var value) { return 'arr_decl';
+	} case :hash_decl(var value) { return 'hash_decl';
+	} case :empty_hash_decl(var value) { return 'empty_hash_decl';
+	} case :func(var value) { return 'func';
+	} case :call(var value) { return 'call';
+	} case :una_op(var value) { return 'una_op';
+	} case :bin_op(var value) { return 'bin_op';
+	} case :ov_is(var value) { return 'ov_is';
+	} case :ov_as(var value) { return 'ov_as';
+	} case :return(var value) { return 'return';
+	} case :die(var value) { return 'die';
+	} case :move(var value) { return 'move';
+	} case :load_const(var value) { return 'load_const';
+	} case :get_frm_idx(var value) { return 'get_frm_idx';
+	} case :set_at_idx(var value) { return 'set_at_idx';
+	} case :array_push(var value) { return 'array_push';
+	} case :array_len(var value) { return 'array_len';
+	} case :get_val(var value) { return 'get_val';
+	} case :set_val(var value) { return 'set_val';
+	} case :ov_mk(var value) { return 'ov_mk';
+	} case :prt_lbl(var value) { return 'prt_lbl';
+	} case :if_goto(var value) { return 'if_goto';
+	} case :goto(var value) { return 'goto';
+	} case :clear(var value) { return 'clear';
+	} case :var_decl(var value) { return 'var_decl';
+	} case :use_field(var value) { return 'use_field';
+	} case :release_field(var value) { return 'release_field';
+	} case :use_index(var value) { return 'use_index';
+	} case :release_index(var value) { return 'release_index';
+	} case :use_hash_index(var value) { return 'use_hash_index';
+	} case :release_hash_index(var value) { return 'release_hash_index';
+	} case :use_variant(var value) { return 'use_variant';
+	} case :release_variant(var value) { return 'release_variant';
+	} case :hash_init_iter(var value) { return 'hash_init_iter';
+	} case :hash_next_iter(var value) { return 'hash_next_iter';
+	} case :hash_get_key_iter(var value) { return 'hash_get_key_iter';
+	} case :hash_is_end(var value) { return 'hash_is_end';
+	}
 }
 
 def get_function_header(function : @nlasm::function_t, module_name : ptd::string()) : ptd::string() {
@@ -333,7 +430,12 @@ def print_function_registers(function : @nlasm::function_t, ref state : @generat
 def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref call_counter : ptd::int(),
 		ref state : @generator_js::state_t) {
 	var result = '';
+	var command_no = state->coverage_command;
+	state->coverage_command++;
 	println('//line ' . command->debug->nast_debug->begin->line, ref state);
+	if (state->coverage && !(command->cmd is :prt_lbl)) {
+		println(get_coverage_hit(command_no), ref state);
+	}
 	match (command->cmd) case :arr_decl(var arr_decl) {
 		result = get_register_value_to_assign(arr_decl->dest) . get_arr(arr_decl->src, arr_decl->dest->type) . ';';
 	} case :hash_decl(var hash_decl) {
@@ -386,9 +488,16 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = get_ov_mk(ov_mk, ref state, ref call_counter);
 	} case :prt_lbl(var prt_lbl) {
 		result = 'case ' . prt_lbl . ':';
+		result .= get_coverage_hit(command_no) if state->coverage;
 	} case :if_goto(var if_goto) {
-		result = 'if (' . get_register_value(if_goto->src) . ') {' . get_goto(if_goto->dest) . 
-			'}';
+		if (state->coverage) {
+			result = 'if (' . get_register_value(if_goto->src) . ') {' .
+				'___nl__cov.branches[' . command_no . '][1]++;' . get_goto(if_goto->dest) .
+				'}else{___nl__cov.branches[' . command_no . '][0]++;}';
+		} else {
+			result = 'if (' . get_register_value(if_goto->src) . ') {' . get_goto(if_goto->dest) .
+				'}';
+		}
 	} case :goto(var goto) {
 		result = get_goto(goto);
 	} case :clear(var reg) {
@@ -426,6 +535,10 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 	}
 	print_sourcemap_line_marker(command->debug->nast_debug->begin->line, ref state);
 	println(result, ref state);
+}
+
+def get_coverage_hit(command_no : ptd::int()) : ptd::string() {
+	return '___nl__cov.commands[' . command_no . ']++;';
 }
 
 def get_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
