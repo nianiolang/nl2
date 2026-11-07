@@ -322,6 +322,14 @@ the compiler has parsed and validated that descriptor format. A normal function
 that merely happens to return a descriptor-like runtime value is not a named
 static type.
 
+After successful type checking, the compiler does not emit a descriptor
+function when the descriptor and all of its dependencies are needed only by
+static annotations. An unused descriptor is still emitted, as is a descriptor
+referenced by executable code. Dependencies of every emitted descriptor are
+also emitted. This preserves the runtime meaning of `@module::type` while
+allowing types that have been fully consumed by the checker to remain purely
+compile-time declarations.
+
 ## 7. Control flow
 
 ### Conditions

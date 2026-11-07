@@ -43,6 +43,7 @@ def reference_generator::ref_type() {
 		import => @reference_generator::module,
 		function_definition => @reference_generator::fun_ref,
 		function_reference => @reference_generator::fun_ref,
+		type_reference => @reference_generator::fun_ref,
 	});
 }
 
@@ -50,6 +51,23 @@ def reference_generator::generate(asts : ptd::hash(@nast::module_t)) : @referenc
 	var ret = [];
 	forh var module_name, var ast (asts) {
 		process_module(ref ret, ast);
+	}
+	return ret;
+}
+
+def reference_generator::generate_executable(asts : ptd::hash(@nast::module_t)) : @reference_generator::refs {
+	var ret = [];
+	forh var module_name, var ast (asts) {
+		fora var fun_def (ast->fun_def) {
+			match (fun_def->defines_type) case :yes(var type) {
+			} case :no {
+				process_cmd(ref ret, ast->name, fun_def->cmd);
+				process_type(ref ret, ast->name, fun_def->ret_type->type);
+				fora var arg (fun_def->args) {
+					process_type(ref ret, ast->name, arg->type);
+				}
+			}
+		}
 	}
 	return ret;
 }
@@ -209,8 +227,56 @@ def process_var_decl(ref ret : @reference_generator::refs, module : @reference_g
 
 def process_type(ref ret : @reference_generator::refs, module : @reference_generator::module, type : @nast::variable_type_t) {
 	match (type) case :type(var t) {
-		process_value(ref ret, module, t);
+		process_type_value(ref ret, module, t);
 	} case :none {
+	}
+}
+
+def process_type_value(ref ret : @reference_generator::refs, module : @reference_generator::module, value : @nast::value_t) {
+	match (value->value) case :ternary_op(var op) {
+		process_type_value(ref ret, module, op->fst);
+		process_type_value(ref ret, module, op->snd);
+		process_type_value(ref ret, module, op->thrd);
+	} case :hash_key(var key) {
+	} case :nop {
+	} case :parenthesis(var parenthesis) {
+		process_type_value(ref ret, module, parenthesis);
+	} case :variant(var variant) {
+		process_type_value(ref ret, module, variant->var);
+	} case :const(var constant) {
+	} case :string(var string_value) {
+	} case :bool(var bool_value) {
+	} case :arr_decl(var array_value) {
+		fora var item (array_value) {
+			process_type_value(ref ret, module, item);
+		}
+	} case :hash_decl(var hash_value) {
+		fora var item (hash_value) {
+			process_type_value(ref ret, module, item->val);
+		}
+	} case :var(var variable) {
+	} case :bin_op(var bin_op) {
+		process_type_value(ref ret, module, bin_op->left);
+		process_type_value(ref ret, module, bin_op->right);
+	} case :unary_op(var unary_op) {
+		process_type_value(ref ret, module, unary_op->val);
+	} case :fun_label(var fun_label) {
+		add_ref(ref ret, module, value->debug->begin, :type_reference({
+			module => fun_label->module,
+			name => fun_label->name,
+		}));
+	} case :fun_val(var fun_val) {
+		add_ref(ref ret, module, value->debug->begin, :type_reference({
+			module => fun_val->module,
+			name => fun_val->name,
+		}));
+		fora var arg (fun_val->args) {
+			process_type_value(ref ret, module, arg->val);
+		}
+	} case :post_inc(var post_inc) {
+		process_type_value(ref ret, module, post_inc);
+	} case :post_dec(var post_dec) {
+		process_type_value(ref ret, module, post_dec);
 	}
 }
 

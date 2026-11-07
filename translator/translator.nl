@@ -18,13 +18,19 @@ def translator::last_debug_char(debug : @nast::debug_t) : @nast::debug_t {
 	return {begin => begin, end => end, comment => debug->comment};
 }
 
-def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct::meta_type)) : @nlasm::result_t {
+def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct::meta_type),
+		static_only_types : ptd::hash(ptd::bool())) : @nlasm::result_t {
 	var result : @nlasm::result_t = {module_name => ast->name, functions => [], imports => []};
 	result->imports = [];
 	fora var imp (ast->import) {
 		array::push(ref result->imports, imp->name);
 	}
 	fora var function (ast->fun_def) {
+		var is_runtime = true;
+		match (function->defines_type) case :yes(var type) {
+			is_runtime = !hash::has_key(static_only_types, ast->name . '::' . function->name);
+		} case :no {
+		}
 		var logic = {
 			variables => {},
 			registers => [],
@@ -47,6 +53,7 @@ def translator::translate(ast : @nast::module_t, defined_types : ptd::hash(@tct:
 					commands => [],
 					name => function->name,
 					defines_type => function->defines_type,
+					is_runtime => is_runtime,
 					variables => [],
 					line => -1,
 				},

@@ -507,7 +507,8 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 			c_fe_lib::print('search constants...');
 			var new_to_save = {};
 			defined_types = type_registry::from_modules(asts_all);
-			var modules = translate(to_save, ref const_state, defined_types);
+			var static_only_types = type_registry::static_only_from_modules(asts_all, defined_types);
+			var modules = translate(to_save, ref const_state, defined_types, static_only_types);
 			add_to_called_from(ref called_from, modules);
 			match (generate_modules_to_files(modules, nianio_files, opt_cli->cache_path,
 				    ref generator_state, opt_cli->language)) case :err(var err) {
@@ -601,7 +602,9 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 		profile::end('post processing');
 
 		profile::begin('translate to nlasm');
-		var modules = translate(asts, ref const_state, type_registry::from_modules(asts));
+		var defined_types = type_registry::from_modules(asts);
+		var static_only_types = type_registry::static_only_from_modules(asts, defined_types);
+		var modules = translate(asts, ref const_state, defined_types, static_only_types);
 		profile::end('translate to nlasm');
 
 		if (hash::has_key(modules, 'main')) {
@@ -684,10 +687,11 @@ def show_and_count_errors(all_errors : @compiler::errors_group_t, opt_cli : @com
 }
 
 def translate(asts_to_translate : ptd::hash(@nast::module_t), ref post_proc : @post_processing_t::state_t,
-		defined_types : ptd::hash(@tct::meta_type)) : ptd::hash(@nlasm::result_t) {
+		defined_types : ptd::hash(@tct::meta_type), static_only_types : ptd::hash(ptd::bool()))
+		: ptd::hash(@nlasm::result_t) {
 	var nlasm = {};
 	forh var module, var ast (asts_to_translate) {
-		var nla_asm = translator::translate(ast, defined_types);
+		var nla_asm = translator::translate(ast, defined_types, static_only_types);
 		hash::set_value(ref nlasm, module, nla_asm);
 	}
 	post_processing::find(ref post_proc, ref nlasm);

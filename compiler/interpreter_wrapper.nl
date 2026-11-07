@@ -190,7 +190,7 @@ def show_and_count_errors(all_errors : @interpreter_wrapper::errors_group_t, nia
 def translate(asts_to_translate : ptd::hash(@nast::module_t)) : ptd::hash(@nlasm::result_t) {
 	var nlasm = {};
 	forh var module, var ast (asts_to_translate) {
-		var nla_asm = translator::translate(ast, {});
+		var nla_asm = translator::translate(ast, {}, {});
 		hash::set_value(ref nlasm, module, nla_asm);
 	}
 	return nlasm;

@@ -32,7 +32,11 @@ def string_compiler::compile(program : ptd::string(), module_name : ptd::string(
 			hash::set_value(ref asts, ast->name, ast);
 			var types_ret = type_checker::check_modules(ref asts, asts);
 			errors = types_ret->errors;
-			return :ok(translator::translate(ast, type_registry::from_modules(asts))) if array::len(errors) == 0;
+			if (array::len(errors) == 0) {
+				var defined_types = type_registry::from_modules(asts);
+				var static_only_types = type_registry::static_only_from_modules(asts, defined_types);
+				return :ok(translator::translate(ast, defined_types, static_only_types));
+			}
 		}
 		return :err(errors);
 	} case :error(var errors) {
@@ -138,8 +142,9 @@ def string_compiler::compile_to_nlasm(modules : ptd::hash(ptd::string())) : ptd:
 	return :err(types_ret->errors) if array::len(types_ret->errors) > 0;
 	var nlasms = {};
 	var defined_types = type_registry::from_modules(asts);
+	var static_only_types = type_registry::static_only_from_modules(asts, defined_types);
 	forh var module_name, var ast (asts) {
-		hash::set_value(ref nlasms, module_name, translator::translate(ast, defined_types));
+		hash::set_value(ref nlasms, module_name, translator::translate(ast, defined_types, static_only_types));
 	}
 	var state = post_processing::init({}, :o0);
 	post_processing::find(ref state, ref nlasms);

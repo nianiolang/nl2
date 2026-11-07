@@ -48,6 +48,41 @@ def compiler_core_cases::mixed_variant_t() {
 	return ptd::var({record => @compiler_core_cases::own_rec_t});
 }
 
+def compiler_core_cases::static_inner_t() {
+	return ptd::rec({number => ptd::int()});
+}
+
+def compiler_core_cases::static_outer_t() {
+	return ptd::rec({inner => @compiler_core_cases::static_inner_t});
+}
+
+def compiler_core_cases::shared_descriptor_t() {
+	return ptd::rec({shared => ptd::bool()});
+}
+
+def compiler_core_cases::unused_descriptor_t() {
+	return ptd::rec({unused => @compiler_core_cases::shared_descriptor_t});
+}
+
+def compiler_core_cases::runtime_descriptor_t() {
+	return ptd::rec({runtime => ptd::bool()});
+}
+
+def compiler_core_cases::static_type_identity(value : @compiler_core_cases::static_outer_t)
+		: @compiler_core_cases::static_outer_t {
+	return value;
+}
+
+def compiler_core_cases::shared_type_identity(value : @compiler_core_cases::shared_descriptor_t)
+		: @compiler_core_cases::shared_descriptor_t {
+	return value;
+}
+
+def compiler_core_cases::runtime_descriptor_value(value : @compiler_core_cases::runtime_descriptor_t) {
+	compiler_core_cases::runtime_descriptor_t();
+	return value;
+}
+
 def compiler_core_cases::typed_void_fallthrough() : ptd::void() {
 }
 

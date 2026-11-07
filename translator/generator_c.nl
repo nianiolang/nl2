@@ -465,6 +465,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 		die;
 	}
 	fora var func (asm->functions) {
+		continue unless func->is_runtime;
 		var fun_header = get_function_header(func, state->mod_name);
 		match (func->access) case :pub {
 			print_to_header(ref state, fun_header . ';' . string::lf());
@@ -478,6 +479,7 @@ def print_mod(ref state : @generator_c::state_t, asm : @nlasm::result_t, defined
 	
 	println(ref state, string::lf());
 	fora var func (asm->functions) {
+		continue unless func->is_runtime;
 		if (func->access is :pub && !takes_own_arg(func)) {
 			var fun_name = get_function_name(func, state->mod_name);
 			println(ref state, get_func_ptr_header(func, state->mod_name) . '{');

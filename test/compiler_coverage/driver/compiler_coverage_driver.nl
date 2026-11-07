@@ -5,15 +5,35 @@
 
 use generator_js;
 use hash;
+use nlasm;
 use post_processing;
 use ptd;
+use string;
 use string_compiler;
+
+def assert_type_emission(module : @nlasm::result_t, javascript : ptd::string()) {
+	var runtime = {};
+	fora var function (module->functions) {
+		runtime{function->name} = function->is_runtime;
+	}
+	die if runtime{'static_inner_t'};
+	die if runtime{'static_outer_t'};
+	die unless runtime{'shared_descriptor_t'};
+	die unless runtime{'unused_descriptor_t'};
+	die unless runtime{'runtime_descriptor_t'};
+	die if string::index2(javascript, '.static_inner_t=function') >= 0;
+	die if string::index2(javascript, '.static_outer_t=function') >= 0;
+	die unless string::index2(javascript, '.shared_descriptor_t=function') >= 0;
+	die unless string::index2(javascript, '.unused_descriptor_t=function') >= 0;
+	die unless string::index2(javascript, '.runtime_descriptor_t=function') >= 0;
+}
 
 def compiler_coverage_driver::run(modules : ptd::hash(ptd::string())) {
 	match (string_compiler::compile_to_nlasm(modules)) case :ok(var nlasms) {
 		var generated = 0;
 		forh var module_name, var module (nlasms) {
-			generator_js::generate(module, 'nl', :no);
+			var javascript = generator_js::generate(module, 'nl', :no);
+			assert_type_emission(module, javascript->js) if module_name eq 'compiler_core_cases';
 			generator_js::generate_with_coverage(module, 'nl', :yes(module_name . '.map'), true);
 			++generated;
 		}

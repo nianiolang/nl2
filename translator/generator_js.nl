@@ -38,6 +38,7 @@ def generator_js::generate_with_coverage(nlasm : @nlasm::result_t, namespace : p
 	print_module_prolog(namespace, ref state);
 	print_coverage_prolog(ref state);
 	fora var function (nlasm->functions) {
+		continue unless function->is_runtime;
 		print_function_or_singleton(function, ref state);
 	}
 	print_consts(ref state);
