@@ -839,8 +839,8 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 		var coverage = get_nlasm_coverage();
 		var report = {
 			version: coverage.version,
-			commands: {covered: 0, total: 0, percent: 100},
-			branches: {covered: 0, total: 0, percent: 100},
+			commands: {covered: 0, excluded_die: 0, total: 0, percent: 100},
+			branches: {covered: 0, excluded_die: 0, total: 0, percent: 100},
 			uncovered_commands: [],
 			uncovered_branches: []
 		};
@@ -851,6 +851,10 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 				if (!functions.hasOwnProperty(function_name)) continue;
 				var fn = functions[function_name];
 				for (var command = 0; command < fn.commands.length; command++) {
+					if (fn.meta[command].required === false) {
+						report.commands.excluded_die++;
+						continue;
+					}
 					report.commands.total++;
 					if (fn.commands[command] > 0) {
 						report.commands.covered++;
@@ -866,6 +870,10 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 				for (var branch_command in fn.branches) {
 					if (!fn.branches.hasOwnProperty(branch_command)) continue;
 					for (var outcome = 0; outcome < 2; outcome++) {
+						if (fn.meta[branch_command].branchRequired[outcome] === false) {
+							report.branches.excluded_die++;
+							continue;
+						}
 						report.branches.total++;
 						if (fn.branches[branch_command][outcome] > 0) {
 							report.branches.covered++;

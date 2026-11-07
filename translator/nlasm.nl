@@ -106,7 +106,6 @@ def nlasm::order_t() {
 			if_goto => ptd::rec({dest => @nlasm::label_t, src => @nlasm::reg_t}),
 			goto => @nlasm::label_t,
 			clear => @nlasm::reg_t,
-			var_decl => @nlasm::var_decl_t,
 			use_field => @nlasm::use_field_t,
 			release_field => @nlasm::release_field_t,
 			use_index => @nlasm::use_index_t,

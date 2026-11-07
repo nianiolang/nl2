@@ -29,6 +29,7 @@ use string_utils;
 use reference_generator;
 use tct;
 use interpreter_wrapper;
+use type_registry;
 
 def get_dir_cache_name() : ptd::string() {
 	return 'cache_nl';
@@ -505,7 +506,7 @@ def compile_ide(opt_cli : @compiler::input_type) : ptd::void() {
 		if (!(opt_cli->language is :ast || opt_cli->language is :nl)) {
 			c_fe_lib::print('search constants...');
 			var new_to_save = {};
-			defined_types = get_defined_types(asts_all);
+			defined_types = type_registry::from_modules(asts_all);
 			var modules = translate(to_save, ref const_state, defined_types);
 			add_to_called_from(ref called_from, modules);
 			match (generate_modules_to_files(modules, nianio_files, opt_cli->cache_path,
@@ -600,7 +601,7 @@ def compile_strict_file(opt_cli : @compiler::input_type) : ptd::int() {
 		profile::end('post processing');
 
 		profile::begin('translate to nlasm');
-		var modules = translate(asts, ref const_state, get_defined_types(asts));
+		var modules = translate(asts, ref const_state, type_registry::from_modules(asts));
 		profile::end('translate to nlasm');
 
 		if (hash::has_key(modules, 'main')) {
@@ -1024,19 +1025,6 @@ def add_cmd_to_called_from(ref called_from : ptd::hash(ptd::hash(ptd::int())), c
 		}
 		called_from{fun_name}{module_name} = 1;
 	}
-}
-
-def get_defined_types(asts_all : ptd::hash(@nast::module_t)) : ptd::hash(@tct::meta_type) {
-	var defined_types : ptd::hash(@tct::meta_type) = {};
-	forh var module, var ast (asts_all) {
-		fora var func (ast->fun_def) {
-			match (func->defines_type) case :no {
-			} case :yes(var type) {
-				defined_types{module . '::' . func->name} = type;
-			}
-		}
-	}
-	return defined_types;
 }
 
 def own_type_changed(old_type : ptd::var({no => ptd::none(), yes => @tct::meta_type}),

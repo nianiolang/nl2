@@ -5,11 +5,14 @@ some: compiler tester
 compiler: compiler_nl compiler_gcc
 
 test: old compiler tester_nl_c tester_nl_js tester_nl_coverage tester_nl_coverage_o2 \
-	test_nl_c test_nl_js test_nl_coverage test_nl_coverage_o2
+	test_nl_c test_nl_js test_nl_coverage test_nl_coverage_o2 compiler_coverage_run
 
-test_coverage: old compiler tester_nl_coverage tester_nl_coverage_o2 test_nl_coverage test_nl_coverage_o2
+test_coverage: old compiler tester_nl_coverage tester_nl_coverage_o2 test_nl_coverage \
+	test_nl_coverage_o2 compiler_coverage_run
 
-demo_coverage: old compiler demo_coverage_build demo_coverage_run
+test_compiler_coverage: old compiler compiler_coverage_run
+
+demo_coverage: old compiler demo_coverage_run
 
 OBJDIR=obj
 OUT=mk_cache.exe
@@ -20,6 +23,7 @@ CACHEJS=cache_js
 CACHECOVERAGE=cache_coverage
 CACHECOVERAGEO2=cache_coverage_o2
 CACHECOVERAGEDEMO=cache_coverage_demo
+CACHECOMPILERCOVERAGE=cache_compiler_coverage
 CFLAGS=-std=c99 -O0 -ggdb -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Werror
 LINKS=-lm
 JS?=node
@@ -90,10 +94,20 @@ test_nl_coverage_o2:
 	@echo 'TEST ASM COVERAGE O2'
 	cat native_lib_js/*.js ${CACHECOVERAGEO2}/*.js test/test_coverage.js | ${JS}
 
+compiler_coverage_build:
+	rm -rf ${CACHECOMPILERCOVERAGE}
+	./${OUT} ${NLDIR} test/compiler_coverage/driver --strict --o ${CACHECOMPILERCOVERAGE} --js --O0 --coverage
+
+compiler_coverage_run: compiler_coverage_build
+	@echo 'TEST COMPILER CORE COVERAGE'
+	cat native_lib_js/*.js ${CACHECOMPILERCOVERAGE}/*.js test/test_compiler_coverage.js | \
+		NL_COVERAGE_SUMMARY_ONLY=1 ${JS}
+
 demo_coverage_build:
+	rm -rf ${CACHECOVERAGEDEMO}
 	./${OUT} demo/coverage --strict --o ${CACHECOVERAGEDEMO} --js --O0 --coverage
 
-demo_coverage_run:
+demo_coverage_run: demo_coverage_build
 	@echo 'DEMO ASM COVERAGE'
 	cat native_lib_js/*.js ${CACHECOVERAGEDEMO}/*.js demo/coverage/run.js | ${JS}
 
@@ -104,5 +118,6 @@ vim_ide:
 
 clean:
 	rm -rf *.o mk_cache */*.o
-	rm -rf ${OBJDIR} ${CACHEDIR} ${CACHETEST} ${CACHECOVERAGE} ${CACHECOVERAGEO2} ${CACHECOVERAGEDEMO}
+	rm -rf ${OBJDIR} ${CACHEDIR} ${CACHETEST} ${CACHECOVERAGE} ${CACHECOVERAGEO2} ${CACHECOVERAGEDEMO} \
+		${CACHECOMPILERCOVERAGE}
 	rm -rf ./test_all ${BINEXEC} ${OUT}

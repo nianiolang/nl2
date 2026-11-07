@@ -8,66 +8,22 @@ use nl;
 use string;
 use ov;
 use nlasm;
+use nlasm_coverage;
 use ptd;
 use hash;
-
-def generator_js::state_t() {
-	return ptd::rec({
-		js => ptd::string(),
-		consts => ptd::rec({
-			arr => ptd::arr(ptd::ptd_im()),
-			hash => ptd::hash(ptd::int()),
-			name => ptd::string(),
-		}),
-		module_name => ptd::string(),
-		sourcemap => @generator_js::sourcemap_t,
-		js_lines => ptd::int(),
-		coverage => ptd::bool(),
-		coverage_command => ptd::int(),
-	});
-}
-
-def generator_js::sourcemap_opt_t() {
-	return ptd::var({
-		yes => ptd::string(),
-		no => ptd::none(),
-	});
-}
-
-def generator_js::sourcemap_t() {
-	return ptd::rec({
-		names => ptd::arr(ptd::string()),
-		names_hash => ptd::hash(ptd::int()),
-		entries => ptd::arr(@generator_js::sourcemap_entry_t),
-	});
-}
-
-def generator_js::sourcemap_entry_t() {
-	return ptd::rec({
-		line_js => ptd::int(),
-		line_nl => ptd::int(),
-		symbol => ptd::var({
-			yes => ptd::rec({
-				begin => ptd::int(),
-				end => ptd::int(),
-				name_idx => ptd::int(),
-			}),
-			no => ptd::none(),
-		}),
-	});
-}
+use generator_js_t;
 
 def get_namespace_name() {
 	return 'n';
 }
 
-def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t)
+def generator_js::generate(nlasm : @nlasm::result_t, namespace : ptd::string(), sourcemap : @generator_js_t::sourcemap_opt_t)
 		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	return generator_js::generate_with_coverage(nlasm, namespace, sourcemap, false);
 }
 
 def generator_js::generate_with_coverage(nlasm : @nlasm::result_t, namespace : ptd::string(),
-		sourcemap : @generator_js::sourcemap_opt_t, coverage : ptd::bool())
+		sourcemap : @generator_js_t::sourcemap_opt_t, coverage : ptd::bool())
 		: ptd::rec({js => ptd::string(), sourcemap => ptd::string()}) {
 	var state = {
 		js => '',
@@ -93,7 +49,7 @@ def generator_js::generate_with_coverage(nlasm : @nlasm::result_t, namespace : p
 	};
 }
 
-def print_coverage_prolog(ref state : @generator_js::state_t) {
+def print_coverage_prolog(ref state : @generator_js_t::state_t) {
 	return unless state->coverage;
 	println(get_namespace_name() . '.__nlasm_coverage__=' . get_namespace_name() .
 		'.__nlasm_coverage__||{version:1,modules:{}};', ref state);
@@ -102,7 +58,7 @@ def print_coverage_prolog(ref state : @generator_js::state_t) {
 		']=___nl__cov_module;', ref state);
 }
 
-def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::state_t) {
+def print_module_prolog(namespace : ptd::string(), ref state : @generator_js_t::state_t) {
 	println('var ' . namespace . ';', ref state);
 	println('(function(' . get_namespace_name() . ' , undefined) {', ref state);
 	println(get_namespace_name() . '.' . state->module_name . '={};', ref state);
@@ -112,8 +68,8 @@ def print_module_prolog(namespace : ptd::string(), ref state : @generator_js::st
 		namespace . '=' . namespace . ' || {}); }', ref state);
 }
 
-def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::sourcemap_opt_t,
-		ref state : @generator_js::state_t) {
+def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js_t::sourcemap_opt_t,
+		ref state : @generator_js_t::state_t) {
 	println('})(' . namespace . '=' . namespace . ' || {}); ', ref state);
 	match (sourcemap) case :yes(var filename) {
 		println('//# sourceMappingURL=' . filename, ref state);
@@ -121,7 +77,7 @@ def print_module_epilog(namespace : ptd::string(), sourcemap : @generator_js::so
 	}
 }
 
-def print_consts(ref state : @generator_js::state_t) {
+def print_consts(ref state : @generator_js_t::state_t) {
 	println('var ' . state->consts->name . '=[];', ref state);
 	var no = 0;
 	fora var el (state->consts->arr) {
@@ -130,7 +86,7 @@ def print_consts(ref state : @generator_js::state_t) {
 	}
 }
 
-def get_const_value_aggr(const_val, ref state : @generator_js::state_t) : ptd::string() {
+def get_const_value_aggr(const_val, ref state : @generator_js_t::state_t) : ptd::string() {
 	var index;
 	if (nl::is_string(const_val)) {
 		var const_str = ptd::ensure(ptd::string(), const_val);
@@ -184,7 +140,7 @@ def escape_string(string) : ptd::string() {
 	return '"' . string::replace(string, string::lf(), '\n') . '"';
 }
 
-def get_str_imm(string : ptd::string(), ref state : @generator_js::state_t) : ptd::string() {
+def get_str_imm(string : ptd::string(), ref state : @generator_js_t::state_t) : ptd::string() {
 	return get_const_value_aggr(string, ref state);
 }
 
@@ -215,7 +171,7 @@ def is_singleton_use_function(function : @nlasm::function_t) : ptd::bool() {
 	return false;
 }
 
-def print_function_or_singleton(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+def print_function_or_singleton(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	if (is_singleton_use_function(function)) {
 		print_singleton(function, ref state);
 	} else {
@@ -227,7 +183,7 @@ def print_function_or_singleton(function : @nlasm::function_t, ref state : @gene
 	}
 }
 
-def print_singleton(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+def print_singleton(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	var fun_name = get_function_name(function, state->module_name);
 	var sin_fun = function;
 	if (sin_fun->access is :priv) {
@@ -252,7 +208,7 @@ def print_singleton(function : @nlasm::function_t, ref state : @generator_js::st
 	println('}', ref state);
 }
 
-def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	var i = 0;
 	var call_args = '';
 	var before_call = [];
@@ -286,7 +242,7 @@ def print_dyn_function_wrapper(function : @nlasm::function_t, ref state : @gener
 	println('}', ref state);
 }
 
-def print_function(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+def print_function(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	print_function_coverage(function, ref state);
 	println('', ref state);
 	print_sourcemap_line_marker(function->line, ref state);
@@ -307,8 +263,9 @@ def print_function(function : @nlasm::function_t, ref state : @generator_js::sta
 	println('}}}', ref state);
 }
 
-def print_function_coverage(function : @nlasm::function_t, ref state : @generator_js::state_t) {
+def print_function_coverage(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	return unless state->coverage;
+	var required = nlasm_coverage::required(function);
 	var commands = '[';
 	var branches = '{';
 	var metadata = '[';
@@ -318,8 +275,13 @@ def print_function_coverage(function : @nlasm::function_t, ref state : @generato
 		commands .= ',' unless command_no == 0;
 		metadata .= ',' unless command_no == 0;
 		commands .= '0';
+		var branch_required = hash::has_key(required->branches, ptd::int_to_string(command_no)) ?
+			required->branches{ptd::int_to_string(command_no)} : [true, true];
 		metadata .= '{"kind":' . escape_string(get_command_kind(command->cmd)) .
 			',"instruction":' . command->debug->instruction_nr .
+			',"required":' . (required->commands[command_no] ? 'true' : 'false') .
+			',"branchRequired":[' . (branch_required[0] ? 'true' : 'false') . ',' .
+				(branch_required[1] ? 'true' : 'false') . ']' .
 			',"begin":{"line":' . command->debug->nast_debug->begin->line .
 			',"position":' . command->debug->nast_debug->begin->position .
 			'},"end":{"line":' . command->debug->nast_debug->end->line .
@@ -363,7 +325,6 @@ def get_command_kind(command : @nlasm::order_t) : ptd::string() {
 	} case :if_goto(var value) { return 'if_goto';
 	} case :goto(var value) { return 'goto';
 	} case :clear(var value) { return 'clear';
-	} case :var_decl(var value) { return 'var_decl';
 	} case :use_field(var value) { return 'use_field';
 	} case :release_field(var value) { return 'release_field';
 	} case :use_index(var value) { return 'use_index';
@@ -394,7 +355,7 @@ def get_function_header(function : @nlasm::function_t, module_name : ptd::string
 	return function_header;
 }
 
-def print_function_registers(function : @nlasm::function_t, ref state : @generator_js::state_t) { 
+def print_function_registers(function : @nlasm::function_t, ref state : @generator_js_t::state_t) {
 	var reg_decl = 'var ';
 	rep var i (array::len(function->args_type)) {
 		var reg_name = get_register(function->registers[i]);
@@ -428,7 +389,7 @@ def print_function_registers(function : @nlasm::function_t, ref state : @generat
 }
 
 def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref call_counter : ptd::int(),
-		ref state : @generator_js::state_t) {
+		ref state : @generator_js_t::state_t) {
 	var result = '';
 	var command_no = state->coverage_command;
 	state->coverage_command++;
@@ -502,7 +463,6 @@ def print_command(command : @nlasm::cmd_t, fun_args : @nlasm::args_type, ref cal
 		result = get_goto(goto);
 	} case :clear(var reg) {
 		result = get_register_to_assign(reg) . 'null;';
-	} case :var_decl(var decl) {
 	} case :use_field(var use_field) {
 		result = get_register_to_assign(use_field->new_owner) .
 			get_register_value(use_field->old_owner) . '.' . use_field->field_name . ';';
@@ -542,7 +502,6 @@ def get_coverage_hit(command_no : ptd::int()) : ptd::string() {
 }
 
 def get_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd::int()) : ptd::string() {
-	return '' if nlasm::is_empty(dest);
 	if (src->access_type is :reference && dest->access_type is :reference) {
 		return get_register_to_assign(dest) . get_register(src) . ';';
 	}
@@ -563,17 +522,9 @@ def get_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd::
 			return get_register_value_to_assign(dest) . get_register_value(src);
 		}
 	} case :rec(var type) {
-		if(src->type is :rec) {
-			return get_register_value_to_assign(dest) . get_register_value(src);
-		} else {
-			die;
-		}
+		die;
 	} case :arr(var type) {
-		if(src->type is :arr) {
-			return get_register_value_to_assign(dest) . get_register_value(src);
-		} else {
-			die;
-		}
+		die;
 	} case :variant(var type) {
 		die;
 	} case :hash(var type) {
@@ -581,7 +532,7 @@ def get_move(dest : @nlasm::reg_t, src : @nlasm::reg_t, ref call_counter : ptd::
 	}
 }
 
-def get_load_const(dest : @nlasm::reg_t, val : ptd::ptd_im(), ref state : @generator_js::state_t) : ptd::string() {
+def get_load_const(dest : @nlasm::reg_t, val : ptd::ptd_im(), ref state : @generator_js_t::state_t) : ptd::string() {
 		match (dest->type) case :im {
 			return get_register_value_to_assign(dest) . get_const_value_aggr(val, ref state) . ';';
 		} case :int {
@@ -701,9 +652,8 @@ def get_arr(arr : ptd::arr(@nlasm::reg_t), arr_reg_type : @nlasm::reg_type) : pt
 		result .= get_register_value(reg) . ',' fora var reg (arr);
 		result .= '])';
 	} elsif (arr_reg_type is :arr) {
-		result .= '[';
-		result .= get_register_reference(reg) . ',' fora var reg (arr);
-		result .= ']';
+		die unless array::len(arr) == 0;
+		result = '[]';
 	} else {
 		die;
 	}
@@ -753,7 +703,7 @@ def get_call(cmodule : ptd::string(), cname : ptd::string(),
 	return pre . result . ');' . after;
 }
 
-def get_ov_mk(ov_mk : @nlasm::ov_mk_t, ref state : @generator_js::state_t, ref call_counter : ptd::int())
+def get_ov_mk(ov_mk : @nlasm::ov_mk_t, ref state : @generator_js_t::state_t, ref call_counter : ptd::int())
 		: ptd::string() {
 	var result = get_register_value_to_assign(ov_mk->dest);
 	if (ov_mk->dest->type is :im) {
@@ -777,7 +727,7 @@ def get_ov_mk(ov_mk : @nlasm::ov_mk_t, ref state : @generator_js::state_t, ref c
 }
 
 def get_ov_is(dest : @nlasm::reg_t, src : @nlasm::reg_t, label : ptd::string(), label_no : ptd::int(),
-		ref call_counter : ptd::int(), ref state : @generator_js::state_t) : ptd::string() {
+		ref call_counter : ptd::int(), ref state : @generator_js_t::state_t) : ptd::string() {
 	if (src->type is :im) {
 		return get_register_value_to_assign(dest) . get_internal_call('c_rt_lib', 'ov_is', 
 			[:reg(src), :str(get_str_imm(label, ref state))], ref call_counter) . ';';
@@ -896,18 +846,10 @@ def get_hash(harr : ptd::arr(ptd::rec({key => ptd::string(), val => @nlasm::reg_
 }
 
 def get_empty_hash(fields : ptd::arr(ptd::string()), hash_reg_type : @nlasm::reg_type) : ptd::string() {
-	var result = '';
-	if (hash_reg_type is :im) {
-		result .= imm_call('hash') . '({';
-		result .= escape_string(field) . ': {},' fora var field (fields);
-		result .= '})';
-	} elsif (hash_reg_type is :rec) {
-		result .= '{';
-		result .= escape_string(field) . ': {"value": {}},' fora var field (fields);
-		result .= '}';
-	} else {
-		die;
-	}
+	die unless hash_reg_type is :rec;
+	var result = '{';
+	result .= escape_string(field) . ': {"value": {}},' fora var field (fields);
+	result .= '}';
 	return result;
 }
 
@@ -962,7 +904,6 @@ def reg_suffix(reg : @nlasm::reg_t) : ptd::string() {
 
 
 def get_register_to_assign(register : @nlasm::reg_t) : ptd::string() {
-	return '' if nlasm::is_empty(register);
 	return get_register(register) . '=';
 }
 
@@ -1005,7 +946,7 @@ def get_im_from_value(type : @nlasm::reg_type, value : ptd::string()) : ptd::str
 	} case :bool {
 		return get_namespace_name() . '.c_rt_lib.native_to_nl(' . value . ')';
 	} case :string {
-		return value;
+		die;
 	} case :rec(var innter) {
 		die;
 	} case :arr(var innter) {
@@ -1025,7 +966,7 @@ def get_value_from_im(type : @nlasm::reg_type, im : ptd::string()) : ptd::string
 	} case :bool {
 		return get_namespace_name() . '.c_rt_lib.check_true_native(' . im . ')';
 	} case :string {
-		return im;
+		die;
 	} case :rec(var rec_type) {
 		die;
 	} case :arr(var arr_type) {
@@ -1051,21 +992,21 @@ def is_own(type : @nlasm::reg_type) : ptd::bool() {
 	return true;
 }
 
-def print(s : ptd::string(), ref state : @generator_js::state_t) {
+def print(s : ptd::string(), ref state : @generator_js_t::state_t) {
 	state->js .= s;
 }
 
-def println(s : ptd::string(), ref state : @generator_js::state_t) {
+def println(s : ptd::string(), ref state : @generator_js_t::state_t) {
 	print(s . string::lf(), ref state);
 	state->js_lines++;
 }
 
-def print_sourcemap_line_marker(line : ptd::int(), ref state: @generator_js::state_t) {
+def print_sourcemap_line_marker(line : ptd::int(), ref state: @generator_js_t::state_t) {
 	state->sourcemap->entries []= {line_js => state->js_lines + 1, line_nl => line, symbol => :no};
 }
 
 def print_sourcemap_line_marker_with_symbol(line : ptd::int(), begin : ptd::int(), end : ptd::int(),
-		name : ptd::string(), ref state: @generator_js::state_t) {
+		name : ptd::string(), ref state: @generator_js_t::state_t) {
 	var name_idx;
 	if (hash::has_key(state->sourcemap->names_hash, name)) {
 		name_idx = state->sourcemap->names_hash{name};
@@ -1085,7 +1026,7 @@ def print_sourcemap_line_marker_with_symbol(line : ptd::int(), begin : ptd::int(
 	};
 }
 
-def generate_sourcemap(sourcemap : @generator_js::sourcemap_t, module_name : ptd::string()) : ptd::string() {
+def generate_sourcemap(sourcemap : @generator_js_t::sourcemap_t, module_name : ptd::string()) : ptd::string() {
 	var mappings = generate_sourcemap_mappings(sourcemap->entries);
 	var names = '';
 	rep var i (array::len(sourcemap->names)) {
@@ -1103,7 +1044,7 @@ def generate_sourcemap(sourcemap : @generator_js::sourcemap_t, module_name : ptd
 		'}';
 }
 
-def generate_sourcemap_mappings(sourcemap : ptd::arr(@generator_js::sourcemap_entry_t)) : ptd::string(){
+def generate_sourcemap_mappings(sourcemap : ptd::arr(@generator_js_t::sourcemap_entry_t)) : ptd::string(){
 	var result = '';
 	var i = 1;
 	var last_line = 1;

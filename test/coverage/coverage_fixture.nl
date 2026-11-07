@@ -21,3 +21,7 @@ def coverage_fixture::terminal_if(condition) {
 		return false;
 	}
 }
+
+def coverage_fixture::terminal_die(condition) {
+	die unless condition;
+}

@@ -983,7 +983,6 @@ def print_cmd(ref state : @generator_c::state_t, asm : @nlasm::cmd_t, defined_ty
 		} case :hash(var type) {
 			print(ref state, get_clear_fun_call(type, state->mod_name, get_reg(ref state, reg), defined_types));
 		}
-	} case :var_decl(var decl) {
 	} case :use_field(var use_field) {
 		print_use_field(ref state, use_field);
 	} case :release_field(var release_field) {

@@ -15,6 +15,7 @@ use ptd;
 use pretty_printer;
 use nast;
 use compiler_lib;
+use type_registry;
 
 def string_compiler::compile(program : ptd::string(), module_name : ptd::string()) : ptd::var({
 		ok => @nlasm::result_t,
@@ -31,8 +32,8 @@ def string_compiler::compile(program : ptd::string(), module_name : ptd::string(
 			hash::set_value(ref asts, ast->name, ast);
 			var types_ret = type_checker::check_modules(ref asts, asts);
 			errors = types_ret->errors;
+			return :ok(translator::translate(ast, type_registry::from_modules(asts))) if array::len(errors) == 0;
 		}
-		return :ok(translator::translate(ast, {})) if array::len(errors) == 0;
 		return :err(errors);
 	} case :error(var errors) {
 		return :err(errors);
@@ -136,8 +137,9 @@ def string_compiler::compile_to_nlasm(modules : ptd::hash(ptd::string())) : ptd:
 	var types_ret = type_checker::check_modules(ref asts, asts);
 	return :err(types_ret->errors) if array::len(types_ret->errors) > 0;
 	var nlasms = {};
+	var defined_types = type_registry::from_modules(asts);
 	forh var module_name, var ast (asts) {
-		hash::set_value(ref nlasms, module_name, translator::translate(ast, {}));
+		hash::set_value(ref nlasms, module_name, translator::translate(ast, defined_types));
 	}
 	var state = post_processing::init({}, :o0);
 	post_processing::find(ref state, ref nlasms);

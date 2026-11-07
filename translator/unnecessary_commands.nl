@@ -8,6 +8,7 @@ use ptd;
 use hash;
 use nlasm;
 use flow_graph;
+use flow_graph_t;
 
 def unnecessary_commands::state_t() {
 	return ptd::arr(@unnecessary_commands::block_state_t);
@@ -40,10 +41,10 @@ def has_side_effects(cmd_c : @nlasm::cmd_t) {
 	var cmd = cmd_c->cmd;
 	return !(cmd is :bin_op || cmd is :una_op || cmd is :ov_is || cmd is :ov_as || cmd is :move ||
 		cmd is :get_frm_idx || cmd is :set_at_idx || cmd is :array_push || cmd is :array_len ||
-		cmd is :get_val || cmd is :set_val || cmd is :ov_mk || cmd is :clear || cmd is :var_decl);
+		cmd is :get_val || cmd is :set_val || cmd is :ov_mk || cmd is :clear);
 }
 
-def build_blocks_states(blocks : @flow_graph::blocks_t, reg_size : ptd::int()) : @unnecessary_commands::state_t {
+def build_blocks_states(blocks : @flow_graph_t::blocks_t, reg_size : ptd::int()) : @unnecessary_commands::state_t {
 	var state : @unnecessary_commands::state_t = [];
 	var empty_block_state : @unnecessary_commands::block_state_t = build_empty_state(reg_size);
 	var visited_blocks = {};
@@ -55,7 +56,7 @@ def build_blocks_states(blocks : @flow_graph::blocks_t, reg_size : ptd::int()) :
 	return state;
 }
 
-def delete_unnecessary_commands_in_blocks(ref blocks : @flow_graph::blocks_t, reg_size : ptd::int()) {
+def delete_unnecessary_commands_in_blocks(ref blocks : @flow_graph_t::blocks_t, reg_size : ptd::int()) {
 	var state = build_blocks_states(blocks, reg_size);
 	var all_commands_num = 0;
 	fora var block (blocks) {
@@ -89,7 +90,7 @@ def delete_unnecessary_commands_in_blocks(ref blocks : @flow_graph::blocks_t, re
 	}
 }
 
-def delete_unnecessary_clears_in_blocks(ref blocks : @flow_graph::blocks_t, reg_size : ptd::int(), args_num : ptd::int()) {
+def delete_unnecessary_clears_in_blocks(ref blocks : @flow_graph_t::blocks_t, reg_size : ptd::int(), args_num : ptd::int()) {
 	var state = build_blocks_states(blocks, reg_size);
 	var all_commands_num = 0;
 	fora var block (blocks) {
@@ -116,7 +117,7 @@ def delete_unnecessary_clears_in_blocks(ref blocks : @flow_graph::blocks_t, reg_
 	}
 }
 
-def build_commands_graph(state : @unnecessary_commands::state_t, blocks : @flow_graph::blocks_t, all_commands_num : 
+def build_commands_graph(state : @unnecessary_commands::state_t, blocks : @flow_graph_t::blocks_t, all_commands_num :
 		ptd::int()) : @unnecessary_commands::graph_t {
 	var graph : @unnecessary_commands::graph_t = [];
 	array::push(ref graph, []) rep var i (all_commands_num);
@@ -151,7 +152,7 @@ def visit_node(graph : @unnecessary_commands::graph_t, cmd_nr : ptd::int(), ref 
 	}
 }
 
-def build_block_state(ref state : @unnecessary_commands::state_t, blocks : @flow_graph::blocks_t, block_nr : ptd::int(), 
+def build_block_state(ref state : @unnecessary_commands::state_t, blocks : @flow_graph_t::blocks_t, block_nr : ptd::int(),
 	entrance_state : @unnecessary_commands::block_state_t, ref visited_blocks : ptd::hash(ptd::string())) {
 	var change = false;
 	if (!hash::has_key(visited_blocks, ptd::int_to_string(block_nr))) {

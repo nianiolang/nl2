@@ -9,6 +9,7 @@ use array;
 use ov;
 use hash;
 use flow_graph;
+use flow_graph_t;
 use unnecessary_commands;
 use interpreter;
 use const_evaluator;
@@ -107,7 +108,7 @@ def set_const_commands_in_modules(ref state : @post_processing_t::state_t, chang
 			var f_key = mod_n . (fun->access is :pub ? '::' : '_priv::') . fun->name;
 			if (hash::has_key(changed_functions, f_key)) {
 				change_mod = true;
-				var blocks : @flow_graph::blocks_t = flow_graph::make_blocks(fun->commands, fun->args_type);
+				var blocks : @flow_graph_t::blocks_t = flow_graph::make_blocks(fun->commands, fun->args_type);
 				set_const_reg(ref blocks, math_fs, module->module_name, array::len(fun->registers));
 				var coms = flow_graph::combine_blocks(blocks);
 				rep var j (array::len(coms)) {
@@ -128,7 +129,7 @@ def set_const_commands_in_modules(ref state : @post_processing_t::state_t, chang
 	}
 }
 
-def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, math_fs : @post_processing_t::math_funs_t, 
+def set_const_block(number : ptd::int(), ref blocks : @flow_graph_t::blocks_t, math_fs : @post_processing_t::math_funs_t,
 	ref state : @post_processing_t::const_reg_t, mod_name : ptd::string(), regs : ptd::arr(@post_processing_t::reg_const)) {
 	var block = blocks[number];
 	if (state[number]->was > 0) {
@@ -271,8 +272,6 @@ def set_const_block(number : ptd::int(), ref blocks : @flow_graph::blocks_t, mat
 		} case :clear(var reg) {
 			check_sub(ref const, regs[reg->reg_no], ref info);
 			regs[reg->reg_no] = :no;
-		} case :var_decl(var decl) {
-			const = :no;
 		} case :use_field(var use_field) {
 			check_sub(ref const, regs[use_field->old_owner->reg_no], ref info);
 			regs[use_field->new_owner->reg_no] = const unless nlasm::is_empty(use_field->new_owner);
@@ -487,7 +486,7 @@ def set_mathfun_in_modules(ref state : @post_processing_t::state_t, math_fs : @p
 	}
 }
 
-def set_const_reg(ref blocks : @flow_graph::blocks_t, math_fs : @post_processing_t::math_funs_t, mod_name : ptd::string(), 
+def set_const_reg(ref blocks : @flow_graph_t::blocks_t, math_fs : @post_processing_t::math_funs_t, mod_name : ptd::string(),
 	reg_size) {
 	var regs = [];
 	rep var i (reg_size) {

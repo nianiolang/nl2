@@ -557,8 +557,6 @@ def step(ref state : @interpreter::state_t) : ptd::void() {
 				}
 			}
 		}
-	} case :var_decl(var decl) {
-		die;
 	} case :use_field(var use_field) {
 		if (hash::has_key(state->top->vars[use_field->old_owner->reg_no], use_field->field_name)) {
 			var val = hash::get_value(state->top->vars[use_field->old_owner->reg_no], use_field->field_name);
@@ -688,8 +686,6 @@ def check_command(state : @interpreter::state_t, cmd : @nlasm::order_t) : ptd::b
 		return false unless (arg is :TRUE || arg is :FALSE);
 	} case :goto(var goto) {
 	} case :clear(var reg) {
-	} case :var_decl(var decl) {
-		die;
 	} case :use_field(var use_field) {
 		var hash = state->top->vars[use_field->old_owner->reg_no];
 		return false unless nl::is_hash(hash);

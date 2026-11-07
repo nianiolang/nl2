@@ -18,7 +18,7 @@ function has_uncovered_or_branch(report, outcome) {
 function assert_raw_coverage_shape() {
 	var data = nl.c_rt_lib.nlasm_coverage_data();
 	var functions = data.modules.coverage_fixture.functions;
-	var function_names = ['or_expr', 'select', 'terminal_if'];
+	var function_names = ['or_expr', 'select', 'terminal_if', 'terminal_die'];
 	for (var i = 0; i < function_names.length; i++) {
 		var fn = functions[function_names[i]];
 		coverage_assert(fn.commands.length === fn.meta.length,
@@ -30,6 +30,11 @@ function assert_raw_coverage_shape() {
 				'ASM command metadata should expose the command kind');
 			coverage_assert(typeof fn.meta[command].instruction === 'number',
 				'ASM command metadata should expose the NL instruction number');
+			coverage_assert(typeof fn.meta[command].required === 'boolean',
+				'ASM command metadata should expose terminal-die requirements');
+			coverage_assert(Array.isArray(fn.meta[command].branchRequired) &&
+				fn.meta[command].branchRequired.length === 2,
+				'ASM command metadata should expose branch terminal-die requirements');
 		}
 	}
 }
@@ -66,11 +71,16 @@ nl.coverage_fixture.select(nl.c_rt_lib.get_true());
 nl.coverage_fixture.select(nl.c_rt_lib.get_false());
 nl.coverage_fixture.terminal_if(nl.c_rt_lib.get_true());
 nl.coverage_fixture.terminal_if(nl.c_rt_lib.get_false());
+nl.coverage_fixture.terminal_die(nl.c_rt_lib.get_true());
 
 var complete = nl.c_rt_lib.nlasm_coverage_assert_complete();
 coverage_assert(complete.commands.total > 0, 'the report should contain ASM commands');
-coverage_assert(complete.branches.total === 6,
-	'three ASM if_goto commands should expose six independent branch outcomes');
+coverage_assert(complete.commands.excluded_die > 0,
+	'commands on terminal die paths should be reported separately');
+coverage_assert(complete.branches.total === 7,
+	'three complete branches and one non-die outcome should be required');
+coverage_assert(complete.branches.excluded_die === 1,
+	'the branch outcome that inevitably dies should be reported separately');
 coverage_assert(complete.commands.percent === 100, 'all ASM commands should be covered');
 coverage_assert(complete.branches.percent === 100, 'both ASM branch outcomes should be covered');
 

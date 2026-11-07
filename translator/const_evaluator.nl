@@ -10,6 +10,7 @@ use array;
 use interpreter;
 use hash;
 use flow_graph;
+use flow_graph_t;
 use post_processing_t;
 
 
@@ -40,12 +41,12 @@ def const_evaluator::evaluate_const_in_modules(ref state : @post_processing_t::s
 
 def evaluate_const_in_function(func : @nlasm::function_t, module : ptd::string(), math_fs : @post_processing_t::math_funs_t, 
 	interpreter_state : @interpreter::state_t) : ptd::arr(@nlasm::cmd_t) {
-	var blocks : @flow_graph::blocks_t = flow_graph::make_blocks(func->commands, func->args_type);
+	var blocks : @flow_graph_t::blocks_t = flow_graph::make_blocks(func->commands, func->args_type);
 	evaluate_const_in_blocks(ref blocks, math_fs, func, module, interpreter_state);
 	return flow_graph::combine_blocks(blocks);
 }
 
-def evaluate_const_in_blocks(ref blocks : @flow_graph::blocks_t, math_fs : @post_processing_t::math_funs_t, func : 
+def evaluate_const_in_blocks(ref blocks : @flow_graph_t::blocks_t, math_fs : @post_processing_t::math_funs_t, func :
 	@nlasm::function_t, module : ptd::string(), interpreter_state : @interpreter::state_t) {
 	var regs = [];
 	rep var i (array::len(func->registers)) {
@@ -113,7 +114,7 @@ def push_load_const(ref cmds : ptd::arr(@nlasm::cmd_t), const : @post_processing
 		});
 }
 
-def set_const_block_val(number : ptd::int(), blocks : @flow_graph::blocks_t, ref new_blocks : @flow_graph::blocks_t, 
+def set_const_block_val(number : ptd::int(), blocks : @flow_graph_t::blocks_t, ref new_blocks : @flow_graph_t::blocks_t,
 	math_fs : @post_processing_t::math_funs_t, ref state : @post_processing_t::const_reg_val_t, interpreter_state : 
 	@interpreter::state_t, regs : ptd::arr(@post_processing_t::reg_val_const), func : @nlasm::function_t, module : 
 		ptd::string()) {
@@ -262,8 +263,6 @@ def set_const_block_val(number : ptd::int(), blocks : @flow_graph::blocks_t, ref
 		} case :clear(var reg) {
 			const = :no;
 			regs[reg->reg_no] = :no;
-		} case :var_decl(var decl) {
-			die;
 		} case :use_field(var use_field) {
 			#TODO
 		} case :release_field(var release_field) {

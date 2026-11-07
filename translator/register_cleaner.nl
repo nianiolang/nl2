@@ -201,8 +201,6 @@ def recalculate_registers(cmds : @nlasm::cmds_t, map : ptd::hash(@nlasm::reg_t))
 			new_cmd = :goto(goto);
 		} case :clear(var clear) {
 			new_cmd = :clear(map{ptd::int_to_string(clear->reg_no)});
-		} case :var_decl(var decl) {
-			die;
 		} case :use_field(var use_field) {
 			new_cmd = :use_field({
 				new_owner => map{ptd::int_to_string(use_field->new_owner->reg_no)},
@@ -389,8 +387,6 @@ def find_unused_regs(func : @nlasm::function_t) : ptd::hash(ptd::bool()) {
 		} case :goto(var goto) {
 		} case :clear(var clear) {
 			regs{ptd::int_to_string(clear->reg_no)} = true;
-		} case :var_decl(var decl) {
-			die;
 		} case :use_field(var use_field) {
 			regs{ptd::int_to_string(use_field->new_owner->reg_no)} = true;
 			regs{ptd::int_to_string(use_field->old_owner->reg_no)} = true;
