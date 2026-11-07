@@ -803,4 +803,109 @@ _outer_namespace.c_rt_lib_init = function(_namespace, undefined) {
 		}
 	}
 
+	function get_nlasm_coverage() {
+		return _namespace.__nlasm_coverage__ || {version: 1, modules: {}};
+	}
+
+	function nlasm_coverage_percent(covered, total) {
+		return total === 0 ? 100 : covered * 100 / total;
+	}
+
+	_namespace.c_rt_lib.nlasm_coverage_data = function() {
+		return get_nlasm_coverage();
+	}
+
+	_namespace.c_rt_lib.nlasm_coverage_reset = function() {
+		var coverage = get_nlasm_coverage();
+		for (var module_name in coverage.modules) {
+			if (!coverage.modules.hasOwnProperty(module_name)) continue;
+			var functions = coverage.modules[module_name].functions;
+			for (var function_name in functions) {
+				if (!functions.hasOwnProperty(function_name)) continue;
+				var fn = functions[function_name];
+				for (var command = 0; command < fn.commands.length; command++) {
+					fn.commands[command] = 0;
+				}
+				for (var branch_command in fn.branches) {
+					if (!fn.branches.hasOwnProperty(branch_command)) continue;
+					fn.branches[branch_command][0] = 0;
+					fn.branches[branch_command][1] = 0;
+				}
+			}
+		}
+	}
+
+	_namespace.c_rt_lib.nlasm_coverage_report = function() {
+		var coverage = get_nlasm_coverage();
+		var report = {
+			version: coverage.version,
+			commands: {covered: 0, total: 0, percent: 100},
+			branches: {covered: 0, total: 0, percent: 100},
+			uncovered_commands: [],
+			uncovered_branches: []
+		};
+		for (var module_name in coverage.modules) {
+			if (!coverage.modules.hasOwnProperty(module_name)) continue;
+			var functions = coverage.modules[module_name].functions;
+			for (var function_name in functions) {
+				if (!functions.hasOwnProperty(function_name)) continue;
+				var fn = functions[function_name];
+				for (var command = 0; command < fn.commands.length; command++) {
+					report.commands.total++;
+					if (fn.commands[command] > 0) {
+						report.commands.covered++;
+					} else {
+						report.uncovered_commands.push({
+							module: module_name,
+							function: function_name,
+							command: command,
+							meta: fn.meta[command]
+						});
+					}
+				}
+				for (var branch_command in fn.branches) {
+					if (!fn.branches.hasOwnProperty(branch_command)) continue;
+					for (var outcome = 0; outcome < 2; outcome++) {
+						report.branches.total++;
+						if (fn.branches[branch_command][outcome] > 0) {
+							report.branches.covered++;
+						} else {
+							report.uncovered_branches.push({
+								module: module_name,
+								function: function_name,
+								command: Number(branch_command),
+								outcome: outcome === 0 ? 'false' : 'true',
+								meta: fn.meta[branch_command]
+							});
+						}
+					}
+				}
+			}
+		}
+		report.commands.percent = nlasm_coverage_percent(report.commands.covered, report.commands.total);
+		report.branches.percent = nlasm_coverage_percent(report.branches.covered, report.branches.total);
+		return report;
+	}
+
+	_namespace.c_rt_lib.nlasm_coverage_assert_complete = function() {
+		var report = _namespace.c_rt_lib.nlasm_coverage_report();
+		if (report.uncovered_commands.length === 0 && report.uncovered_branches.length === 0) {
+			return report;
+		}
+		var details = [];
+		for (var i = 0; i < report.uncovered_commands.length && details.length < 20; i++) {
+			var command = report.uncovered_commands[i];
+			details.push(command.module + '::' + command.function + ' command ' + command.command +
+				' (' + command.meta.kind + ') at ' + command.meta.begin.line + ':' + command.meta.begin.position);
+		}
+		for (var i = 0; i < report.uncovered_branches.length && details.length < 20; i++) {
+			var branch = report.uncovered_branches[i];
+			details.push(branch.module + '::' + branch.function + ' branch ' + branch.command +
+				'=' + branch.outcome + ' at ' + branch.meta.begin.line + ':' + branch.meta.begin.position);
+		}
+		throw new Error('Incomplete Nianio ASM coverage: ' +
+			report.uncovered_commands.length + ' commands and ' + report.uncovered_branches.length +
+			' branch outcomes are uncovered\n' + details.join('\n'));
+	}
+
 }})(nl_init=nl_init || {});
