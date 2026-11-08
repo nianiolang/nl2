@@ -92,6 +92,34 @@ var text = 'first line
 	'third line';
 ```
 
+### Byte strings and the PTD text boundary
+
+An NL `ptd::string()` value is a sequence of bytes. Runtime operations such as
+length, indexing, slicing, comparison, and concatenation operate on those
+bytes; they do not implicitly decode Unicode and do not repair invalid text.
+
+Human-readable text crossing the JavaScript/NL boundary has the separate
+`ptd_utf8` contract. The one PTD bridge pair performs the conversion dictated
+by that contract:
+
+- `ptdJsonToNl(ptd, value)` validates JavaScript text and encodes its Unicode
+  scalar values as UTF-8 bytes stored in the NL string;
+- `ptdNlToJson(ptd, value)` validates the NL bytes as canonical UTF-8 and
+  decodes them to JavaScript text.
+
+This is UTF-8 encoding, not truncation to the low byte of each JavaScript code
+unit. An ASCII character uses one NL byte, while other characters may use two,
+three, or four bytes. Unmatched UTF-16 surrogates, malformed or truncated
+UTF-8, overlong sequences, UTF-8 surrogates, and code points beyond Unicode are
+contract violations and terminate conversion. The bridge never substitutes a
+replacement character, guesses an encoding, or accepts a value based on its
+runtime shape instead of the supplied PTD.
+
+Plain NL byte strings remain free to contain arbitrary bytes. Only a value
+crossing a `ptd_utf8` boundary carries the promise that those bytes are valid
+UTF-8 text. The internal implementation of string helpers is independent of
+this boundary codec and must not be used as an implicit transport conversion.
+
 ## 3. Functions, return values, and references
 
 Function arguments and return values may have type annotations:
