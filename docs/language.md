@@ -97,6 +97,8 @@ var text = 'first line
 An NL `ptd::string()` value is a sequence of bytes. Runtime operations such as
 length, indexing, slicing, comparison, and concatenation operate on those
 bytes; they do not implicitly decode Unicode and do not repair invalid text.
+`string::chr(n)` constructs exactly one byte with value `n`, matching the C
+and JavaScript runtimes; it is not a Unicode code-point encoder.
 
 Human-readable text crossing the JavaScript/NL boundary has the separate
 `ptd_utf8` contract. The one PTD bridge pair performs the conversion dictated

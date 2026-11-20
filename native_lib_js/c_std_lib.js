@@ -60,7 +60,7 @@ _outer_namespace.c_std_lib_init = function(_namespace, undefined) {
 	}
 
 	_namespace.c_std_lib.string_chr = function(code) {
-		return _namespace.imm_str(String.fromCharCode(code));
+		return _namespace.imm_from_byte_string(String.fromCharCode(code));
 	}
 
 	_namespace.c_std_lib.string_ord = function(str) {
